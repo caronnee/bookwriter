@@ -1,0 +1,46 @@
+﻿- Reenable text
+- Add image as next page
+- add riddle as next page
+
+Description
+
+
+- Fix loading name of the chapter. Chapter should be like this:
+    **  (number)  MIDDLESCRREN  ** If the name of the chapter is too long fo the like, display just Ch(number) ( like internet explorer optin in total comander )
+- chapter name should be saved
+- possibility to upload to server
+- use the loaded settings, according to relative paths
+- distingush between paragraph by adding three stars to another line ( how to distinusj should go later to the config file)
+- move to another chapter when left is there and no further content is available
+- create chapter
+- start from the last viewed page
+- add password protection as a riddle
+- add page number in the middle of the page
+- copy and paste from word
+- enable to add image
+- enable to add riddle
+- enable to add sections
+- show sections
+- enable to set bookmark
+- enable to list between boomark
+- set book as "finalized" ( open for reading only, "export" )
+- text and the image must be reformatable to several viwports ( could be picked, which sizes are supported )
+- implement find
+- implement replace
+
+-------------------------------------------------------
+support for Kindle? :P Why?:-o
+
+Initial screen - "This book belongs to...". After filling up the name, rest is shown. "
+
+-----------------------------------------------RIDDLES---------
+"look from the other side" - mirror. it is needed to find out that the person in question is lefthanded
+
+RIDDLE one - we have page, when the leaf is rubbed, another page is revealed. That page contain transparent page on some places. whe it is put on the first page, it shows image. The next page must me rearanged to path the transparent page, then the password is revealed.
+
+
+-------------------Next things to happen------
+- if is inside the area of clip, change cursor
+- move page triangle on drag ( no other geometry needed )
+- add page numbers
+- add setting for the one page ( displays roman number or arabic number )

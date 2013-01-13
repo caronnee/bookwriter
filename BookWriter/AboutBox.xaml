@@ -1,0 +1,13 @@
+﻿<Window x:Class="MyBook.AboutBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="About" Height="300" Width="300">
+    <Window.Resources>
+        <BitmapImage x:Key="aboutImage" UriSource="/resources/about.jpg" />
+    </Window.Resources>
+    <StackPanel>
+        <Label>Created by Eva Pešková</Label>
+        <TextBlock IsEnabled="false" TextWrapping="Wrap"><Run Text="As behind every program, there is a story behind it. Here it is starting mine. One starry night..."/></TextBlock>
+        <Image Source="{StaticResource ResourceKey=aboutImage}"></Image>
+    </StackPanel>
+</Window>

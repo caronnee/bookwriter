@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="MyBook.SettingPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" Loaded="UserControl_Loaded">
+  <Grid >
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*" />
+      <RowDefinition Height="30" />
+    </Grid.RowDefinitions>
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="20" />
+      </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25" />
+            </Grid.RowDefinitions>
+            <Label Content="Book folder" Grid.Column="0" Grid.Row="0"/>
+            <TextBox Name="bFolder" Grid.Column="1" Grid.Row="0" Text="..\Books" />
+            <Button Name="pickFolder" Grid.Column="2" Grid.Row="0" Content="..." Click="pickFolder_Click"/>
+            <Label Content="Skin" Grid.Column="0" Grid.Row="1"/>
+            <ComboBox x:Name="skinFolder" Grid.Column="1" Grid.Row="1" >
+                
+            </ComboBox>
+            <Button x:Name="apply" Grid.Column="2" Grid.Row="1" Content="..." Click="apply_Click"/>
+        </Grid>
+        <DockPanel Grid.Row="1" HorizontalAlignment="Right">
+      <Button x:Name="SaveAndBack" Content="Save and back" Click="SaveAndBack_Click"/>
+      <Button x:Name="CancelAndBack" Content="Cancel and back" Click="CancelAndBack_Click"/>
+    </DockPanel>
+  </Grid>
+</UserControl>

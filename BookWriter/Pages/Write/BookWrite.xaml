@@ -1,0 +1,92 @@
+﻿<UserControl
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:write="clr-namespace:MyBook.Pages.Write"
+      xmlns:src="clr-namespace:MyBook"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="MyBook.BookWrite" 
+      mc:Ignorable="d" x:Name="BookWriter" >
+    <UserControl.Resources>
+        <write:WritingConverter x:Key="WritingConverter" />
+        <ImageBrush x:Key="tripplearrowleft" ImageSource="/resources/start.png" Stretch="UniformToFill"/>
+        <ImageBrush x:Key="doublearrowleft" ImageSource="/resources/prevchapter.png" Stretch="UniformToFill"/>
+        <ImageBrush x:Key="arrowleft" ImageSource="/resources/prev.png" Stretch="UniformToFill"/>
+        <ImageBrush x:Key="tripplearrowright" ImageSource="/resources/last.png" Stretch="UniformToFill"/>
+        <ImageBrush x:Key="doublearrowright" ImageSource="/resources/nextchapter.png" Stretch="UniformToFill"/>
+        <ImageBrush x:Key="arrowright" ImageSource="/resources/next.png" Stretch="UniformToFill"/>
+        <Style x:Key="AddButtonImageStyle" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{Binding Background}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <DockPanel Background="#43B49625">
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Back"/>
+            <MenuItem Header="Save"/>
+            <MenuItem Header="Manual - TODO" />
+            <MenuItem Header="About" Click="showAboutClick"/>
+        </Menu>
+        <DockPanel DockPanel.Dock="Bottom">
+            <Grid>
+                <ProgressBar Foreground="Bisque"  Minimum="0" Maximum="100" Value="75" />
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"><Run Text="Chaptername, page"/></TextBlock>
+            </Grid>
+        </DockPanel>
+
+        <Grid x:Name="WritingArea">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="86*" />
+                <ColumnDefinition Width="55*" />
+                <ColumnDefinition Width="175*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <DockPanel >
+                <Expander x:Name="tools" Header="Content" DockPanel.Dock="Top" >
+                    <StackPanel Orientation="Vertical" ScrollViewer.CanContentScroll="True" >
+                        <RadioButton GroupName="contentSettingsGroup" DataContext="{Binding TextSettingsControl, ElementName=BookWriter}" Content="Text" Height="30" x:Name="insertTextButton" Checked="setViewboxContent" />
+                        <RadioButton GroupName="contentSettingsGroup" DataContext="{Binding ImageSettingsControl, ElementName=BookWriter}" Content="Image" Height="30" x:Name="insertImageButton" Checked="setViewboxContent"/>
+                        <RadioButton GroupName="contentSettingsGroup" DataContext="{Binding RiddleSettingsControl, ElementName=BookWriter}" Content="Riddle" Height="30" x:Name="insertRiddle" Checked="setViewboxContent"/>
+                        <Viewbox x:Name="writeSettings" >
+                        </Viewbox>
+                    </StackPanel>
+                </Expander>
+                <Expander Header="Pages" DockPanel.Dock="Top">
+                    <TreeView Background="Transparent" ItemsSource="{Binding Pages}">
+                        <TreeViewItem Header="yb">One</TreeViewItem>
+                        <TreeViewItem Header="ytf">Two</TreeViewItem>
+                        <TreeViewItem Header="cc">Three</TreeViewItem>
+                    </TreeView>
+                </Expander>
+                <Expander Header="Bookmarks" >
+                    <TreeView Background="Transparent" ItemsSource="{Binding Bookmarks}">
+                        <TreeView.ItemTemplate>
+                            <HierarchicalDataTemplate  ItemsSource="{Binding Bookmarks}">
+                                <TreeViewItem Header="{Binding Name}"/>
+                            </HierarchicalDataTemplate>
+                        </TreeView.ItemTemplate>
+                    </TreeView>
+                </Expander>
+            </DockPanel>
+
+            <src:WorkingPage  Grid.Column="1" x:Name="workingPage" Grid.ColumnSpan="2"/>
+            <Button x:Name="donePageButton" Grid.Row="1" Grid.Column="1" Click="donePageButton_Click_1" Content="Set page as done" Grid.ColumnSpan="2" />
+        </Grid>
+    </DockPanel>
+</UserControl>

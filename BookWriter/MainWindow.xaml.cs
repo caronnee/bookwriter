@@ -14,14 +14,24 @@ using System.Windows.Shapes;
 
 namespace Minis
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+  /// <summary>
+  /// Interaction logic for MainWindow.xaml
+  /// </summary>
+  public partial class MainWindow : Window
+  {
+    public MainWindow()
     {
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
+      InitializeComponent();
     }
+    public void Test()
+    {
+      TabControl control = new TabControl();
+
+    }
+    //TODO fix
+    private void textChange(object sender, TextChangedEventArgs e)
+    {
+      RichTextBox box = sender as RichTextBox;
+    }
+  }
 }
