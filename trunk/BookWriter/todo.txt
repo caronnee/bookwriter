@@ -1,0 +1,4 @@
+﻿- add splash screen - OK
+- create tabs - OK
+- tabs have rounded headers -
+- tabs are left stripped - OK

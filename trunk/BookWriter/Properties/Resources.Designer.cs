@@ -60,10 +60,10 @@ namespace Minis.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap logo {
+        internal static System.Drawing.Icon logo {
             get {
                 object obj = ResourceManager.GetObject("logo", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ((System.Drawing.Icon)(obj));
             }
         }
     }

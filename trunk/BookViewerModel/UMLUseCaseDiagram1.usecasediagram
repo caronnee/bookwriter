@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<useCaseModelRoot xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" xmlns:dm9="http://schemas.microsoft.com/dsltools/SimpleShapesModel" dslVersion="1.0.0.0" Id="ee931609-7c9c-4140-8e74-8a5ce279ddc8" name="UMLUseCaseDiagram1" linkedPackageId="a89cf777-76a5-42f6-8d90-ececbccb551c" xmlns="http://schemas.microsoft.com/dsltools/UseCaseModel">
+  <profileInstances>
+    <packageHasProfileInstances Id="ebaa2398-86be-4978-bc1b-fa06e6052808">
+      <profileInstance Id="5d8437c6-fc14-46e1-9b9b-ab28be0e2d97" name="StandardProfileL2">
+        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+      </profileInstance>
+      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances Id="54f61302-b0f3-4a87-bea4-cb586e9e7228">
+      <profileInstance Id="094cc303-411d-4741-bd50-23c9de43d662" name="StandardProfileL3">
+        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+      </profileInstance>
+      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <useCaseModelRootHasTypes>
+      <actor Id="b6ff8afc-8616-44af-aa67-6dc4b209e316" name="User" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="169439b3-3e65-4ae8-aafb-3aca0687852b" />
+        <targetEnds>
+          <association Id="a384d92b-c9fb-4c73-bbc3-1393af6e6f4c" isDerived="false" sourceEndRoleName="User" targetEndRoleName="click on Next Page" isLeaf="false" isAbstract="false">
+            <useCaseMoniker Id="fceb7e60-242d-4b17-aad8-54464b52beb7" LastKnownName="click on Next Page" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="899a823d-74c2-4494-b143-0cec62c87855" name="User" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="afd0328b-1b47-41a7-ab2c-3cab098fc6b5" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="a4573ec2-c7da-4592-8956-dfb692bd686f" name="click on Next Page" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="95b588f6-cf21-4f67-8bb9-53a3418d5223" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="ed4822c0-42e2-4cc5-8cef-1c370bf78f7f" />
+          </association>
+          <association Id="1621c343-80d8-49b8-b034-ae4a26c68dcb" isDerived="false" sourceEndRoleName="User" targetEndRoleName="click on bookmark" isLeaf="false" isAbstract="false">
+            <useCaseMoniker Id="5375e00f-1010-4435-b2fe-c71358d16aa4" LastKnownName="click on bookmark" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="27e07f9a-acc2-496b-b0c3-42624226c822" name="User" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="781e1535-49e4-443a-b1cf-b419b0d8f569" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="6da8f032-0fb7-4c12-b25e-b8e917846cea" name="click on bookmark" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="de8fe9bd-3e6e-471c-8166-714a1ce16746" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="b95520e0-7a5f-4b6b-b109-da0b8b7504cb" />
+          </association>
+          <association Id="7069d341-dd88-4954-99b9-9144688f709f" isDerived="false" sourceEndRoleName="User" targetEndRoleName="write text" isLeaf="false" isAbstract="false">
+            <useCaseMoniker Id="4e13fa59-fbd4-4c26-9247-c2b69046772a" LastKnownName="write text" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="def0e218-f1f0-4720-a2dd-0cf209f9c3a6" name="User" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="3f4b1e8b-5713-4d61-898d-33705f1b96d9" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="bb8d78e0-bbf9-48ff-b5d3-2a4ad8302f4c" name="write text" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="a327d55d-723b-4796-8f4e-f13714f4e3b4" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="6075805c-5f1a-4682-a481-bddd901ec986" />
+          </association>
+          <association Id="2f59f41d-cc00-4b9b-be8e-44fb6ed3b9bf" isDerived="false" sourceEndRoleName="User" targetEndRoleName="confirm text" isLeaf="false" isAbstract="false">
+            <useCaseMoniker Id="ec56831d-08cd-41ef-bfa1-4bdf765ff009" LastKnownName="confirm text" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="c67d8fdc-ba75-4dbc-b431-45545252075a" name="User" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="7f66db24-2f50-4427-8102-67eacc9dfb69" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="fcd986c4-d5f9-492e-bfee-9326b4e1ba5d" name="confirm text" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="a3511756-29ec-4e8b-89ac-e69bc52c66b1" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="6d588c47-10ae-4ce8-b430-554ed2d2246c" />
+          </association>
+        </targetEnds>
+      </actor>
+    </useCaseModelRootHasTypes>
+    <useCaseModelRootHasTypes>
+      <subsystem Id="c0dd7858-8ad2-4c2f-87c0-924bb0e6ce5a" name="BookViewer" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="6d32bf1c-47f3-49e9-a763-f5eb16f6c7e7" />
+      </subsystem>
+    </useCaseModelRootHasTypes>
+    <packageHasNamedElement>
+      <useCase Id="fceb7e60-242d-4b17-aad8-54464b52beb7" name="click on Next Page" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="5ec408be-2d42-4624-b26f-9a68119cd210" />
+        <subjects>
+          <subsystemMoniker Id="c0dd7858-8ad2-4c2f-87c0-924bb0e6ce5a" LastKnownName="BookViewer" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase Id="5375e00f-1010-4435-b2fe-c71358d16aa4" name="click on bookmark" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="58e5af2a-4931-4c03-8a25-89ad138c9857" />
+        <subjects>
+          <subsystemMoniker Id="c0dd7858-8ad2-4c2f-87c0-924bb0e6ce5a" LastKnownName="BookViewer" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase Id="4e13fa59-fbd4-4c26-9247-c2b69046772a" name="write text" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="01c0d896-fa41-4084-bb96-93499ccfc203" />
+        <subjects>
+          <subsystemMoniker Id="c0dd7858-8ad2-4c2f-87c0-924bb0e6ce5a" LastKnownName="BookViewer" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase Id="ec56831d-08cd-41ef-bfa1-4bdf765ff009" name="confirm text" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="a2546224-793d-4fef-8c4c-3f04563cfb6d" />
+        <subjects>
+          <subsystemMoniker Id="c0dd7858-8ad2-4c2f-87c0-924bb0e6ce5a" LastKnownName="BookViewer" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+  </packagedElements>
+  <package Id="a89cf777-76a5-42f6-8d90-ececbccb551c" name="BookViewerModel">
+    <elementDefinition Id="dc9c87cc-d262-421f-871e-4c83eadcfd5f" />
+  </package>
+</useCaseModelRoot>

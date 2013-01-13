@@ -1,0 +1,287 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<modelStoreModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/SimpleShapesModel" xmlns:dm9="http://schemas.microsoft.com/dsltools/UseCaseModel"
+  dslVersion="1.0.0.0"
+  Id="dc9c87cc-d262-421f-871e-4c83eadcfd5f"
+  name="BookViewerModel" xmlns="http://schemas.microsoft.com/dsltools/ModelStore">
+  <profileInstances>
+    <packageHasProfileInstances
+      Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b">
+      <profileInstance
+        Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791"
+        name="StandardProfileL2" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances
+      Id="29349502-908c-4fda-9054-c48619c59ed0">
+      <profileInstance
+        Id="532ea607-fb19-44b8-8502-3351b05452be"
+        name="StandardProfileL3" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <packageHasNamedElement>
+      <useCase
+        Id="63a9d8c7-155a-488e-a684-8fbcee13bee0"
+        name="click on next page"
+        isAbstract="false"
+        isLeaf="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <actor
+        Id="169439b3-3e65-4ae8-aafb-3aca0687852b"
+        name="User"
+        isAbstract="false"
+        isLeaf="false">
+        <targetEnds>
+          <association
+            Id="ed4822c0-42e2-4cc5-8cef-1c370bf78f7f"
+            isDerived="false"
+            sourceEndRoleName="User"
+            targetEndRoleName="click on Next Page"
+            isLeaf="false"
+            isAbstract="false">
+            <useCaseMoniker
+              Id="5ec408be-2d42-4624-b26f-9a68119cd210"
+              LastKnownName="click on Next Page"
+              LastKnownLocation="BookViewerModel.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="afd0328b-1b47-41a7-ab2c-3cab098fc6b5"
+                  name="User"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="95b588f6-cf21-4f67-8bb9-53a3418d5223"
+                  name="click on Next Page"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+          <association
+            Id="b95520e0-7a5f-4b6b-b109-da0b8b7504cb"
+            isDerived="false"
+            sourceEndRoleName="User"
+            targetEndRoleName="click on bookmark"
+            isLeaf="false"
+            isAbstract="false">
+            <useCaseMoniker
+              Id="58e5af2a-4931-4c03-8a25-89ad138c9857"
+              LastKnownName="click on bookmark"
+              LastKnownLocation="BookViewerModel.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="781e1535-49e4-443a-b1cf-b419b0d8f569"
+                  name="User"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="de8fe9bd-3e6e-471c-8166-714a1ce16746"
+                  name="click on bookmark"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+          <association
+            Id="6075805c-5f1a-4682-a481-bddd901ec986"
+            isDerived="false"
+            sourceEndRoleName="User"
+            targetEndRoleName="write text"
+            isLeaf="false"
+            isAbstract="false">
+            <useCaseMoniker
+              Id="01c0d896-fa41-4084-bb96-93499ccfc203"
+              LastKnownName="write text"
+              LastKnownLocation="BookViewerModel.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="3f4b1e8b-5713-4d61-898d-33705f1b96d9"
+                  name="User"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="a327d55d-723b-4796-8f4e-f13714f4e3b4"
+                  name="write text"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+          <association
+            Id="6d588c47-10ae-4ce8-b430-554ed2d2246c"
+            isDerived="false"
+            sourceEndRoleName="User"
+            targetEndRoleName="confirm text"
+            isLeaf="false"
+            isAbstract="false">
+            <useCaseMoniker
+              Id="a2546224-793d-4fef-8c4c-3f04563cfb6d"
+              LastKnownName="confirm text"
+              LastKnownLocation="BookViewerModel.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="7f66db24-2f50-4427-8102-67eacc9dfb69"
+                  name="User"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="a3511756-29ec-4e8b-89ac-e69bc52c66b1"
+                  name="confirm text"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+        </targetEnds>
+      </actor>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <subsystem
+        Id="571469aa-029a-40a0-9463-fe42610f8f14"
+        name="Subsystem1"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <subsystem
+        Id="6d32bf1c-47f3-49e9-a763-f5eb16f6c7e7"
+        name="BookViewer"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="5ec408be-2d42-4624-b26f-9a68119cd210"
+        name="click on Next Page"
+        isAbstract="false"
+        isLeaf="false">
+        <subjects>
+          <subsystemMoniker
+            Id="6d32bf1c-47f3-49e9-a763-f5eb16f6c7e7"
+            LastKnownName="BookViewer"
+            LastKnownLocation="BookViewerModel.uml" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="58e5af2a-4931-4c03-8a25-89ad138c9857"
+        name="click on bookmark"
+        isAbstract="false"
+        isLeaf="false">
+        <subjects>
+          <subsystemMoniker
+            Id="6d32bf1c-47f3-49e9-a763-f5eb16f6c7e7"
+            LastKnownName="BookViewer"
+            LastKnownLocation="BookViewerModel.uml" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="01c0d896-fa41-4084-bb96-93499ccfc203"
+        name="write text"
+        isAbstract="false"
+        isLeaf="false">
+        <subjects>
+          <subsystemMoniker
+            Id="6d32bf1c-47f3-49e9-a763-f5eb16f6c7e7"
+            LastKnownName="BookViewer"
+            LastKnownLocation="BookViewerModel.uml" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="a2546224-793d-4fef-8c4c-3f04563cfb6d"
+        name="confirm text"
+        isAbstract="false"
+        isLeaf="false">
+        <subjects>
+          <subsystemMoniker
+            Id="6d32bf1c-47f3-49e9-a763-f5eb16f6c7e7"
+            LastKnownName="BookViewer"
+            LastKnownLocation="BookViewerModel.uml" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+  </packagedElements>
+  <primitiveType
+    Id="220a3521-e091-4221-bae9-3ef9018e845c"
+    name="Integer"
+    isAbstract="false"
+    isLeaf="false" />
+  <primitiveType
+    Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+    name="Boolean"
+    isAbstract="false"
+    isLeaf="false" />
+  <primitiveType
+    Id="59259974-6d55-42c6-b7bd-763d77ac8ef9"
+    name="String"
+    isAbstract="false"
+    isLeaf="false" />
+  <primitiveType
+    Id="3ab42e7d-4969-445a-b209-471f5cb8209c"
+    name="UnlimitedNatural"
+    isAbstract="false"
+    isLeaf="false" />
+</modelStoreModel>

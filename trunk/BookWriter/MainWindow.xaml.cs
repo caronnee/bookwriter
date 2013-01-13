@@ -23,5 +23,10 @@ namespace Minis
         {
             InitializeComponent();
         }
+        public void Test()
+        {
+            TabControl control = new TabControl();
+            
+        }
     }
 }
