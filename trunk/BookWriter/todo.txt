@@ -1,4 +1,4 @@
-﻿- add splash screen - OK
-- create tabs - OK
-- tabs have rounded headers -
-- tabs are left stripped - OK
+﻿- add splash screen - OK - disabled temporarily ( splash screen action when building, in properties
+- when text is out of box, switch to the second box
+- if the right box is out od the space, add words to the left age, without focusing
+- if the word is deleted, accordingly adjust the pages

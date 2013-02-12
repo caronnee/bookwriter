@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookWriter", "BookWriter\BookWriter.csproj", "{DFB8C42D-FB79-4897-8F29-6397E4D2B62E}"
 EndProject
 Project("{F088123C-0E9E-452A-89E6-6BA2F21D5CAC}") = "BookViewerModel", "BookViewerModel\BookViewerModel.modelproj", "{3CF1DE6C-EF72-4B1C-B339-CA9A54CE76B7}"
