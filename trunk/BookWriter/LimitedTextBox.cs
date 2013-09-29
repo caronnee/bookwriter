@@ -28,9 +28,5 @@ namespace MyBook
 
             return new System.Windows.Size(formattedText.Width, formattedText.Height);
         }
-        public bool IsFull(TextCompositionEventArgs e)
-        {
-            return false;
-        }
     }
 }
