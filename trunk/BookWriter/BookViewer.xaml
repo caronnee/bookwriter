@@ -1,7 +1,8 @@
-﻿<Window x:Class="Minis.Window1"
+﻿<Window x:Class="MyBook.BookViewPort"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="BookViewer" Height="300" Width="300">
+        xmlns:src="clr-namespace:MyBook"
+        Title="BookViewer" Height="300" Width="300" ResizeMode="CanResize">
     <Window.Resources>
         <Style x:Key="myStyle" TargetType="Button">
             <Setter Property="Background" Value="Orange" />
@@ -11,8 +12,8 @@
         </Style>
     </Window.Resources>
     <Grid Background="#FFB49A25">
-        <RichTextBox Name="LeftBox" Height="91" HorizontalAlignment="Left" Margin="36,113,0,0"  VerticalAlignment="Top" Width="95" TextChanged="CheckSize" IsUndoEnabled="False" PreviewTextInput="checkSize" />
-        <RichTextBox Height="91" HorizontalAlignment="Left" Margin="160,113,0,0" Name="RightBox" VerticalAlignment="Top" Width="94" TextChanged="CheckSize" IsUndoEnabled="False" />
+        <src:LimitedTextBox x:Name="LeftBox" HorizontalAlignment="Left" Margin="36,113,0,0"  VerticalAlignment="Top" TextWrapping="Wrap" AcceptsTab="True" AcceptsReturn="True" VerticalScrollBarVisibility="Disabled" MaxLines="3" MinLines="3" Width="95" TextChanged="CheckLines" />
+        <src:LimitedTextBox x:Name="RightBox" HorizontalAlignment="Left" Margin="160,115,0,0"  VerticalAlignment="Top" TextWrapping="Wrap" AcceptsTab="True" AcceptsReturn="True" VerticalScrollBarVisibility="Disabled" MaxLines="3" MinLines="3" Width="95" TextChanged="CheckForward" />
         <Button Style="{StaticResource myStyle}" Content="Button" Height="30" HorizontalAlignment="Left" Margin="36,42,0,0" Name="button1" VerticalAlignment="Top" Width="95" />
     </Grid>
 </Window>

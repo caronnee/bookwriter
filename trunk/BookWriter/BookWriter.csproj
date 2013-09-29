@@ -8,8 +8,8 @@
     <ProjectGuid>{DFB8C42D-FB79-4897-8F29-6397E4D2B62E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Minis</RootNamespace>
-    <AssemblyName>Minis</AssemblyName>
+    <RootNamespace>MyBook</RootNamespace>
+    <AssemblyName>MyBook</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -80,6 +80,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LimitedTextBox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
