@@ -1,4 +1,20 @@
 ﻿- add splash screen - OK - disabled temporarily ( splash screen action when building, in properties
-- when text is out of box, switch to the second box
-- if the right box is out od the space, add words to the left age, without focusing
-- if the word is deleted, accordingly adjust the pages
+- when text is out of box, switch to the second box DONE
+- if the right box is out od the space, add words to the left page, without focusing DONE
+- if the word is deleted, accordingly adjust the pages  
+- add page number in the middle of the page
+- save the content
+- enable to add image
+- enable to add riddle
+- enableto add sections
+- show sections
+- enable to set bookmark
+- enable to list between boomark
+- set book as "finalized"
+- open screen with multiple books
+
+
+Initial screen - "This book belongs to...". After filling up the name, rest is shown. "
+
+RIDDLE one - we have page, when the leaf is rubbed, anothe page is revealed. That page contain transparent page on some places. whe it is put on the first page, it shows image. The next page must me rearanged to path the transparent page, then the password is revealed.
+
