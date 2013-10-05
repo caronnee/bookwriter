@@ -18,63 +18,26 @@ namespace MyBook
     /// </summary>
     public partial class BookViewPort : Window
     {
-        PagesDone left;
-        PagesDone right;
-
         public BookViewPort()
         {
-            left = new PagesDone(); // TODO load
-            right = new PagesDone();//incompleted pages
             InitializeComponent();
+            LeftPrev.moveHandler += new BorderTextBox.MoveHandler(LeftPrev_moveHandler);
+            RightNext.moveHandler += new BorderTextBox.MoveHandler(RightNext_moveHandler);
         }
-        public PagesDone LeftSource
+
+        void RightNext_moveHandler(int caret)
         {
-            get
-            {
-                return left;
-            }
+            LeftPrev.Text = RightBox.Text;
+            RightBox.Text = ""; //TODO load new content
+            LeftBox.Text = RightNext.Text;
+            RightNext.Text = "";//TODO load next
+            LeftBox.Focus();
+            LeftBox.CaretIndex = caret;
         }
 
-        public PagesDone RightSource
+        void LeftPrev_moveHandler(int caret)
         {
-            get
-            {
-                return right;
-            }
+            throw new NotImplementedException();
         }
-
-        //private void CheckLines(object sender, TextChangedEventArgs e)
-        //{
-        //     s = sender as TextBox;
-        //    if (s.LineCount > s.MaxLines)
-        //    {
-        //        int caretPosition = s.CaretIndex;
-        //        // get content of the next lines that are not visible
-        //        int index = s.GetLastVisibleLineIndex() + 1;
-        //        String rest = s.GetLineText(index);
-        //        s.Text = s.Text.Substring(0, s.Text.Length - rest.Length);
-        //        RightBox.Text = rest + RightBox.Text;
-        //        if (caretPosition >= s.Text.Length)
-        //        {
-        //            // if the caret was at position that was cut
-        //            RightBox.Focus(); // set caret position appropriately, after the word inserted
-        //            RightBox.CaretIndex = rest.Length;
-        //        }
-        //        else
-        //        {
-        //            s.CaretIndex = caretPosition;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        // only if total length was removed
-        //    }
-        //}
-
-        //private void CheckForward(object sender, TextChangedEventArgs e)
-        //{
-        //    PageCache box = sender as PageCache;
-        //    box.CheckSize();
-        //}
     }
 }

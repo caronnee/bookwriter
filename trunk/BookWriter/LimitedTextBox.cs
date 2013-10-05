@@ -12,12 +12,6 @@ using System.ComponentModel;
 
 namespace MyBook
 {
-    public enum PageMove
-    {
-        PageLeft,
-        PageRight
-    };
-
     public interface PageCache
     {
         void Append(String str);
@@ -130,67 +124,5 @@ namespace MyBook
 
         //    return new System.Windows.Size(formattedText.Width, formattedText.Height);
         //}
-    }
-
-    public class LimitedShowBox : LimitedTextBox
-    {
-        // any method that takes a string as the parameter and returns no value
-        public delegate void MoveHandler(PageMove page);
-
-        // Define an Event based on the above Delegate
-        public event MoveHandler moveHandler;
-
-        public LimitedShowBox()
-        {
-        }
-
-        // we have prev and next
-        public override void MakeActive(String str)
-        {
-            if (moveHandler == null)
-                return;
-            if (Next == null)
-            {
-                moveHandler(PageMove.PageLeft);
-            }
-            else if (Prev == null)
-            {
-                moveHandler(PageMove.PageRight);
-            }
-            else
-            {
-                throw new Exception("Not Implemented");
-            }
-        }
-    }
-
-    public class PagesDone : PageCache
-    {
-        String pagesContent;
-
-        public PagesDone()
-        {
-            pagesContent = "";
-        }
-        public void Load(String book)
-        {
-        }
-        public void Append(String str)
-        {
-            pagesContent += str;
-        }
-        public void Prepend(String str)
-        {
-            pagesContent = str + pagesContent;
-        }
-        public void CheckSize()
-        {
-            // everything is OK, no need to move
-        }
-        public void MakeActive(String str)
-        {
-            // should never get here, and do nothing
-            System.Diagnostics.Debug.Assert(false);
-        }
     }
 }
