@@ -80,6 +80,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BookWrite.xaml.cs">
+      <DependentUpon>BookWrite.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BorderTextBox.cs" />
     <Compile Include="LimitedTextBox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -138,6 +141,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="BookViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BookWrite.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

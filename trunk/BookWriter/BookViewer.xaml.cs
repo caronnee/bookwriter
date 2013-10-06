@@ -18,26 +18,22 @@ namespace MyBook
     /// </summary>
     public partial class BookViewPort : Window
     {
+        private Page current;
         public BookViewPort()
         {
+            CurrentBook = new BookWrite();
             InitializeComponent();
-            LeftPrev.moveHandler += new BorderTextBox.MoveHandler(LeftPrev_moveHandler);
-            RightNext.moveHandler += new BorderTextBox.MoveHandler(RightNext_moveHandler);
         }
-
-        void RightNext_moveHandler(int caret)
+        public Page CurrentBook
         {
-            LeftPrev.Text = RightBox.Text;
-            RightBox.Text = ""; //TODO load new content
-            LeftBox.Text = RightNext.Text;
-            RightNext.Text = "";//TODO load next
-            LeftBox.Focus();
-            LeftBox.CaretIndex = caret;
-        }
-
-        void LeftPrev_moveHandler(int caret)
-        {
-            throw new NotImplementedException();
+            get
+            {
+                return current;
+            }
+            set
+            {
+                current = value;
+            }
         }
     }
 }
