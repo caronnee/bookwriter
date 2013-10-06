@@ -18,13 +18,13 @@ namespace MyBook
     /// </summary>
     public partial class BookViewPort : Window
     {
-        private Page current;
+        private ContentControl current;
         public BookViewPort()
         {
             CurrentBook = new BookWrite();
             InitializeComponent();
         }
-        public Page CurrentBook
+        public ContentControl CurrentBook
         {
             get
             {

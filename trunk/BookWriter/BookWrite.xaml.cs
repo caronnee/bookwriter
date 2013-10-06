@@ -17,7 +17,7 @@ namespace MyBook
     /// <summary>
     /// Interaction logic for BookWrite.xaml
     /// </summary>
-    public partial class BookWrite : Page
+    public partial class BookWrite : UserControl
     {
         public BookWrite()
         {
