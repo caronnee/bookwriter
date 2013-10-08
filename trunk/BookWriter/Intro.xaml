@@ -3,9 +3,22 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <Button Content="Load Book" Name="TextBook" Height="23" HorizontalAlignment="Left" Margin="118,87,0,0"  VerticalAlignment="Top" Width="80" Click="Load" />
-    </Grid>
+             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <Style x:Key="Rotated" TargetType="{x:Type Button}"> 
+            <Setter Property="Margin" Value="0,5" />
+            <Setter Property="LayoutTransform">
+                <Setter.Value>
+                    <RotateTransform Angle="90"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <DockPanel Background="AliceBlue">
+        <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Hidden" >
+        <StackPanel Background="BlanchedAlmond" Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="Add a book" Name="AddBook1" Height="25" Width="180" VerticalAlignment="Bottom"  Click="Load" Style="{StaticResource Rotated}"/>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
 </UserControl>
