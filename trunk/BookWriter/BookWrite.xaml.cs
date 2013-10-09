@@ -40,5 +40,15 @@ namespace MyBook
         {
             throw new NotImplementedException();
         }
+
+        private void moveRight_Click(object sender, RoutedEventArgs e)
+        {
+            RightNext_moveHandler(0);
+        }
+
+        private void moveLeft_Click(object sender, RoutedEventArgs e)
+        {
+            LeftPrev_moveHandler(0);
+        }
     }
 }
