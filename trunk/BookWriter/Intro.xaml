@@ -15,6 +15,11 @@
         </Style>
     </UserControl.Resources>
     <DockPanel Background="AliceBlue">
+        <DockPanel Background="BurlyWood" DockPanel.Dock="Bottom">
+            <ToggleButton Name="readButton" Content="Read" HorizontalAlignment="Left" IsChecked="True" />
+            <ToggleButton Name="writeButton" Content="Write" HorizontalAlignment="Left" IsEnabled="False" />
+            <ToggleButton Name="settingButton" Content="Settigns" HorizontalAlignment="Left" IsEnabled="False" />
+        </DockPanel>
         <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Hidden" >
         <StackPanel Background="BlanchedAlmond" Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Content="Add a book" Name="AddBook1" Height="25" Width="180" VerticalAlignment="Bottom"  Click="Load" Style="{StaticResource Rotated}"/>

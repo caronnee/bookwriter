@@ -12,12 +12,20 @@ using System.ComponentModel;
 
 namespace MyBook
 {
+    public enum PageMove
+    {
+        Left,
+        Right
+    };
+
     public interface PageCache
     {
         void Append(String str);
         void Prepend(String str);
         void CheckSize();
         void MakeActive(String str);
+        bool Move(PageMove move);
+        String GetText();
     }
 
     public class LimitedTextBox : TextBox, PageCache
@@ -56,6 +64,33 @@ namespace MyBook
 
         public LimitedTextBox() 
         {
+        }
+
+        public virtual bool Move(PageMove move)
+        {
+            switch (move)
+            {
+                case PageMove.Left:
+                    {
+                        if (Prev == null)
+                            return false;
+                        Text = Prev.GetText();
+                        break;
+                    }
+                case PageMove.Right:
+                    {
+                        if (Next == null)
+                            return false;
+                        Text = Next.GetText();
+                        break;
+                    }
+            }
+            return true;
+        }
+
+        public String GetText()
+        {
+            return Text;
         }
 
         public virtual void MakeActive(String str)

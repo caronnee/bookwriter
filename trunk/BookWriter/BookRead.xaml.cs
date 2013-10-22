@@ -9,25 +9,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace MyBook
 {
     /// <summary>
-    /// Interaction logic for BookViewPort.xaml
+    /// Interaction logic for BookRead.xaml
     /// </summary>
-    public partial class BookViewPort : Window
+    public partial class BookRead : UserControl
     {
-        public BookViewPort()
+        public BookRead()
         {
-            Intro intro = new Intro();
-            intro.LoadBook += LoadBook;
             InitializeComponent();
-            Content = intro;
-        }
-        public void LoadBook(String str)
-        {
-            Content = new BookRead();
         }
     }
 }

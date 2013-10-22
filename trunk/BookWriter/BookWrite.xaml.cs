@@ -28,16 +28,18 @@ namespace MyBook
 
         void RightNext_moveHandler(int caret)
         {
-            LeftPrev.Text = RightBox.Text;
-            RightBox.Text = ""; //TODO load new content
-            LeftBox.Text = RightNext.Text;
-            RightNext.Text = "";//TODO load next
-            LeftBox.Focus();
-            LeftBox.CaretIndex = caret;
+            if (caret < 0)
+                return;//do nothing
+            LeftPrev.Move(PageMove.Left);
+            LeftBox.Move(PageMove.Left);
+            RightBox.Move(PageMove.Left);
+            RightNext.Move(PageMove.Left);
         }
 
         void LeftPrev_moveHandler(int caret)
         {
+            if (caret < 0)
+                return;//do nothing
             throw new NotImplementedException();
         }
 

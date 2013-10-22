@@ -37,5 +37,10 @@ namespace MyBook
                 return;
             moveHandler(str.Length);
         }
+        public override bool Move(PageMove move)
+        {
+            
+            return true;
+        }
     }
 }
