@@ -1,0 +1,1288 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="cs" lang="cs"><head>
+
+
+	<meta http-equiv="Content-language" content="cs">
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2"><title>Algoritmus Fractal Flame prakticky - Root.cz</title>
+	
+	<link rel="stylesheet" type="text/css" href="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/ro_global.css" media="screen,projection">
+	<link rel="stylesheet" type="text/css" href="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/ro_global_print.css" media="print">
+	<link rel="stylesheet" type="text/css" href="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/ro_other.css" media="screen,projection">
+	<link rel="stylesheet" type="text/css" href="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/ro_other_print.css" media="print">
+	<link rel="stylesheet" type="text/css" href="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/ro_urs_base.css" media="All">
+	<link rel="stylesheet" type="text/css" href="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/ro_urs_colors.css" media="screen,projection">
+	<link rel="stylesheet" type="text/css" href="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/ro_urs_print.css" media="print">
+<meta name="description" content="V dnešní části seriálu dokončíme část věnovanou algoritmu Fractal Flame. Vysvětlíme si postup použitý při implementaci některých algoritmů navržených Scottem Dravesem a posléze implementovaných dalšími autory v několika programech jako QS Flame, GFlare, Apophysis či Kai's FraxFlame z balíku Kai's Power Tools 5.">	<meta name="copyright" content="Copyright Internet Info, s.r.o.">
+	<meta name="author" content="HTML code: Adam Hauner; e-mail: hauner@iinfo.cz">
+	<meta name="robots" content="index,follow">
+	<meta name="DC.Identifier" content="(SCHEME=ISSN) 12128309">
+	<link rel="SHORTCUT ICON" href="http://i.iinfo.cz/r2/favicon.ico" type="image/x-icon">
+	<link rel="alternate" title="Root RSS - články" href="http://rss.root.cz/clanky/" type="application/rss+xml">
+	<link rel="alternate" title="Root RSS - zprávičky" href="http://rss.root.cz/zpravicky/" type="application/rss+xml">
+	<link rel="alternate" title="Root RSS - diskusní fóra" href="http://rss.root.cz/diskuse/" type="application/rss+xml">
+	<link rel="alternate" title="Root RSS - blogy" href="http://rss.root.cz/blogy/" type="application/rss+xml">
+	<link rel="alternate" title="Root RSS - wiki" href="http://rss.root.cz/wiki/" type="application/rss+xml">
+	<script language="JavaScript" src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/ro_global.js" type="text/javascript"></script></head><body class="body" id="www-root-cz">
+<div class="page skys">
+<div id="head" class="rev">
+<div style="display: none;" class="ad" id="ad-ahead">
+<div class="ad-marker">Reklama</div>
+<div class="ad-ad ad-holder-r">
+<script language="JavaScript" type="text/javascript" src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/adx.js"></script>
+<script language="JavaScript" type="text/javascript">
+<!--
+if (!document.phpAds_used) document.phpAds_used = ',';
+phpAds_random = new String (Math.random()); phpAds_random = phpAds_random.substring(2,11);
+document.write ("<" + "script language='JavaScript' type='text/javascript' src='");
+document.write ("http://k.iinfo.cz/adjs.php?n=" + phpAds_random);
+document.write ("&amp;what=zone:260");
+document.write ("&amp;exclude=" + document.phpAds_used);
+if (document.referer)
+document.write ("&amp;referer=" + escape(document.referer));
+document.write ("'><" + "/script>");
+//-->
+</script><script language="JavaScript" type="text/javascript" src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/adjs.js"></script><script language="javascript" type="text/javascript">
+var el = document.getElementById("ad-ahead");
+if (el) { el.style.display = "none"; }
+</script>
+<div id="beacon_1021" style="position: absolute; left: 0px; top: 0px; visibility: hidden;"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/adlog.gif" alt="" style="width: 0px; height: 0px;" height="0" width="0"></div><noscript><a href='http://k.iinfo.cz/adclick.php?n=ab479b50' target='_blank'><img
+	src='http://k.iinfo.cz/adview.php?what=zone:260&amp;n=ab479b50' border='0' alt='' /></a></noscript>
+</div>
+</div>
+	<div class="strip-1">
+		<div id="kshx"></div>
+<div class="sefa">
+	<a href="http://www.iinfo.cz/" class="feat">Internet Info</a>
+	|
+	<a href="http://www.lupa.cz/" title="Lupa: server o českém Internetu">Lupa</a>
+	&#183;
+	<a href="http://www.mesec.cz/" title="Měšec: server o osobních financích">Měšec</a>
+	&#183;
+	<a href="http://www.root.cz/" title="Root: informace nejen ze světa Linuxu">Root</a>
+	&#183;
+	<a href="http://www.digizone.cz/" title="DigiZone: vše o digitálním vysílání">DigiZone</a>
+	&#183;
+	<a href="http://navrcholu.cz/" title="Navrcholu: měření a vyhodnocování návštěvnosti www stránek">Navrcholu</a>
+	&#183;
+	<a href="http://www.slunecnice.cz/" title="Slunečnice: server freeware a shareware">Slunečnice</a>
+	&#183;
+	<a href="http://www.woko.cz/" title="Woko: pamatuje si za vás">Woko</a>
+	&#183;
+	<a href="http://www.dobryweb.cz/" title="Dobrý web: váš pomocník pro úspěch na Internetu">Dobrý web</a>
+	&#183;
+	<a href="http://www.bomba.cz/" title="Bomba: loga, melodie, hry pro mobilní telefony">Bomba</a>
+	&#183;
+	<a href="http://www.computer.cz/" title="Computer.cz: váš dodavatel hardware">Computer.cz</a>
+</div>
+		<a href="http://www.root.cz/" title="Návrat na titulní stránku serveru" id="head-logo">Root.cz<span><!-- --></span></a>
+		<div class="cb"><!-- --></div>
+	</div>
+<div class="ad" id="ad-banner-top">
+<div class="ad-marker">Reklama</div>
+<div class="ad-ad ad-holder-r">
+<script language="JavaScript" type="text/javascript" src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/adx.js"></script>
+<script language="JavaScript" type="text/javascript">
+<!--
+if (!document.phpAds_used) document.phpAds_used = ',';
+phpAds_random = new String (Math.random()); phpAds_random = phpAds_random.substring(2,11);
+document.write ("<" + "script language='JavaScript' type='text/javascript' src='");
+document.write ("http://k.iinfo.cz/adjs.php?n=" + phpAds_random);
+document.write ("&amp;what=zone:266");
+document.write ("&amp;exclude=" + document.phpAds_used);
+if (document.referer)
+document.write ("&amp;referer=" + escape(document.referer));
+document.write ("'><" + "/script>");
+//-->
+</script><script language="JavaScript" type="text/javascript" src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/adjs_008.js"></script><a href="http://k.iinfo.cz/adclick.php?bannerid=657&amp;zoneid=266&amp;source=&amp;dest=http%3A%2F%2Fbydleni.mesec.cz" target="_top"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/adimage.gif" alt="" title="" border="0" height="60" width="468"></a><div id="beacon_657" style="position: absolute; left: 0px; top: 0px; visibility: hidden;"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/adlog_006.gif" alt="" style="width: 0px; height: 0px;" height="0" width="0"></div><noscript><a href='http://k.iinfo.cz/adclick.php?n=aa2d7019' target='_blank'><img
+	src='http://k.iinfo.cz/adview.php?what=zone:266&amp;n=aa2d7019' border='0' alt='' /></a></noscript>
+</div>
+</div>
+	<div class="strip-2">
+		<div id="head-sections">
+			<ul>
+				<li><a href="http://www.root.cz/clanky/">Články</a></li>
+				<li><a href="http://www.root.cz/zpravicky/">Zprávičky</a></li> 
+				<li><a href="http://www.root.cz/diskuse/">Diskuse</a></li>
+				<li><a href="http://blog.root.cz/">Blogy</a></li>
+				<li><a href="http://wiki.root.cz/">Wiki</a></li>
+				<li><a href="http://www.root.cz/texty/zaklady-linuxu/">Jak na Linux</a></li>
+				<li><a href="http://www.root.cz/texty/akademie-root-cz/">Školení</a></li>
+				<li><a href="http://www.root.cz/texty/butik/">Butik</a></li>
+			</ul>
+		</div>
+		<div id="usr">
+	<a href="http://www.root.cz/prihlasit/?us_ref=http%3A%2F%2Fwww.root.cz%2Fclanky%2Falgoritmus-fractal-flame-prakticky%2F" title="Přihlášení k uživatelskému systému">Přihlásit</a>
+	<a href="http://us.root.cz/registrovat/?us_ref=http%3A%2F%2Fwww.root.cz%2Fclanky%2Falgoritmus-fractal-flame-prakticky%2F" title="Zaregistrujte se a získejte přístup k řadě dalších funkcí a vylepšení">Registrace</a>
+			<a href="http://www.root.cz/styl/classic/?kam_vratit=%2Fclanky%2Falgoritmus-fractal-flame-prakticky%2F"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/ss.gif" alt="Styl vzhledu" title="Změna stylu vzhledu"></a>
+		</div>
+	</div>
+	<hr>
+</div>
+<div id="p-article" class="cont">
+<div class="main"><div class="main-cnt">
+
+<div class="path">
+	<a href="http://www.root.cz/" title="Návrat na titulní stránku">Root.cz</a>
+ &gt; <a href="http://www.root.cz/software/">Software</a> &gt; <a href="http://www.root.cz/software/grafika/">Grafika</a> &gt; <span>Algoritmus Fractal Flame prakticky</span></div>
+
+	<div class="mth">
+	
+<a href="http://www.root.cz/autori/pavel-tisnovsky/">Pavel Tišnovský</a> - 25. 7. 0:00	</div>
+
+	<!-- eTarget ContextAd Start -->
+	<h1><span>Algoritmus Fractal Flame prakticky</span></h1>
+
+	<p class="perex">
+V dnešní části seriálu dokončíme část věnovanou algoritmu Fractal
+Flame. Vysvětlíme si postup použitý při implementaci některých
+algoritmů navržených Scottem Dravesem a posléze implementovaných
+dalšími autory v několika programech jako QS Flame, GFlare, Apophysis
+či Kai's FraxFlame z balíku Kai's Power Tools 5. <span class="cb"><!-- --></span>
+	</p>
+
+<div style="display: none;" class="ad" id="ad-article-300x300">
+<div class="ad-marker">Reklama</div>
+<div class="ad-ad ad-holder-tr">
+<script language="JavaScript" type="text/javascript" src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/adx.js"></script>
+<script language="JavaScript" type="text/javascript">
+<!--
+if (!document.phpAds_used) document.phpAds_used = ',';
+phpAds_random = new String (Math.random()); phpAds_random = phpAds_random.substring(2,11);
+document.write ("<" + "script language='JavaScript' type='text/javascript' src='");
+document.write ("http://k.iinfo.cz/adjs.php?n=" + phpAds_random);
+document.write ("&amp;what=zone:259");
+document.write ("&amp;exclude=" + document.phpAds_used);
+if (document.referer)
+document.write ("&amp;referer=" + escape(document.referer));
+document.write ("'><" + "/script>");
+//-->
+</script><script language="JavaScript" type="text/javascript" src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/adjs_005.js"></script><script language="javascript" type="text/javascript">
+var el = document.getElementById("ad-article-300x300");
+if (el) { el.style.display = "none"; }
+</script>
+<div id="beacon_1020" style="position: absolute; left: 0px; top: 0px; visibility: hidden;"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/adlog_002.gif" alt="" style="width: 0px; height: 0px;" height="0" width="0"></div><noscript><a href='http://k.iinfo.cz/adclick.php?n=aa2288de' target='_blank'><img
+	src='http://k.iinfo.cz/adview.php?what=zone:259&amp;n=aa2288de' border='0' alt='' /></a></noscript>
+</div>
+</div>
+
+
+	<div class="urs">
+<h2>Obsah</h2>
+<p>
+<a href="#k01">1. Implementace algoritmu Fractal Flame</a><br>
+<a href="#k02">2. Nelineární funkce &#8211; variace</a><br>
+<a href="#k03">3. Logaritmická závislost při výpočtu plošného histogramu</a><br>
+<a href="#k04">4. Monochromatické obrázky</a><br>
+<a href="#k05">5. Vícebarevné obrázky</a><br>
+<a href="#k06">6. Funkce pro překreslení fraktálu</a><br>
+<a href="#k07">7. Popis demonstračního příkladu určeného pro vykreslování algoritmem Fractal Flame</a><br>
+<a href="#k08">8. Obsah dalšího pokračování tohoto seriálu</a><br>
+</p>
+
+
+
+<p><span id="k01"></span></p>
+<h2>1. Implementace algoritmu Fractal Flame</h2>
+
+<p>V&nbsp;předchozím pokračování tohoto seriálu jsme si uvedli teoretické
+informace o velmi úspěšném algoritmu Fractal Flame. Již tedy víme, že se ve své
+podstatě jedná o generalizaci "klasických" systémů iterovaných funkcí Michaela
+Barnsleye. Vlastní princip generování obrázku však zůstal zachován &#8211;
+stále se používá chaotická hra (<i>Chaos Game</i>) neboli algoritmus náhodné
+procházky (<i>RWA &#8211; Random Walk Algorithm</i>), i když i zde došlo
+k&nbsp;několika rozšířením. Dnes na teoretický úvod navážeme a ukážeme si
+praktickou implementaci některých částí algoritmu Fractal Flame. Předesílám, že
+dále implementované algoritmy jsou mé vlastní, a z&nbsp;tohoto důvodu zcela
+přesně neodpovídají algoritmům použitým například v&nbsp;aplikaci
+<i>Apophysis</i>. V&nbsp;případě zájmu o originální algoritmy je dobré nejprve
+pročíst článek od Scotta Dravese (<a href="http://flam3.com/flame_draves.pdf">http://flam3.com/flame_draves.pdf</a>)
+a posléze navštívit další stránky, například <a href="http://flam3.com/">http://flam3.com/</a> a <a href="http://www.apophysis.org/">http://www.apophysis.org/</a>.</p>
+
+<p></p><div class="urs-img-center-holder"><a href="http://i.iinfo.cz/urs/fractals39_1-115375202037995.png"><img alt="fractals39_1" class="urs-img-none" src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/fractals39_1-preview-115375202037995.png" height="300" width="300"></a></div><br>
+Obrázek 1: Fraktál vytvořený Scottem Dravesem pomocí algoritmu Fractal Flame
+
+
+
+<p><span id="k02"></span></p>
+<h2>2. Nelineární funkce &#8211; variace</h2>
+
+<p>Nejvýraznějším rozdílem mezi klasickými systémy iterovaných funkcí IFS a
+fraktály typu Fractal Flame je kombinace lineárních a nelineárních funkcí pro
+každou transformaci. V&nbsp;následující tabulce jsou zobrazeny všechny
+nelineární funkce navržené Scottem Dravesem, které jsou používány (spolu
+s&nbsp;lineárními transformacemi) pro výpočet nových souřadnic bodů:</p>
+
+<div class="urs-tab"><table>
+<tbody><tr><th>Označení funkce</th><th>Výrazy pro výpočet souřadnic</th><th>Originální název</th></tr>
+<tr><td>V<sub>0</sub>(x,y)</td><td>(x,y)</td><td>linear</td></tr>
+<tr><td>V<sub>1</sub>(x,y)</td><td>(sin x, sin y)</td><td>sinusoidal</td></tr>
+<tr><td>V<sub>2</sub>(x,y)</td><td>(x/r<sup>2</sup>, y/r<sup>2</sup>)</td><td>spherical</td></tr>
+<tr><td>V<sub>3</sub>(x,y)</td><td>(r×cos(&#966;+r), r×sin(&#966;+r))</td><td>swirl</td></tr>
+<tr><td>V<sub>4</sub>(x,y)</td><td>(r×cos(2&#966;), r×sin(2&#966;))</td><td>horseshoe</td></tr>
+<tr><td>V<sub>5</sub>(x,y)</td><td>(&#966;/&#960;, r-1)</td><td>polar</td></tr>
+<tr><td>V<sub>6</sub>(x,y)</td><td>(r×sin(&#966;+r), r×cos(&#966;-r))</td><td>handkerchief</td></tr>
+<tr><td>V<sub>7</sub>(x,y)</td><td>(r×sin(&#966;r), -r×cos(&#966;r))</td><td>heart</td></tr>
+<tr><td>V<sub>8</sub>(x,y)</td><td>(&#966;×sin(&#960;r)/&#960;, &#966;cos(&#960;r)/&#960;)</td><td>disc</td></tr>
+<tr><td>V<sub>9</sub>(x,y)</td><td>((cos &#966;+sin r)/r, (sin &#966;-cos r)/r)</td><td>spiral</td></tr>
+<tr><td>V<sub>10</sub>(x,y)</td><td>((sin &#966;)/r, (cos &#966;)r)</td><td>hyperbolic</td></tr>
+<tr><td>V<sub>11</sub>(x,y)</td><td>((sin &#966;)(cos r), (cos &#966;)(sin r))</td><td>diamond</td></tr>
+<tr><td>V<sub>12</sub>(x,y)</td><td>(r×sin<sup>3</sup>(&#966;+r), r×cos<sup>3</sup>(&#966;-r))</td><td>ex</td></tr>
+<tr><td>V<sub>13</sub>(x,y)</td><td>(r<sup>1/2</sup>×cos(&#966;/2+&#937;), r<sup>1/2</sup>×sin(&#966;/2+&#937;))</td><td>julia</td></tr>
+<tr><td>V<sub>16</sub>(x,y)</td><td>(2r/(r+1)x, 2r/(r+1)y)</td><td>fisheye</td></tr>
+<tr><td>V<sub>20</sub>(x,y)</td><td>(cos(&#960;x)×cosh(y), -sin(&#960;x)×sinh(y))</td><td>cosine</td></tr>
+</tbody></table></div>
+
+<p>V&nbsp;programovacím jazyku C jsou vytvořeny dvě funkce nazvané jednoduše
+<strong>vx()</strong> a <strong>vy()</strong>. Každá z&nbsp;těchto funkcí
+akceptuje tři parametry. Prvním parametrem je číslo variace,
+tj.&nbsp;celočíselná hodnota v&nbsp;rozsahu 0..20. Druhým a třetím parametrem
+je poloha bodu <i>X<sub>n</sub></i> v&nbsp;rovině, tj.&nbsp;jeho souřadnice
+<i>x</i> a <i>y</i>. Funkce <strong>vx()</strong> vrátí x-ovou polohu nového
+bodu <i>X<sub>n+1</sub></i>, zatímco funkce <strong>vy()</strong> vrátí jeho
+y-ovou souřadnici. Implementace obou zmiňovaných funkcí je poměrně jednoduchá
+(všimněte si výpočtu pomocných hodnot na začátcích obou funkcí):</p>
+
+<div class="urs-code"><code>
+
+//-----------------------------------------------------------------------------
+// Výpočet x-ové souřadnice pomocí funkce Vn()
+//-----------------------------------------------------------------------------
+double vx(int type, double x, double y)
+{
+    double r=sqrt(x*x+y*y);             // vzdálenost od počátku
+    double phi=atan2(y,x);              // úhel od x-ové osy
+    double result;
+    switch (type) {
+        case 0:                         // linear
+            result=x;                                   
+            break;                                      
+        case 1:                         // sinusoidal
+            result=sin(x);                              
+            break;                                      
+        case 2:                         // spherical
+            result=x/(r*r);                             
+            break;                                      
+        case 3:                         // swirl
+            result=r*cos(phi+r);                        
+            break;                                      
+        case 4:                         // horseshoe
+            result=r*cos(2*phi);                        
+            break;                                      
+        case 5:                         // polar
+            result=phi/M_PI;                            
+            break;                                      
+        case 6:                         // handkerchief
+            result=r*sin(phi+r);                        
+            break;                                      
+        case 7:                         // heart
+            result=r*sin(phi*r);                        
+            break;                                      
+        case 8:                         // disc
+            result=phi*sin(M_PI*r)/M_PI;
+            break;                                      
+        case 9:                         // spiral
+            result=(cos(phi)+sin(r))/r;                 
+            break;                                      
+        case 10:                        // hyperbolic
+            result=sin(phi)/r;                          
+            break;                                      
+        case 11:                        // diamond
+            result=sin(phi)*cos(r);                     
+            break;                                      
+        case 12:                        // ex
+            result=r*pow(sin(phi+r),3);                 
+            break;                                      
+        case 13:                        // Julia
+            result=sqrt(r)*cos(phi/2);                  
+            break;                                      
+        case 16:                        // fisheye
+            result=2*r/((r+1)*x);                       
+            break;                                      
+        case 20:                        // cosine
+            result=cos(M_PI*x)*cosh(y);
+            break;
+        default:
+            result=x;
+            break;
+    };
+    return result;
+}
+
+</code></div>
+
+<p></p>
+
+<div class="urs-code"><code>
+
+//-----------------------------------------------------------------------------
+// Výpočet y-ové souřadnice pomocí funkce Vn()
+//-----------------------------------------------------------------------------
+double vy(int type, double x, double y)
+{
+    double r=sqrt(x*x+y*y);             // vzdálenost od počátku
+    double phi=atan2(y,x);              // úhel od x-ové osy
+    double result;
+    switch (type) {
+        case 0:                         // linear
+            result=y;
+            break;
+        case 1:                         // sinusoidal
+            result=sin(y);
+            break;
+        case 2:                         // spherical
+            result=y/(r*r);
+            break;
+        case 3:                         // swirl
+            result=r*sin(phi+r);
+            break;
+        case 4:                         // horseshoe
+            result=r*sin(2*phi);
+            break;
+        case 5:                         // polar
+            result=r-1;
+            break;
+        case 6:                         // handkerchief
+            result=r*cos(phi-r);
+            break;
+        case 7:                         // heart
+            result=-r*cos(phi*r);
+            break;
+        case 8:                         // disc
+            result=phi*cos(M_PI*r)/M_PI;
+            break;
+        case 9:                         // spiral
+            result=(sin(phi)-cos(r))/r;
+            break;
+        case 10:                        // hyperbolic
+            result=cos(phi)/r;
+            break;
+        case 11:                        // diamond
+            result=cos(phi)*sin(r);
+            break;
+        case 12:                        // ex
+            result=r*pow(cos(phi-r),3);
+            break;
+        case 13:                        // Julia
+            result=sqrt(r)*sin(phi/2);
+            break;
+        case 16:                        // fisheye
+            result=2*r/((r+1)*y);
+            break;
+        case 20:                        // cosine
+            result=-sin(M_PI*x)*sinh(y);
+            break;
+        default:
+            result=y;
+            break;
+    };
+    return result;
+}
+
+</code></div>
+
+<p></p><div class="urs-img-center-holder"><a href="http://i.iinfo.cz/urs/fractals39_2-115375203434901.png"><img alt="fractals39_2" class="urs-img-none" src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/fractals39_2-preview-115375203434901.png" height="300" width="300"></a></div><br>
+Obrázek 2: Další fraktál vytvořený Scottem Dravesem pomocí algoritmu Fractal Flame
+
+
+
+<p><span id="k03"></span></p>
+<h2>3. Logaritmická závislost při výpočtu plošného histogramu</h2>
+
+<p>Pro dosažení zdánlivého trojrozměrného vzhledu obrázků je důležitá změna
+lineární závislosti při výpočtu barev pixelů v&nbsp;plošném histogramu na
+závislost logaritmickou. Samotný výpočet histogramu je velmi jednoduchý &#8211;
+v&nbsp;dvourozměrném poli jsou uchovávány hodnoty čítačů příslušejících
+jednotlivým pixelům. Při každém "zásahu" pixelu je čítač zvýšen o jedničku.
+V&nbsp;následujících dvou kapitolách jsou ukázány implementace algoritmů pro
+výpočet barev v&nbsp;monochromatických obrázcích i obrázcích vícebarevných.</p>
+
+<p></p><div class="urs-img-center-holder"><a href="http://i.iinfo.cz/urs/fractals39_3-115375205103111.png"><img alt="fractals39_3" class="urs-img-none" src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/fractals39_3-preview-115375205103111.png" height="277" width="400"></a></div><br>
+Obrázek 3: Fraktál vytvořený ve známém grafickém editoru GIMP za pomoci filtru GFlare
+
+
+
+<p><span id="k04"></span></p>
+<h2>4. Monochromatické obrázky</h2>
+
+<p>Práce s&nbsp;monochromatickými obrázky je poměrně jednoduchá. Pixely se
+přímo nezapisují do pixmapy určené pro vykreslování, ale do pomocného pole
+obsahujícího položky typu <strong>float</strong>. Toto pole uchovává hodnoty
+čítačů, ve kterých se mění hodnota po zavolání funkce
+<strong>addfloat()</strong>. Tato funkce má tvar:</p>
+
+<div class="urs-code"><code>
+
+//-----------------------------------------------------------------------------
+// Přírůstek barvy pixelu na zadaných souřadnicích ve floatové monochromatické
+// pixmapě
+//-----------------------------------------------------------------------------
+void addfloat(const unsigned int x, const unsigned int y)
+{
+    // kontrola, zda není překročena velikost pixmapy
+    // (záporné hodnoty není díky převodu na unsigned int zapotřebí
+    //  brát v potaz)
+    if (x&gt;=PIXMAP_WIDTH || y&gt;=PIXMAP_HEIGHT) return;
+    // zvýšit hodnotu čítače
+    floatMap[y][x]++;
+}
+
+</code></div>
+
+<p>Po vygenerování zadaného počtu bodů se na základě hodnot uložených
+v&nbsp;jednotlivých čítačích vybere hodnota maximální a následně se provede
+logaritmování a převod hodnot do rozsahu 0..255; tyto hodnoty se již mohou
+zapsat do cílové pixmapy, která je určena pro vykreslení na obrazovce pomocí
+příkazů grafické knihovny OpenGL. Funkce provádějící všechny převody mezi
+oběma typy pixmap vypadá následovně:</p>
+
+<div class="urs-code"><code>
+
+//-----------------------------------------------------------------------------
+// Kopie pixelu z floatové pixmapy do pixmapy kompatibilní s OpenGL spolu
+// s logaritmickým převodem měřítka
+//-----------------------------------------------------------------------------
+void convertFloatMap(void)
+{
+    float maxp=0;
+    float pixelFactor;                      // faktor konverze
+    int   i, j;                             // čítače smyček
+
+    for (j=0; j&lt;PIXMAP_HEIGHT; j++)         // zjistit maximální hodnotu uloženou
+        for (i=0; i&lt;PIXMAP_WIDTH; i++)      // ve floatové pixmapě
+            if (maxp&lt;floatMap[j][i]) maxp=floatMap[j][i];
+
+    pixelFactor=255.0/log(maxp);            // vypočítat faktor konverze
+
+    for (j=0; j&lt;PIXMAP_HEIGHT; j++) {       // konverze a změna na logaritmické měřítko
+        for (i=0; i&lt;PIXMAP_WIDTH; i++) {    // s tím, že výsledné barvové složky jsou
+            float pixel=log(floatMap[j][i])*pixelFactor; // v rozsahu 0..255
+            putpixel(pixFractalFlame, i, j, (int)pixel, (int)pixel, (int)pixel);
+        }
+    }
+}
+
+</code></div>
+
+<p></p><div class="urs-img-center-holder"><a href="http://i.iinfo.cz/urs/fractals39_4-115375206868572.png"><img alt="fractals39_4" class="urs-img-none" src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/fractals39_4-preview-115375206868572.png" height="300" width="300"></a></div><br>
+Obrázek 4: Monochromatický fraktál vytvořený ve známém grafickém editoru GIMP za pomoci filtru GFlare
+
+
+
+<p><span id="k05"></span></p>
+<h2>5. Vícebarevné obrázky</h2>
+
+<p>Vícebarevné obrázky se od obrázků monochromatických liší pouze tím, že místo
+jednoho barevného kanálu obsahují kanály tři; pro každou základní barvovou
+složku jeden. Z&nbsp;toho důvodu se nepatrně pozmění jak funkce pro zápis
+"zásahu" jednoho pixelu, tak i funkce provádějící převod na logaritmické
+měřítko. Na rozdíl od Scotta Dravese ve svých funkcích každou barvovou složku
+převádím zvlášť, originální algoritmy používaly pouze jeden faktor konverze.
+Funkce, která je zavolána pro zápis "zásahu" pixelu, má následující tvar:</p>
+
+<div class="urs-code"><code>
+
+//-----------------------------------------------------------------------------
+// Přírůstek barvy pixelu na zadaných souřadnicích ve floatové pixmapě
+// typu RGB
+//-----------------------------------------------------------------------------
+void addfloatRGB(const unsigned int x, const unsigned int y, int r, int g, int b)
+{
+    // kontrola, zda není překročena velikost pixmapy
+    // (záporné hodnoty není díky převodu na unsigned int zapotřebí
+    //  brát v potaz)
+    if (x&gt;=PIXMAP_WIDTH || y&gt;=PIXMAP_HEIGHT) return;
+    // zvýšit hodnotu všech tří čítačů
+    floatMapRGB[y][x][0]+=r;
+    floatMapRGB[y][x][1]+=g;
+    floatMapRGB[y][x][2]+=b;
+}
+
+</code></div>
+
+<p>V&nbsp;parametrech <strong>r</strong>, <strong>g</strong> a
+<strong>b</strong> jsou předány přírůstky, které se mají přičíst
+k&nbsp;hodnotám uloženým v&nbsp;jednotlivých čítačích. Pro většinu IFS systémů
+je vhodné hodnoty zvyšovat o jednotku, tj.&nbsp;všechny zmiňované parametry
+budou rovny <strong>r=g=b=1</strong>. V&nbsp;některých případech však může být
+vhodné některou barvovou složku více zvýraznit a nastavit například parametr
+<strong>r</strong> na trojku. Funkce pro přepočet hodnot z&nbsp;původní pixmapy
+do pixmapy vhodné pro vykreslení, je také složitější, neboť místo jedné hodnoty
+platné pro daný pixel se vždy počítá s&nbsp;vektorem tří hodnot. Tomu také
+odpovídají použité datové typy a vložené smyčky:</p>
+
+<div class="urs-code"><code>
+
+//-----------------------------------------------------------------------------
+// Kopie pixelů v pixmapě tak, aby se změnila lineární závislost mezi počtem
+// zásahů pixelů na závislost logaritmickou
+//-----------------------------------------------------------------------------
+void convertFloatMapRGB(void)
+{
+    float max[3]={0, 0, 0};                 // vektor maximálních hodnot
+    float factor[3];                        // vektor konverzních faktorů
+    int   i, j, k;
+
+    for (j=0; j&lt;PIXMAP_HEIGHT; j++)         // zjistit maximální hodnoty uložené
+        for (i=0; i&lt;PIXMAP_WIDTH; i++)      // ve floatové pixmapě
+            for (k=0; k&lt;3; k++)
+                if (max[k]&lt;floatMapRGB[j][i][k]) max[k]=floatMapRGB[j][i][k];
+
+    for (k=0; k&lt;3; k++)                     // vypočítat vektor faktorů konverze
+        factor[k]=255.0/log(max[k]);
+
+    for (j=0; j&lt;PIXMAP_HEIGHT; j++) {       // převod pixmapy
+        for (i=0; i&lt;PIXMAP_WIDTH; i++) {
+            float pixel[3];
+            for (k=0; k&lt;3; k++)
+                pixel[k]=log(floatMapRGB[j][i][k])*factor[k];
+            putpixel(pixFractalFlame, i, j, (int)pixel[0], (int)pixel[1], (int)pixel[2]);
+        }
+    }
+}
+
+</code></div>
+
+<p></p><div class="urs-img-center-holder"><a href="http://i.iinfo.cz/urs/fractals39_5-115375208238359.png"><img alt="fractals39_5" class="urs-img-none" src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/fractals39_5-preview-115375208238359.png" height="300" width="300"></a></div><br>
+Obrázek 5: Trojice fraktálů typu Fractals Flames vytvořená v&nbsp;grafickém editoru GIMP (sloučení provedeno pomocí vrstev)
+
+
+
+<p><span id="k06"></span></p>
+<h2>6. Funkce pro překreslení fraktálu</h2>
+
+<p>Funkce, která provádí překreslení fraktálu podle algoritmu "Fractal Flames",
+využívá všechny výše zmíněné céčkovské funkce. Každý systém iterovaných funkcí
+je pro jednoduchost popsán polem, přičemž každý řádek pole obsahuje informace o
+jedné transformaci (počet transformací je vždy roven třem, je však možné
+provést rozšíření na větší či naopak menší počet transformací). Každá
+transformace je popsána sedmisložkovým vektorem; úvodní šestice složek popisuje
+lineární transformaci:</p>
+
+<p><i>(x<sub>n+1</sub>, y<sub>n+1</sub>)=(a<sub>i</sub>x<sub>n</sub>+b<sub>i</sub>y<sub>n</sub>+c<sub>i</sub>, d<sub>i</sub>x<sub>n</sub>+e<sub>i</sub>y<sub>n</sub>+f<sub>i</sub>)</i></p>
+
+<p>zatímco v&nbsp;poslední složce vektoru je uložen index nelineární
+transformace (variace), která rozšiřuje výše uvedenou transformaci
+lineární:</p>
+
+<p><i>(x<sub>n+1</sub>, y<sub>n+1</sub>)=(a<sub>i</sub>x<sub>n</sub>+b<sub>i</sub>y<sub>n</sub>+c<sub>i</sub>, d<sub>i</sub>x<sub>n</sub>+e<sub>i</sub>y<sub>n</sub>+f<sub>i</sub>)</i></p>
+
+<p>Přepočet vypadá následovně:</p>
+
+<div class="urs-code"><code>
+
+//-----------------------------------------------------------------------------
+// Překreslení fraktálu typu FractalFlame
+//-----------------------------------------------------------------------------
+void recalcFractalFlame( pixmap *pix,               // pixmapa pro vykreslování
+                  int    maxiter,                   // maximální počet iterací
+                  double scale,                     // měřítko obrazce
+                  double xpos,                      // posun obrazce
+                  double ypos,                    
+                  int    type,                      // vybraný IFS systém
+                  int    rf, int gf, int bf,        // příznaky barvových složek
+                  int    dr, int dg, int db,        // přírustky barvových složek
+                  DrawType drawType)                // způsob vykreslení IFS systému
+{                                                 
+    int    iter=0;                                  // počitadlo iterací
+    int    threshold=50;                            // hranice počtu iterací pro vykreslování
+                                                  
+    double x, y;                                    // poloha iterovaného bodu
+    double xn, yn;                                  // nová poloha iterovaného bodu
+    int    k;                                       // číslo vybraného řídicího bodu
+                                                  
+    unsigned char red=rf ? dr : 0;                  // reálné přírůstky barvových složek
+    unsigned char green=gf ? dg : 0;
+    unsigned char blue=bf ? db : 0;
+
+    double coefs[][3][7]={                          // koeficienty jednotlivých transformací
+        {
+            { 0.500000,  0.0000000,  0.000000,  0.5000000,  0.000000,  0.000000,  2},
+            { 0.500000,  0.0000000,  0.000000,  0.5000000,  0.000000,  1.000000,  0},
+            { 0.500000,  0.0000000,  0.000000,  0.5000000,  1.000000,  1.000000,  0}
+        },
+        {
+            { 0.983960,  0.2983280,  0.359416, -0.5835410, -0.850590, -0.378754,  0},
+            {-0.900388,  0.2930630,  0.397598,  0.0225629,  0.465126, -0.277212,  9},
+            {-0.329863, -0.0855261, -0.369381, -0.8583790,  0.977861,  0.547595,  3},
+        },
+        {
+            { 0.562482,  0.3978610, -0.539599,  0.5010880, -0.429920, -0.112404,  2},
+            { 0.830039, -0.4961740,  0.162480,  0.7504680,  0.910220,  0.288389,  2},
+            { 1.000000,  0.0000000,  0.000000,  1.0000000,  0.000000,  0.000000,  0},
+        },
+        {
+            { 0.983960,  0.2983280,  0.359416, -0.5835410, -0.850590, -0.378754,  2},
+            { 0.830039, -0.4961740,  0.162480,  0.7504680,  0.910220,  0.288389,  2},
+            { 0.500000,  0.0000000,  0.000000,  0.5000000,  1.000000,  1.000000,  0}
+        },
+        {
+            { 0.983960,  0.2983280,  0.359416, -0.5835410, -0.850590, -0.378754,  3},
+            { 0.830039, -0.4961740,  0.162480,  0.7504680,  0.910220,  0.288389,  3},
+            { 0.500000,  0.0000000,  0.000000,  0.5000000,  1.000000,  1.000000,  3}
+        },
+        {
+            { 0.500000, -0.4000000,  0.000000,  0.5000000,  0.000000,  0.000000,  20},
+            { 0.500000,  0.1000000,  0.000000,  0.5000000,  0.000000,  0.300000,  3},
+            { 0.500000,  0.0000000,  0.100000,  0.4000000,  0.500000,  1.000000,  5}
+        },
+        {
+            { 0.983960,  0.2983280,  0.359416, -0.5835410, -0.850590, -0.378754,  1},
+            {-0.900388,  0.2930630,  0.397598,  0.0225629,  0.465126, -0.277212,  2},
+            {-0.329863, -0.0855261, -0.369381, -0.8583790,  0.977861,  0.547595,  3}
+        },
+        {
+            { 0.983960,  0.2983280,  0.359416, -0.5835410, -0.850590, -0.378754,  4},
+            {-0.900388,  0.2930630,  0.397598,  0.0225629,  0.465126, -0.277212,  5},
+            {-0.329863, -0.0855261, -0.369381, -0.8583790,  0.977861,  0.547595,  6}
+        },
+        {
+            { 0.983960,  0.2983280,  0.359416, -0.5835410, -0.850590, -0.378754,  7},
+            {-0.900388,  0.2930630,  0.397598,  0.0225629,  0.465126, -0.277212,  8},
+            {-0.329863, -0.0855261, -0.369381, -0.8583790,  0.977861,  0.547595,  9}
+        },
+        {
+            { 0.983960,  0.2983280,  0.359416, -0.5835410, -0.850590, -0.378754,  10},
+            {-0.900388,  0.2930630,  0.397598,  0.0225629,  0.465126, -0.277212,  11},
+            {-0.329863, -0.0855261, -0.369381, -0.8583790,  0.977861,  0.547595,  12}
+        },
+    };
+    unsigned char pal[8][3]={                       // barvová paleta
+        {0xff, 0x00, 0x00},
+        {0x00, 0xff, 0x00},
+        {0x00, 0x00, 0xff},
+        {0xff, 0xff, 0x00},
+        {0x00, 0xff, 0xff},
+        {0xff, 0x00, 0xff},
+        {0xff, 0xff, 0xff},
+        {0x80, 0x80, 0x80},
+    };
+
+    x=0;
+    y=0;                                            // nastavení počáteční polohy bodu
+    srand(0);                                       // v rovině
+
+    while (iter++&lt;maxiter*100) {                    // iterační smyčka
+        k=rand()%3;                                 // zvolit jednu ze tří transformací
+        xn=x*coefs[type][k][0]+y*coefs[type][k][2]+coefs[type][k][4]; // aplikovat lineární
+        yn=x*coefs[type][k][1]+y*coefs[type][k][3]+coefs[type][k][5]; // transformaci
+        x=vx((int)coefs[type][k][6], xn, yn);       // aplikovat nelineární transformaci
+        y=vy((int)coefs[type][k][6], xn, yn);
+        if (iter&gt;threshold) {                       // je-li dosaženo hranice iterací
+            double xx=x*scale+xpos;
+            double yy=y*scale+ypos;
+            switch (drawType) {                     // výběr vykreslovacího režimu
+                case IterPutPixel:
+                    putpixel(pix, xx, yy, rf ? 0xff:0x00, gf ? 0xff:0x00, bf ? 0xff:0x00);
+                    break;
+                case IterAddPixel:
+                    addpixel(pix, xx, yy, red, green, blue);
+                    break;
+                case IterLogPixel:
+                    addfloat(xx, yy);
+                    break;
+                case TransfPutPixel:
+                    putpixel(pix, xx, yy, pal[k&amp;7][0], pal[k&amp;7][1], pal[k&amp;7][2]);
+                    break;
+                case TransfAddPixel:
+                    addpixel(pix, xx, yy, (!!pal[k&amp;7][0])*dr, (!!pal[k&amp;7][1])*dg, (!!pal[k&amp;7][2])*db);
+                    break;
+                case TransfLogPixel:
+                    addfloatRGB(xx, yy, (!!pal[k&amp;7][0]), (!!pal[k&amp;7][1]), (!!pal[k&amp;7][2]));
+                    break;
+                default:
+                    break;
+            }
+        }
+        x=xn;
+        y=yn;
+    }
+    // u logaritmických převodů provést finální konverzi pixmap
+    if (drawType==IterLogPixel) convertFloatMap();
+    if (drawType==TransfLogPixel) convertFloatMap2();
+}
+
+</code></div>
+
+<p></p><div class="urs-img-center-holder"><a href="http://i.iinfo.cz/urs/fractals39_6-115375209654975.png"><img alt="fractals39_6" class="urs-img-none" src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/fractals39_6-preview-115375209654975.png" height="300" width="400"></a></div><br>
+Obrázek 6: Obrázek vytvořený za pomoci dnešního demonstračního příkladu (po inverzi)
+
+
+
+<p><span id="k07"></span></p>
+<h2>7. Popis demonstračního příkladu určeného pro vykreslování algoritmem Fractal Flame</h2>
+
+<p>Všechny výše uvedené funkce jsou implementovány <a href="http://i.iinfo.cz/urs-att/fractals39_1-115375224379615.html" title="fractals39_1_c" class="urs-att">v&nbsp;dnešním demonstračním příkladu</a>. Po překladu a spuštění
+tohoto demonstračního příkladu se zobrazí první obrázek vytvořený pomocí
+algoritmu "Fractal Flame", který má rozlišení 512×384 pixelů. Pomocí
+klávesnice (viz tabulka s&nbsp;popisem ovládání) je možné měnit lineární a
+nelineární funkce, pomocí nichž je obraz IFS systému definován. Také je možné
+měnit způsob vybarvení jednotlivých pixelů, maximální počet iterací, přírůstky
+barvových složek atd. Na sedmém obrázku je zobrazen screenshot spuštěného
+demonstračního příkladu. S&nbsp;demonstračním příkladem je možné laborovat i
+změnou koeficientů lineárních a nelineárních transformací, které jsou uloženy
+v&nbsp;poli <strong>coefs</strong> ve funkci
+<strong>recalcFractalFlame()</strong>. Nejjednodušší a nejvýraznější je změna
+posledního koeficientu, který určuje typ nelineární transformace,
+tj.&nbsp;funkci variace.</p>
+
+<p></p><div class="urs-img-center-holder"><a href="http://i.iinfo.cz/urs/fractals39_7-115375211616684.png"><img alt="fractals39_7" class="urs-img-none" src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/fractals39_7-preview-115375211616684.png" height="300" width="400"></a></div><br>
+Obrázek 7: Screenshot demonstračního příkladu
+
+<p>Ovládání dnešního demonstračního příkladu pomocí klávesnice je sepsáno
+v&nbsp;následující tabulce:</p>
+
+<div class="urs-tab"><table>
+<tbody><tr><th>Klávesová zkratka</th><th>Význam klávesové zkratky</th></tr>
+<tr><td><strong>F1</strong></td><td>výběr vykreslovací metody s&nbsp;konstantní barvou (<strong>IterPutPixel</strong>)</td></tr>
+<tr><td><strong>F2</strong></td><td>výběr vykreslovací metody s&nbsp;plošným histogramem (<strong>IterAddPixel</strong>)</td></tr>
+<tr><td><strong>F3</strong></td><td>výběr vykreslovací metody s&nbsp;plošným histogramem s&nbsp;logaritmickou charakteristikou (<strong>IterLogPixel</strong>)</td></tr>
+<tr><td><strong>F4</strong></td><td>výběr vykreslovací metody s&nbsp;barvou pixelů závisející na transformaci (<strong>TransfPutPixel</strong>)</td></tr>
+<tr><td><strong>F5</strong></td><td>výběr vykreslovací metody kombinující plošný histogram s&nbsp;barvou transformace (<strong>TransfAddPixel</strong>)</td></tr>
+<tr><td><strong>F6</strong></td><td>výběr vykreslovací metody kombinující plošný histogram s&nbsp;barvou transformace, ale s&nbsp;logaritmickou závislostí (<strong>TransfLogPixel</strong>)</td></tr>
+<tr><td><strong>F7</strong></td><td>snížení změny červené barvové složky při tvorbě plošného histogramu</td></tr>
+<tr><td><strong>F8</strong></td><td>zvýšení změny červené barvové složky při tvorbě plošného histogramu</td></tr>
+<tr><td><strong>F9</strong></td><td>snížení změny zelené barvové složky při tvorbě plošného histogramu</td></tr>
+<tr><td><strong>F10</strong></td><td>zvýšení změny zelené barvové složky při tvorbě plošného histogramu</td></tr>
+<tr><td><strong>F11</strong></td><td>snížení změny modré barvové složky při tvorbě plošného histogramu</td></tr>
+<tr><td><strong>F12</strong></td><td>zvýšení změny modré barvové složky při tvorbě plošného histogramu</td></tr>
+<tr><td><strong>S</strong></td><td>uložení rastrového obrázku s&nbsp;fraktálem do externího souboru</td></tr>
+<tr><td><strong>Q</strong></td><td>ukončení demonstračního příkladu</td></tr>
+<tr><td><strong>Esc</strong></td><td>ukončení demonstračního příkladu</td></tr>
+<tr><td><strong>,</strong></td><td>snížení maximálního počtu iterací o hodnotu 1000</td></tr>
+<tr><td><strong>.</strong></td><td>zvýšení maximálního počtu iterací o hodnotu 1000</td></tr>
+<tr><td><strong>&lt;</strong></td><td>snížení maximálního počtu iterací o hodnotu 10000</td></tr>
+<tr><td><strong>&gt;</strong></td><td>zvýšení maximálního počtu iterací o hodnotu 10000</td></tr>
+<tr><td><strong>R</strong></td><td>povolení/zákaz použití červené barvové složky při vykreslování</td></tr>
+<tr><td><strong>G</strong></td><td>povolení/zákaz použití zelené barvové složky při vykreslování</td></tr>
+<tr><td><strong>B</strong></td><td>povolení/zákaz použití modré barvové složky při vykreslování</td></tr>
+<tr><td><strong>&#8592;</strong></td><td>posun obrazce s&nbsp;fraktálem o pět pixelů doleva</td></tr>
+<tr><td><strong>&#8594;</strong></td><td>posun obrazce s&nbsp;fraktálem o pět pixelů doprava</td></tr>
+<tr><td><strong>&#8593;</strong></td><td>posun obrazce s&nbsp;fraktálem o pět pixelů nahoru</td></tr>
+<tr><td><strong>&#8595;</strong></td><td>posun obrazce s&nbsp;fraktálem o pět pixelů dolů</td></tr>
+<tr><td><strong>Page &#8593;</strong></td><td>změna měřítka obrazce o 10% (zvětšení)</td></tr>
+<tr><td><strong>Page &#8595;</strong></td><td>změna měřítka obrazce o 10% (zmenšení)</td></tr>
+<tr><td><strong>0</strong></td><td>výběr první sady transformací IFS systému</td></tr>
+<tr><td><strong>1</strong></td><td>výběr druhé sady transformací IFS systému</td></tr>
+<tr><td><strong>2</strong></td><td>výběr třetí sady transformací IFS systému</td></tr>
+<tr><td><strong>3</strong></td><td>výběr čtvrté sady transformací IFS systému</td></tr>
+<tr><td><strong>4</strong></td><td>výběr páté sady transformací IFS systému</td></tr>
+<tr><td><strong>5</strong></td><td>výběr šesté sady transformací IFS systému</td></tr>
+<tr><td><strong>6</strong></td><td>výběr sedmé sady transformací IFS systému</td></tr>
+<tr><td><strong>7</strong></td><td>výběr osmé sady transformací IFS systému</td></tr>
+<tr><td><strong>8</strong></td><td>výběr deváté sady transformací IFS systému</td></tr>
+<tr><td><strong>9</strong></td><td>výběr desáté sady transformací IFS systému</td></tr>
+</tbody></table></div>
+
+<p></p><div class="urs-img-center-holder"><a href="http://i.iinfo.cz/urs/fractals39_8-115375212698890.png"><img alt="fractals39_8" class="urs-img-none" src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/fractals39_8-preview-115375212698890.png" height="300" width="400"></a></div><br>
+Obrázek 8: Další obrázek vytvořený za pomoci dnešního demonstračního příkladu (po inverzi)
+
+
+
+<p><span id="k08"></span></p>
+<h2>8. Obsah dalšího pokračování tohoto seriálu</h2>
+
+<p>V&nbsp;následujícím pokračování tohoto seriálu dokončíme poměrně
+rozsáhlou část věnovanou systémům iterovaných funkcí (IFS) a jejich
+modifikacím, tj.&nbsp;linearizovaným IFS a algoritmu Fractal Flame.
+Příště si ukážeme, jakým způsobem je možné vytvářet trojrozměrné modely
+těles pomocí systémů iterovaných funkcí IFS. V&nbsp;jednom
+z&nbsp;demonstračních příkladů také budeme vytvářet trojrozměrné scény
+určené pro známý raytracer POV-Ray.</p>
+
+<p></p><div class="urs-img-center-holder"><a href="http://i.iinfo.cz/urs/fractals39_9-115375213784961.png"><img alt="fractals39_9" class="urs-img-none" src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/fractals39_9-preview-115375213784961.png" height="320" width="400"></a></div><br>
+Obrázek 9: Téma příštího pokračování &#8211; trojrozměrné IFS	</div>
+	<!-- eTarget ContextAd End -->
+
+
+
+<div class="serial">
+	<h2>Seriál <a href="http://www.root.cz/serialy/fraktaly-v-pocitacove-grafice/">Fraktály v počítačové grafice</a></h2>
+	<ul>
+			<li><a href="http://www.root.cz/clanky/plynuly-morfing-mezi-dvojici-ifs-systemu/">Plynulý morfing mezi dvojicí IFS systémů</a></li>
+			<li><a href="http://www.root.cz/clanky/fractal-flames/">Fractal Flames</a></li>
+			<li class="actual">Algoritmus Fractal Flame prakticky</li>
+			<li><a href="http://www.root.cz/clanky/trojrozmerne-ifs-a-raytracer-pov-ray/">Trojrozměrné IFS a raytracer POV-Ray</a></li>
+			<li><a href="http://www.root.cz/clanky/stochasticke-fraktaly/">Stochastické fraktály</a></li>
+			<li class="all"><a href="http://www.root.cz/serialy/fraktaly-v-pocitacove-grafice/">všechny díly seriálu ...</a></li>
+	</ul>	
+</div>
+
+	<div class="links">
+<span onclick="if(confirm('Moderní prohlížeče vytisknou stránku s využitím stylů zvlášť připravených pro tisk.\n\n Chcete vytisknout aktuální stránku?')) window.print();" class="link-print">Tiskni</span> 
+<span class="link-recommend"><a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/doporucit/">Doporuč</a></span>
+	</div>
+
+	<div class="dp-n">
+	<h2>Názory</h2>
+<div class="op-sub">
+<h3 id="opinions-subscribe"><span>Sledování názorů</span></h3>
+<div class="op-sub-c">
+	<p>Zasílání upozornění na nové názory je dostupné jen registrovaným uživatelům.</p>
+	<p>Prosím, 
+		<a href="http://www.root.cz/prihlasit/?us_ref=http%3A%2F%2Fwww.root.cz%2Fclanky%2Falgoritmus-fractal-flame-prakticky%2F">přihlašte se</a> a nebo se <a href="http://us.root.cz/registrovat/?us_ref=http%3A%2F%2Fwww.root.cz%2Fclanky%2Falgoritmus-fractal-flame-prakticky%2F">zaregistrujte</a>. </p>
+</div>
+</div>
+<div class="op-list">
+<h3 id="opinions-list"><span>Přehled názorů</span></h3>
+<div class="op-qc">
+<span>Nastavení kvality:</span>
+<a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/">Vlastní</a>
+<a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/vse/">Vše</a>
+<a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/q2/">2</a>
+<a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/q3/">3</a>
+<a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/q4/">4</a>
+<a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/q5/">5</a>
+<a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/q6/">6</a>
+<a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/q7/">7</a>
+<a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/q8/">8</a>
+<a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/q9/" class="last">9</a>
+</div>
+<form action="/clanky/algoritmus-fractal-flame-prakticky/nazory/" method="get" class="op-list-c">
+<table>
+<col class="dn-p" align="center" width="4%">
+<col width="55%">
+<col width="24%">
+<col width="17%">
+<tbody>
+<tr class="op-qg op-tb">
+	<td class="dn-p"><input name="o[98454]" type="checkbox"></td>
+	<th><a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/98454/">off topic</a></th>
+	<td class="op-au">disorder</td>
+	<td class="op-dt">25. 7. 02:36	Nový
+	</td>
+</tr>
+<tr class="op-qg">
+	<td class="dn-p"><input name="o[98465]" type="checkbox"></td>
+	<th><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/t.gif" alt="&#9500;" align="left" height="21" width="9">&nbsp;<a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/98465/">Re: off topic</a></th>
+	<td class="op-au">jenda</td>
+	<td class="op-dt">25. 7. 08:32	Nový
+	</td>
+</tr>
+<tr class="op-qg">
+	<td class="dn-p"><input name="o[98496]" type="checkbox"></td>
+	<th><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/i.gif" alt="&#9474;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/l.gif" alt="&#9492;" align="left" height="21" width="9">&nbsp;<a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/98496/">Re: off topic</a></th>
+	<td class="op-au">disorder</td>
+	<td class="op-dt">25. 7. 11:35	Nový
+	</td>
+</tr>
+<tr class="op-qg">
+	<td class="dn-p"><input name="o[98538]" type="checkbox"></td>
+	<th><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/i.gif" alt="&#9474;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/l.gif" alt="&#9492;" align="left" height="21" width="9">&nbsp;<a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/98538/">Re: off topic</a></th>
+	<td class="op-au">Pavel Tišnovský</td>
+	<td class="op-dt">25. 7. 14:09	Nový
+	</td>
+</tr>
+<tr class="op-qg">
+	<td class="dn-p"><input name="o[98475]" type="checkbox"></td>
+	<th><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/l.gif" alt="&#9492;" align="left" height="21" width="9">&nbsp;<a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/98475/">Re: off topic</a></th>
+	<td class="op-au">Pavel Tišnovský</td>
+	<td class="op-dt">25. 7. 09:26	Nový
+	</td>
+</tr>
+<tr class="op-qg">
+	<td class="dn-p"><input name="o[98495]" type="checkbox"></td>
+	<th><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/l.gif" alt="&#9492;" align="left" height="21" width="9">&nbsp;<a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/98495/">Re: off topic</a></th>
+	<td class="op-au">disorder</td>
+	<td class="op-dt">25. 7. 11:33	Nový
+	</td>
+</tr>
+<tr class="op-qg">
+	<td class="dn-p"><input name="o[98546]" type="checkbox"></td>
+	<th><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/l.gif" alt="&#9492;" align="left" height="21" width="9">&nbsp;<a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/98546/">Re: off topic</a></th>
+	<td class="op-au">Pavel Tišnovský</td>
+	<td class="op-dt">25. 7. 14:16	Nový
+	</td>
+</tr>
+<tr class="op-qg">
+	<td class="dn-p"><input name="o[98547]" type="checkbox"></td>
+	<th><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/t.gif" alt="&#9500;" align="left" height="21" width="9">&nbsp;<a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/98547/">Re: off topic</a></th>
+	<td class="op-au">Pavel Tišnovský</td>
+	<td class="op-dt">25. 7. 14:19	Nový
+	</td>
+</tr>
+<tr class="op-qg">
+	<td class="dn-p"><input name="o[98550]" type="checkbox"></td>
+	<th><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/t.gif" alt="&#9500;" align="left" height="21" width="9">&nbsp;<a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/98550/">Re: off topic</a></th>
+	<td class="op-au">disorder</td>
+	<td class="op-dt">25. 7. 14:26	Nový
+	</td>
+</tr>
+<tr class="op-qg">
+	<td class="dn-p"><input name="o[98559]" type="checkbox"></td>
+	<th><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/i.gif" alt="&#9474;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/l.gif" alt="&#9492;" align="left" height="21" width="9">&nbsp;<a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/98559/">Re: off topic</a></th>
+	<td class="op-au">Pavel Tišnovský</td>
+	<td class="op-dt">25. 7. 15:16	Nový
+	</td>
+</tr>
+<tr class="op-qg">
+	<td class="dn-p"><input name="o[98569]" type="checkbox"></td>
+	<th><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/i.gif" alt="&#9474;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/l.gif" alt="&#9492;" align="left" height="21" width="9">&nbsp;<a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/98569/">Re: off topic</a></th>
+	<td class="op-au">disorder</td>
+	<td class="op-dt">25. 7. 16:27	Nový
+	</td>
+</tr>
+<tr class="op-qg">
+	<td class="dn-p"><input name="o[98572]" type="checkbox"></td>
+	<th><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/i.gif" alt="&#9474;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/l.gif" alt="&#9492;" align="left" height="21" width="9">&nbsp;<a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/98572/">Re: off topic</a></th>
+	<td class="op-au">Pavel Tišnovský</td>
+	<td class="op-dt">25. 7. 17:02	Nový
+	</td>
+</tr>
+<tr class="op-qg">
+	<td class="dn-p"><input name="o[98563]" type="checkbox"></td>
+	<th><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/l.gif" alt="&#9492;" align="left" height="21" width="9">&nbsp;<a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/98563/">Re: off topic</a></th>
+	<td class="op-au">ondra</td>
+	<td class="op-dt">25. 7. 15:36	Nový
+	</td>
+</tr>
+<tr class="op-qg">
+	<td class="dn-p"><input name="o[98568]" type="checkbox"></td>
+	<th><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/l.gif" alt="&#9492;" align="left" height="21" width="9">&nbsp;<a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/98568/">Re: off topic</a></th>
+	<td class="op-au">Pavel Tišnovský</td>
+	<td class="op-dt">25. 7. 16:22	Nový
+	</td>
+</tr>
+<tr class="op-qg">
+	<td class="dn-p"><input name="o[98575]" type="checkbox"></td>
+	<th><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/l.gif" alt="&#9492;" align="left" height="21" width="9">&nbsp;<a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/98575/">Re: off topic</a></th>
+	<td class="op-au">Pavel Křívánek</td>
+	<td class="op-dt">25. 7. 17:43	Nový
+	</td>
+</tr>
+<tr class="op-qg">
+	<td class="dn-p"><input name="o[98577]" type="checkbox"></td>
+	<th><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/l.gif" alt="&#9492;" align="left" height="21" width="9">&nbsp;<a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/98577/">Re: off topic</a></th>
+	<td class="op-au">Pavel Tišnovský</td>
+	<td class="op-dt">25. 7. 18:04	Nový
+	</td>
+</tr>
+<tr class="op-qg">
+	<td class="dn-p"><input name="o[98584]" type="checkbox"></td>
+	<th><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/t.gif" alt="&#9500;" align="left" height="21" width="9">&nbsp;<a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/98584/">Re: off topic</a></th>
+	<td class="op-au">Jakub Hegenbart</td>
+	<td class="op-dt">25. 7. 19:20	Nový
+	</td>
+</tr>
+<tr class="op-qg">
+	<td class="dn-p"><input name="o[98594]" type="checkbox"></td>
+	<th><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/l.gif" alt="&#9492;" align="left" height="21" width="9">&nbsp;<a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/98594/">Re: off topic</a></th>
+	<td class="op-au">Pavel Křívánek</td>
+	<td class="op-dt">25. 7. 21:38	Nový
+	</td>
+</tr>
+<tr class="op-qg">
+	<td class="dn-p"><input name="o[98630]" type="checkbox"></td>
+	<th><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/l.gif" alt="&#9492;" align="left" height="21" width="9">&nbsp;<a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/98630/">Re: off topic</a></th>
+	<td class="op-au">Pavel Tišnovský</td>
+	<td class="op-dt">26. 7. 08:39	Nový
+	</td>
+</tr>
+<tr class="op-qg">
+	<td class="dn-p"><input name="o[98635]" type="checkbox"></td>
+	<th><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/l.gif" alt="&#9492;" align="left" height="21" width="9">&nbsp;<a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/98635/">Re: off topic</a></th>
+	<td class="op-au">Pavel Křívánek</td>
+	<td class="op-dt">26. 7. 09:09	Nový
+	</td>
+</tr>
+<tr class="op-qg">
+	<td class="dn-p"><input name="o[98667]" type="checkbox"></td>
+	<th><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/bt.gif" alt="&nbsp;" align="left" height="21" width="9"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/l.gif" alt="&#9492;" align="left" height="21" width="9">&nbsp;<a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/98667/">Re: off topic</a></th>
+	<td class="op-au">Pavel Tišnovský</td>
+	<td class="op-dt">26. 7. 16:28	Nový
+	</td>
+</tr>
+</tbody>
+</table>
+<div class="but-area">
+	<input name="show" src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/cs-b-showmarked.gif" alt="Zobrazit označené" class="but-img cs-b-showmarked" type="image"><a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/cs-b-showquality.gif" alt="Zobrazit kvalitní" class="but-img cs-b-showquality"></a><a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/vse/"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/cs-b-showall.gif" alt="Zobrazit vše" class="but-img cs-b-showall"></a><a href="http://www.root.cz/clanky/algoritmus-fractal-flame-prakticky/nazory/pridat/"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/cs-b-add.gif" alt="Přidat" class="but-img cs-b-add"></a>
+</div>
+</form>
+</div>
+	</div>
+
+</div></div>
+
+<div class="side">
+	<h2>Další informace</h2>
+
+<div class="sbox"><div class="sbox-cnt">
+<h3><a href="http://www.root.cz/vyhledavani/" title="Rozšířené vyhledávání">Vyhledávání</a></h3>
+<form method="get" action="/vyhledavani/" class="rev">
+<div>
+<input size="14" maxlength="255" name="qs" value="" class="input" type="text">
+<input name="search" value="Hledej" class="submit" type="submit">
+<input name="kde[vsude]" value="1" type="hidden">
+<a href="http://www.root.cz/vyhledavani/" title="Rozšířené vyhledávání">Rozšířené</a>
+</div>
+</form>
+</div></div>
+
+
+<div class="box ad" id="ad-training">
+<h3>Reklama</h3>
+<div class="ad-ad box-cnt ad-textbox">
+<script language="JavaScript" type="text/javascript" src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/adx.js"></script>
+<script language="JavaScript" type="text/javascript">
+<!--
+if (!document.phpAds_used) document.phpAds_used = ',';
+phpAds_random = new String (Math.random()); phpAds_random = phpAds_random.substring(2,11);
+document.write ("<" + "script language='JavaScript' type='text/javascript' src='");
+document.write ("http://k.iinfo.cz/adjs.php?n=" + phpAds_random);
+document.write ("&amp;what=zone:271");
+document.write ("&amp;exclude=" + document.phpAds_used);
+if (document.referer)
+document.write ("&amp;referer=" + escape(document.referer));
+document.write ("'><" + "/script>");
+//-->
+</script><script language="JavaScript" type="text/javascript" src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/adjs_003.js"></script><h4>Školení pro Linux:</h4>
+<ul>
+<a href="http://k.iinfo.cz/adclick.php?bannerid=743&amp;zoneid=271&amp;source=&amp;dest=http%3A%2F%2Fwww.root.cz%2Ftexty%2Fskoleni-linux&amp;ismap=">SOFT-TRONIK nabízí ...</a><br>
+</ul><div id="beacon_743" style="position: absolute; left: 0px; top: 0px; visibility: hidden;"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/adlog_003.gif" alt="" style="width: 0px; height: 0px;" height="0" width="0"></div><noscript><a href='http://k.iinfo.cz/adclick.php?n=affb9f17' target='_blank'><img
+	src='http://k.iinfo.cz/adview.php?what=zone:271&amp;n=affb9f17' border='0' alt='' /></a></noscript>
+</div>
+</div>
+
+<div style="display: none;" class="box ad" id="ad-textbox-1">
+<h3>Reklama</h3>
+<div class="ad-ad box-cnt ad-textbox">
+<script language="JavaScript" type="text/javascript" src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/adx.js"></script>
+<script language="JavaScript" type="text/javascript">
+<!--
+if (!document.phpAds_used) document.phpAds_used = ',';
+phpAds_random = new String (Math.random()); phpAds_random = phpAds_random.substring(2,11);
+document.write ("<" + "script language='JavaScript' type='text/javascript' src='");
+document.write ("http://k.iinfo.cz/adjs.php?n=" + phpAds_random);
+document.write ("&amp;what=zone:269");
+document.write ("&amp;exclude=" + document.phpAds_used);
+if (document.referer)
+document.write ("&amp;referer=" + escape(document.referer));
+document.write ("'><" + "/script>");
+//-->
+</script><script language="JavaScript" type="text/javascript" src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/adjs_010.js"></script><script language="javascript" type="text/javascript">
+var el = document.getElementById("ad-textbox-1");
+if (el) { el.style.display = "none"; }
+</script>
+<div id="beacon_1026" style="position: absolute; left: 0px; top: 0px; visibility: hidden;"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/adlog_007.gif" alt="" style="width: 0px; height: 0px;" height="0" width="0"></div><noscript><a href='http://k.iinfo.cz/adclick.php?n=a459905a' target='_blank'><img
+	src='http://k.iinfo.cz/adview.php?what=zone:269&amp;n=a459905a' border='0' alt='' /></a></noscript>
+</div>
+</div>
+
+<div style="display: none;" class="box ad" id="ad-textbox-2-5">
+<h3>Reklama</h3>
+<div class="ad-ad box-cnt ad-textbox">
+<script language="JavaScript" type="text/javascript" src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/adx.js"></script>
+<script language="JavaScript" type="text/javascript">
+<!--
+if (!document.phpAds_used) document.phpAds_used = ',';
+phpAds_random = new String (Math.random()); phpAds_random = phpAds_random.substring(2,11);
+document.write ("<" + "script language='JavaScript' type='text/javascript' src='");
+document.write ("http://k.iinfo.cz/adjs.php?n=" + phpAds_random);
+document.write ("&amp;what=zone:394");
+document.write ("&amp;exclude=" + document.phpAds_used);
+if (document.referer)
+document.write ("&amp;referer=" + escape(document.referer));
+document.write ("'><" + "/script>");
+//-->
+</script><script language="JavaScript" type="text/javascript" src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/adjs_009.js"></script><script language="javascript" type="text/javascript">
+var el = document.getElementById("ad-textbox-2-5");
+if (el) { el.style.display = "none"; }
+</script><div id="beacon_1992" style="position: absolute; left: 0px; top: 0px; visibility: hidden;"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/adlog_004.gif" alt="" style="width: 0px; height: 0px;" height="0" width="0"></div><noscript><a href='http://k.iinfo.cz/adclick.php?n=a459905a' target='_blank'><img
+	src='http://k.iinfo.cz/adview.php?what=zone:394&amp;n=a459905a' border='0' alt='' /></a></noscript>
+</div>
+</div>
+	
+<div style="display: none;" class="box ad" id="ad-textbox-3">
+<h3>Reklama</h3>
+<div class="ad-ad box-cnt ad-textbox">
+<script language="JavaScript" type="text/javascript" src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/adx.js"></script>
+<script language="JavaScript" type="text/javascript">
+<!--
+if (!document.phpAds_used) document.phpAds_used = ',';
+phpAds_random = new String (Math.random()); phpAds_random = phpAds_random.substring(2,11);
+document.write ("<" + "script language='JavaScript' type='text/javascript' src='");
+document.write ("http://k.iinfo.cz/adjs.php?n=" + phpAds_random);
+document.write ("&amp;what=zone:392");
+document.write ("&amp;exclude=" + document.phpAds_used);
+if (document.referer)
+document.write ("&amp;referer=" + escape(document.referer));
+document.write ("'><" + "/script>");
+//-->
+</script><script language="JavaScript" type="text/javascript" src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/adjs_002.js"></script><script language="javascript" type="text/javascript">
+var el = document.getElementById("ad-textbox-3");
+if (el) { el.style.display = "none"; }
+</script><div id="beacon_1346" style="position: absolute; left: 0px; top: 0px; visibility: hidden;"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/adlog_010.gif" alt="" style="width: 0px; height: 0px;" height="0" width="0"></div><noscript><a href='http://k.iinfo.cz/adclick.php?n=a459905a' target='_blank'><img
+	src='http://k.iinfo.cz/adview.php?what=zone:392&amp;n=a459905a' border='0' alt='' /></a></noscript>
+</div>
+</div>
+
+
+
+<div style="display: none;" class="ad" id="ad-200x200">
+<div class="ad-marker">Reklama</div>
+<div class="ad-ad ad-holder-tr">
+<script language="JavaScript" type="text/javascript" src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/adx.js"></script>
+<script language="JavaScript" type="text/javascript">
+<!--
+if (!document.phpAds_used) document.phpAds_used = ',';
+phpAds_random = new String (Math.random());
+phpAds_random = phpAds_random.substring(2,11);
+document.write ("<" + "script language='JavaScript' type='text/javascript' src='");
+document.write ("http://k.iinfo.cz/adjs.php?n=" + phpAds_random);
+document.write ("&amp;what=zone:262");
+document.write ("&amp;exclude=" + document.phpAds_used);
+if (document.referer)
+document.write ("&amp;referer=" + escape(document.referer));
+document.write ("'><" + "/script>");
+//-->
+</script><script language="JavaScript" type="text/javascript" src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/adjs_004.js"></script><script language="javascript" type="text/javascript">
+var el = document.getElementById("ad-200x200");
+if (el) { el.style.display = "none"; }
+</script>
+<div id="beacon_1018" style="position: absolute; left: 0px; top: 0px; visibility: hidden;"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/adlog_009.gif" alt="" style="width: 0px; height: 0px;" height="0" width="0"></div><noscript><a href='http://k.iinfo.cz/adclick.php?n=a0b93936' target='_blank'><img
+	src='http://k.iinfo.cz/adview.php?what=zone:262&amp;n=a0b93936' border='0' alt='' /></a></noscript>
+</div>
+</div>
+
+<div style="display: none;" class="box ad" id="ad-textbox-2">
+<h3>Reklama</h3>
+<div class="ad-ad box-cnt ad-textbox">
+<script language="JavaScript" type="text/javascript" src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/adx.js"></script>
+<script language="JavaScript" type="text/javascript">
+<!--
+if (!document.phpAds_used) document.phpAds_used = ',';
+phpAds_random = new String (Math.random()); phpAds_random = phpAds_random.substring(2,11);
+document.write ("<" + "script language='JavaScript' type='text/javascript' src='");
+document.write ("http://k.iinfo.cz/adjs.php?n=" + phpAds_random);
+document.write ("&amp;what=zone:270");
+document.write ("&amp;exclude=" + document.phpAds_used);
+if (document.referer)
+document.write ("&amp;referer=" + escape(document.referer));
+document.write ("'><" + "/script>");
+//-->
+</script><script language="JavaScript" type="text/javascript" src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/adjs_007.js"></script><script language="javascript" type="text/javascript">
+var el = document.getElementById("ad-textbox-2");
+if (el) { el.style.display = "none"; }
+</script>
+<div id="beacon_1025" style="position: absolute; left: 0px; top: 0px; visibility: hidden;"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/adlog_008.gif" alt="" style="width: 0px; height: 0px;" height="0" width="0"></div><noscript><a href='http://k.iinfo.cz/adclick.php?n=ac01974c' target='_blank'><img
+	src='http://k.iinfo.cz/adview.php?what=zone:270&amp;n=ac01974c' border='0' alt='' /></a></noscript>
+</div>
+</div>
+
+
+
+
+<div class="box most">
+<h3><a href="http://www.root.cz/r/grafika/">Další články v rubrice Grafika</a></h3>
+<div class="box-cnt">
+	<ol>
+		<li><a href="http://www.root.cz/clanky/bmp-na-vicero-zpusobu/">BMP na vícero způsobů</a></li>
+		<li><a href="http://www.root.cz/clanky/l-systemy-prirodni-objekty-i-umele-artefakty/">L-systémy: přírodní objekty i umělé artefakty</a></li>
+		<li><a href="http://www.root.cz/clanky/graficky-format-bmp-pouzivany-a-pritom-neoblibeny/">Grafický formát BMP - používaný a přitom neoblíbený</a></li>
+		<li><a href="http://www.root.cz/clanky/vykreslovani-povrchu-terenu-s-lod-gouraudovo-a-phongovo-stinovani/">Vykreslování povrchů terénů s LOD, Gouraudovo a Phongovo stínování</a></li>
+		<li><a href="http://www.root.cz/clanky/finisujeme-s-png-textove-metainformace-a-kalibracni-data/">Finišujeme s PNG - Textové metainformace a kalibrační data</a></li>
+	</ol>	
+</div>
+</div>
+<div class="box most">
+<h3><a href="http://www.root.cz/software/">Další články v sekci Software</a></h3>
+<div class="box-cnt">
+	<ol>
+		<li><a href="http://www.root.cz/clanky/luola-do-vzduchu-a-na-ne/">Luola: do vzduchu a na ně</a></li>
+		<li><a href="http://www.root.cz/clanky/zamava-msie-7-s-internetem/">Zamává MSIE 7 s internetem?</a></li>
+		<li><a href="http://www.root.cz/clanky/bmp-na-vicero-zpusobu/">BMP na vícero způsobů</a></li>
+		<li><a href="http://www.root.cz/clanky/bmp-na-vicero-zpusobu/">BMP na vícero způsobů</a></li>
+		<li><a href="http://www.root.cz/clanky/nova-softwarova-sklizen-25-10-2006/">Nová softwarová sklizeň (25. 10. 2006)</a></li>
+	</ol>	
+</div>
+</div>
+
+
+
+
+
+
+
+<div class="box">
+<h3>Vyzkoušejte na Root.cz</h3>
+<div class="box-cnt">
+	<ul>
+		<li><a href="http://www.root.cz/uzivatel/">Uživatelský profil</a></li>
+		<li><a href="http://www.root.cz/diskuse/">Diskusní fóra</a></li>
+		<li><a href="http://www.root.cz/r/">Rubriky</a>,
+			<a href="http://www.root.cz/n/">Nálepky</a>,
+			<a href="http://www.root.cz/serialy/">Seriály</a></li>
+		<li><a href="http://www.root.cz/slovnicek/">Slovníček pojmů</a></li>
+		<li><a href="http://tutorialy.root.cz/">Tutoriály</a></li>
+		<li><a href="http://www.root.cz/jinde/">Píšou jinde</a>, <a href="http://www.root.cz/texty/kalendar-akci/">Kalendář akcí</a></li>
+		<li><a href="http://www.root.cz/hlidac/">Hlídač</a></li>
+		<li><a href="http://www.root.cz/newsletter/">Novinky e-mailem (Newsletter)</a></li>
+		<li><a href="http://www.root.cz/texty/butik/">Butik &#8211; trička, mikiny, tanga</a></li>
+		<li><a href="http://www.root.cz/texty/exporty/#sidebar">Postranní lišta do Mozilly</a></li>
+		<li><a href="http://www.iinfo.cz/text/root_reklama/">Reklama na Root.cz</a></li>
+	</ul>
+</div>
+</div>
+</div>
+<div style="display: none;" class="ad" id="ad-skys">
+<div class="ad-marker">Reklama</div>
+<div class="ad-ad ad-holder-tl">
+<script language="JavaScript" type="text/javascript" src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/adx.js"></script>
+<script language="JavaScript" type="text/javascript">
+<!--
+if (!document.phpAds_used) document.phpAds_used = ',';
+phpAds_random = new String (Math.random()); phpAds_random = phpAds_random.substring(2,11);
+document.write ("<" + "script language='JavaScript' type='text/javascript' src='");
+document.write ("http://k.iinfo.cz/adjs.php?n=" + phpAds_random);
+document.write ("&amp;what=zone:264");
+document.write ("&amp;exclude=" + document.phpAds_used);
+if (document.referer)
+document.write ("&amp;referer=" + escape(document.referer));
+document.write ("'><" + "/script>");
+//-->
+</script><script language="JavaScript" type="text/javascript" src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/adjs_006.js"></script><script language="javascript" type="text/javascript">
+var el = document.getElementById("ad-skys");
+if (el) { el.style.display = "none"; }
+</script>
+<div id="beacon_1024" style="position: absolute; left: 0px; top: 0px; visibility: hidden;"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/adlog_005.gif" alt="" style="width: 0px; height: 0px;" height="0" width="0"></div><noscript><a href='http://k.iinfo.cz/adclick.php?n=a03d28aa' target='_blank'><img
+	src='http://k.iinfo.cz/adview.php?what=zone:264&amp;n=a03d28aa' border='0' alt='' /></a></noscript>
+</div>
+</div>
+<div class="cb"><!-- --></div>
+</div>
+<div class="colophon">
+	<hr>
+	<div><strong>Root.cz</strong> (www.root.cz),
+		informace nejen ze světa Linuxu. ISSN 1212-8309</div>
+	<div class="colophon-2"><small>
+		Copyright &#169; 1998&#8211;2006
+		<a href="http://www.iinfo.cz/">Internet Info, s.r.o.</a> Všechna práva vyhrazena.
+		Powered by  <a href="http://www.root.cz/">Linux</a>.<br>
+
+		<span>
+		<a href="http://www.root.cz/texty/kontakt/" title="Kontakty na provozovatele, kontaktní formulář">Kontakt</a> |
+		<a href="http://www.iinfo.cz/text/root_reklama/" title="Reklamní možnosti serveru, ceník reklamy">Reklama</a> |
+		<a href="http://www.root.cz/texty/podminky-uzivani/" title="Podmínky užívání serveru Root.cz, autorská práva atd.">Podmínky užívání</a> |
+		<a href="http://www.root.cz/texty/podpora/" title="Líbí se vám server Root.cz? Vyjádřete mu svou podporu umístěním ikonky na své stránky.">Podpořte Root.cz</a> |
+		<a href="http://www.root.cz/texty/exporty/" title="Exporty syndikovaného obsahu">RSS exporty</a>
+		</span>
+	</small></div>
+</div>
+<div id="webstats">
+	<script src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/code.js" type="text/javascript"></script><a href="http://navrcholu.cz/Statistika/14/"><img src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/hit.gif" alt="" style="border: medium none ;" height="1" width="1"></a><noscript><div><img
+		src="http://c1.navrcholu.cz/hit?site=14;t=t1x1;ref=;jss=0" width="1" height="1" alt="" /></div></noscript>
+	<!-- NetMonitor Audience Ostatni -->
+	<script language="javascript" type="text/javascript">
+		<!--
+			gemius_identifier = new String('d1zrQktRrA.1DMJeqrR6CpchXkFId4eUZ8HsOjyaf07.v7');
+			gemius_href= new String(document.location);
+			if (document.referrer) { gemius_ref = new String(document.referrer); } else { gemius_ref = ""; }
+			if(typeof(Error)!='undefined') eval("try { if (typeof(top.document.referrer)=='string') { gemius_ref = top.document.referrer } } catch(gemius_ex) {}");
+			iname = new String('id='+gemius_identifier+';ref='+escape(gemius_ref.substring(0,299))+';href='+escape(gemius_href.substring(0,299))+';');
+			document.write('<div style="position: absolute; left:-500px; top:-500px;"><iframe src="http://spir.hit.gemius.pl/gemiusaudience.html" name="'+iname+'" width="1" height="1" frameborder="0" scrolling="no"><\/iframe><\/div>');
+		//-->
+	</script><div style="position: absolute; left: -500px; top: -500px;"><iframe src="Algoritmus%20Fractal%20Flame%20prakticky%20-%20Root.cz_soubory/gemiusaudience.htm" name="id=d1zrQktRrA.1DMJeqrR6CpchXkFId4eUZ8HsOjyaf07.v7;ref=http%3A//www.root.cz/clanky/stochasticke-fraktaly/;href=http%3A//www.root.cz/clanky/algoritmus-fractal-flame-prakticky/;" frameborder="0" height="1" scrolling="no" width="1"></iframe></div>
+</div></div>
+<!--[if IE]>
+<script language="JavaScript" type="text/javascript">rebuild_ie_flash()</script>
+<![endif]-->
+</body></html>
