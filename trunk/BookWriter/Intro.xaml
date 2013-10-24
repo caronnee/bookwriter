@@ -23,8 +23,8 @@
             <ToggleButton Name="hideButton" Content="Sections" HorizontalAlignment="Left" IsEnabled="False" />
         </DockPanel>
         <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Hidden" >
-        <StackPanel Background="BlanchedAlmond" Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Content="Add a book" Name="AddBook1" Height="25" Width="180" VerticalAlignment="Bottom"  Click="Load" Style="{StaticResource Rotated}"/>
+        <StackPanel x:Name="Shelf" Background="BlanchedAlmond" Orientation="Horizontal" HorizontalAlignment="Center">
+                
             </StackPanel>
         </ScrollViewer>
     </DockPanel>

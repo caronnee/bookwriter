@@ -8,8 +8,8 @@ namespace MyBook
 {
     class TestHelper
     {
-        static const string dummyName = "../dummyContent.book";
-        static String CreateDummyBook()
+        static string dummyName = "../dummyContent.book";
+        static public String CreateDummyBook()
         {
             return dummyName;
         }

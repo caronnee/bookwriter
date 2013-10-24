@@ -27,7 +27,6 @@ namespace MyBook
         }
         public void LoadBook(String str)
         {
-            CreateDummyBook();
             Content = new BookRead();
         }
     }

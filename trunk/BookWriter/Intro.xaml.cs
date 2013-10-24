@@ -19,9 +19,23 @@ namespace MyBook
     /// </summary>
     public partial class Intro : UserControl
     {
+        private Button CreateBookControl(string name)
+        {
+            Button b = new Button();
+            Style s = TryFindResource("Rotated") as Style;
+            b.Style = s;
+            b.Content = name;
+
+            b.Click +=new RoutedEventHandler(Load);
+            return b;
+        }
+
         public Intro()
         {
             InitializeComponent();
+            string name = TestHelper.CreateDummyBook();
+            Button b = CreateBookControl(name);
+            this.Shelf.Children.Add(b);
         }
 
         public delegate void LoadHandler(String str);
