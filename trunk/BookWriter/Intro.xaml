@@ -18,7 +18,9 @@
         <DockPanel Background="BurlyWood" DockPanel.Dock="Bottom">
             <ToggleButton Name="readButton" Content="Read" HorizontalAlignment="Left" IsChecked="True" />
             <ToggleButton Name="writeButton" Content="Write" HorizontalAlignment="Left" IsEnabled="False" />
-            <ToggleButton Name="settingButton" Content="Settigns" HorizontalAlignment="Left" IsEnabled="False" />
+            <ToggleButton Name="settingButton" Content="Settings" HorizontalAlignment="Left" IsEnabled="False" />
+            <ToggleButton Name="deleteButton" Content="Delete" HorizontalAlignment="Left" IsEnabled="False" />
+            <ToggleButton Name="hideButton" Content="Sections" HorizontalAlignment="Left" IsEnabled="False" />
         </DockPanel>
         <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Hidden" >
         <StackPanel Background="BlanchedAlmond" Orientation="Horizontal" HorizontalAlignment="Center">
