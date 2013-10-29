@@ -21,11 +21,11 @@ namespace MyBook
     {
         private Button CreateBookControl(string name)
         {
-            Button b = new Button();
+            ShelfBook b = new ShelfBook();
             Style s = TryFindResource("Rotated") as Style;
+            b.Filename = name;
             b.Style = s;
             b.Content = name;
-
             b.Click +=new RoutedEventHandler(Load);
             return b;
         }
@@ -45,8 +45,8 @@ namespace MyBook
         {
             if (LoadBook != null)
             {
-                Control ctrl = sender as Control;
-                LoadBook(ctrl.Name); // name of the book
+                ShelfBook ctrl = sender as ShelfBook;
+                LoadBook(ctrl.Filename); // name of the book
             }
         }
     }

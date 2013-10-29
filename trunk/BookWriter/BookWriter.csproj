@@ -88,6 +88,7 @@
     <Compile Include="ManageSections.xaml.cs">
       <DependentUpon>ManageSections.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ShelfBook.cs" />
     <Compile Include="TestHelper.cs" />
   </ItemGroup>
   <ItemGroup>

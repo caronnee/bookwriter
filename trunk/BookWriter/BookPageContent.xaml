@@ -6,6 +6,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel>
-        <TextBox Name="TextContent1"></TextBox>
+        <TextBox Name="TextContent1" IsReadOnly="True"></TextBox>
     </DockPanel>
 </UserControl>

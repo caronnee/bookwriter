@@ -27,7 +27,13 @@ namespace MyBook
         }
         public void LoadBook(String str)
         {
-            Content = new BookRead();
+          BookRead read = new BookRead(str);
+          if ( read.IsValid())
+          {
+            Content = read;
+            return;
+          }
+          MessageBox.Show("Book was not found! ( which is weird and probably a bug )");
         }
     }
 }
