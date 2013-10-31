@@ -89,6 +89,7 @@
       <DependentUpon>ManageSections.xaml</DependentUpon>
     </Compile>
     <Compile Include="ShelfBook.cs" />
+    <Compile Include="SourceText.cs" />
     <Compile Include="TestHelper.cs" />
   </ItemGroup>
   <ItemGroup>

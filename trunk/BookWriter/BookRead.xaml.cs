@@ -19,31 +19,23 @@ namespace MyBook
     /// </summary>
     public partial class BookRead : UserControl
     {
-      private string _name;
+        private SourceText _source;
 
         public BookRead(String name)
         {
-          _name = name; // TODO check the correct syntax
+            _source = new SourceText(name) ; // TODO check the correct syntax
             InitializeComponent();
             Loaded += BookRead_Loaded;
         }
-
-        private String GetPage(int page)
+        public bool IsValid()
         {
-          return "xxxx";
+          return _source.IsValid();
         }
         void BookRead_Loaded(object sender, RoutedEventArgs e)
         {
           // fill first few pages
-          BookPageLeft.Content = GetPage(0);
-          BookPageRight.Content = GetPage(1);
-        }
-        // Check if this book can be used
-        public bool IsValid( int flags = 0)
-        {
-          if (System.IO.File.Exists("../../resources/dummyContent.book"))
-            return true;
-          return false;
+          BookPageLeft.Content = _source.GetPage(0);
+          BookPageRight.Content = _source.GetPage(1);
         }
     }
 }
