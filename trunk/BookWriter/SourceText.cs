@@ -31,8 +31,6 @@ namespace MyBook
     public int Load()
     {
       StreamReader reader = new StreamReader(_filepath);
-      int c = reader.Read();
-
       String content = reader.ReadToEnd(); // hopefully this will be very small book....
       string[] s = content.Split(new char[] { '\0' }, StringSplitOptions.RemoveEmptyEntries );
       _pages = new ArrayList(s.Length);
@@ -53,6 +51,7 @@ namespace MyBook
         writer.Write(a);
         writer.Write('\0');
       }
+      writer.Close();
     }
     public String GetPage(int page)
     {

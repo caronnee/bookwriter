@@ -24,6 +24,7 @@ namespace MyBook
         public BookRead(String name)
         {
             _source = new SourceText(name) ; // TODO check the correct syntax
+            _source.Load();
             InitializeComponent();
             Loaded += BookRead_Loaded;
         }

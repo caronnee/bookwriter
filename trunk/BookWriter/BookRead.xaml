@@ -6,19 +6,58 @@
              xmlns:src="clr-namespace:MyBook"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <Style x:Key="LeftFlip" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Path Fill="Black">
+                                <Path.Data>
+                                    <PathGeometry>
+                                        <PathFigureCollection>
+                                            <PathFigure IsClosed="True">
+                                                <PathFigure.StartPoint>
+                                                    <Point X="25" Y="3"></Point>
+                                                </PathFigure.StartPoint>
+                                                <PathFigure.Segments>
+                                                    <BezierSegment IsSmoothJoin="True" IsStroked="True">
+                                                        <BezierSegment.Point1>
+                                                            <Point X="45" Y="16"></Point>
+                                                        </BezierSegment.Point1>
+                                                        <BezierSegment.Point2>
+                                                            <Point X="13" Y="35"></Point>
+                                                        </BezierSegment.Point2>
+                                                        <BezierSegment.Point3>
+                                                            <Point X="0" Y="12"></Point>
+                                                        </BezierSegment.Point3>
+                                                    </BezierSegment>
+                                                </PathFigure.Segments>
+                                            </PathFigure>
+                                        </PathFigureCollection>
+                                    </PathGeometry>
+                                </Path.Data>
+                            </Path>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="5*" />
             <ColumnDefinition Width="5*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="2*"/>
             <RowDefinition Height="9*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <src:BookPageContent x:Name="BookPageRight" Grid.Column="1" Grid.Row="1"></src:BookPageContent>
-        <src:BookPageContent x:Name="BookPageLeft" Grid.Column="2" Grid.Row="1"></src:BookPageContent> 
+        <Button Grid.Column="0" Grid.Row="0" Style="{StaticResource ResourceKey=LeftFlip}">X</Button>
+        <src:BookPageContent x:Name="BookPageLeft" Grid.Column="1" Grid.Row="1"></src:BookPageContent>
+        <src:BookPageContent x:Name="BookPageRight" Grid.Column="2" Grid.Row="1"></src:BookPageContent> 
     </Grid>
 </UserControl>
