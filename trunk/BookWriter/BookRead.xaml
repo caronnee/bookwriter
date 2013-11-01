@@ -7,42 +7,29 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
-        <Style x:Key="LeftFlip" TargetType="{x:Type Button}">
+        <Style x:Key="MyButton" BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Grid>
-                            <Path Fill="Black">
-                                <Path.Data>
-                                    <PathGeometry>
-                                        <PathFigureCollection>
-                                            <PathFigure IsClosed="True">
-                                                <PathFigure.StartPoint>
-                                                    <Point X="25" Y="3"></Point>
-                                                </PathFigure.StartPoint>
-                                                <PathFigure.Segments>
-                                                    <BezierSegment IsSmoothJoin="True" IsStroked="True">
-                                                        <BezierSegment.Point1>
-                                                            <Point X="45" Y="16"></Point>
-                                                        </BezierSegment.Point1>
-                                                        <BezierSegment.Point2>
-                                                            <Point X="13" Y="35"></Point>
-                                                        </BezierSegment.Point2>
-                                                        <BezierSegment.Point3>
-                                                            <Point X="0" Y="12"></Point>
-                                                        </BezierSegment.Point3>
-                                                    </BezierSegment>
-                                                </PathFigure.Segments>
-                                            </PathFigure>
-                                        </PathFigureCollection>
-                                    </PathGeometry>
-                                </Path.Data>
-                            </Path>
-                        </Grid>
-                    </ControlTemplate>
+                    <Grid>
+                        <ContentPresenter Content="zzz" />
+                    </Grid>
                 </Setter.Value>
             </Setter>
         </Style>
+        <src:HalfConverter x:Key="HalfConverter" />
+        <TransformGroup x:Key="MirrorShiftedLeft">
+            <ScaleTransform ScaleX="-1" CenterX="{Binding ElementName=BookPageLeft, Path=ActualWidth, Converter={StaticResource ResourceKey=HalfConverter}}" />
+        </TransformGroup>
+        <TransformGroup x:Key="MirrorShiftedLeft">
+            <ScaleTransform ScaleX="-1" CenterX="{Binding ElementName=BookPageRight, Path=ActualWidth, Converter={StaticResource ResourceKey=HalfConverter}}" />
+        </TransformGroup>
+        <!--<Style x:Key="Mirrored">
+            <Setter Property="LayoutTransform">
+                <Setter.Value>
+                    
+                </Setter.Value>
+            </Setter>
+        </Style>-->
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -56,8 +43,10 @@
             <RowDefinition Height="9*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Button Grid.Column="0" Grid.Row="0" Style="{StaticResource ResourceKey=LeftFlip}">X</Button>
-        <src:BookPageContent x:Name="BookPageLeft" Grid.Column="1" Grid.Row="1"></src:BookPageContent>
-        <src:BookPageContent x:Name="BookPageRight" Grid.Column="2" Grid.Row="1"></src:BookPageContent> 
+        <src:BookPageContent x:Name="BookPageLeft" Grid.Column="1" Grid.Row="1" Opacity="0">Test</src:BookPageContent>
+        <src:BookPageContent x:Name="BookPageLeftMirror" Grid.Column="1" Grid.Row="1" BorderBrush="Black" BorderThickness="2" RenderTransform="{StaticResource MirrorShiftedLeft}">
+                Mirrorred page</src:BookPageContent>
+        <src:BookPageContent x:Name="BookPageRight" Grid.Column="2" Grid.Row="1"></src:BookPageContent>
+        <src:BookPageContent x:Name="BookPageRightMirror" Grid.Column="2" Grid.Row="1" RenderTransform="{StaticResource MirrorShiftedRight} ></src:BookPageContent>
     </Grid>
 </UserControl>

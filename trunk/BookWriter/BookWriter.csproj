@@ -85,6 +85,7 @@
     <Compile Include="BookViewer.xaml.cs">
       <DependentUpon>BookViewer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="HalfConverter.cs" />
     <Compile Include="ManageSections.xaml.cs">
       <DependentUpon>ManageSections.xaml</DependentUpon>
     </Compile>
