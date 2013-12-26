@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Media.Animation;
 
 namespace MyBook
 {
@@ -20,13 +21,25 @@ namespace MyBook
     public partial class BookRead : UserControl
     {
         private SourceText _source;
+        private Storyboard _turnPage;
+        private ControlTemplate _leftPageTemplate;
 
         public BookRead(String name)
         {
-            _source = new SourceText(name) ; // TODO check the correct syntax
+            _source = new SourceText(name) ; // TODO check the correct syntax of the file
             _source.Load();
             InitializeComponent();
-            Loaded += BookRead_Loaded;
+
+            _turnPage = (Storyboard)this.Resources["TurnPage"];
+
+        }
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            //_leftPageTemplate = (ControlTemplate)this.Resources["Flippable"];
+            // Grid o = _leftPageTemplate.FindName("GridTest", this. ) as Grid;
+            
+            // System.Diagnostics.Debug.Assert(o!=null);
         }
         public bool IsValid()
         {
@@ -37,6 +50,11 @@ namespace MyBook
           // fill first few pages
           BookPageLeft.Content = _source.GetPage(0);
           BookPageRight.Content = _source.GetPage(1);
+        }
+
+        private void TestButton_Click(object sender, RoutedEventArgs e)
+        {
+            _turnPage.Begin(BookContent, HandoffBehavior.SnapshotAndReplace);
         }
     }
 }
