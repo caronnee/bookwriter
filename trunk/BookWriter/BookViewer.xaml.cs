@@ -25,15 +25,22 @@ namespace MyBook
             InitializeComponent();
             Content = intro;
         }
-        public void LoadBook(String str)
+        public void LoadBook(String str,int flags)
         {
-          BookRead read = new BookRead(str);
-          if ( read.IsValid())
-          {
-            Content = read;
-            return;
-          }
-          MessageBox.Show("Book was not found! ( which is weird and probably a bug )");
+            if (flags == 0)
+            {
+                BookRead read = new BookRead(str);
+                if (read.IsValid())
+                    Content = read;
+                return;
+            }
+            if (flags == 1)
+            {
+                BookWrite workBook = new BookWrite();
+                Content = workBook;
+                return;
+            }
+            MessageBox.Show("Book was not found! ( which is weird and probably a bug )");
         }
     }
 }

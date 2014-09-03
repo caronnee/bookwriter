@@ -38,7 +38,7 @@ namespace MyBook
             this.Shelf.Children.Add(b);
         }
 
-        public delegate void LoadHandler(String str);
+        public delegate void LoadHandler(String str, int flags);
         public event LoadHandler LoadBook;
 
         private void Load(object sender, RoutedEventArgs e)
@@ -46,7 +46,8 @@ namespace MyBook
             if (LoadBook != null)
             {
                 ShelfBook ctrl = sender as ShelfBook;
-                LoadBook(ctrl.Filename); // name of the book
+                int typeFlags = writeButton.IsChecked == true ? 1:0;
+                LoadBook(ctrl.Filename,typeFlags); // name of the book
             }
         }
     }
