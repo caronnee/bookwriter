@@ -22,11 +22,12 @@
             <ProgressBar></ProgressBar>
         </DockPanel>
         <DockPanel DockPanel.Dock="Top" LastChildFill="False" HorizontalAlignment="Center">
-            <Button DockPanel.Dock="Left" x:Name="saveButton" Content="Save" Height="30" MinWidth="100" />
-            <Button DockPanel.Dock="Left" x:Name="textState" Content="Text" Height="30" MinWidth="100"/>
+            <Button DockPanel.Dock="Left" x:Name="saveButton" Content="Save" Height="30" MinWidth="100" Click="SaveBook"/>
+            <Button DockPanel.Dock="Left" x:Name="reformatAll" Content="Reformat" Height="30" MinWidth="100" IsEnabled="False"/>
+            <Button DockPanel.Dock="Left" x:Name="insert" Content="Insert content" Height="30" MinWidth="100" IsEnabled="False"/>
         </DockPanel>
         <StackPanel Orientation="Horizontal">
-            <Button  Style="{StaticResource myStyle}" Content="Button" Height="30" HorizontalAlignment="Left"  Name="button1" Width="95" />
+            <Button  Style="{StaticResource myStyle}" Content="test" Height="30" HorizontalAlignment="Left"  Name="button1" Width="95" />
             <src:BorderTextBox x:Name="LeftPrev" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,2,2" TextWrapping="Wrap" AcceptsTab="True" AcceptsReturn="True" VerticalScrollBarVisibility="Disabled" MaxLines="3"  MinLines="3" Width="95" IsEnabled="True" IsReadOnly="True" Next="{Binding ElementName=LeftBox}" />
             <src:LimitedTextBox x:Name="LeftBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,2,2" TextWrapping="Wrap" AcceptsTab="True" AcceptsReturn="True" VerticalScrollBarVisibility="Disabled" MaxLines="3" MinLines="3" Width="95" Next="{Binding ElementName=RightBox}" Prev="{Binding ElementName=LeftPrev}" Grid.Row="1" />
             <src:LimitedTextBox x:Name="RightBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,2,2" TextWrapping="Wrap" AcceptsTab="True" AcceptsReturn="True" VerticalScrollBarVisibility="Disabled" MaxLines="3" MinLines="3" Width="95" Next="{Binding ElementName=RightNext}" Prev="{Binding ElementName=LeftBox}" Grid.Row="1" />

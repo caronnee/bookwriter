@@ -19,11 +19,20 @@ namespace MyBook
     /// </summary>
     public partial class BookWrite : UserControl
     {
-        public BookWrite()
+        public BookWrite(String name)
         {
             InitializeComponent();
             LeftPrev.moveHandler += new BorderTextBox.MoveHandler(LeftPrev_moveHandler);
             RightNext.moveHandler += new BorderTextBox.MoveHandler(RightNext_moveHandler);
+            if (name.Length > 0)
+            {
+                // load from file
+                Load(name);
+            }
+        }
+        void Load(String name)
+        {
+            // xml
         }
 
         void RightNext_moveHandler(int caret)
@@ -51,6 +60,11 @@ namespace MyBook
         private void moveLeft_Click(object sender, RoutedEventArgs e)
         {
             LeftPrev_moveHandler(0);
+        }
+
+        private void SaveBook(object sender, RoutedEventArgs e)
+        {
+            // export to XML format. DTD
         }
     }
 }

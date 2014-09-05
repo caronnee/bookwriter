@@ -36,7 +36,7 @@ namespace MyBook
             }
             if (flags == 1)
             {
-                BookWrite workBook = new BookWrite();
+                BookWrite workBook = new BookWrite(str);
                 Content = workBook;
                 return;
             }
