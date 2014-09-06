@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml;
 
 namespace MyBook
 {
@@ -19,6 +20,7 @@ namespace MyBook
     /// </summary>
     public partial class BookWrite : UserControl
     {
+        private BookSource _source;
         public BookWrite(String name)
         {
             InitializeComponent();
@@ -26,13 +28,10 @@ namespace MyBook
             RightNext.moveHandler += new BorderTextBox.MoveHandler(RightNext_moveHandler);
             if (name.Length > 0)
             {
+                _source = new BookSource(name);
                 // load from file
-                Load(name);
+                _source.Load();
             }
-        }
-        void Load(String name)
-        {
-            // xml
         }
 
         void RightNext_moveHandler(int caret)

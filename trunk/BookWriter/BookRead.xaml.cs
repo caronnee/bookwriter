@@ -20,13 +20,13 @@ namespace MyBook
     /// </summary>
     public partial class BookRead : UserControl
     {
-        private SourceText _source;
+        private BookSource _source;
         private Storyboard _turnPage;
         private ControlTemplate _leftPageTemplate;
 
         public BookRead(String name)
         {
-            _source = new SourceText(name) ; // TODO check the correct syntax of the file
+            _source = new BookSource(name) ; // TODO check the correct syntax of the file
             _source.Load();
             InitializeComponent();
 

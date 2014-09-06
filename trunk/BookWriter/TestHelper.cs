@@ -11,12 +11,15 @@ namespace MyBook
         static string dummyName = "../dummyContent.book";
         static public String CreateDummyBook()
         {
-          SourceText source = new SourceText(dummyName);
-          source.AddPage("Test 1");
-          source.AddPage("Test 2");
-          source.AddPage("Test 3");
-          source.AddPage("Test 4");
-          source.Save();
+            if (!File.Exists(dummyName))
+            {
+                BookSource source = new BookSource(dummyName);
+                source.AddPage("Test 1");
+                source.AddPage("Test 2");
+                source.AddPage("Test 3");
+                source.AddPage("Test 4");
+                source.Save();
+            }
           return dummyName;
         }
     }

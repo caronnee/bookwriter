@@ -12,7 +12,7 @@ namespace MyBook
     String id;
     String text;
   }
-  class SourceText
+  class BookSource
   {
     private String _filepath; // first go offsets
 
@@ -23,7 +23,7 @@ namespace MyBook
     {
       throw new Exception("Not implemented");
     }
-    public SourceText(String name)
+    public BookSource(String name)
     {
       _filepath = name;
       _pages = new ArrayList();
