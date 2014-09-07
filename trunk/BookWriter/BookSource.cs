@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Xml;
+using MyBook.BookContent;
 
 namespace MyBook
 {
@@ -28,15 +30,37 @@ namespace MyBook
       _filepath = name;
       _pages = new ArrayList();
     }
+
+    public List<BookContent.BookParagraph> Paragraphs
+    {
+        get;
+        set;
+    }
+    public void NextChapter()
+    {
+        // TODO
+    }
     public int Load()
     {
-      StreamReader reader = new StreamReader(_filepath);
-      String content = reader.ReadToEnd(); // hopefully this will be very small book....
-      string[] s = content.Split(new char[] { '\0' }, StringSplitOptions.RemoveEmptyEntries );
-      _pages = new ArrayList(s.Length);
-      _pages.AddRange(s);
-      reader.Close();
-      return _pages.Count; // how many pages did we loaded
+        Paragraphs = new List<BookParagraph>();
+        // read the sample xml
+        XmlDocument doc = new XmlDocument();
+        doc.Load(_filepath);
+        XmlNodeList list = doc.SelectNodes("BookContent");
+        list = list[0].SelectNodes("Chapter");
+        for (int i = 0; i < list.Count; i++)
+        {
+            XmlNode a = list[i];
+            XmlNodeList paragraphs = a.SelectNodes("Content");
+            for (int p = 0; p < paragraphs.Count; p++)
+            {
+                BookParagraph par = new BookParagraph();
+                par.Text = paragraphs[p].InnerText;
+                if ( par.Text.Length > 0 )
+                    Paragraphs.Add(par);
+            }
+        }
+        return Paragraphs.Count;
     }
 
     public void AddPage(String content)
