@@ -24,8 +24,8 @@ namespace MyBook
         public BookWrite(String name)
         {
             InitializeComponent();
-            LeftPrev.moveHandler += new BorderTextBox.MoveHandler(LeftPrev_moveHandler);
-            RightNext.moveHandler += new BorderTextBox.MoveHandler(RightNext_moveHandler);
+            SourcePrev.moveHandler += new BorderTextBox.MoveHandler(LeftPrev_moveHandler);
+            SourceNext.moveHandler += new BorderTextBox.MoveHandler(RightNext_moveHandler);
             if (name.Length > 0)
             {
                 _source = new BookSource(name);
@@ -38,10 +38,9 @@ namespace MyBook
         {
             if (caret < 0)
                 return;//do nothing
-            LeftPrev.Move(PageMove.Left);
-            LeftBox.Move(PageMove.Left);
-            RightBox.Move(PageMove.Left);
-            RightNext.Move(PageMove.Left);
+            SourceNext.Move(PageMove.Left);
+            SourceText.Move(PageMove.Left);
+            SourcePrev.Move(PageMove.Left);
         }
 
         void LeftPrev_moveHandler(int caret)
