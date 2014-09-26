@@ -14,7 +14,7 @@ namespace MyBook
     String id;
     String text;
   }
-  class BookSource
+  public class BookSource
   {
     private String _filepath; // first go offsets
 
@@ -36,6 +36,24 @@ namespace MyBook
         get;
         set;
     }
+
+    public string ToString(int start, int end)
+    {
+        if (end >= Paragraphs[0].Content.Length)
+            end = Paragraphs[0].Content.Length-1;
+        return Paragraphs[0].Content.ToString(start, end - start);
+    }
+
+    public void Remove(int start, int end)
+    {
+        Paragraphs[0].Content.Remove(start, end - start);
+    }
+
+    public void Insert ( int where, StringBuilder content)
+    {
+        Paragraphs[0].Content.Insert(where, content );
+    }
+    
     public void NextChapter()
     {
         // TODO
@@ -55,8 +73,8 @@ namespace MyBook
             for (int p = 0; p < paragraphs.Count; p++)
             {
                 BookParagraph par = new BookParagraph();
-                par.Text = paragraphs[p].InnerText;
-                if ( par.Text.Length > 0 )
+                par.Content = new StringBuilder( paragraphs[p].InnerText );
+                if ( par.Content.Length > 0 )
                     Paragraphs.Add(par);
             }
         }

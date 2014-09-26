@@ -5,9 +5,9 @@ using System.Text;
 
 namespace MyBook.BookContent
 {
-    class BookParagraph
+    public class BookParagraph 
     {
-        public String Text
+        public StringBuilder Content
         {
             get;
             set;

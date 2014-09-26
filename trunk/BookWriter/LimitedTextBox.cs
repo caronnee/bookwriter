@@ -18,31 +18,47 @@ namespace MyBook
         Right
     };
 
-    public interface PageCache
+    public class PageCache : TextBox
     {
-        void Append(String str);
-        void Prepend(String str);
-        void CheckSize();
-        void MakeActive(String str);
-        bool Move(PageMove move);
-        String GetText();
+        public int PositionStart
+        {
+            get;
+            set;
+        }
+        
+        public void UpdatePageContent( BookSource source, int len)
+        {
+            Text = source.ToString(PositionStart, PositionStart + len);
+        }
+
+        protected int SplitText( )
+        {
+            StringBuilder visible = new StringBuilder();
+            // only remove the last few lines. Rest will be saved in data
+            for (int i = 0; i < MaxLines; i++)
+            {
+                String str = GetLineText(i);
+                visible.Append(str);
+            }
+            return visible.Length;
+        }
     }
 
-    public class LimitedTextBox : TextBox, PageCache
+    public class LimitedTextBox : PageCache
     {
         public static readonly DependencyProperty NextProperty =
     DependencyProperty.Register(
-    "Next", typeof(PageCache), typeof(LimitedTextBox));
+    "Next", typeof(BorderTextBox), typeof(LimitedTextBox));
 
         public static readonly DependencyProperty PrevProperty =
     DependencyProperty.Register(
-    "Prev", typeof(PageCache), typeof(LimitedTextBox));
+    "Prev", typeof(BorderTextBox), typeof(LimitedTextBox));
 
-        public PageCache Next
+        public BorderTextBox Next
         {
             get
             {
-                return (PageCache)GetValue(NextProperty);
+                return (BorderTextBox)GetValue(NextProperty);
             }
             set
             {
@@ -50,11 +66,11 @@ namespace MyBook
             }
         }
 
-        public PageCache Prev
+        public BorderTextBox Prev
         {
             get
             {
-                return (PageCache)GetValue(PrevProperty);
+                return (BorderTextBox)GetValue(PrevProperty);
             }
             set
             {
@@ -62,90 +78,50 @@ namespace MyBook
             }
         }
 
-        public LimitedTextBox() 
+        public LimitedTextBox()
         {
         }
 
-        public virtual bool Move(PageMove move)
+        public BookSource Cache
         {
-            switch (move)
-            {
-                case PageMove.Left:
-                    {
-                        if (Prev == null)
-                            return false;
-                        Text = Prev.GetText();
-                        break;
-                    }
-                case PageMove.Right:
-                    {
-                        if (Next == null)
-                            return false;
-                        Text = Next.GetText();
-                        break;
-                    }
-            }
-            return true;
+            get;
+            set;
         }
 
-        public String GetText()
-        {
-            return Text;
-        }
 
-        public virtual void MakeActive(String str)
+        void UpdateCache( int start, int end, StringBuilder text )
         {
-            Focus();
-            CaretIndex = str.Length;
+            Cache.Remove(start, end);
+            Cache.Insert(start, text);
         }
-
-        public virtual void CheckSize()
+        void UpdatePageContent()
         {
-            if ( LineCount > MaxLines)
-            {
-                int caretPosition = CaretIndex;
-                String added = "";
-                // only remove the last few lines. Rest will be saved in data
-                for (int i = MaxLines; i < LineCount; i++)
-                {
-                    String str = GetLineText(i);
-                    added += str;
-                }
-                Text = Text.Substring(0, Text.Length - added.Length);
-                // only if caret was at the last place, move to the first box and fill everything possible
-                Next.Prepend(added);
-                if (caretPosition >= added.Length)
-                {
-                    Next.MakeActive(added);
-                }
-                else
-                {
-                    CaretIndex = caretPosition;
-                }
-            }
-            else
-            {
-                // System.Diagnostics.Debug.Assert(false);
-                // TODO
-                // check if you can add something from forward
-            }
+            Prev.UpdatePageContent(Cache, PositionStart - Prev.PositionStart);
+            UpdatePageContent(Cache, Next.PositionStart - PositionStart);
+            Next.UpdatePageContent(Cache,1000);
         }
-
-        public virtual void Append(String str)
-        {
-            // append to the last text
-            Text += str;
-        }
-
-        public virtual void Prepend(String str)
-        {
-            Text = str + Text;
-        }
-
+        
         protected override void OnTextChanged(TextChangedEventArgs e)
         {
             base.OnTextChanged(e);
-            CheckSize();
+            // several steps:
+            // ccke size of we need to recalculate start/end
+            bool needRecalc = LineCount > MaxLines;
+            if (needRecalc)
+            {
+                int newStart = SplitText();
+                UpdateCache(PositionStart, Next.PositionStart, new StringBuilder(Text));
+                Next.PositionStart = PositionStart + newStart;
+                if (CaretIndex > newStart)
+                {
+                    CaretIndex = Text.Length - newStart;
+                    Prev.PositionStart = PositionStart;
+                    PositionStart = Next.PositionStart;
+                    Next.PlusPage(Cache);
+                    CaretIndex = newStart;
+                }
+                UpdatePageContent();
+            }
         }
         //private System.Windows.Size MeasureString(string candidate)
         //{

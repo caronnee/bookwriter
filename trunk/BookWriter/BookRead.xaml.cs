@@ -22,7 +22,7 @@ namespace MyBook
     {
         private BookSource _source;
         private Storyboard _turnPage;
-        private ControlTemplate _leftPageTemplate;
+
 
         public BookRead(String name)
         {

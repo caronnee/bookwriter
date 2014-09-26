@@ -17,8 +17,8 @@
     </UserControl.Resources>
     <DockPanel Background="#FFB49A25">
         <DockPanel DockPanel.Dock="Bottom">
-            <Button DockPanel.Dock="Left" x:Name="moveLeft" Content="Left" Height="30" Click="moveLeft_Click" />
-            <Button DockPanel.Dock="Right" x:Name="moveRight" Content="Right" Height="30" Click="moveRight_Click" />
+            <Button DockPanel.Dock="Left" x:Name="moveLeft" Content="Left" Height="30"  />
+            <Button DockPanel.Dock="Right" x:Name="moveRight" Content="Right" Height="30"  />
             <ProgressBar></ProgressBar>
         </DockPanel>
         <DockPanel DockPanel.Dock="Top" LastChildFill="False" HorizontalAlignment="Center">
@@ -28,9 +28,9 @@
         </DockPanel>
         <StackPanel Orientation="Horizontal">
             <Button  Style="{StaticResource myStyle}" Content="test" Height="30" HorizontalAlignment="Left"  Name="button1" Width="95" />
-            <src:BorderTextBox x:Name="SourcePrev" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,2,2" TextWrapping="Wrap" AcceptsTab="True" AcceptsReturn="True" VerticalScrollBarVisibility="Disabled" MaxLines="3"  MinLines="3" Width="95" IsEnabled="True" IsReadOnly="True" Next="{Binding ElementName=SourceText}" />
+            <src:BorderTextBox x:Name="SourcePrev" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,2,2" TextWrapping="Wrap" AcceptsTab="True" AcceptsReturn="True" VerticalScrollBarVisibility="Disabled" MaxLines="3"  MinLines="3" Width="95" IsEnabled="True" IsReadOnly="True" />
             <src:LimitedTextBox x:Name="SourceText" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,2,2" TextWrapping="Wrap" AcceptsTab="True" AcceptsReturn="True" VerticalScrollBarVisibility="Disabled" MaxLines="3" MinLines="3" Width="95" Next="{Binding ElementName=SourceNext}" Prev="{Binding ElementName=SourcePrev}" Grid.Row="1" />
-            <src:BorderTextBox x:Name="SourceNext" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,2,2" TextWrapping="Wrap" AcceptsTab="True" AcceptsReturn="True" VerticalScrollBarVisibility="Disabled" MaxLines="3" MinLines="3" Width="95" IsReadOnly="True" Next="{Binding ElementName=SourceText}" Prev="{Binding ElementName=LeftBox}" Grid.Row="1" />
+            <src:BorderTextBox x:Name="SourceNext" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,2,2" TextWrapping="Wrap" AcceptsTab="True" AcceptsReturn="True" VerticalScrollBarVisibility="Disabled" MaxLines="3" MinLines="3" Width="95" IsReadOnly="True" Grid.Row="1" />
         </StackPanel>
     </DockPanel>
 </UserControl>
