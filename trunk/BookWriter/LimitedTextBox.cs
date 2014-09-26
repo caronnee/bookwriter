@@ -28,7 +28,7 @@ namespace MyBook
         
         public void UpdatePageContent( BookSource source, int len)
         {
-            Text = source.ToString(PositionStart, PositionStart + len);
+            Text = source.SubString(PositionStart, PositionStart + len);
         }
 
         protected int SplitText( )
@@ -91,8 +91,12 @@ namespace MyBook
 
         void UpdateCache( int start, int end, StringBuilder text )
         {
+            StringBuilder builder = new StringBuilder(" test");
+            builder.Insert(0, text);
+            String s = builder.ToString(0, builder.Length);
             Cache.Remove(start, end);
             Cache.Insert(start, text);
+            String t = Cache.SubString(0,800);
         }
         void UpdatePageContent()
         {
@@ -118,9 +122,9 @@ namespace MyBook
                     Prev.PositionStart = PositionStart;
                     PositionStart = Next.PositionStart;
                     Next.PlusPage(Cache);
-                    CaretIndex = newStart;
                 }
                 UpdatePageContent();
+                CaretIndex = newStart;
             }
         }
         //private System.Windows.Size MeasureString(string candidate)

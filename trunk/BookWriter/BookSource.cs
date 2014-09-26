@@ -37,7 +37,7 @@ namespace MyBook
         set;
     }
 
-    public string ToString(int start, int end)
+    public string SubString(int start, int end)
     {
         if (end >= Paragraphs[0].Content.Length)
             end = Paragraphs[0].Content.Length-1;
@@ -73,7 +73,11 @@ namespace MyBook
             for (int p = 0; p < paragraphs.Count; p++)
             {
                 BookParagraph par = new BookParagraph();
-                par.Content = new StringBuilder( paragraphs[p].InnerText );
+                StringBuilder trim = new StringBuilder( paragraphs[p].InnerText );
+                trim = trim.Replace("\r", "");
+                trim = trim.Replace("\n", "");
+                trim = trim.Replace("\t", "");
+                par.Content = trim;
                 if ( par.Content.Length > 0 )
                     Paragraphs.Add(par);
             }

@@ -16,7 +16,7 @@ namespace MyBook
 
         public void PlusPage( BookSource cache )
         {
-            Text = cache.ToString(PositionStart, 1000);
+            Text = cache.SubString(PositionStart, 1000);
             PositionStart += SplitText();
         }
     }
