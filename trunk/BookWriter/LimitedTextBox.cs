@@ -112,15 +112,16 @@ namespace MyBook
                 int newStart = SplitText();
                 UpdateCache(PositionStart, Next.PositionStart, new StringBuilder(Text));
                 Next.PositionStart = PositionStart + newStart;
-                if (CaretIndex > newStart)
+                int newPosition = CaretIndex;
+                if ( CaretIndex > newStart )
                 {
-                    CaretIndex = Text.Length - newStart;
+                    newPosition = Text.Length - newStart;
                     Prev.PositionStart = PositionStart;
                     PositionStart = Next.PositionStart;
                     Next.PlusPage(Cache);
                 }
                 UpdatePageContent();
-                CaretIndex = newStart;
+                CaretIndex = newPosition;
             }
         }
         //private System.Windows.Size MeasureString(string candidate)
