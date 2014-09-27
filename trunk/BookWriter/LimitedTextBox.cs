@@ -91,12 +91,8 @@ namespace MyBook
 
         void UpdateCache( int start, int end, StringBuilder text )
         {
-            StringBuilder builder = new StringBuilder(" test");
-            builder.Insert(0, text);
-            String s = builder.ToString(0, builder.Length);
             Cache.Remove(start, end);
             Cache.Insert(start, text);
-            String t = Cache.SubString(0,800);
         }
         void UpdatePageContent()
         {
