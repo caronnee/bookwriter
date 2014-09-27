@@ -17,8 +17,10 @@
     </UserControl.Resources>
     <DockPanel Background="#FFB49A25">
         <DockPanel DockPanel.Dock="Bottom">
-            <Button DockPanel.Dock="Left" x:Name="moveLeft" Content="Left" Height="30"  />
-            <Button DockPanel.Dock="Right" x:Name="moveRight" Content="Right" Height="30"  />
+            <Button DockPanel.Dock="Left" x:Name="startPage" Content="Start" Height="30" Width="45" Click="startPage_Click"/>
+            <Button DockPanel.Dock="Left" x:Name="previousPage" Content="Left" Height="30" Width="45" />
+            <Button Content="To End" DockPanel.Dock="Right" Height="30" x:Name="endPage" Width="45" />
+            <Button Content="Right" DockPanel.Dock="Right" x:Name="nextPage" Height="30" Width="45"/>
             <ProgressBar></ProgressBar>
         </DockPanel>
 

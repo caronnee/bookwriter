@@ -28,12 +28,18 @@ namespace MyBook
                 SourceText.Cache = new BookSource(name);
                 // load from file
                 SourceText.Cache.Load();
+                //SourceText.Start();
             }
         }
         
         private void SaveBook(object sender, RoutedEventArgs e)
         {
             // export to XML format. DTD
+        }
+
+        private void startPage_Click(object sender, RoutedEventArgs e)
+        {
+            SourceText.Start();
         }
     }
 }

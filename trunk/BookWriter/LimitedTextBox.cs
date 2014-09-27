@@ -80,6 +80,7 @@ namespace MyBook
 
         public LimitedTextBox()
         {
+            RecalculateMode = false;
         }
 
         public BookSource Cache
@@ -87,7 +88,6 @@ namespace MyBook
             get;
             set;
         }
-
 
         void UpdateCache( int start, int end, StringBuilder text )
         {
@@ -100,17 +100,34 @@ namespace MyBook
             UpdatePageContent(Cache, Next.PositionStart - PositionStart);
             Next.UpdatePageContent(Cache,1000);
         }
-        
+
+        public bool RecalculateMode
+        {
+            get;
+            set;
+        }
+        public void Start()
+        {
+            PositionStart = 0;
+            RecalculateMode = true;
+            int maxLen = Cache.GetMax(this);
+            Text = Cache.SubString(0, maxLen);
+            RecalculateMode = false;
+        }
         protected override void OnTextChanged(TextChangedEventArgs e)
         {
             base.OnTextChanged(e);
+
             // several steps:
             // ccke size of we need to recalculate start/end
             bool needRecalc = LineCount > MaxLines;
             if (needRecalc)
             {
                 int newStart = SplitText();
-                UpdateCache(PositionStart, Next.PositionStart, new StringBuilder(Text));
+                if ( RecalculateMode == false ) // updating automatically, no new content was added, do not update the cache
+                {
+                    UpdateCache(PositionStart, Next.PositionStart, new StringBuilder(Text));
+                }
                 Next.PositionStart = PositionStart + newStart;
                 int newPosition = CaretIndex;
                 if ( CaretIndex > newStart )
