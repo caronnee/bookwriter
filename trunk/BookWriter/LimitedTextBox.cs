@@ -98,7 +98,7 @@ namespace MyBook
         {
             Prev.UpdatePageContent(Cache, PositionStart - Prev.PositionStart);
             UpdatePageContent(Cache, Next.PositionStart - PositionStart);
-            Next.UpdatePageContent(Cache,1000);
+            Next.UpdatePageContent( Cache, Cache.GetMax(this) );
         }
 
         public bool RecalculateMode

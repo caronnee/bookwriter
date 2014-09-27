@@ -18,7 +18,7 @@ namespace MyBook
   {
     private String _filepath; // first go offsets
 
-    public int GetMax( LimitedTextBox source )
+    public int GetMax( PageCache source )
     {
         // maximum for page. TODO calculate this according to source parameters
         return 1048;
