@@ -14,6 +14,18 @@ namespace MyBook
         {
         }
 
+        public void SetPrevious(BookSource cache)
+        {
+            Text = cache.SubString(0, PositionStart);
+            StringBuilder str = new StringBuilder();
+            int lines = Math.Min(LineCount, MaxLines);
+            for (int i = 0; i < lines; i++)
+            {
+                 str.Append( GetLineText(lines - i) );
+            }
+            PositionStart -= str.Length;
+        }
+
         public int FindEnd( BookSource cache )
         {
             Text = cache.SubString(PositionStart, cache.GetMax(this));

@@ -51,5 +51,15 @@ namespace MyBook
         {
             SourceText.NextPage();
         }
+
+        private void endPage_Click(object sender, RoutedEventArgs e)
+        {
+            SourceText.LastPage();
+        }
+
+        private void previousPage_Click(object sender, RoutedEventArgs e)
+        {
+            SourceText.PreviousPage();
+        }
     }
 }

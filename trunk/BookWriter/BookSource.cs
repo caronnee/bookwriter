@@ -18,6 +18,11 @@ namespace MyBook
   {
     private String _filepath; // first go offsets
 
+    public int GetLastPosition()
+    {
+        // TODO to this properly
+        return Paragraphs[0].Content.Length - 10;
+    }
     public int GetMax( PageCache source )
     {
         // maximum for page. TODO calculate this according to source parameters

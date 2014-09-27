@@ -35,13 +35,31 @@ namespace MyBook
         {
             StringBuilder visible = new StringBuilder();
             // only remove the last few lines. Rest will be saved in data
-            for (int i = 0; i < MaxLines; i++)
+            int lines = Math.Min(LineCount, MaxLines);
+            for (int i = 0; i < lines; i++)
             {
                 String str = GetLineText(i);
                 visible.Append(str);
             }
             return visible.Length;
         }
+    }
+
+    struct PositionDesc
+    {
+        int chapter;
+        int paragraph;
+        int positionInParagraph;
+        bool IsZero()
+        {
+            return (chapter == 0) && (paragraph == 0) && (positionInParagraph == 0);
+        }
+    }
+
+    struct UpdateRecord
+    {
+        StringBuilder newContent;
+        PositionDesc desc;
     }
 
     public class LimitedTextBox : PageCache
@@ -94,6 +112,7 @@ namespace MyBook
             Cache.Remove(start, end);
             Cache.Insert(start, text);
         }
+
         void UpdatePageContent()
         {
             Prev.UpdatePageContent(Cache, PositionStart - Prev.PositionStart);
@@ -106,6 +125,7 @@ namespace MyBook
             get;
             set;
         }
+
         public void Start()
         {
             PositionStart = 0;
@@ -125,6 +145,27 @@ namespace MyBook
             }
             UpdatePageContent();
         }
+
+        public void LastPage()
+        {
+            PositionStart = Cache.GetLastPosition();
+            Next.PositionStart = PositionStart; // TODO ugly
+            Next.PositionStart = Next.FindEnd(Cache);
+            Prev.PositionStart = PositionStart;
+            Prev.SetPrevious(Cache);
+            UpdatePageContent();
+        }
+
+        public void PreviousPage()
+        {
+            if ( PositionStart == 0 )
+                return;
+            Next.PositionStart = PositionStart;
+            PositionStart = Prev.PositionStart;
+            Prev.SetPrevious(Cache);
+            UpdatePageContent();
+        }
+
         protected override void OnTextChanged(TextChangedEventArgs e)
         {
             base.OnTextChanged(e);
