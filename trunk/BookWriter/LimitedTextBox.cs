@@ -114,12 +114,23 @@ namespace MyBook
             Text = Cache.SubString(0, maxLen);
             RecalculateMode = false;
         }
+        public void NextPage()
+        {
+            int end = Next.FindEnd(Cache);
+            if (end > 0)
+            {
+                Prev.PositionStart = PositionStart;
+                PositionStart = Next.PositionStart;
+                Next.PositionStart = end;
+            }
+            UpdatePageContent();
+        }
         protected override void OnTextChanged(TextChangedEventArgs e)
         {
             base.OnTextChanged(e);
 
             // several steps:
-            // ccke size of we need to recalculate start/end
+            // check size of we need to recalculate start/end
             bool needRecalc = LineCount > MaxLines;
             if (needRecalc)
             {
@@ -133,11 +144,12 @@ namespace MyBook
                 if ( CaretIndex > newStart )
                 {
                     newPosition = Text.Length - newStart;
-                    Prev.PositionStart = PositionStart;
-                    PositionStart = Next.PositionStart;
-                    Next.PlusPage(Cache);
+                    NextPage();
                 }
-                UpdatePageContent();
+                else
+                {
+                    UpdatePageContent();
+                }
                 CaretIndex = newPosition;
             }
         }

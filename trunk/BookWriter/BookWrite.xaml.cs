@@ -31,7 +31,7 @@ namespace MyBook
                 //SourceText.Start();
             }
         }
-        
+
         private void SaveBook(object sender, RoutedEventArgs e)
         {
             // export to XML format. DTD
@@ -40,6 +40,16 @@ namespace MyBook
         private void startPage_Click(object sender, RoutedEventArgs e)
         {
             SourceText.Start();
+        }
+
+        private void BookWriter_Loaded(object sender, RoutedEventArgs e)
+        {
+            SourceText.Start();
+        }
+
+        private void nextPage_Click(object sender, RoutedEventArgs e)
+        {
+            SourceText.NextPage();
         }
     }
 }

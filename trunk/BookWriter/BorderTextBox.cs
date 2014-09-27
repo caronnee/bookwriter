@@ -14,10 +14,14 @@ namespace MyBook
         {
         }
 
-        public void PlusPage( BookSource cache )
+        public int FindEnd( BookSource cache )
         {
             Text = cache.SubString(PositionStart, 1000);
-            PositionStart += SplitText();
+            if (Text.Length == 0) // or show another paragraph
+            {
+                return -1;
+            }
+            return PositionStart + SplitText();
         }
     }
 }
