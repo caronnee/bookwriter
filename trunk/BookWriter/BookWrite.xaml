@@ -22,20 +22,22 @@
             <ProgressBar></ProgressBar>
         </DockPanel>
         
-        <StackPanel Orientation="Horizontal">
-            <StackPanel Orientation="Vertical">
-                <Button Content="Start Chapter" Height="30" Name="button1" Style="{StaticResource myStyle}" IsEnabled="False" />
-                <Button Content="Start Paragraph" Height="30" Name="button2" Style="{StaticResource myStyle}" IsEnabled="False" />
-                <Button Content="Settings" Height="30" Name="button3" Style="{StaticResource myStyle}" IsEnabled="False" />
-                </StackPanel>
-            <src:BorderTextBox x:Name="SourcePrev" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,2,2" TextWrapping="Wrap" AcceptsTab="True" AcceptsReturn="True" VerticalScrollBarVisibility="Disabled" MaxLines="3"  MinLines="3" Width="95" IsEnabled="True" IsReadOnly="True" />
-            <src:LimitedTextBox x:Name="SourceText" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,2,2" TextWrapping="Wrap" AcceptsTab="True" AcceptsReturn="True" VerticalScrollBarVisibility="Disabled" MaxLines="3" MinLines="3" Width="95" Next="{Binding ElementName=SourceNext}" Prev="{Binding ElementName=SourcePrev}" Grid.Row="1" />
-            <src:BorderTextBox x:Name="SourceNext" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,2,2" TextWrapping="Wrap" AcceptsTab="True" AcceptsReturn="True" VerticalScrollBarVisibility="Disabled" MaxLines="3" MinLines="3" Width="95" IsReadOnly="True" Grid.Row="1" />
-        </StackPanel>
-        <StackPanel Orientation="Vertical">
+        <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
             <Button x:Name="saveButton" Content="Save" Height="30" MinWidth="100" Click="SaveBook"/>
             <Button x:Name="reformatAll" Content="Reformat" Height="30" MinWidth="100" IsEnabled="False"/>
             <Button x:Name="insert" Content="Insert content" Height="30" MinWidth="100" IsEnabled="False"/>
+        </StackPanel>
+
+            <StackPanel Orientation="Vertical" DockPanel.Dock="Right">
+                <Button Content="Start Chapter" Height="30" Name="button1" Style="{StaticResource myStyle}" IsEnabled="False" />
+                <Button Content="Start Paragraph" Height="30" Name="button2" Style="{StaticResource myStyle}" IsEnabled="False" />
+                <Button Content="Settings" Height="30" Name="button3" Style="{StaticResource myStyle}" IsEnabled="False" />
+            </StackPanel>
+
+        <StackPanel Orientation="Horizontal" >
+        <src:BorderTextBox x:Name="SourcePrev" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,2,2" TextWrapping="Wrap" AcceptsTab="True" AcceptsReturn="True" VerticalScrollBarVisibility="Disabled" MaxLines="3"  MinLines="3" Width="95" IsEnabled="True" IsReadOnly="True" />
+            <src:LimitedTextBox x:Name="SourceText" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,2,2" TextWrapping="Wrap" AcceptsTab="True" AcceptsReturn="True" VerticalScrollBarVisibility="Disabled" MaxLines="3" MinLines="3" Width="95" Next="{Binding ElementName=SourceNext}" Prev="{Binding ElementName=SourcePrev}" Grid.Row="1" />
+            <src:BorderTextBox x:Name="SourceNext" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,2,2" TextWrapping="Wrap" AcceptsTab="True" AcceptsReturn="True" VerticalScrollBarVisibility="Disabled" MaxLines="3" MinLines="3" Width="95" IsReadOnly="True" Grid.Row="1" />
         </StackPanel>
     </DockPanel>
 </UserControl>
