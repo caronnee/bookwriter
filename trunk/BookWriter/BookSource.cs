@@ -9,20 +9,27 @@ using MyBook.BookContent;
 
 namespace MyBook
 {
-  class PageDesc
-  {
-    String id;
-    String text;
-  }
   public class BookSource
   {
     private String _filepath; // first go offsets
+    
+    public int ParagaphNumber
+    {
+        get;
+        set;
+    }
 
     public int GetLastPosition()
     {
         // TODO to this properly
-        return Paragraphs[0].Content.Length - 10;
+        return Paragraphs[ParagaphNumber].Content.Length - 10;
     }
+
+    bool IsEndOfParagraph(int pos)
+    {
+        return true;
+    }
+
     public int GetMax( PageCache source )
     {
         // maximum for page. TODO calculate this according to source parameters
@@ -35,10 +42,12 @@ namespace MyBook
     {
       throw new Exception("Not implemented");
     }
+
     public BookSource(String name)
     {
       _filepath = name;
       _pages = new ArrayList();
+      ParagaphNumber = 0;
     }
 
     public List<BookContent.BookParagraph> Paragraphs
@@ -49,19 +58,19 @@ namespace MyBook
 
     public string SubString(int start, int end)
     {
-        if (end >= Paragraphs[0].Content.Length)
-            end = Paragraphs[0].Content.Length-1;
-        return Paragraphs[0].Content.ToString(start, end - start);
+        if (end >= Paragraphs[ParagaphNumber].Content.Length)
+            end = Paragraphs[ParagaphNumber].Content.Length-1;
+        return Paragraphs[ParagaphNumber].Content.ToString(start, end - start);
     }
 
     public void Remove(int start, int end)
     {
-        Paragraphs[0].Content.Remove(start, end - start);
+        Paragraphs[ParagaphNumber].Content.Remove(start, end - start);
     }
 
     public void Insert ( int where, StringBuilder content)
     {
-        Paragraphs[0].Content.Insert(where, content );
+        Paragraphs[ParagaphNumber].Content.Insert(where, content );
     }
     
     public void NextChapter()
@@ -75,7 +84,7 @@ namespace MyBook
         XmlDocument doc = new XmlDocument();
         doc.Load(_filepath);
         XmlNodeList list = doc.SelectNodes("BookContent");
-        list = list[0].SelectNodes("Chapter");
+        list = list[ParagaphNumber].SelectNodes("Chapter");
         for (int i = 0; i < list.Count; i++)
         {
             XmlNode a = list[i];

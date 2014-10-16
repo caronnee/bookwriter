@@ -1,6 +1,10 @@
 ﻿- add splash screen - OK - disabled temporarily ( splash screen action when building, in properties )
 - when text is out of box, switch to the second box DONE
-- set WRITE mode on/off
+- set WRITE mode on/off DONE
+- distingush between paragraph by adding three stars to another line ( how to distinusj should go later to the config file)
+- move to another chapter when left is there and no further content is available
+- create chapter
+
 - save the content
 
 - if the right box is out od the space, add words to the left page, without focusing DONE
@@ -9,7 +13,7 @@
 - copy and paste from word
 - enable to add image
 - enable to add riddle
-- enableto add sections
+- enable to add sections
 - show sections
 - enable to set bookmark
 - enable to list between boomark
