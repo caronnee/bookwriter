@@ -42,6 +42,9 @@ namespace MyBook
         public delegate void LoadHandler(String str, int flags);
         public event LoadHandler LoadBook;
 
+        public delegate void SettingsPage();
+        public event SettingsPage OnSettingsPage;
+
         private void Load(object sender, RoutedEventArgs e)
         {
             if (LoadBook != null)
@@ -50,6 +53,16 @@ namespace MyBook
                 int typeFlags = writeButton.IsChecked == true ? 1:0;
                 LoadBook(ctrl.Filename,typeFlags); // name of the book
             }
+        }
+
+        private void settingButton_Click(object sender, RoutedEventArgs e)
+        {
+          if (OnSettingsPage != null)
+          {
+            ShelfBook ctrl = sender as ShelfBook;
+            int typeFlags = writeButton.IsChecked == true ? 1 : 0;
+            OnSettingsPage(); // name of the book
+          }
         }
     }
 }

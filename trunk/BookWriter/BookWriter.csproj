@@ -90,6 +90,9 @@
     <Compile Include="ManageSections.xaml.cs">
       <DependentUpon>ManageSections.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SettingPage.xaml.cs">
+      <DependentUpon>SettingPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ShelfBook.cs" />
     <Compile Include="BookSource.cs" />
     <Compile Include="TestHelper.cs" />
@@ -180,6 +183,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ManageSections.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

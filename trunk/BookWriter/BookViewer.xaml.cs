@@ -13,34 +13,47 @@ using System.Windows.Shapes;
 
 namespace MyBook
 {
-    /// <summary>
-    /// Interaction logic for BookViewPort.xaml
-    /// </summary>
-    public partial class BookViewPort : Window
+  /// <summary>
+  /// Interaction logic for BookViewPort.xaml
+  /// </summary>
+  public partial class BookViewPort : Window
+  {
+    public BookViewPort()
     {
-        public BookViewPort()
-        {
-            Intro intro = new Intro();
-            intro.LoadBook += LoadBook;
-            InitializeComponent();
-            Content = intro;
-        }
-        public void LoadBook(String str,int flags)
-        {
-            if (flags == 0)
-            {
-                BookRead read = new BookRead(str);
-                if (read.IsValid())
-                    Content = read;
-                return;
-            }
-            if (flags == 1)
-            {
-                BookWrite workBook = new BookWrite(str);
-                Content = workBook;
-                return;
-            }
-            MessageBox.Show("Book was not found! ( which is weird and probably a bug )");
-        }
+      InitializeComponent();
+      ShowShelf();
     }
+    public void ShowShelf()
+    {
+      Intro intro = new Intro();
+      intro.LoadBook += LoadBook;
+      intro.OnSettingsPage += ShowSettingsBook;
+      Content = intro;
+    }
+    public void LoadBook(String str, int flags)
+    {
+      if (flags == 0)
+      {
+        BookRead read = new BookRead(str);
+        if (read.IsValid())
+          Content = read;
+        return;
+      }
+
+      if (flags == 1)
+      {
+        BookWrite workBook = new BookWrite(str);
+        Content = workBook;
+        return;
+      }
+      MessageBox.Show("Book was not found! ( which is weird and probably a bug )");
+    }
+
+    public void ShowSettingsBook()
+    {
+      SettingPage page = new SettingPage();
+      page.OnDone += ShowShelf;
+      Content = page;
+    }
+  }
 }

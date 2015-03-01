@@ -1,9 +1,11 @@
 ﻿- add splash screen - OK - disabled temporarily ( splash screen action when building, in properties )
 - when text is out of box, switch to the second box DONE
+- enable listing mode once again FIXED
 
+- Make a setting folder where the books are stored
 - Fix loading name of the chapter. Chapter should be like this:
     **  (number)  MIDDLESCRREN  ** If the name of the chapter is too long fo the like, display just Ch(number) ( like internet explorer )
-- enable listing mode once again
+
 
 - set WRITE mode on/off DONE
 - distingush between paragraph by adding three stars to another line ( how to distinusj should go later to the config file)
