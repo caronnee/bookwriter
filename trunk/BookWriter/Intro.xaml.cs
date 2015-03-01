@@ -33,6 +33,7 @@ namespace MyBook
         public Intro()
         {
             InitializeComponent();
+            // TODO change this to dynamically load the books
             string name = TestHelper.CreateDummyBook();
             Button b = CreateBookControl(name);
             this.Shelf.Children.Add(b);

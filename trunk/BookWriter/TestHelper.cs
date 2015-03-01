@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 
+/** Here are only the function to create dummy content, dymmy tests */
 namespace MyBook
 {
     class TestHelper
