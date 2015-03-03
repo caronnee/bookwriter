@@ -51,6 +51,7 @@ namespace MyBook
       ParagraphNumber = 0;
     }
 
+    // whole text that the chapter is holding
     public List<BookContent.BookParagraph> Paragraphs
     {
         get;

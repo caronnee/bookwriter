@@ -1,8 +1,10 @@
 ﻿- add splash screen - OK - disabled temporarily ( splash screen action when building, in properties )
 - when text is out of box, switch to the second box DONE
 - enable listing mode once again FIXED
+- Make a setting folder where the books are stored DONE
 
-- Make a setting folder where the books are stored
+- use the loaded settings, according to relative paths
+
 - Fix loading name of the chapter. Chapter should be like this:
     **  (number)  MIDDLESCRREN  ** If the name of the chapter is too long fo the like, display just Ch(number) ( like internet explorer )
 
@@ -11,6 +13,7 @@
 - distingush between paragraph by adding three stars to another line ( how to distinusj should go later to the config file)
 - move to another chapter when left is there and no further content is available
 - create chapter
+- start from the last viewed page
 
 - save the content
 
@@ -24,7 +27,7 @@
 - show sections
 - enable to set bookmark
 - enable to list between boomark
-- set book as "finalized"
+- set book as "finalized" ( open for reading only )
 - open screen with multiple books
 - text and the image must be reformatable to several screens ( could be picked, which sizes are supported )
 

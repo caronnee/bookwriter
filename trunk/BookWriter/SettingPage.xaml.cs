@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
+using System.IO;
 
 namespace MyBook
 {
@@ -48,21 +49,25 @@ namespace MyBook
     public delegate void DoneHandler();
     public event DoneHandler OnDone;
 
+    private string SETTINGS_FILENAME = System.AppDomain.CurrentDomain.BaseDirectory + "setting.xml";
+    private string ROOT_NODE = "root";
+    private string FOLDER_NODE = "folder";
+    private string URI = "set";
+    private string DEF_VALUE = "./Books";
+
     private void SaveAndBack_Click(object sender, RoutedEventArgs e)
     {
       XmlDocument doc = new XmlDocument();
-      string path = System.AppDomain.CurrentDomain.BaseDirectory;
-      path += "setting.xml";
-      
-      XmlNode node = doc.CreateNode(XmlNodeType.Element, "Setting","set");
-      XmlNode n2 = doc.CreateNode(XmlNodeType.Element, "Setting", "set");
-      XmlNode text = doc.CreateNode(XmlNodeType.Text, "something", "set");
+
+      XmlNode node = doc.CreateNode(XmlNodeType.Element, ROOT_NODE, URI );
+      XmlNode n2 = doc.CreateNode(XmlNodeType.Element, FOLDER_NODE, URI);
+      XmlNode text = doc.CreateNode(XmlNodeType.Text, DEF_VALUE, URI);
       TextBox textbox = FindName("bFolder") as TextBox;
       text.Value = textbox.Text;
       n2.AppendChild(text);
       node.AppendChild(n2);
       doc.AppendChild(node);
-      doc.Save(path);
+      doc.Save(SETTINGS_FILENAME);
 
       if (OnDone != null)
         OnDone();
@@ -72,6 +77,28 @@ namespace MyBook
     {
       if (OnDone != null)
         OnDone();
+    }
+
+    static public string Folder
+    {
+        get;
+        set;
+    }
+
+    private void UserControl_Loaded(object sender, RoutedEventArgs e)
+    {
+        // if there is setting file, load from it
+        if (!File.Exists(SETTINGS_FILENAME))
+            return;
+        XmlDocument doc = new XmlDocument();
+        doc.Load(SETTINGS_FILENAME);
+        XmlNode no = doc.FirstChild;
+        XmlNodeList list = no.SelectNodes( FOLDER_NODE);
+        string str = "/" + ROOT_NODE; 
+        XmlNodeList root = doc.SelectNodes(str);
+        TextBox textbox = FindName("bFolder") as TextBox;
+        textbox.Text = root[0].InnerText;
+        
     }
   }
 }
