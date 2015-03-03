@@ -17,9 +17,11 @@
     </UserControl.Resources>
     <DockPanel Background="#FFB49A25">
         <DockPanel DockPanel.Dock="Bottom">
-            <Button DockPanel.Dock="Left" x:Name="startPage" Content="Start" Height="30" Width="45" Click="startPage_Click"/>
+            <Button DockPanel.Dock="Left" x:Name="prevChapter" Content="Prev Chapter" Height="30" Width="45" Click="prevChapter_Click"/>
+            <Button DockPanel.Dock="Left" x:Name="startPage" Content="Start page" Height="30" Width="45" Click="startPage_Click"/>
             <Button DockPanel.Dock="Left" x:Name="previousPage" Content="Left" Height="30" Width="45" Click="previousPage_Click"/>
             <Button Content="To End" DockPanel.Dock="Right" Height="30" x:Name="endPage" Width="45" Click="endPage_Click"/>
+            <Button Content="Next Chapter" DockPanel.Dock="Right" x:Name="nextChapter" Height="30" Width="45" Click="nextChapter_Click"/>
             <Button Content="Right" DockPanel.Dock="Right" x:Name="nextPage" Height="30" Width="45" Click="nextPage_Click"/>
             <ProgressBar></ProgressBar>
         </DockPanel>

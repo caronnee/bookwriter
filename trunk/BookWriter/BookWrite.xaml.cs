@@ -61,5 +61,15 @@ namespace MyBook
         {
             SourceText.PreviousPage();
         }
+
+        private void prevChapter_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void nextChapter_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
