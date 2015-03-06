@@ -15,61 +15,61 @@ using System.Xml;
 
 namespace MyBook
 {
-    /// <summary>
-    /// Interaction logic for BookWrite.xaml
-    /// </summary>
-    public partial class BookWrite : UserControl
+  /// <summary>
+  /// Interaction logic for BookWrite.xaml
+  /// </summary>
+  public partial class BookWrite : UserControl
+  {
+    public BookWrite(String name)
     {
-        public BookWrite(String name)
-        {
-            InitializeComponent();
-            if (name.Length > 0)
-            {
-                SourceText.Cache = new BookSource(name);
-                // load from file
-                SourceText.Cache.Load();
-                //SourceText.Start();
-            }
-        }
-
-        private void SaveBook(object sender, RoutedEventArgs e)
-        {
-            // export to XML format. DTD
-        }
-
-        private void startPage_Click(object sender, RoutedEventArgs e)
-        {
-            SourceText.Start();
-        }
-
-        private void BookWriter_Loaded(object sender, RoutedEventArgs e)
-        {
-            SourceText.Start();
-        }
-
-        private void nextPage_Click(object sender, RoutedEventArgs e)
-        {
-            SourceText.NextPage();
-        }
-
-        private void endPage_Click(object sender, RoutedEventArgs e)
-        {
-            SourceText.LastPage();
-        }
-
-        private void previousPage_Click(object sender, RoutedEventArgs e)
-        {
-            SourceText.PreviousPage();
-        }
-
-        private void prevChapter_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void nextChapter_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+      InitializeComponent();
+      if (name.Length > 0)
+      {
+        SourceText.Cache = new BookSource(name);
+        // load from file
+        SourceText.Cache.Load();
+        //SourceText.Start();
+      }
     }
+
+    private void SaveBook(object sender, RoutedEventArgs e)
+    {
+      // export to XML format. DTD
+    }
+
+    private void startPage_Click(object sender, RoutedEventArgs e)
+    {
+      SourceText.Start();
+    }
+
+    private void BookWriter_Loaded(object sender, RoutedEventArgs e)
+    {
+      SourceText.Start();
+    }
+
+    private void nextPage_Click(object sender, RoutedEventArgs e)
+    {
+      SourceText.NextPage();
+    }
+
+    private void endPage_Click(object sender, RoutedEventArgs e)
+    {
+      SourceText.LastPage();
+    }
+
+    private void previousPage_Click(object sender, RoutedEventArgs e)
+    {
+      SourceText.PreviousPage();
+    }
+
+    private void prevChapter_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void nextChapter_Click(object sender, RoutedEventArgs e)
+    {
+      SourceText.NextChapter();
+    }
+  }
 }

@@ -47,14 +47,26 @@ namespace MyBook
   }
 
   // identifier what we are actually showing
-  struct PositionDesc
+  public struct PositionDesc
   {
-    int chapter;
-    int paragraph;
-    int positionInParagraph;
+    public int ChapterId
+    {
+      get;
+      set;
+    }
+    public int ParagraphId
+    {
+      get;
+      set;
+    }
+    public int ContentPos
+    {
+      get;
+      set;
+    }
     bool IsZero()
     {
-      return (chapter == 0) && (paragraph == 0) && (positionInParagraph == 0);
+      return (ChapterId == 0) && (ParagraphId == 0) && (ContentPos == 0);
     }
   }
 
@@ -162,6 +174,14 @@ DependencyProperty.Register(
       Next.PositionStart = Next.FindEnd(Cache);
       Prev.PositionStart = PositionStart;
       Prev.SetPrevious(Cache);
+      UpdatePageContent();
+    }
+
+    // set up the cache so it would show the next chapter
+    public void NextChapter()
+    {
+      PositionStart = 0;
+      Cache.NextChapter();
       UpdatePageContent();
     }
 

@@ -2,8 +2,9 @@
 - when text is out of box, switch to the second box DONE
 - enable listing mode once again FIXED
 - Make a setting folder where the books are stored DONE
-
 - create next chapter button DONE
+
+- on nextChapen, whole new chapter should be loaded
 - save book Button and functionality
 - Fix loading name of the chapter. Chapter should be like this:
     **  (number)  MIDDLESCRREN  ** If the name of the chapter is too long fo the like, display just Ch(number) ( like internet explorer )

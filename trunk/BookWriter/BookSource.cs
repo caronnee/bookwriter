@@ -13,7 +13,7 @@ namespace MyBook
   {
     private String _filepath; // first go offsets
     
-    public int ParagraphNumber
+    public PositionDesc SourcePosition
     {
         get;
         set;
@@ -23,7 +23,7 @@ namespace MyBook
     public int GetProbableLastPosition()
     {
         // TODO to this properly
-        return Paragraphs[ParagraphNumber].Content.Length - 10;
+      return Paragraphs[SourcePosition.ParagraphId].Content.Length - 10;
     }
 
     bool IsEndOfParagraph(int pos)
@@ -48,7 +48,13 @@ namespace MyBook
     {
       _filepath = name;
       _pages = new ArrayList();
-      ParagraphNumber = 0;
+      SourcePosition = new PositionDesc();
+    }
+
+    public List<XmlNode> Chapters
+    {
+      get;
+      set;
     }
 
     // whole text that the chapter is holding
@@ -60,24 +66,26 @@ namespace MyBook
 
     public string SubString(int start, int end)
     {
-        if (end >= Paragraphs[ParagraphNumber].Content.Length)
-            end = Paragraphs[ParagraphNumber].Content.Length;
-        return Paragraphs[ParagraphNumber].Content.ToString(start, end - start);
+      if (end >= Paragraphs[SourcePosition.ParagraphId].Content.Length)
+        end = Paragraphs[SourcePosition.ParagraphId].Content.Length;
+      return Paragraphs[SourcePosition.ParagraphId].Content.ToString(start, end - start);
     }
 
     public void Remove(int start, int end)
     {
-        Paragraphs[ParagraphNumber].Content.Remove(start, end - start);
+      Paragraphs[SourcePosition.ParagraphId].Content.Remove(start, end - start);
     }
 
     public void Insert ( int where, StringBuilder content)
     {
-        Paragraphs[ParagraphNumber].Content.Insert(where, content );
+      Paragraphs[SourcePosition.ParagraphId].Content.Insert(where, content);
     }
     
     public void NextChapter()
     {
         // TODO move to the next chapter
+      // clear, save and load new chapter
+
     }
 
     public int Load()
@@ -87,7 +95,7 @@ namespace MyBook
         XmlDocument doc = new XmlDocument();
         doc.Load(_filepath);
         XmlNodeList list = doc.SelectNodes("BookContent");
-        list = list[ParagraphNumber].SelectNodes("Chapter");
+        list = list[ SourcePosition.ParagraphId].SelectNodes("Chapter");
         for (int i = 0; i < list.Count; i++)
         {
             XmlNode a = list[i];
