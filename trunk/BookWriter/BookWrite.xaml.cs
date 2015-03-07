@@ -64,7 +64,7 @@ namespace MyBook
 
     private void prevChapter_Click(object sender, RoutedEventArgs e)
     {
-
+      SourceText.PreviousChapter();
     }
 
     private void nextChapter_Click(object sender, RoutedEventArgs e)

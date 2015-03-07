@@ -46,37 +46,6 @@ namespace MyBook
     }
   }
 
-  // identifier what we are actually showing
-  public struct PositionDesc
-  {
-    public int ChapterId
-    {
-      get;
-      set;
-    }
-    public int ParagraphId
-    {
-      get;
-      set;
-    }
-    public int ContentPos
-    {
-      get;
-      set;
-    }
-    bool IsZero()
-    {
-      return (ChapterId == 0) && (ParagraphId == 0) && (ContentPos == 0);
-    }
-  }
-
-  // the replacement of the original record
-  struct UpdateRecord
-  {
-    StringBuilder newContent;
-    PositionDesc desc;
-  }
-
   // this will be shown when there is some text to be written
   public class LimitedTextBox : PageCache
   {
@@ -180,8 +149,16 @@ DependencyProperty.Register(
     // set up the cache so it would show the next chapter
     public void NextChapter()
     {
-      PositionStart = 0;
       Cache.NextChapter();
+      NextPage();
+      UpdatePageContent();
+    }
+
+    // set up the cache so it would show the next chapter
+    public void PreviousChapter()
+    {
+      Cache.PreviousChapter();
+      NextPage();
       UpdatePageContent();
     }
 
