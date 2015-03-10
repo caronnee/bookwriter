@@ -35,6 +35,7 @@ namespace MyBook
     private void SaveBook(object sender, RoutedEventArgs e)
     {
       // export to XML format. DTD
+      SourceText.Cache.Save();
     }
 
     private void startPage_Click(object sender, RoutedEventArgs e)

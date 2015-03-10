@@ -134,11 +134,7 @@ namespace MyBook
         for (int p = 0; p < paragraphs.Count; p++)
         {
           BookParagraph par = new BookParagraph();
-          StringBuilder trim = new StringBuilder(paragraphs[p].InnerText);
-          trim = trim.Replace("\r", "");
-          trim = trim.Replace("\n", "");
-          trim = trim.Replace("\t", "");
-          par.Content = trim;
+          par.Load(paragraphs[p]);
           if (par.Content.Length > 0)
             Paragraphs.Add(par);
         }
@@ -148,14 +144,41 @@ namespace MyBook
       SourcePosition.ParagraphId = 0;
     }
 
+    // ugly ugly ugly
+    private XmlDocument doc;
+
+    void SaveCurrent()
+    {
+      // replace all paragraph by what we have now
+      XmlNode chapter = Chapters[SourcePosition.ChapterId];
+      chapter.RemoveAll();
+      for (int i = 0; i < Paragraphs.Count; i++)
+      {
+        XmlElement el = doc.CreateElement("Paragraph");
+        el.InnerText = Paragraphs[i].Content.ToString();
+      }
+    }
+
+    public int Save()
+    {
+      SaveCurrent();
+      doc = new XmlDocument();
+      XmlNode root = doc.CreateElement("BookContent");
+      doc.AppendChild(root);
+      for (int i = 0; i < Chapters.Count; i++)
+        doc.AppendChild(Chapters[i]);
+      doc.Save(_filepath);
+      return 0;
+    }
+
     public int Load()
     {
       Paragraphs = new List<BookParagraph>();
       // read the sample xml
-      XmlDocument doc = new XmlDocument();
+      doc = new XmlDocument();
       doc.Load(_filepath);
       XmlNodeList list = doc.SelectNodes("BookContent");
-      Chapters = list[SourcePosition.ParagraphId].SelectNodes("Chapter");
+      Chapters = list[0].SelectNodes("Chapter");
       Load(0);
       return Paragraphs.Count;
     }
@@ -164,17 +187,7 @@ namespace MyBook
     {
       _pages.Add(content);
     }
-    
-    public void Save()
-    {
-      StreamWriter writer = new StreamWriter(_filepath);
-      foreach (string a in _pages)
-      {
-        writer.Write(a);
-        writer.Write('\0');
-      }
-      writer.Close();
-    }
+
     public String GetPage(int page)
     {
       if (page >= _pages.Count)
@@ -189,6 +202,5 @@ namespace MyBook
         return true;
       return false;
     }
-
   }
 }
