@@ -14,13 +14,16 @@ namespace MyBook.BookContent
             set;
         }
 
+        public BookParagraph()
+        {
+          Content = new StringBuilder();
+        }
         public void Load(XmlNode paragraph)
         {
-          StringBuilder trim = new StringBuilder(paragraph.InnerText);
-          trim = trim.Replace("\r", "");
-          trim = trim.Replace("\n", "");
-          trim = trim.Replace("\t", "");
-          Content = trim;
+          Content = new StringBuilder (paragraph.InnerText);
+          Content = Content.Replace("\r", "");
+          Content = Content.Replace("\n", "");
+          Content = Content.Replace("\t", "");
         }
 
     }

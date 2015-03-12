@@ -99,11 +99,16 @@ namespace MyBook
 
     public void Remove(int start, int end)
     {
+      if (Paragraphs.Count <= SourcePosition.ParagraphId)
+      {
+        Paragraphs.Add(new BookParagraph());
+      }
       Paragraphs[SourcePosition.ParagraphId].Content.Remove(start, end - start);
     }
 
     public void Insert(int where, StringBuilder content)
     {
+      System.Diagnostics.Debug.Assert(Paragraphs.Count > SourcePosition.ParagraphId);
       Paragraphs[SourcePosition.ParagraphId].Content.Insert(where, content);
     }
 
@@ -128,17 +133,16 @@ namespace MyBook
     {
       XmlNode chapterNode = Chapters[chapter];
       Paragraphs.Clear();
-      for (int i = 0; i < chapterNode.ChildNodes.Count; i++)
+
+      XmlNodeList paragraphs = chapterNode.ChildNodes;
+      for (int p = 0; p < paragraphs.Count; p++)
       {
-        XmlNodeList paragraphs = chapterNode.SelectNodes("Content");
-        for (int p = 0; p < paragraphs.Count; p++)
-        {
-          BookParagraph par = new BookParagraph();
-          par.Load(paragraphs[p]);
-          if (par.Content.Length > 0)
-            Paragraphs.Add(par);
-        }
+        BookParagraph par = new BookParagraph();
+        par.Load(paragraphs[p]);
+        if (par.Content.Length > 0)
+          Paragraphs.Add(par);
       }
+      
       SourcePosition.ChapterId = chapter;
       SourcePosition.ContentPos = 0;
       SourcePosition.ParagraphId = 0;
@@ -156,17 +160,13 @@ namespace MyBook
       {
         XmlElement el = doc.CreateElement("Paragraph");
         el.InnerText = Paragraphs[i].Content.ToString();
+        chapter.AppendChild(el);
       }
     }
 
     public int Save()
     {
       SaveCurrent();
-      doc = new XmlDocument();
-      XmlNode root = doc.CreateElement("BookContent");
-      doc.AppendChild(root);
-      for (int i = 0; i < Chapters.Count; i++)
-        doc.AppendChild(Chapters[i]);
       doc.Save(_filepath);
       return 0;
     }

@@ -92,6 +92,11 @@ DependencyProperty.Register(
       set;
     }
 
+    public void UpdateCache()
+    {
+      UpdateCache(PositionStart, Next.PositionStart, new StringBuilder(Text));
+    }
+
     void UpdateCache(int start, int end, StringBuilder text)
     {
       Cache.Remove(start, end);
@@ -184,7 +189,7 @@ DependencyProperty.Register(
         int newStart = SplitText();
         if (RecalculateMode == false) // updating automatically, no new content was added, do not update the cache
         {
-          UpdateCache(PositionStart, Next.PositionStart, new StringBuilder(Text));
+          UpdateCache();
         }
         Next.PositionStart = PositionStart + newStart;
         int newPosition = CaretIndex;
