@@ -118,11 +118,9 @@ DependencyProperty.Register(
 
     public void Start()
     {
-      PositionStart = 0;
-      RecalculateMode = true;
-      int maxLen = Cache.GetMax(this);
-      Text = Cache.SubString(0, maxLen);
+      Next.PositionStart = Next.FindEnd(Cache);
       RecalculateMode = false;
+      NextPage();
     }
 
     // next page will be shown in the box
@@ -154,6 +152,7 @@ DependencyProperty.Register(
     // set up the cache so it would show the next chapter
     public void NextChapter()
     {
+      Prev.PositionStart = Next.PositionStart = PositionStart = 0;
       Cache.NextChapter();
       NextPage();
       UpdatePageContent();
@@ -162,6 +161,7 @@ DependencyProperty.Register(
     // set up the cache so it would show the next chapter
     public void PreviousChapter()
     {
+      Prev.PositionStart = Next.PositionStart = PositionStart = 0;
       Cache.PreviousChapter();
       NextPage();
       UpdatePageContent();
@@ -187,7 +187,8 @@ DependencyProperty.Register(
       if (needRecalc)
       {
         int newStart = SplitText();
-        if (RecalculateMode == false) // updating automatically, no new content was added, do not update the cache
+        // updating automatically, no new content was added, do not update the cache
+        if (RecalculateMode == false) 
         {
           UpdateCache();
         }
