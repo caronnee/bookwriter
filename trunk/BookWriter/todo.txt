@@ -3,24 +3,23 @@
 - enable listing mode once again FIXED
 - Make a setting folder where the books are stored DONE
 - create next chapter button DONE
-
-- on nextChapen, whole new chapter should be loaded
-- save book Button and functionality
-- Fix loading name of the chapter. Chapter should be like this:
-    **  (number)  MIDDLESCRREN  ** If the name of the chapter is too long fo the like, display just Ch(number) ( like internet explorer )
-- use the loaded settings, according to relative paths
-
-
+- on nextChapen, whole new chapter should be loaded DONE
+- save book Button and functionality DONE
 - set WRITE mode on/off DONE
+- if the right box is out od the space, add words to the left page, without focusing DONE
+- if the word is deleted, accordingly adjust the visible pages  DONE
+- open screen with multiple books Done
+
+- Fix loading name of the chapter. Chapter should be like this:
+    **  (number)  MIDDLESCRREN  ** If the name of the chapter is too long fo the like, display just Ch(number) ( like internet explorer optin in total comander )
+- chapter name should be saved
+
+- use the loaded settings, according to relative paths
 - distingush between paragraph by adding three stars to another line ( how to distinusj should go later to the config file)
 - move to another chapter when left is there and no further content is available
 - create chapter
 - start from the last viewed page
-
-- save the content
-
-- if the right box is out od the space, add words to the left page, without focusing DONE
-- if the word is deleted, accordingly adjust the visible pages  
+- add password protection
 - add page number in the middle of the page
 - copy and paste from word
 - enable to add image
@@ -29,9 +28,10 @@
 - show sections
 - enable to set bookmark
 - enable to list between boomark
-- set book as "finalized" ( open for reading only )
-- open screen with multiple books
-- text and the image must be reformatable to several screens ( could be picked, which sizes are supported )
+- set book as "finalized" ( open for reading only, "export" )
+- text and the image must be reformatable to several viwports ( could be picked, which sizes are supported )
+- implement find
+- implement replace
 
 -------------------------------------------------------
 support for Kindle? :P Why?:-o

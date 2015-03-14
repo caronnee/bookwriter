@@ -18,7 +18,7 @@ namespace MyBook
         {
             Text = cache.SubString(0, PositionStart);
             StringBuilder str = new StringBuilder();
-            int lines = Math.Min(LineCount, MaxLines);
+            int lines = Math.Min(LineCount, MaxLines)-1;
             for (int i = 0; i < lines; i++)
             {
                  str.Append( GetLineText(lines - i) );
