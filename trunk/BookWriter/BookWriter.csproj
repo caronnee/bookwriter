@@ -80,7 +80,7 @@
     <Compile Include="BookPageContent.xaml.cs">
       <DependentUpon>BookPageContent.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BookRead.xaml.cs">
+    <Compile Include="Pages\BookRead.xaml.cs">
       <DependentUpon>BookRead.xaml</DependentUpon>
     </Compile>
     <Compile Include="BookViewer.xaml.cs">
@@ -90,7 +90,7 @@
     <Compile Include="ManageSections.xaml.cs">
       <DependentUpon>ManageSections.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SettingPage.xaml.cs">
+    <Compile Include="Pages\SettingPage.xaml.cs">
       <DependentUpon>SettingPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ShelfBook.cs" />
@@ -99,11 +99,11 @@
     <Compile Include="TestLabel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BookWrite.xaml.cs">
+    <Compile Include="Pages\BookWrite.xaml.cs">
       <DependentUpon>BookWrite.xaml</DependentUpon>
     </Compile>
     <Compile Include="BorderTextBox.cs" />
-    <Compile Include="Intro.xaml.cs">
+    <Compile Include="Pages\Intro.xaml.cs">
       <DependentUpon>Intro.xaml</DependentUpon>
     </Compile>
     <Compile Include="LimitedTextBox.cs" />
@@ -166,7 +166,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="BookRead.xaml">
+    <Page Include="Pages\BookRead.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -174,11 +174,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="BookWrite.xaml">
+    <Page Include="Pages\BookWrite.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Intro.xaml">
+    <Page Include="Pages\Intro.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -186,14 +186,12 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SettingPage.xaml">
+    <Page Include="Pages\SettingPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Pages\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
