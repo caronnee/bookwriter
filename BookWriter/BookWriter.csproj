@@ -107,6 +107,10 @@
     <Compile Include="Pages\Write\Info\BookInfo.xaml.cs">
       <DependentUpon>BookInfo.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Write\Info\Cover.xaml.cs">
+      <DependentUpon>Cover.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Write\Info\CoverParagraph.cs" />
     <Compile Include="Pages\Write\IWrite.cs" />
     <Compile Include="Pages\Write\Picture\ImageSettings.xaml.cs">
       <DependentUpon>ImageSettings.xaml</DependentUpon>
@@ -207,6 +211,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\Write\Info\Cover.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\Write\Picture\ImageSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -232,9 +240,6 @@
     <Resource Include="Resources\workInProgress.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\testCover.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\About.jpg" />
   </ItemGroup>
   <ItemGroup>
@@ -245,7 +250,10 @@
     <Resource Include="Resources\Start.png" />
     <Resource Include="Resources\PrevChapter.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Backbone.png" />
+    <Resource Include="Resources\Cover.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

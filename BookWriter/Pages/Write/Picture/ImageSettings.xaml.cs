@@ -24,6 +24,7 @@ namespace MyBook.Pages.Write.Picture
     public ImageSettings()
     {
       InitializeComponent();
+      DataContext = new ImageParagraph();
     }
 
     private void loadImage_Click(object sender, RoutedEventArgs e)

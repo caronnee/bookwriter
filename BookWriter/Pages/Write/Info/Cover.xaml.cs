@@ -1,5 +1,4 @@
-﻿using MyBook.Pages.Write.Riddle;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,19 +15,13 @@ using System.Windows.Shapes;
 namespace MyBook.Pages.Write.Info
 {
   /// <summary>
-  /// Interaction logic for BookSettings.xaml
+  /// Interaction logic for Cover.xaml
   /// </summary>
-  public partial class BookInfo : UserControl
+  public partial class Cover : UserControl
   {
-    public BookInfo()
+    public Cover()
     {
       InitializeComponent();
-      DataContext = new CoverParagraph();
-    }
-
-    public void Load(CoverParagraph cover)
-    {
-      DataContext = cover;
     }
   }
 }

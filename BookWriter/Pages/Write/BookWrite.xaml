@@ -63,6 +63,7 @@
                         <RadioButton GroupName="contentSettingsGroup" DataContext="{Binding TextSettingsControl, ElementName=BookWriter}" Content="Text" Height="30" x:Name="insertTextButton" Checked="setViewboxContent" />
                         <RadioButton GroupName="contentSettingsGroup" DataContext="{Binding ImageSettingsControl, ElementName=BookWriter}" Content="Image" Height="30" x:Name="insertImageButton" Checked="setViewboxContent"/>
                         <RadioButton GroupName="contentSettingsGroup" DataContext="{Binding RiddleSettingsControl, ElementName=BookWriter}" Content="Riddle" Height="30" x:Name="insertRiddle" Checked="setViewboxContent"/>
+                        <RadioButton GroupName="contentSettingsGroup" DataContext="{Binding BookSettingsControl, ElementName=BookWriter}" Content="Settings" Height="30" x:Name="setInfo" Checked="setViewboxContent"/>
                         <Viewbox x:Name="writeSettings" >
                         </Viewbox>
                     </StackPanel>
