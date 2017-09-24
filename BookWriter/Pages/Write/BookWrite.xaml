@@ -42,8 +42,10 @@
         </Menu>
         <DockPanel DockPanel.Dock="Bottom">
             <Grid>
-                <ProgressBar Foreground="Bisque"  Minimum="0" Maximum="100" Value="75" />
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"><Run Text="Chaptername, page"/></TextBlock>
+                <ProgressBar x:Name="progressBar" Foreground="Bisque"  Minimum="0" Maximum="100" Value="75" />
+                <TextBlock x:Name="Status" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Run x:Name="progressText" Text="Chapter name, page"/>
+                </TextBlock>
             </Grid>
         </DockPanel>
 

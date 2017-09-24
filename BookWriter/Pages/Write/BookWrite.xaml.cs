@@ -181,6 +181,8 @@ DependencyProperty.Register(
         return;
       Cache.SetParagraph(workingPage.Position, content);
       workingPage.Position.ParagraphId++;
+      String str = String.Format("Page saved ( Chapter {0}/{1}, Page {2}/{3} )", workingPage.Position.ChapterId, Cache.NChapters(), workingPage.Position.ParagraphId,Cache.NPages());
+      progressText.Text = str;
     }
 
     private void showAboutClick(object sender, RoutedEventArgs e)

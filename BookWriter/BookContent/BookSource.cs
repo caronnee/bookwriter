@@ -48,6 +48,18 @@ namespace MyBook.BookContent
       return null;
     }
 
+    public int NPages()
+    {
+      return Paragraphs.Count;
+    }
+
+    public int NChapters()
+    {
+      if (Chapters == null)
+        return 1;
+      return Chapters.Count;
+    }
+
     public void SetParagraph(PositionDesc desc, IContent content)
     {
       if (desc.ParagraphId >= Paragraphs.Count)
