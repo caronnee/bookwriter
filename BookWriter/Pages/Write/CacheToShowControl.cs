@@ -12,20 +12,20 @@ namespace MyBook.Pages.Write
   class CacheToShowControl : CacheToControlConverter
   {
 
-    public Control Resolve(BookParagraph textParagraph, PositionDesc desc)
+    public Control Resolve(BookParagraph textParagraph)
     {
       WritingBox p = new WritingBox();
       p.IsReadOnly = true;
       return p;
     }
 
-    public Control Resolve(ImageParagraph imagesParagraph, PositionDesc desc)
+    public Control Resolve(ImageParagraph imagesParagraph)
     {
       // TODO label
       return null;
     }
 
-    public Control Resolve(object o, PositionDesc desc)
+    public Control Resolve(object o)
     {
       return null;
     }

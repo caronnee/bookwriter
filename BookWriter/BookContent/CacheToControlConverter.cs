@@ -10,12 +10,12 @@ namespace MyBook.BookContent
   public interface CacheToControlConverter
   {
     // what to do when type is tex
-    Control Resolve(BookParagraph textParagraph, PositionDesc desc);
+    Control Resolve(BookParagraph textParagraph);
 
     // What to do when type is image 
-    Control Resolve(ImageParagraph imagesParagraph, PositionDesc desc);
+    Control Resolve(ImageParagraph imagesParagraph);
 
     // Default resolve
-    Control Resolve(object o, PositionDesc desc);
+    Control Resolve(object o);
   }
 }

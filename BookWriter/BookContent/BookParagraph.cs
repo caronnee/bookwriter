@@ -9,13 +9,9 @@ namespace MyBook.BookContent
 {
   public class BookParagraph : IContent
   {
-    public IContent Create()
+    public Control Show(CacheToControlConverter converter)
     {
-      return new BookParagraph();
-    }
-    public Control Show(CacheToControlConverter converter, PositionDesc desc)
-    {
-      return converter.Resolve(this, desc);
+      return converter.Resolve(this);
     }
 
     public String Content

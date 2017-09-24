@@ -11,6 +11,8 @@ namespace MyBook.Pages.Write
   {
     public IContent Create(WritingBox box)
     {
+      if (box.Text.Length == 0)
+        return null;
       BookParagraph paragraph = new BookParagraph();
       paragraph.Content = box.Text.ToString();
       return paragraph;

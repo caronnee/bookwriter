@@ -55,6 +55,8 @@ namespace MyBook
     {
       // TODO through dependency
       IWrite c = Child as IWrite;
+      if (c == null)
+        return null;
       return c.Create();
     }
 
@@ -74,13 +76,6 @@ namespace MyBook
     {
       get;
       set;
-    }
-
-    public void Load(BookSource Cache)
-    {
-      IContent content = Cache.GetContent(Position);
-      if (content != null)
-        this.Child = content.Show(Converter, Position);
     }
 
     public void UpdateCache()

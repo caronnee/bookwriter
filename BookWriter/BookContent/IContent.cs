@@ -8,7 +8,6 @@ namespace MyBook.BookContent
 {
   public interface IContent
   {
-    Control Show(CacheToControlConverter converter, PositionDesc desc);
-    IContent Create();
+    Control Show(CacheToControlConverter converter);
   }
 }

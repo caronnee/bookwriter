@@ -9,7 +9,7 @@ namespace MyBook.Pages.Write.Riddle
 {
   class RiddleParagraph : IContent
   {
-    public Control Show(CacheToControlConverter converter, PositionDesc desc)
+    public Control Show(CacheToControlConverter converter)
     {
       return null;
     }

@@ -10,14 +10,9 @@ namespace MyBook.Pages.Write.Entity
 {
   public class ImageParagraph : Image, IContent
   {
-    public IContent Create()
+    public Control Show(CacheToControlConverter converter)
     {
-      return new ImageParagraph();
-    }
-
-    public Control Show(CacheToControlConverter converter, PositionDesc desc)
-    {
-      return converter.Resolve(this, desc);
+      return converter.Resolve(this);
     }
 
     public String ImageToLoad

@@ -96,7 +96,8 @@ DependencyProperty.Register(
 
     public void Show()
     {
-      workingPage.Load(Cache);
+      IContent content = Cache.GetContent(workingPage.Position);
+      workingPage.Child = content.Show(workingPage.Converter);
     }
 
     private BookSource Cache;
@@ -117,7 +118,6 @@ DependencyProperty.Register(
       // TODO continue form the last time
       workingPage.Position.Clear();
 
-      Show();
       // new book will a;lways have as first thing writing box
       insertTextButton.IsChecked = true; 
     }
@@ -133,7 +133,7 @@ DependencyProperty.Register(
     {
       //SourceText.Start();
       workingPage.Position.Clear();
-      workingPage.Load(Cache);
+      Show();
     }
 
     //public void MoveForward()
@@ -151,17 +151,6 @@ DependencyProperty.Register(
     //  Show();
     //}
    
-    private void InsertIntoCache(IContent c)
-    {
-      //if (workingPage.Position.Lenght <= 0)
-      //{
-      //  IContent t = Cache.Paragraphs.Last<IContent>();
-      //  t = c;
-      //  Show();
-      //  return;
-      //}
-      Cache.Paragraphs.Add(c);
-    }
 
 
     private void setViewboxContent(object sender, RoutedEventArgs e)
@@ -169,20 +158,29 @@ DependencyProperty.Register(
       RadioButton b = sender as RadioButton;
       Control control = (Control)b.DataContext;
       // when this changes, child of the writing page must be changes also
-      IContent c = control.DataContext as IContent;
       writeSettings.Child = control;
-      InsertIntoCache(c.Create());
-      Show();
+      // save the current child
+      SavePage();
+      IContent content = control.DataContext as IContent;
+      workingPage.Child = content.Show(workingPage.Converter);
     }
 
-    private void SavePageClick(object sender, RoutedEventArgs e)
+    private void SetPageDoneClick(object sender, RoutedEventArgs e)
+    {
+      SavePage();
+      Control c = writeSettings.Child as Control;
+      IContent content = c.DataContext as IContent;
+      workingPage.Child = content.Show(workingPage.Converter);
+    }
+
+    private void SavePage()
     {
       // create another working page of the same type
       IContent content = workingPage.Create();
-      Cache.Set(workingPage.Position, content);
-      content = content.Create();
-      InsertIntoCache(content);
-      Show();
+      if (content == null)
+        return;
+      Cache.SetParagraph(workingPage.Position, content);
+      workingPage.Position.ParagraphId++;
     }
 
     private void showAboutClick(object sender, RoutedEventArgs e)

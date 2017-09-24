@@ -34,7 +34,7 @@ namespace MyBook
     }
     public void Load(BookSource cache)
     {
-      this.Child = Converter.Resolve(cache,Position);
+      //this.Child = Converter.Resolve(cache,Position);
       //Text = cache.SubString(0, PositionStart);
       //StringBuilder str = new StringBuilder();
       //int lines = Math.Min(LineCount, MaxLines) - 1;

@@ -11,24 +11,22 @@ namespace MyBook.Pages.Write
 {
   public class CacheToWriteControl : CacheToControlConverter
   {
-
-    public Control Resolve(BookParagraph textParagraph, PositionDesc desc)
+    public Control Resolve(BookParagraph textParagraph)
     {
       WritingBox p = new WritingBox();
       p.IsReadOnly = false;
       p.Text = textParagraph.Content.ToString();
-      desc.ContentPos += p.Text.Length;
       return p;
     }
 
-    public Control Resolve(ImageParagraph imagesParagraph, PositionDesc desc)
+    public Control Resolve(ImageParagraph imagesParagraph)
     {
       Label l = new Label();
       l.Content = imagesParagraph;
       return l;
     }
 
-    public Control Resolve(object o, PositionDesc desc)
+    public Control Resolve(object o)
     {
       throw new NotImplementedException();
     }
