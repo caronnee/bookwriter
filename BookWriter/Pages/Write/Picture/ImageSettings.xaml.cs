@@ -1,4 +1,5 @@
-﻿using MyBook.Pages.Write.Entity;
+﻿using MyBook.BookContent;
+using MyBook.Pages.Write.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,12 +19,11 @@ namespace MyBook.Pages.Write.Picture
   /// <summary>
   /// Interaction logic for ImageSettings.xaml
   /// </summary>
-  public partial class ImageSettings : UserControl
+  public partial class ImageSettings : UserControl, IWrite
   {
     public ImageSettings()
     {
       InitializeComponent();
-      DataContext = new ImageParagraph();
     }
 
     private void loadImage_Click(object sender, RoutedEventArgs e)
@@ -38,6 +38,11 @@ namespace MyBook.Pages.Write.Picture
       String str = "file:///" + imageDialog.FileName;
       Uri uri = new Uri(str);
       im.Source = new BitmapImage(uri);
+    }
+
+    public IContent Create()
+    {
+      return new ImageParagraph();
     }
   }
 }

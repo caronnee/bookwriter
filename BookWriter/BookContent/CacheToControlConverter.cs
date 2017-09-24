@@ -7,7 +7,6 @@ using System.Windows.Controls;
 
 namespace MyBook.BookContent
 {
-  
   public interface CacheToControlConverter
   {
     // what to do when type is tex

@@ -10,6 +10,7 @@ using System.Globalization;
 using System.Windows;
 using System.ComponentModel;
 using MyBook.BookContent;
+using MyBook.Pages.Write;
 
 namespace MyBook
 {
@@ -48,6 +49,19 @@ namespace MyBook
     public WorkingPage()
     {
       Position = new PositionDesc();
+    }
+
+    public IContent Create()
+    {
+      // TODO through dependency
+      IWrite c = Child as IWrite;
+      return c.Create();
+    }
+
+    public ControlToCacheConverter CacheConverter
+    {
+      get;
+      set;
     }
 
     public CacheToControlConverter Converter

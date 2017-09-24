@@ -6,7 +6,6 @@
              xmlns:local="clr-namespace:MyBook"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
-         Width ="300"
       MaxLines ="{Binding Source={x:Static local:Settings.LineCount}}" 
       MinLines = "{Binding Source={x:Static local:Settings.LineCount}}" 
       TextWrapping ="Wrap"

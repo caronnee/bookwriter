@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyBook.BookContent;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,11 +18,18 @@ namespace MyBook.Pages.Write.Text
   /// <summary>
   /// Interaction logic for WritingBox.xaml
   /// </summary>
-  public partial class WritingBox : TextBox
+  public partial class WritingBox : TextBox, IWrite
   {
     public WritingBox()
     {
       InitializeComponent();
+    }
+
+    public IContent Create()
+    {
+      BookParagraph par = new BookParagraph();
+      par.Content = Text;
+      return par;
     }
   }
 }

@@ -101,10 +101,13 @@
     </Compile>
     <Compile Include="Pages\Write\CacheToShowControl.cs" />
     <Compile Include="Pages\Write\CacheToWriteControl.cs" />
+    <Compile Include="Pages\Write\ControlToCacheConverter.cs" />
+    <Compile Include="Pages\Write\ControltoCacheConverter_2.cs" />
     <Compile Include="Pages\Write\DataWriteContext\DataWriteContext.cs" />
     <Compile Include="Pages\Write\Info\BookInfo.xaml.cs">
       <DependentUpon>BookInfo.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Write\IWrite.cs" />
     <Compile Include="Pages\Write\Picture\ImageSettings.xaml.cs">
       <DependentUpon>ImageSettings.xaml</DependentUpon>
     </Compile>

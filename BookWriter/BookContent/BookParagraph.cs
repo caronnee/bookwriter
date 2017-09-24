@@ -18,7 +18,7 @@ namespace MyBook.BookContent
       return converter.Resolve(this, desc);
     }
 
-    public StringBuilder Content
+    public String Content
     {
       get;
       set;
@@ -26,12 +26,12 @@ namespace MyBook.BookContent
 
     public BookParagraph()
     {
-      Content = new StringBuilder();
+      Content = "";
     }
 
     public void Load(XmlNode paragraph)
     {
-      Content = new StringBuilder(paragraph.InnerText);
+      Content = paragraph.InnerText;
       Content = Content.Replace("\r", "");
       Content = Content.Replace("\n", "");
       Content = Content.Replace("\t", "");

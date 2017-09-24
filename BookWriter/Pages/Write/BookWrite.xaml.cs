@@ -175,12 +175,12 @@ DependencyProperty.Register(
       Show();
     }
 
-    private void donePageButton_Click_1(object sender, RoutedEventArgs e)
+    private void SavePageClick(object sender, RoutedEventArgs e)
     {
       // create another working page of the same type
-      IContent content = DataContext as IContent;
+      IContent content = workingPage.Create();
+      Cache.Set(workingPage.Position, content);
       content = content.Create();
-     // DataContext = content;
       InsertIntoCache(content);
       Show();
     }

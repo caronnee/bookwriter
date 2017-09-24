@@ -48,6 +48,13 @@ namespace MyBook.BookContent
       return null;
     }
 
+    public void Set(PositionDesc desc, IContent content)
+    {
+      if (desc.ParagraphId < Paragraphs.Count)
+        Paragraphs.Add(content);
+      else
+        Paragraphs[desc.ParagraphId] = content;
+    }
     //public string SubString(int start, int end)
     //{
     //  if (Paragraphs.Count == 0)
