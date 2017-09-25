@@ -13,7 +13,7 @@ namespace MyBook.Pages.Write
     {
       if (box.Text.Length == 0)
         return null;
-      BookParagraph paragraph = new BookParagraph();
+      TextParagraph paragraph = new TextParagraph();
       paragraph.Content = box.Text.ToString();
       return paragraph;
     }

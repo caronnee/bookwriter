@@ -2,9 +2,8 @@
 using MyBook.Pages.Write;
 using MyBook.Pages.Write.Bookmark;
 using MyBook.Pages.Write.DataWriteContext;
-using MyBook.Pages.Write.Entity;
 using MyBook.Pages.Write.Info;
-using MyBook.Pages.Write.Picture;
+using MyBook.Pages.Write.Imaging;
 using MyBook.Pages.Write.Riddle;
 using MyBook.Pages.Write.Text;
 using System;
@@ -165,6 +164,19 @@ DependencyProperty.Register(
       workingPage.Child = content.Show(workingPage.Converter);
     }
 
+    private void ShowProgress(String desc)
+    {
+      String str = String.Format("{4} ( Chapter {0}/{1}, Page {2}/{3} )", workingPage.Position.ChapterId + 1, Cache.NChapters(), workingPage.Position.ParagraphId, Cache.NPages(), desc);
+      progressText.Text = str;
+    }
+
+    private void NewChapterClick(object sender, RoutedEventArgs e)
+    {
+      workingPage.Position.ChapterId = Cache.InsertChapter(workingPage.Position.ChapterId);
+      workingPage.Position.ParagraphId = 0;
+      ShowProgress("Chapter created");
+    }
+
     private void SetPageDoneClick(object sender, RoutedEventArgs e)
     {
       SavePage();
@@ -181,8 +193,7 @@ DependencyProperty.Register(
         return;
       Cache.SetParagraph(workingPage.Position, content);
       workingPage.Position.ParagraphId++;
-      String str = String.Format("Page saved ( Chapter {0}/{1}, Page {2}/{3} )", workingPage.Position.ChapterId, Cache.NChapters(), workingPage.Position.ParagraphId,Cache.NPages());
-      progressText.Text = str;
+      ShowProgress("Page saved");
     }
 
     private void showAboutClick(object sender, RoutedEventArgs e)

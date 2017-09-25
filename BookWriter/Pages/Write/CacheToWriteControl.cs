@@ -1,5 +1,5 @@
 ﻿using MyBook.BookContent;
-using MyBook.Pages.Write.Entity;
+using MyBook.Pages.Write.Imaging;
 using MyBook.Pages.Write.Text;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ namespace MyBook.Pages.Write
 {
   public class CacheToWriteControl : CacheToControlConverter
   {
-    public Control Resolve(BookParagraph textParagraph)
+    public Control Resolve(TextParagraph textParagraph)
     {
       WritingBox p = new WritingBox();
       p.IsReadOnly = false;

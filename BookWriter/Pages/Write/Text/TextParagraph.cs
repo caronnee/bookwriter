@@ -1,17 +1,25 @@
-﻿using System;
+﻿using MyBook.BookContent;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Controls;
 using System.Xml;
 
-namespace MyBook.BookContent
+namespace MyBook.Pages.Write.Text
 {
-  public class BookParagraph : IContent
+  public class TextParagraph : IContent
   {
     public Control Show(CacheToControlConverter converter)
     {
       return converter.Resolve(this);
+    }
+
+    public XmlNode ToXmlNode(XmlDocument doc)
+    {
+      XmlElement node = doc.CreateElement(XmlNodeNames.ParagraphName);
+      node.InnerText = Content;
+      return node;
     }
 
     public String Content
@@ -20,7 +28,7 @@ namespace MyBook.BookContent
       set;
     }
 
-    public BookParagraph()
+    public TextParagraph()
     {
       Content = "";
     }

@@ -6,9 +6,23 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Windows.Controls;
+using MyBook.Pages.Write.Text;
 
 namespace MyBook.BookContent
 {
+  static class XmlNodeNames
+  {
+    static public String BookRoot = "Book";
+    static public String ChapterName = "Chapter";
+    static public String CoverName = "Cover";
+    static public String ChapterParentName = "Chapters";
+
+    // content types
+    static public String ParagraphName = "Paragraph";
+    static public String ImageName = "Image";
+    static public String RiddleName = "Riddle";
+  }
+
   public class BookSource
   {
     private String _filepath; // first go offsets
@@ -17,12 +31,21 @@ namespace MyBook.BookContent
     {
       // init
       _filepath = name;
-      doc = new XmlDocument();
       Paragraphs = new List<IContent>();
-
+      
       // load from file
       if (File.Exists(name))
         Load();
+      else{
+        doc = new XmlDocument();
+        XmlElement p = doc.CreateElement(XmlNodeNames.BookRoot);
+        doc.AppendChild(p);
+        XmlElement el = doc.CreateElement(XmlNodeNames.ChapterParentName);
+        p.AppendChild(el);
+        XmlNode node = doc.CreateElement(XmlNodeNames.ChapterName);
+        el.AppendChild(node);
+        Init(0);
+      }
     }
 
     public XmlNodeList Chapters
@@ -53,10 +76,21 @@ namespace MyBook.BookContent
       return Paragraphs.Count;
     }
 
+    public int InsertChapter( int oldChapter)
+    {
+      //Save paragraphs to the Chapter
+
+      // Load this chapter
+      XmlElement element = doc.CreateElement(XmlNodeNames.ChapterName);
+      XmlNode p = Chapters[oldChapter].ParentNode;
+      p.InsertAfter(element, Chapters[oldChapter]);
+      oldChapter++;
+      Load(oldChapter);
+      return oldChapter;
+    }
+
     public int NChapters()
     {
-      if (Chapters == null)
-        return 1;
       return Chapters.Count;
     }
 
@@ -99,20 +133,33 @@ namespace MyBook.BookContent
     //  Load(SourcePosition.ChapterId - 1);
     //}
 
+    XmlNode CurrentChapter
+    {
+      get;
+      set;
+    }
+
     private void Load(int chapter)
     {
-      XmlNode chapterNode = Chapters[chapter];
+      // save to the xml
+      CurrentChapter.RemoveAll();
+      for (int i = 0; i < Paragraphs.Count; i++)
+      {
+        XmlNode node = Paragraphs[i].ToXmlNode(doc);
+        CurrentChapter.AppendChild(node);
+      }
       Paragraphs.Clear();
 
-      XmlNodeList paragraphs = chapterNode.ChildNodes;
+      Init(chapter);
+
+      XmlNodeList paragraphs = CurrentChapter.ChildNodes;
       for (int p = 0; p < paragraphs.Count; p++)
       {
-        BookParagraph par = new BookParagraph();
+        TextParagraph par = new TextParagraph();
         par.Load(paragraphs[p]);
         if (par.Content.Length > 0)
           Paragraphs.Add(par);
       }
-      
     }
 
     // ugly ugly ugly
@@ -138,13 +185,21 @@ namespace MyBook.BookContent
       return 0;
     }
 
+    public void Init(int i)
+    {
+      XmlNodeList list = doc.SelectNodes(XmlNodeNames.BookRoot);
+      list = list[0].SelectNodes(XmlNodeNames.ChapterParentName);
+      Chapters = list[0].SelectNodes(XmlNodeNames.ChapterName);
+      CurrentChapter = Chapters[i];
+    }
     public int Load()
     {
       Paragraphs = new List<IContent>();
       // read the sample xml
       doc.Load(_filepath);
-      XmlNodeList list = doc.SelectNodes("BookContent");
-      Chapters = list[0].SelectNodes("Chapters")[0].SelectNodes("Chapter");
+
+      // TODO last bookmark
+      Init(0);
       Load(0);
       return Paragraphs.Count;
     }

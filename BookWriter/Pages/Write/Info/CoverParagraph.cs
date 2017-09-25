@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Controls;
+using System.Xml;
 
 namespace MyBook.Pages.Write.Info
 {
@@ -24,6 +25,12 @@ namespace MyBook.Pages.Write.Info
     public Control Show(CacheToControlConverter converter)
     {
       return new Cover();
+    }
+
+    public XmlNode ToXmlNode(XmlDocument doc)
+    {
+      XmlElement node = doc.CreateElement(XmlNodeNames.CoverName);
+      return node;
     }
   }
 }

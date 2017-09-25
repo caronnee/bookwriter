@@ -89,7 +89,8 @@
             </DockPanel>
 
             <src:WorkingPage  Grid.Column="1" x:Name="workingPage" Grid.ColumnSpan="2"/>
-            <Button x:Name="donePageButton" Grid.Row="1" Grid.Column="1" Click="SetPageDoneClick" Content="SetParagraph page as done" Grid.ColumnSpan="2" />
+            <Button x:Name="newChapterButton" Grid.Row="1" Grid.Column="1" Click="NewChapterClick" Content="New chapter" />
+            <Button x:Name="donePageButton" Grid.Row="1" Grid.Column="2" Click="SetPageDoneClick" Content="New page"  />
         </Grid>
     </DockPanel>
 </UserControl>

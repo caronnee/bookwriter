@@ -23,7 +23,7 @@ namespace MyBook.Pages.Write.Text
     public TextSettings()
     {
       InitializeComponent();
-      DataContext = new BookParagraph();
+      DataContext = new TextParagraph();
     }
   }
 }
