@@ -36,14 +36,18 @@
     <DockPanel Background="#43B49625">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Back"/>
-            <MenuItem Header="Save"/>
+            <MenuItem Header="Save" Click="SaveBook"/>
             <MenuItem Header="Manual - TODO" />
             <MenuItem Header="About" Click="showAboutClick"/>
         </Menu>
         <DockPanel DockPanel.Dock="Bottom">
             <Grid>
-                <ProgressBar x:Name="progressBar" Foreground="Bisque"  Minimum="0" Maximum="100" Value="75" />
-                <TextBlock x:Name="Status" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="127*"/>
+                    <ColumnDefinition Width="94*"/>
+                </Grid.ColumnDefinitions>
+                <ProgressBar x:Name="progressBar" Foreground="Bisque"  Minimum="0" Maximum="100" Value="75" Grid.ColumnSpan="2" />
+                <TextBlock x:Name="Status" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="57,0,56,0">
                     <Run x:Name="progressText" Text="Chapter name, page"/>
                 </TextBlock>
             </Grid>

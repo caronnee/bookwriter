@@ -30,7 +30,7 @@ namespace MyBook
       }
     }
 
-    public string BooksFolder
+    public static String BooksFolder
     {
       get;
       set;

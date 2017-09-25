@@ -47,7 +47,7 @@ namespace MyBook
       InitializeComponent();
       //// TODO change this to dynamically load the books
       //string name = TestHelper.CreateDummyBook();
-      string folder = Settings.BookSetting.BooksFolder;
+      String folder = Settings.BooksFolder;
       try
       {
         string[] strings = Directory.GetFiles(folder, "*.book");

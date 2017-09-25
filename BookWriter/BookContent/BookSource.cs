@@ -25,17 +25,14 @@ namespace MyBook.BookContent
 
   public class BookSource
   {
-    private String _filepath; // first go offsets
-
     public BookSource(String name)
     {
       // init
-      _filepath = name;
       Paragraphs = new List<IContent>();
       
       // load from file
       if (File.Exists(name))
-        Load();
+        Load(name);
       else{
         doc = new XmlDocument();
         XmlElement p = doc.CreateElement(XmlNodeNames.BookRoot);
@@ -178,10 +175,10 @@ namespace MyBook.BookContent
       //}
     }
 
-    public int Save()
+    public int Save(String name)
     {
-      SaveCurrent();
-      doc.Save(_filepath);
+      String fullpath = Settings.BooksFolder + name;
+      doc.Save(fullpath);
       return 0;
     }
 
@@ -192,11 +189,11 @@ namespace MyBook.BookContent
       Chapters = list[0].SelectNodes(XmlNodeNames.ChapterName);
       CurrentChapter = Chapters[i];
     }
-    public int Load()
+    public int Load(String filepath)
     {
       Paragraphs = new List<IContent>();
       // read the sample xml
-      doc.Load(_filepath);
+      doc.Load(filepath);
 
       // TODO last bookmark
       Init(0);
@@ -206,9 +203,9 @@ namespace MyBook.BookContent
 
 
     // Check if this book can be used
-    public bool IsValid(int flags = 0)
+    public bool IsValid(String filepath,int flags = 0)
     {
-      if (System.IO.File.Exists(_filepath))
+      if (System.IO.File.Exists(filepath))
         return true;
       return false;
     }

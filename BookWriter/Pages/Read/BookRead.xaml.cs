@@ -28,7 +28,7 @@ namespace MyBook
         public BookRead(String name)
         {
           _source = new BookSource(name); // TODO check the correct syntax of the file
-          _source.Load();
+          _source.Load(name);
           InitializeComponent();
 
           _turnPage = (Storyboard)this.Resources["TurnPage"];
@@ -41,10 +41,7 @@ namespace MyBook
             
             // System.Diagnostics.Debug.Assert(o!=null);
         }
-        public bool IsValid()
-        {
-          return _source.IsValid();
-        }
+
 
         private void TestButton_Click(object sender, RoutedEventArgs e)
         {

@@ -123,6 +123,7 @@ DependencyProperty.Register(
 
     private void SaveBook(object sender, RoutedEventArgs e)
     {
+      Cache.Save(BookSettingsControl.author.Text);
       // export to XML format. DTD
       //SourceText.UpdateCache();
       //SourceText.Cache.Save();
@@ -195,6 +196,7 @@ DependencyProperty.Register(
       workingPage.Position.ParagraphId++;
       ShowProgress("Page saved");
     }
+
 
     private void showAboutClick(object sender, RoutedEventArgs e)
     {
