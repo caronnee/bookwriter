@@ -43,6 +43,7 @@ namespace MyBook
     public void LoadWriteBook(String str, int flags)
     {
       BookWrite workBook = new BookWrite(str);
+      workBook.Back += ShowShelf;
       Content = workBook;
       return;
     }

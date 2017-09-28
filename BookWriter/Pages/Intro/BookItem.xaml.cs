@@ -24,10 +24,5 @@ namespace MyBook.Pages.Intro
       InitializeComponent();
     }
 
-    public String Filename
-    {
-      get;
-      set;
-    }
   }
 }

@@ -96,7 +96,8 @@ DependencyProperty.Register(
     public void Show()
     {
       IContent content = Cache.GetContent(workingPage.Position);
-      workingPage.Child = content.Show(workingPage.Converter);
+      if ( content != null)
+        workingPage.Child = content.Show(workingPage.Converter);
     }
 
     private BookSource Cache;
@@ -118,7 +119,8 @@ DependencyProperty.Register(
       workingPage.Position.Clear();
 
       // new book will a;lways have as first thing writing box
-      insertTextButton.IsChecked = true; 
+      insertTextButton.IsChecked = true;
+      Show();
     }
 
     public delegate void BackHandler();

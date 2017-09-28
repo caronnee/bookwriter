@@ -155,7 +155,6 @@ namespace MyBook.BookContent
 
     private void Load(int chapter)
     {
-      SaveChapter(); 
       Paragraphs.Clear();
 
       Init(chapter);

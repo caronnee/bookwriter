@@ -25,15 +25,16 @@ namespace MyBook
     private String GetTitle(String fullpath)
     {
       String ext = fullpath;
-      int start = ext.LastIndexOf('\\');
+      int start = ext.LastIndexOf('\\')+1;
       int end = ext.LastIndexOf('.');
       return ext.Substring(start, end - start);
     }
+
     private Control CreateBookControl(string name)
     {
       BookItem b = new BookItem();
       //Style s = TryFindResource("Rotated") as Style;
-      b.Filename = name;
+      b.buttonLoader.DataContext = name;
       //b.Style = s;
       b.buttonLoader.Content = GetTitle(name);
       b.buttonLoader.Click += new RoutedEventHandler(Load);
@@ -44,7 +45,7 @@ namespace MyBook
     {
       BookItem b = new BookItem();
       //Style s = TryFindResource("Rotated") as Style;
-      b.Filename = "New Book";
+      
       //b.Style = s;
       b.buttonLoader.Content = "New book";     
       b.buttonLoader.Click += new RoutedEventHandler(CreateNew);
@@ -66,6 +67,7 @@ namespace MyBook
       }
       catch (Exception)
       {
+        System.Diagnostics.Debug.Assert(false);
       }
       Control createButton = CreateNewBookControl();
       this.Shelf.Children.Add(createButton);
@@ -91,9 +93,10 @@ namespace MyBook
     {
       if (LoadBook != null)
       {
-        BookItem ctrl = sender as BookItem;
+        Button ctrl = sender as Button;
         int typeFlags = writeButton.IsChecked == true ? 1 : 0;
-        LoadBook(ctrl.Filename, typeFlags); // name of the book
+        String filename = ctrl.DataContext as String;
+        LoadBook(filename, typeFlags); // name of the book
       }
     }
 
