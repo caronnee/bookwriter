@@ -14,7 +14,7 @@
       </Setter>
     </Style>
   </UserControl.Resources>
-    <DockPanel Background="BurlyWood" >
+    <DockPanel>
     <DockPanel DockPanel.Dock="Bottom">
       <RadioButton GroupName="BookModes" Style="{StaticResource {x:Type ToggleButton}}" Name="readButton" Content="Read" HorizontalAlignment="Left" />
       <RadioButton GroupName="BookModes" Style="{StaticResource {x:Type ToggleButton}}" Name="writeButton" Content="Write" HorizontalAlignment="Left" IsChecked="True" />
@@ -25,8 +25,8 @@
         <Button x:Name="settingButton" Content="Settings" Click="settingButton_Click" />
       </DockPanel>
     </DockPanel>
-    <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" >
-      <StackPanel x:Name="Shelf" Orientation="Horizontal" HorizontalAlignment="Center">
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" >
+      <StackPanel x:Name="Shelf" HorizontalAlignment="Center">
 
       </StackPanel>
     </ScrollViewer>

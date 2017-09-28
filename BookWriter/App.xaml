@@ -1,7 +1,8 @@
 ﻿<Application x:Class="Minis.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             StartupUri="pages/Intro/BookViewer.xaml">
+             StartupUri="pages/Intro/BookViewer.xaml"
+             >
     <Application.Resources>
         <BitmapImage x:Key="DefaultCover" UriSource="/resources/workinprogress.png" />
     </Application.Resources>

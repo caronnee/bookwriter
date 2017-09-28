@@ -66,6 +66,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BookContent\Constants.cs" />
+    <Compile Include="Pages\Intro\BookItem.xaml.cs">
+      <DependentUpon>BookItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Write\Text\TextParagraph.cs" />
     <Compile Include="BookContent\IContent.cs" />
     <Compile Include="BookContent\CacheToControlConverter.cs" />
@@ -84,7 +87,6 @@
       <DependentUpon>SettingPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Settings\Settings.cs" />
-    <Compile Include="Pages\Intro\ShelfBook.cs" />
     <Compile Include="BookContent\BookSource.cs" />
     <Compile Include="Pages\Read\TestLabel.cs" />
     <Compile Include="AboutBox.xaml.cs">
@@ -184,6 +186,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Pages\Intro\BookItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\Read\BookPageContent.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -254,6 +260,10 @@
   <ItemGroup>
     <Resource Include="Resources\Backbone.png" />
     <Resource Include="Resources\Cover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Edit.png" />
+    <Resource Include="Resources\Remove.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

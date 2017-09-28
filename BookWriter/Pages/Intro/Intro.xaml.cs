@@ -1,4 +1,5 @@
 ﻿using MyBook.BookContent;
+using MyBook.Pages.Intro;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,47 +22,52 @@ namespace MyBook
   /// </summary>
   public partial class Intro : UserControl
   {
-    private Button CreateBookControl(string name)
+    private String GetTitle(String fullpath)
     {
-      ShelfBook b = new ShelfBook();
+      String ext = fullpath;
+      int start = ext.LastIndexOf('\\');
+      int end = ext.LastIndexOf('.');
+      return ext.Substring(start, end - start);
+    }
+    private Control CreateBookControl(string name)
+    {
+      BookItem b = new BookItem();
       //Style s = TryFindResource("Rotated") as Style;
       b.Filename = name;
       //b.Style = s;
-      b.Content = name;
-      b.Click += new RoutedEventHandler(Load);
+      b.buttonLoader.Content = GetTitle(name);
+      b.buttonLoader.Click += new RoutedEventHandler(Load);
       return b;
     }
 
-    private Button CreateNewBookControl()
+    private Control CreateNewBookControl()
     {
-      ShelfBook b = new ShelfBook();
-      Style s = TryFindResource("Rotated") as Style;
+      BookItem b = new BookItem();
+      //Style s = TryFindResource("Rotated") as Style;
       b.Filename = "New Book";
-      b.Style = s;
-      b.Content = b.Filename;
-      b.Click += new RoutedEventHandler(CreateNew);
+      //b.Style = s;
+      b.buttonLoader.Content = "New book";     
+      b.buttonLoader.Click += new RoutedEventHandler(CreateNew);
       return b;
     }
     
     public Intro()
     {
       InitializeComponent();
-      //// TODO change this to dynamically load the books
-      //string name = TestHelper.CreateDummyBook();
       String folder = Settings.BooksFolder;
       try
       {
         string[] strings = Directory.GetFiles(folder, Constants.SearchExt);
         foreach (string name in strings)
         {
-          Button b = CreateBookControl(name);
+          Control b = CreateBookControl(name);
           this.Shelf.Children.Add(b);
         }
       }
       catch (Exception)
       {
       }
-      Button createButton = CreateNewBookControl();
+      Control createButton = CreateNewBookControl();
       this.Shelf.Children.Add(createButton);
     }
 
@@ -76,7 +82,7 @@ namespace MyBook
 
     private void CreateNew(object sender, RoutedEventArgs e)
     {
-      ShelfBook ctrl = sender as ShelfBook;
+      BookItem ctrl = sender as BookItem;
       int typeFlags = writeButton.IsChecked == true ? 1 : 0;
       NewBook(); 
     }
@@ -85,7 +91,7 @@ namespace MyBook
     {
       if (LoadBook != null)
       {
-        ShelfBook ctrl = sender as ShelfBook;
+        BookItem ctrl = sender as BookItem;
         int typeFlags = writeButton.IsChecked == true ? 1 : 0;
         LoadBook(ctrl.Filename, typeFlags); // name of the book
       }
@@ -96,7 +102,7 @@ namespace MyBook
       if (OnSettingsPage == null)
         return;
 
-      ShelfBook ctrl = sender as ShelfBook;
+      BookItem ctrl = sender as BookItem;
       int typeFlags = writeButton.IsChecked == true ? 1 : 0;
       OnSettingsPage(); // name of the book
     }

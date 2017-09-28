@@ -28,21 +28,27 @@ namespace MyBook.BookContent
     public BookSource(String name)
     {
       // init
+      doc = new XmlDocument();
       Paragraphs = new List<IContent>();
       
       // load from file
       if (File.Exists(name))
+      {
         Load(name);
+        
+      }
       else{
-        doc = new XmlDocument();
         XmlElement p = doc.CreateElement(XmlNodeNames.BookRoot);
         doc.AppendChild(p);
         XmlElement el = doc.CreateElement(XmlNodeNames.ChapterParentName);
         p.AppendChild(el);
         XmlNode node = doc.CreateElement(XmlNodeNames.ChapterName);
         el.AppendChild(node);
-        Init(0);
       }
+
+      // TODO last bookmark
+      Init(0);
+      Load(0);
     }
 
     public XmlNodeList Chapters
@@ -146,6 +152,7 @@ namespace MyBook.BookContent
         CurrentChapter.AppendChild(node);
       }
     }
+
     private void Load(int chapter)
     {
       SaveChapter(); 
@@ -168,11 +175,11 @@ namespace MyBook.BookContent
 
     public int Save(String name)
     {
-      String fullpath = Settings.BooksFolder + "\\" + name + Constants.Extension;
       if (!Directory.Exists(Settings.BooksFolder))
       {
         Directory.CreateDirectory(Settings.BooksFolder);
       }
+      String fullpath = Settings.BooksFolder + "\\" + name + Constants.Extension;
       doc.Save(fullpath);
       return 0;
     }
@@ -184,25 +191,19 @@ namespace MyBook.BookContent
       Chapters = list[0].SelectNodes(XmlNodeNames.ChapterName);
       CurrentChapter = Chapters[i];
     }
-    public int Load(String filepath)
+
+    public void Load(String filepath)
     {
       Paragraphs = new List<IContent>();
       // read the sample xml
       doc.Load(filepath);
 
-      // TODO last bookmark
-      Init(0);
-      Load(0);
-      return Paragraphs.Count;
     }
-
-
+    
     // Check if this book can be used
     public bool IsValid(String filepath,int flags = 0)
     {
-      if (System.IO.File.Exists(filepath))
-        return true;
-      return false;
+      return (System.IO.File.Exists(filepath));
     }
   }
 }
