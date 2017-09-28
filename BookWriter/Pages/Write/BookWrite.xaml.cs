@@ -121,13 +121,23 @@ DependencyProperty.Register(
       insertTextButton.IsChecked = true; 
     }
 
-    private void SaveBook_Click(object sender, RoutedEventArgs e)
+    public delegate void BackHandler();
+    public event BackHandler Back;
+
+    private void Back_Click(object sender, RoutedEventArgs e)
+    {
+      SaveBook();
+      if (Back != null)
+        Back();
+    }
+
+    private void SaveBook()
     {
       SavePage();
       Cache.SaveChapter();
-      if (BookSettingsControl.bookName.Text.Length == 0 )
+      if (BookSettingsControl.bookName.Text.Length == 0)
       {
-        MessageBox.Show("Name of the book is not set! Book not saved","Error");
+        MessageBox.Show("Name of the book is not set! Book not saved", "Error");
         return;
       }
       Cache.Save(BookSettingsControl.bookName.Text);
@@ -135,6 +145,11 @@ DependencyProperty.Register(
       //SourceText.UpdateCache();
       //SourceText.Cache.Save();
       ShowProgress("Book saved");
+    }
+
+    private void SaveBook_Click(object sender, RoutedEventArgs e)
+    {
+      SaveBook();
     }
 
     private void startPage_Click(object sender, RoutedEventArgs e)
