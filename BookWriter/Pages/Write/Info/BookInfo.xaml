@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MyBook"
              mc:Ignorable="d" 
              >
     <Grid>
@@ -19,8 +20,9 @@
         <Label Grid.Row="1" Grid.Column="0">Author</Label>
         <Label Grid.Row="2" Grid.Column="0">Tag</Label>
         
-        <TextBox x:Name="author" Grid.Row="0" Grid.Column="1">Unknown</TextBox>
-        <TextBox Grid.Row="1" Grid.Column="1">Unknown</TextBox>
+        <TextBox x:Name="bookName" Grid.Row="0" Grid.Column="1"></TextBox>
+        <Label x:Name="author" Grid.Row="1" Grid.Column="1"
+                 Content="{Binding Source={x:Static local:Settings.Author}}" ></Label>
         <ComboBox Grid.Row="2" Grid.Column="1" SelectedIndex="0">
             <ComboBoxItem>Sci-fi</ComboBoxItem>
             <ComboBoxItem>Historical</ComboBoxItem>

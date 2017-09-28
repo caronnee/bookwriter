@@ -27,6 +27,8 @@ namespace MyBook.Pages.Write.Text
 
     public IContent Create()
     {
+      if (Text.Length == 0)
+        return null;
       TextParagraph par = new TextParagraph();
       par.Content = Text;
       return par;

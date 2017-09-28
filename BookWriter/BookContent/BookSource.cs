@@ -136,7 +136,7 @@ namespace MyBook.BookContent
       set;
     }
 
-    private void Load(int chapter)
+    public void SaveChapter()
     {
       // save to the xml
       CurrentChapter.RemoveAll();
@@ -145,6 +145,10 @@ namespace MyBook.BookContent
         XmlNode node = Paragraphs[i].ToXmlNode(doc);
         CurrentChapter.AppendChild(node);
       }
+    }
+    private void Load(int chapter)
+    {
+      SaveChapter(); 
       Paragraphs.Clear();
 
       Init(chapter);
@@ -159,25 +163,16 @@ namespace MyBook.BookContent
       }
     }
 
-    // ugly ugly ugly
+    // Root document
     private XmlDocument doc;
-
-    void SaveCurrent()
-    {
-      // replace all paragraph by what we have now
-      //XmlNode chapter = Chapters[SourcePosition.ChapterId];
-      //chapter.RemoveAll();
-      //for (int i = 0; i < Paragraphs.Count; i++)
-      //{
-      //  XmlElement el = doc.CreateElement("Paragraph");
-      //  el.InnerText = Paragraphs[i].Content.ToString();
-      //  chapter.AppendChild(el);
-      //}
-    }
 
     public int Save(String name)
     {
-      String fullpath = Settings.BooksFolder + name;
+      String fullpath = Settings.BooksFolder + "\\" + name + Constants.Extension;
+      if (!Directory.Exists(Settings.BooksFolder))
+      {
+        Directory.CreateDirectory(Settings.BooksFolder);
+      }
       doc.Save(fullpath);
       return 0;
     }

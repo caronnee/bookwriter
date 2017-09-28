@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyBook.BookContent;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,9 +24,9 @@ namespace MyBook
     private Button CreateBookControl(string name)
     {
       ShelfBook b = new ShelfBook();
-      Style s = TryFindResource("Rotated") as Style;
+      //Style s = TryFindResource("Rotated") as Style;
       b.Filename = name;
-      b.Style = s;
+      //b.Style = s;
       b.Content = name;
       b.Click += new RoutedEventHandler(Load);
       return b;
@@ -50,7 +51,7 @@ namespace MyBook
       String folder = Settings.BooksFolder;
       try
       {
-        string[] strings = Directory.GetFiles(folder, "*.book");
+        string[] strings = Directory.GetFiles(folder, Constants.SearchExt);
         foreach (string name in strings)
         {
           Button b = CreateBookControl(name);

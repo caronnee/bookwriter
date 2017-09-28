@@ -65,6 +65,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BookContent\Constants.cs" />
     <Compile Include="Pages\Write\Text\TextParagraph.cs" />
     <Compile Include="BookContent\IContent.cs" />
     <Compile Include="BookContent\CacheToControlConverter.cs" />

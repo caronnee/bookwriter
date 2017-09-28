@@ -121,12 +121,20 @@ DependencyProperty.Register(
       insertTextButton.IsChecked = true; 
     }
 
-    private void SaveBook(object sender, RoutedEventArgs e)
+    private void SaveBook_Click(object sender, RoutedEventArgs e)
     {
-      Cache.Save(BookSettingsControl.author.Text);
+      SavePage();
+      Cache.SaveChapter();
+      if (BookSettingsControl.bookName.Text.Length == 0 )
+      {
+        MessageBox.Show("Name of the book is not set! Book not saved","Error");
+        return;
+      }
+      Cache.Save(BookSettingsControl.bookName.Text);
       // export to XML format. DTD
       //SourceText.UpdateCache();
       //SourceText.Cache.Save();
+      ShowProgress("Book saved");
     }
 
     private void startPage_Click(object sender, RoutedEventArgs e)
@@ -134,6 +142,7 @@ DependencyProperty.Register(
       //SourceText.Start();
       workingPage.Position.Clear();
       Show();
+      ShowProgress("Start page");
     }
 
     //public void MoveForward()
@@ -160,14 +169,19 @@ DependencyProperty.Register(
       // when this changes, child of the writing page must be changes also
       writeSettings.Child = control;
       // save the current child
-      SavePage();
+      workingPage.Position.ParagraphId+=SavePage();
       IContent content = control.DataContext as IContent;
       workingPage.Child = content.Show(workingPage.Converter);
     }
 
     private void ShowProgress(String desc)
     {
-      String str = String.Format("{4} ( Chapter {0}/{1}, Page {2}/{3} )", workingPage.Position.ChapterId + 1, Cache.NChapters(), workingPage.Position.ParagraphId, Cache.NPages(), desc);
+      String str = String.Format("{4} ( Chapter {0}/{1}, Page {2}/{3} )", 
+        workingPage.Position.ChapterId + 1, 
+        Cache.NChapters(), 
+        workingPage.Position.ParagraphId+1, 
+        Cache.NPages()+1, 
+        desc );
       progressText.Text = str;
     }
 
@@ -175,28 +189,30 @@ DependencyProperty.Register(
     {
       workingPage.Position.ChapterId = Cache.InsertChapter(workingPage.Position.ChapterId);
       workingPage.Position.ParagraphId = 0;
+      Control c = writeSettings.Child as Control;
+      IContent content = c.DataContext as IContent;
+      workingPage.Child = content.Show(workingPage.Converter);
       ShowProgress("Chapter created");
     }
 
     private void SetPageDoneClick(object sender, RoutedEventArgs e)
     {
-      SavePage();
+      workingPage.Position.ParagraphId+=SavePage();
       Control c = writeSettings.Child as Control;
       IContent content = c.DataContext as IContent;
       workingPage.Child = content.Show(workingPage.Converter);
     }
 
-    private void SavePage()
+    private int SavePage()
     {
       // create another working page of the same type
       IContent content = workingPage.Create();
       if (content == null)
-        return;
+        return 0;
       Cache.SetParagraph(workingPage.Position, content);
-      workingPage.Position.ParagraphId++;
       ShowProgress("Page saved");
+      return 1;
     }
-
 
     private void showAboutClick(object sender, RoutedEventArgs e)
     {

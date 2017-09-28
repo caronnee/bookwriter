@@ -36,7 +36,7 @@
     <DockPanel Background="#43B49625">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Back"/>
-            <MenuItem Header="Save" Click="SaveBook"/>
+            <MenuItem Header="Save" Click="SaveBook_Click"/>
             <MenuItem Header="Manual - TODO" />
             <MenuItem Header="About" Click="showAboutClick"/>
         </Menu>

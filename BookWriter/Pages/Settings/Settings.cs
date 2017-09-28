@@ -36,12 +36,19 @@ namespace MyBook
       set;
     }
 
+    public static String Author
+    {
+      get;
+      set;
+    }
+
     private string GetName()
     {
       string dir = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
       dir += "\\setting";
       return dir;
     }
+
     public void Save()
     {
       string str = GetName();
@@ -53,6 +60,7 @@ namespace MyBook
 
     private Settings()
     {
+      Author = "Eva Pešková";
       // Default initialization
       BooksFolder = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\Books";
       TextSizeCoef = 1;
