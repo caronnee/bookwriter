@@ -78,7 +78,7 @@ namespace MyBook.BookContent
     public int InsertChapter( int oldChapter)
     {
       //Save paragraphs to the Chapter
-
+      SaveChapter();
       // Load this chapter
       XmlElement element = doc.CreateElement(XmlNodeNames.ChapterName);
       XmlNode p = Chapters[oldChapter].ParentNode;
@@ -128,7 +128,7 @@ namespace MyBook.BookContent
       }
     }
 
-    private void Load(int chapter)
+    public void Load(int chapter)
     {
       if (Chapters[chapter] == CurrentChapter)
         return;

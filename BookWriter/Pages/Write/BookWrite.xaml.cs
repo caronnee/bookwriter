@@ -125,9 +125,10 @@ DependencyProperty.Register(
       Position = new PositionDesc();
       Position.Clear();
 
-      // new book will a;lways have as first thing writing box
+      // new book will always have as first thing writing box
       insertTextButton.IsChecked = true;
       Show("At");
+      locked = false;
     }
 
     public delegate void BackHandler();
@@ -168,15 +169,21 @@ DependencyProperty.Register(
     {
       get;
       set;
-    } 
+    }
+
+    private bool locked = true;
 
     private void setViewboxContent(object sender, RoutedEventArgs e)
     {
+      // if sender 
+
       RadioButton b = sender as RadioButton;
       Control control = (Control)b.DataContext;
       // when this changes, child of the writing page must be changes also
       writeSettings.Child = control;
 
+      if (locked)
+        return;
       CreateNewPage();
     }
 
@@ -233,7 +240,15 @@ DependencyProperty.Register(
       if (Position.ParagraphId == 0)
       {
         if (Position.ChapterId > 0)
+        {
           Position.ChapterId--;
+          Cache.Load(Position.ChapterId);
+          Position.ParagraphId = Cache.Paragraphs.Count - 1;
+        }
+        else
+        {
+          Position.Clear();
+        }
       }
       Show("At:");      
     }
@@ -245,7 +260,14 @@ DependencyProperty.Register(
       if (Position.ParagraphId == Cache.Paragraphs.Count)
       {
         if (Position.ChapterId < (Cache.Chapters.Count - 1))
+        {
           Position.ChapterId++;
+          Position.ParagraphId = 0;
+        }
+        else
+        {
+          Position.Clear();
+        }
       }
       Show("At:");      
     }
