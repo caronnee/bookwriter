@@ -93,8 +93,16 @@
             </DockPanel>
 
             <src:WorkingPage  Grid.Column="1" x:Name="workingPage" Grid.ColumnSpan="2"/>
-            <Button x:Name="newChapterButton" Grid.Row="1" Grid.Column="1" Click="NewChapterClick" Content="New chapter" />
-            <Button x:Name="donePageButton" Grid.Row="1" Grid.Column="2" Click="SetPageDoneClick" Content="New page"  />
+            <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="1">
+                <Button Width="50" Click="StartPageClick" Content="α"  />
+                <Button Width="50" Click="PreviousChapterClick" Content="--"  />
+                <Button Width="50" Click="PreviousPageClick" Content="-"  />
+                <Button Width="50" Click="NewChapterClick" Content="New chapter" />
+                <Button Width="50" Click="SetPageDoneClick" Content="New page"  />
+                <Button Width="50" Click="NextPageClick" Content="+"  />
+                <Button Width="50" Click="NextChapterClick" Content="++"  />
+                <Button Width="50" Click="LastChapterClick" Content="ω"  />
+            </StackPanel>
         </Grid>
     </DockPanel>
 </UserControl>

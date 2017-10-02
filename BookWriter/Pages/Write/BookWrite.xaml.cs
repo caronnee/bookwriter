@@ -93,11 +93,17 @@ DependencyProperty.Register(
       }
     }
 
-    public void Show()
+    public void Show( String desc )
     {
-      IContent content = Cache.GetContent(workingPage.Position);
-      if ( content != null)
-        workingPage.Child = content.Show(workingPage.Converter);
+      IContent content = Cache.GetContent(Position);
+      if (content == null)
+      {
+        Control x = writeSettings.Child as Control;
+        content = x.DataContext as IContent;
+      }
+
+      workingPage.Child = content.Show(workingPage.Converter);
+      ShowProgress(desc);
     }
 
     private BookSource Cache;
@@ -116,11 +122,12 @@ DependencyProperty.Register(
       BookSettingsControl = new BookInfo();
       workingPage.Converter = new CacheToWriteControl();
       // TODO continue form the last time
-      workingPage.Position.Clear();
+      Position = new PositionDesc();
+      Position.Clear();
 
       // new book will a;lways have as first thing writing box
       insertTextButton.IsChecked = true;
-      Show();
+      Show("At");
     }
 
     public delegate void BackHandler();
@@ -135,7 +142,6 @@ DependencyProperty.Register(
 
     private void SaveBook()
     {
-      SavePage();
       Cache.SaveChapter();
       if (BookSettingsControl.bookName.Text.Length == 0)
       {
@@ -144,8 +150,6 @@ DependencyProperty.Register(
       }
       Cache.Save(BookSettingsControl.bookName.Text);
       // export to XML format. DTD
-      //SourceText.UpdateCache();
-      //SourceText.Cache.Save();
       ShowProgress("Book saved");
     }
 
@@ -156,28 +160,15 @@ DependencyProperty.Register(
 
     private void startPage_Click(object sender, RoutedEventArgs e)
     {
-      //SourceText.Start();
-      workingPage.Position.Clear();
-      Show();
-      ShowProgress("Start page");
+      Position.Clear();
+      Show("Start page");
     }
 
-    //public void MoveForward()
-    //{
-    //  workingPage.Position = rightPage.Position;
-    //  rightPage.Position.ContentPos += rightPage.Position.Lenght;
-    //  Show();
-    //}
-
-    //public void MoveBackward()
-    //{
-    //  rightPage.Position = workingPage.Position;
-    //  workingPage.Position = leftPage.Position;
-    //  leftPage.Position.ContentPos -= leftPage.Position.Lenght;
-    //  Show();
-    //}
-   
-
+    public PositionDesc Position
+    {
+      get;
+      set;
+    } 
 
     private void setViewboxContent(object sender, RoutedEventArgs e)
     {
@@ -185,50 +176,124 @@ DependencyProperty.Register(
       Control control = (Control)b.DataContext;
       // when this changes, child of the writing page must be changes also
       writeSettings.Child = control;
-      // save the current child
-      workingPage.Position.ParagraphId+=SavePage();
-      IContent content = control.DataContext as IContent;
-      workingPage.Child = content.Show(workingPage.Converter);
+
+      CreateNewPage();
     }
 
     private void ShowProgress(String desc)
     {
       String str = String.Format("{4} ( Chapter {0}/{1}, Page {2}/{3} )", 
-        workingPage.Position.ChapterId + 1, 
+        Position.ChapterId + 1, 
         Cache.NChapters(), 
-        workingPage.Position.ParagraphId+1, 
-        Cache.NPages()+1, 
+        Position.ParagraphId+1, 
+        Cache.Paragraphs.Count, 
         desc );
       progressText.Text = str;
     }
 
     private void NewChapterClick(object sender, RoutedEventArgs e)
     {
-      workingPage.Position.ChapterId = Cache.InsertChapter(workingPage.Position.ChapterId);
-      workingPage.Position.ParagraphId = 0;
-      Control c = writeSettings.Child as Control;
-      IContent content = c.DataContext as IContent;
-      workingPage.Child = content.Show(workingPage.Converter);
-      ShowProgress("Chapter created");
+      SavePage();
+      Position.ChapterId = Cache.InsertChapter(Position.ChapterId);
+      Position.ParagraphId = 0;
+      workingPage.Child = null;
+      CreateNewPage();
+      Show("Chapter created");
+    }
+
+    private void StartPageClick(object sender, RoutedEventArgs e)
+    {
+      SavePage();
+      Position.Clear();
+      Show("At:");
+    }
+
+    private void LastChapterClick(object sender, RoutedEventArgs e)
+    {
+      SavePage();
+      int chapterID =Cache.Chapters.Count - 1;
+      Position.ParagraphId = 0;
+      Position.ChapterId = Cache.Chapters.Count - 1;
+      Show("At:");      
+    }
+
+    private void PreviousChapterClick(object sender, RoutedEventArgs e)
+    {
+      SavePage();
+      Position.ParagraphId = 0;
+      if (Position.ChapterId > 0)
+        Position.ChapterId--;
+      Show("At:");      
+    }
+
+    private void PreviousPageClick(object sender, RoutedEventArgs e)
+    {
+      SavePage();
+      Position.ParagraphId--;
+      if (Position.ParagraphId == 0)
+      {
+        if (Position.ChapterId > 0)
+          Position.ChapterId--;
+      }
+      Show("At:");      
+    }
+
+    private void NextPageClick(object sender, RoutedEventArgs e)
+    {
+      if (SavePage())
+        Position.ParagraphId++;
+      if (Position.ParagraphId == Cache.Paragraphs.Count)
+      {
+        if (Position.ChapterId < (Cache.Chapters.Count - 1))
+          Position.ChapterId++;
+      }
+      Show("At:");      
+    }
+
+    private void NextChapterClick(object sender, RoutedEventArgs e)
+    {
+      SavePage();
+      Position.ParagraphId = 0;
+      if (Position.ChapterId < (Cache.Chapters.Count - 1))
+        Position.ChapterId++;
+      Show("At:");      
+    }
+
+    private void CreateNewPage()
+    {
+      // save the current child
+      if (SavePage())
+      {
+        Position.ParagraphId++;
+      }
+       
+      // setEmpty
+      Cache.InsertParagraph(Position.ParagraphId, null);
+      
+      Show("At");
     }
 
     private void SetPageDoneClick(object sender, RoutedEventArgs e)
     {
-      workingPage.Position.ParagraphId+=SavePage();
-      Control c = writeSettings.Child as Control;
-      IContent content = c.DataContext as IContent;
-      workingPage.Child = content.Show(workingPage.Converter);
+      CreateNewPage();
     }
 
-    private int SavePage()
+    private bool SavePage()
     {
       // create another working page of the same type
       IContent content = workingPage.Create();
       if (content == null)
-        return 0;
-      Cache.SetParagraph(workingPage.Position, content);
+      {
+        if (Cache.Paragraphs.Count > Position.ParagraphId 
+          && Cache.Paragraphs[Position.ParagraphId] == null)
+        {
+          Cache.Paragraphs.RemoveAt(Position.ParagraphId);
+        }
+        return false;
+      }
+      Cache.SetParagraph(Position, content);
       ShowProgress("Page saved");
-      return 1;
+      return true;
     }
 
     private void showAboutClick(object sender, RoutedEventArgs e)
