@@ -115,7 +115,8 @@ DependencyProperty.Register(
       DataContext = data;
       InitializeComponent();
 
-      Cache = new BookSource(name);
+      // empty booksource
+      Cache = new BookSource("");
       TextSettingsControl = new TextSettings();
       ImageSettingsControl = new ImageSettings();
       RiddleSettingsControl = new RiddleSettings();
@@ -127,8 +128,9 @@ DependencyProperty.Register(
 
       // new book will always have as first thing writing box
       insertTextButton.IsChecked = true;
+      if (name.Length > 0)
+        Cache.Load(name);
       Show("At");
-      locked = false;
     }
 
     public delegate void BackHandler();
@@ -171,8 +173,6 @@ DependencyProperty.Register(
       set;
     }
 
-    private bool locked = true;
-
     private void setViewboxContent(object sender, RoutedEventArgs e)
     {
       // if sender 
@@ -182,8 +182,6 @@ DependencyProperty.Register(
       // when this changes, child of the writing page must be changes also
       writeSettings.Child = control;
 
-      if (locked)
-        return;
       CreateNewPage();
     }
 

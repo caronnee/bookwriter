@@ -30,21 +30,13 @@ namespace MyBook.BookContent
       // init
       doc = new XmlDocument();
       Paragraphs = new List<IContent>();
-      
-      // load from file
-      if (File.Exists(name))
-      {
-        Load(name);
-        
-      }
-      else{
-        XmlElement p = doc.CreateElement(XmlNodeNames.BookRoot);
-        doc.AppendChild(p);
-        XmlElement el = doc.CreateElement(XmlNodeNames.ChapterParentName);
-        p.AppendChild(el);
-        XmlNode node = doc.CreateElement(XmlNodeNames.ChapterName);
-        el.AppendChild(node);
-      }
+     
+     XmlElement p = doc.CreateElement(XmlNodeNames.BookRoot);
+     doc.AppendChild(p);
+     XmlElement el = doc.CreateElement(XmlNodeNames.ChapterParentName);
+     p.AppendChild(el);
+     XmlNode node = doc.CreateElement(XmlNodeNames.ChapterName);
+     el.AppendChild(node);
 
       // TODO last bookmark
       Init();
@@ -172,7 +164,8 @@ namespace MyBook.BookContent
       Paragraphs = new List<IContent>();
       // read the sample xml
       doc.Load(filepath);
-
+      Init();
+      Load(0);
     }
     
     // Check if this book can be used

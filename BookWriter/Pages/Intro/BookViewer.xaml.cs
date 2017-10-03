@@ -34,8 +34,7 @@ namespace MyBook
 
     public void CreateBook()
     {
-      string name = "New Book";
-      BookWrite write = new BookWrite(name);
+      BookWrite write = new BookWrite("");
       write.Back += ShowShelf;
       Content = write;
     }
