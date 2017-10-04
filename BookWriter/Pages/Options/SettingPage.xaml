@@ -18,6 +18,7 @@
       </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="25" />
+                <RowDefinition Height="25" />
             </Grid.RowDefinitions>
             <Label Content="Book folder" Grid.Column="0" Grid.Row="0"/>
             <TextBox Name="bFolder" Grid.Column="1" Grid.Row="0" Text="..\Books" />
@@ -26,11 +27,11 @@
             <ComboBox x:Name="skinFolder" Grid.Column="1" Grid.Row="1" >
                 
             </ComboBox>
-            <Button x:Name="apply" Grid.Column="2" Grid.Row="1" Content="..." Click="apply_Click"/>
+            <Button x:Name="apply" Grid.Column="2" Grid.Row="1" Content="..." />
         </Grid>
         <DockPanel Grid.Row="1" HorizontalAlignment="Right">
-      <Button x:Name="SaveAndBack" Content="Save and back" Click="SaveAndBack_Click"/>
-      <Button x:Name="CancelAndBack" Content="Cancel and back" Click="CancelAndBack_Click"/>
+      <Button x:Name="OK" Content="Ok" Width="60"/>
+      <Button x:Name="Cancel" Content="Cancel" Click="CancelAndBack_Click" Width="50"/>
     </DockPanel>
   </Grid>
 </UserControl>

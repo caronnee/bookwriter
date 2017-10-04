@@ -1,8 +1,8 @@
 ﻿using MyBook.BookContent;
+using MyBook.Pages.Meta;
 using MyBook.Pages.Write;
 using MyBook.Pages.Write.Bookmark;
 using MyBook.Pages.Write.DataWriteContext;
-using MyBook.Pages.Write.Info;
 using MyBook.Pages.Write.Imaging;
 using MyBook.Pages.Write.Riddle;
 using MyBook.Pages.Write.Text;
@@ -77,22 +77,6 @@ DependencyProperty.Register(
       }
     }
 
-    public static readonly DependencyProperty BookSettingsProperty =
-DependencyProperty.Register(
-"BookSettingsControl", typeof(BookInfo), typeof(BookWrite));
-
-    public BookInfo BookSettingsControl
-    {
-      get
-      {
-        return (BookInfo)GetValue(BookSettingsProperty);
-      }
-      set
-      {
-        SetValue(BookSettingsProperty, value);
-      }
-    }
-
     public void Show( String desc )
     {
       IContent content = Cache.GetContent(Position);
@@ -120,7 +104,6 @@ DependencyProperty.Register(
       TextSettingsControl = new TextSettings();
       ImageSettingsControl = new ImageSettings();
       RiddleSettingsControl = new RiddleSettings();
-      BookSettingsControl = new BookInfo();
       workingPage.Converter = new CacheToWriteControl();
       // TODO continue form the last time
       Position = new PositionDesc();
@@ -145,17 +128,29 @@ DependencyProperty.Register(
 
     private void SaveBook()
     {
+      SavePage();
       Cache.SaveChapter();
-      if (BookSettingsControl.bookName.Text.Length == 0)
+      if (Cache.Name == null)
       {
-        MessageBox.Show("Name of the book is not set! Book not saved", "Error");
-        return;
+        //
+        SetBookName name = new SetBookName();
+        bool? set = name.ShowDialog();
+        if (name.BookName.Text.Length == 0)
+        {
+          ShowProgress("Book not saved");
+          return;
+        }
+        Cache.Name = name.BookName.Text;
       }
-      Cache.Save(BookSettingsControl.bookName.Text);
+      Cache.Save();
       // export to XML format. DTD
       ShowProgress("Book saved");
     }
 
+    private void Settings_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
     private void SaveBook_Click(object sender, RoutedEventArgs e)
     {
       SaveBook();

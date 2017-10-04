@@ -25,20 +25,25 @@ namespace MyBook.BookContent
 
   public class BookSource
   {
+    public String Name
+    {
+      get;
+      set;
+    }
+
     public BookSource(String name)
     {
       // init
       doc = new XmlDocument();
       Paragraphs = new List<IContent>();
-     
-     XmlElement p = doc.CreateElement(XmlNodeNames.BookRoot);
-     doc.AppendChild(p);
-     XmlElement el = doc.CreateElement(XmlNodeNames.ChapterParentName);
-     p.AppendChild(el);
-     XmlNode node = doc.CreateElement(XmlNodeNames.ChapterName);
-     el.AppendChild(node);
 
-      // TODO last bookmark
+      XmlElement p = doc.CreateElement(XmlNodeNames.BookRoot);
+      doc.AppendChild(p);
+      XmlElement el = doc.CreateElement(XmlNodeNames.ChapterParentName);
+      p.AppendChild(el);
+      XmlNode node = doc.CreateElement(XmlNodeNames.ChapterName);
+      el.AppendChild(node);
+
       Init();
       Load(0);
     }
@@ -140,13 +145,13 @@ namespace MyBook.BookContent
     // Root document
     private XmlDocument doc;
 
-    public int Save(String name)
+    public int Save()
     {
       if (!Directory.Exists(Settings.BooksFolder))
       {
         Directory.CreateDirectory(Settings.BooksFolder);
       }
-      String fullpath = Settings.BooksFolder + "\\" + name + Constants.Extension;
+      String fullpath = Settings.BooksFolder + "\\" + Name + Constants.Extension;
       doc.Save(fullpath);
       return 0;
     }
@@ -161,7 +166,6 @@ namespace MyBook.BookContent
 
     public void Load(String filepath)
     {
-      Paragraphs = new List<IContent>();
       // read the sample xml
       doc.Load(filepath);
       Init();

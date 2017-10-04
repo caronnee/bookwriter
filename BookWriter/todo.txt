@@ -1,6 +1,7 @@
-﻿- Reenable text
-- Add image as next page
-- add riddle as next page
+﻿// settings in oene window
+// save image
+// construct one ridle
+// enable Location, Characters bookmarks
 
 Description
 

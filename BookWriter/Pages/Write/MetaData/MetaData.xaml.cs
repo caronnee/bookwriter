@@ -12,14 +12,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MyBook.Pages.Write.Info
+namespace MyBook.Pages.Write.Meta
 {
   /// <summary>
   /// Interaction logic for Cover.xaml
   /// </summary>
-  public partial class Cover : UserControl
+  public partial class MetaData : UserControl
   {
-    public Cover()
+    public MetaData()
     {
       InitializeComponent();
     }

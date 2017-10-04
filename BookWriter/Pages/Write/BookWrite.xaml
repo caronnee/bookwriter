@@ -36,7 +36,11 @@
     <DockPanel >
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Back" Click="Back_Click"/>
-            <MenuItem Header="Save" Click="SaveBook_Click"/>
+            <MenuItem Header="Book">
+                <MenuItem Header="Save" Click="SaveBook_Click"></MenuItem>
+                <MenuItem Header="Save as" Click="SaveBook_Click"></MenuItem>
+                <MenuItem Header="Settings" Click="Settings_Click"></MenuItem>
+            </MenuItem>
             <MenuItem Header="Manual - TODO" />
             <MenuItem Header="About" Click="showAboutClick"/>
         </Menu>
@@ -69,7 +73,6 @@
                         <RadioButton GroupName="contentSettingsGroup" DataContext="{Binding TextSettingsControl, ElementName=BookWriter}" Content="Text" Height="30" x:Name="insertTextButton" Checked="setViewboxContent" />
                         <RadioButton GroupName="contentSettingsGroup" DataContext="{Binding ImageSettingsControl, ElementName=BookWriter}" Content="Image" Height="30" x:Name="insertImageButton" Checked="setViewboxContent"/>
                         <RadioButton GroupName="contentSettingsGroup" DataContext="{Binding RiddleSettingsControl, ElementName=BookWriter}" Content="Riddle" Height="30" x:Name="insertRiddle" Checked="setViewboxContent"/>
-                        <RadioButton GroupName="contentSettingsGroup" DataContext="{Binding BookSettingsControl, ElementName=BookWriter}" Content="Settings" Height="30" x:Name="setInfo" Checked="setViewboxContent"/>
                         <Viewbox x:Name="writeSettings" >
                         </Viewbox>
                     </StackPanel>

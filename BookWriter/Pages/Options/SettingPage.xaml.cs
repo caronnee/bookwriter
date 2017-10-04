@@ -26,10 +26,6 @@ namespace MyBook
       InitializeComponent();
     }
 
-    private void apply_Click(object sender, RoutedEventArgs e)
-    {
-    }
-
     private void pickFolder_Click(object sender, RoutedEventArgs e)
     {
       // create a browse folder that allow pick a folder where books will be stored
