@@ -17,7 +17,7 @@ namespace MyBook.Pages.Write.Meta
   /// <summary>
   /// Interaction logic for Cover.xaml
   /// </summary>
-  public partial class MetaData : UserControl
+  public partial class MetaData : Window
   {
     public MetaData()
     {

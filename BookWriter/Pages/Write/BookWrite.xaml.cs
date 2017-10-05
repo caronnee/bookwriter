@@ -4,6 +4,7 @@ using MyBook.Pages.Write;
 using MyBook.Pages.Write.Bookmark;
 using MyBook.Pages.Write.DataWriteContext;
 using MyBook.Pages.Write.Imaging;
+using MyBook.Pages.Write.Meta;
 using MyBook.Pages.Write.Riddle;
 using MyBook.Pages.Write.Text;
 using System;
@@ -149,8 +150,12 @@ DependencyProperty.Register(
 
     private void Settings_Click(object sender, RoutedEventArgs e)
     {
-
-    }
+      MetaData metadata = new MetaData();
+      // metadata.DataContext = Cache.Metadata.clone();
+      metadata.ShowDialog();
+      // SetCover, Set Name
+      // Cache.Metadata =  metadata.DataContext as Metadata;
+    } 
     private void SaveBook_Click(object sender, RoutedEventArgs e)
     {
       SaveBook();
