@@ -28,8 +28,26 @@ namespace MyBook
   /// <summary>
   /// Interaction logic for BookWrite.xaml
   /// </summary>
-  public partial class BookWrite : UserControl
+  public partial class BookWrite : UserControl, CacheToControlConverter
   {
+    // what to do when type is tex
+    public UIElement Resolve(TextParagraph textParagraph)
+    {
+      return insertText;
+    }
+
+    // What to do when type is image 
+    public UIElement Resolve(ImageParagraph imagesParagraph)
+    {
+      return insertImage;
+    }
+
+    // Default resolve
+    public UIElement Resolve(object o)
+    {
+      return null;
+    }
+
     public static readonly DependencyProperty TextSettingsProperty =
 DependencyProperty.Register(
 "TextSettingsControl", typeof(TextSettings), typeof(BookWrite));
@@ -81,8 +99,18 @@ DependencyProperty.Register(
     public void Show( String desc )
     {
       IContent content = Cache.GetContent(Position);
-      Control work = writeSettings.Child as Control;
-      workingPage.Child = work.DataContext as UIElement;
+      if (content != null)
+      {
+        // set corresponding radio button
+        RadioButton button = content.Show(this) as RadioButton;
+        ChangeSettings(button);
+        workingPage.Child = content.Show(workingPage.Converter);
+      }
+      else
+      {
+        Control work = writeSettings.Child as Control;
+        workingPage.Child = work.DataContext as UIElement;
+      }
       ShowProgress(desc);
     }
 
@@ -106,7 +134,7 @@ DependencyProperty.Register(
       Position.Clear();
 
       // new book will always have as first thing writing box
-      insertTextButton.IsChecked = true;
+      insertText.IsChecked = true;
       if (name.Length > 0)
         Cache.Load(name);
       Show("At");
@@ -168,14 +196,16 @@ DependencyProperty.Register(
       set;
     }
 
+    public void ChangeSettings(RadioButton b)
+    {
+      // when this changes, child of the writing page must be changes also
+      Control control = (Control)b.DataContext;
+      writeSettings.Child = control;
+    }
+
     private void setViewboxContent(object sender, RoutedEventArgs e)
     {
-      // if sender 
-      RadioButton b = sender as RadioButton;
-      Control control = (Control)b.DataContext;
-      // when this changes, child of the writing page must be changes also
-      writeSettings.Child = control;
-
+      ChangeSettings(sender as RadioButton);
       CreateNewPage();
     }
 
@@ -249,6 +279,7 @@ DependencyProperty.Register(
     {
       if (SavePage())
         Position.ParagraphId++;
+
       if (Position.ParagraphId == Cache.Paragraphs.Count)
       {
         if (Position.ChapterId < (Cache.Chapters.Count - 1))
@@ -280,7 +311,8 @@ DependencyProperty.Register(
       {
         Position.ParagraphId++;
       }
-       
+      ISettings settings = writeSettings.Child as ISettings;
+      settings.Reset();
       // setEmpty
       Cache.InsertParagraph(Position.ParagraphId, null);
       

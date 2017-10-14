@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Controls;
 using System.Xml;
 
@@ -10,7 +11,7 @@ namespace MyBook.Pages.Write.Text
 {
   public class TextParagraph : IContent
   {
-    public Control Show(CacheToControlConverter converter)
+    public UIElement Show(CacheToControlConverter converter)
     {
       return converter.Resolve(this);
     }

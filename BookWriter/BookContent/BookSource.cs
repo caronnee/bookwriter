@@ -7,6 +7,7 @@ using System.Text;
 using System.Xml;
 using System.Windows.Controls;
 using MyBook.Pages.Write.Text;
+using MyBook.Pages.Write.Imaging;
 
 namespace MyBook.BookContent
 {
@@ -135,10 +136,16 @@ namespace MyBook.BookContent
       XmlNodeList paragraphs = CurrentChapter.ChildNodes;
       for (int p = 0; p < paragraphs.Count; p++)
       {
-        TextParagraph par = new TextParagraph();
+        XmlNode node = paragraphs[p];
+        IContent par = null;
+        if (node.Name == XmlNodeNames.ParagraphName)
+            par = new TextParagraph();
+        if (node.Name == XmlNodeNames.ImageName)
+            par = new ImageParagraph();
+        if (par == null)
+          continue;
         par.Load(paragraphs[p]);
-        if (par.Content.Length > 0)
-          Paragraphs.Add(par);
+        Paragraphs.Add(par);
       }
     }
 

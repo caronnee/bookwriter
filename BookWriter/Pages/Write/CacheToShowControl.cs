@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace MyBook.Pages.Write
@@ -13,21 +14,21 @@ namespace MyBook.Pages.Write
   class CacheToShowControl : CacheToControlConverter
   {
 
-    public Control Resolve(TextParagraph textParagraph)
+    public UIElement Resolve(TextParagraph textParagraph)
     {
       WritingBox p = new WritingBox();
       p.IsReadOnly = true;
       return p;
     }
 
-    public Control Resolve(ImageParagraph imagesParagraph)
+    public UIElement Resolve(ImageParagraph imagesParagraph)
     {
       ImageBox ibox = new ImageBox();
       //ibox.Content
       return null;
     }
 
-    public Control Resolve(object o)
+    public UIElement Resolve(object o)
     {
       return null;
     }

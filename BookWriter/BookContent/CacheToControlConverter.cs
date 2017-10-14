@@ -5,18 +5,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Controls;
+using System.Windows;
 
 namespace MyBook.BookContent
 {
   public interface CacheToControlConverter
   {
     // what to do when type is tex
-    Control Resolve(TextParagraph textParagraph);
+    UIElement Resolve(TextParagraph textParagraph);
 
     // What to do when type is image 
-    Control Resolve(ImageParagraph imagesParagraph);
+    UIElement Resolve(ImageParagraph imagesParagraph);
 
     // Default resolve
-    Control Resolve(object o);
+    UIElement Resolve(object o);
   }
 }

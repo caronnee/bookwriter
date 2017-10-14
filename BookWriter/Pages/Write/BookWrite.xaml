@@ -70,9 +70,9 @@
             <DockPanel >
                 <Expander x:Name="tools" Header="Content" DockPanel.Dock="Top" >
                     <StackPanel Orientation="Vertical" ScrollViewer.CanContentScroll="True" >
-                        <RadioButton GroupName="contentSettingsGroup" DataContext="{Binding TextSettingsControl, ElementName=BookWriter}" Content="Text" Height="30" x:Name="insertTextButton" Checked="setViewboxContent" />
-                        <RadioButton GroupName="contentSettingsGroup" DataContext="{Binding ImageSettingsControl, ElementName=BookWriter}" Content="Image" Height="30" x:Name="insertImageButton" Checked="setViewboxContent"/>
-                        <RadioButton GroupName="contentSettingsGroup" DataContext="{Binding RiddleSettingsControl, ElementName=BookWriter}" Content="Riddle" Height="30" x:Name="insertRiddle" Checked="setViewboxContent"/>
+                        <RadioButton x:Name="insertText"  GroupName="contentSettingsGroup" DataContext="{Binding TextSettingsControl,     ElementName=BookWriter}" Content="Text" Height="30" Checked="setViewboxContent" />
+                        <RadioButton x:Name="insertImage" GroupName="contentSettingsGroup" DataContext="{Binding ImageSettingsControl,   ElementName=BookWriter}" Content="Image" Height="30" Checked="setViewboxContent"/>
+                        <RadioButton x:Name="insertRiddle" GroupName="contentSettingsGroup" DataContext="{Binding RiddleSettingsControl, ElementName=BookWriter}" Content="Riddle" Height="30"  Checked="setViewboxContent"/>
                         <Viewbox x:Name="writeSettings" >
                         </Viewbox>
                     </StackPanel>

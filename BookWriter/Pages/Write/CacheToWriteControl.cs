@@ -1,17 +1,19 @@
 ﻿using MyBook.BookContent;
 using MyBook.Pages.Write.Imaging;
+using MyBook.Pages.Write.Picture;
 using MyBook.Pages.Write.Text;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace MyBook.Pages.Write
 {
   public class CacheToWriteControl : CacheToControlConverter
   {
-    public Control Resolve(TextParagraph textParagraph)
+    public UIElement Resolve(TextParagraph textParagraph)
     {
       WritingBox p = new WritingBox();
       p.IsReadOnly = false;
@@ -19,14 +21,14 @@ namespace MyBook.Pages.Write
       return p;
     }
 
-    public Control Resolve(ImageParagraph imagesParagraph)
+    public UIElement Resolve(ImageParagraph imagesParagraph)
     {
-      Label l = new Label();
-      l.Content = imagesParagraph;
+      ImageBox l = new ImageBox();
+      l.SetImage(imagesParagraph.SourceName, true);
       return l;
     }
 
-    public Control Resolve(object o)
+    public UIElement Resolve(object o)
     {
       throw new NotImplementedException();
     }

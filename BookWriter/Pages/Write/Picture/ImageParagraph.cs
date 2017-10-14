@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Xml;
@@ -11,13 +12,17 @@ namespace MyBook.Pages.Write.Imaging
 { 
   public class ImageParagraph : IContent
   {
+    public void Load(XmlNode node)
+    {
+      SourceName = node.InnerText;
+    }
     public String SourceName
     {
       get;
       set;
     }
 
-    public Control Show(CacheToControlConverter converter)
+    public UIElement Show(CacheToControlConverter converter)
     {
       return converter.Resolve(this);
     }

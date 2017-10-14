@@ -32,11 +32,15 @@ namespace MyBook.Pages.Write.Picture
     public void SetImage(String name, bool fromFile)
     {
       String str;
-      if (fromFile)
-        str = "file:///" + name;
-      else
+      if (name.StartsWith("file:///") || name.StartsWith("pack:"))
       {
-        str = "pack://application:,,,/Resources/" + name;
+        str = name;
+      }
+      {
+        if (fromFile)
+          str = "file:///" + name;
+        else
+          str = "pack://application:,,,/Resources/" + name;
       }
       SourceName = str;
       Uri uri = new Uri(str);
