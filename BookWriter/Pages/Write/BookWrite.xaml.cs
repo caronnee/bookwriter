@@ -81,18 +81,13 @@ DependencyProperty.Register(
     public void Show( String desc )
     {
       IContent content = Cache.GetContent(Position);
-      if (content == null)
-      {
-        Control x = writeSettings.Child as Control;
-        content = x.DataContext as IContent;
-      }
-
-      workingPage.Child = content.Show(workingPage.Converter);
+      Control work = writeSettings.Child as Control;
+      workingPage.Child = work.DataContext as UIElement;
       ShowProgress(desc);
     }
 
     private BookSource Cache;
-
+    
     public BookWrite(String name)
     {
       DataWriteContext data = new DataWriteContext();
@@ -153,8 +148,8 @@ DependencyProperty.Register(
       MetaData metadata = new MetaData();
       // metadata.DataContext = Cache.Metadata.clone();
       metadata.ShowDialog();
-      // SetCover, Set Name
-      // Cache.Metadata =  metadata.DataContext as Metadata;
+      // SetCover, Set Name, save to the cache
+      
     } 
     private void SaveBook_Click(object sender, RoutedEventArgs e)
     {
@@ -176,7 +171,6 @@ DependencyProperty.Register(
     private void setViewboxContent(object sender, RoutedEventArgs e)
     {
       // if sender 
-
       RadioButton b = sender as RadioButton;
       Control control = (Control)b.DataContext;
       // when this changes, child of the writing page must be changes also

@@ -69,8 +69,13 @@
     <Compile Include="Pages\Intro\BookItem.xaml.cs">
       <DependentUpon>BookItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Write\ISettings.cs" />
+    <Compile Include="Pages\Write\IWrite.cs" />
     <Compile Include="Pages\Write\MetaData\SetBookName.xaml.cs">
       <DependentUpon>SetBookName.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Write\Picture\ImageBox.xaml.cs">
+      <DependentUpon>ImageBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Write\Text\TextParagraph.cs" />
     <Compile Include="BookContent\IContent.cs" />
@@ -108,12 +113,10 @@
     <Compile Include="Pages\Write\CacheToShowControl.cs" />
     <Compile Include="Pages\Write\CacheToWriteControl.cs" />
     <Compile Include="Pages\Write\ControlToCacheConverter.cs" />
-    <Compile Include="Pages\Write\ControltoCacheConverter_2.cs" />
     <Compile Include="Pages\Write\DataWriteContext\DataWriteContext.cs" />
     <Compile Include="Pages\Write\MetaData\MetaData.xaml.cs">
       <DependentUpon>MetaData.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Write\IWrite.cs" />
     <Compile Include="Pages\Write\Picture\ImageSettings.xaml.cs">
       <DependentUpon>ImageSettings.xaml</DependentUpon>
     </Compile>
@@ -218,6 +221,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Write\MetaData\MetaData.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Write\Picture\ImageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

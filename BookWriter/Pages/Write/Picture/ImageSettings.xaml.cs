@@ -1,4 +1,5 @@
 ﻿using MyBook.BookContent;
+using MyBook.Pages.Write.Picture;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,13 +19,20 @@ namespace MyBook.Pages.Write.Imaging
   /// <summary>
   /// Interaction logic for ImageSettings.xaml
   /// </summary>
-  public partial class ImageSettings : UserControl, IWrite
+  public partial class ImageSettings : UserControl, ISettings
   {
     public ImageSettings()
     {
       InitializeComponent();
-      DataContext = new ImageParagraph();
+      Reset();
     }
+
+    public void Reset()
+    {
+      DataContext = new ImageBox();
+    }
+
+
 
     private void loadImage_Click(object sender, RoutedEventArgs e)
     {
@@ -33,16 +41,8 @@ namespace MyBook.Pages.Write.Imaging
       imageDialog.Filter = "Image files (*.png,*.jpg,*.bmp)|*.png;*.jpg;*.bmp";
       if (imageDialog.ShowDialog() != System.Windows.Forms.DialogResult.OK )
         return;
-
-      ImageParagraph im = DataContext as ImageParagraph;
-      String str = "file:///" + imageDialog.FileName;
-      Uri uri = new Uri(str);
-      im.Source = new BitmapImage(uri);
-    }
-
-    public IContent Create()
-    {
-      return new ImageParagraph();
+      ImageBox im = DataContext as ImageBox;
+      im.SetImage(imageDialog.FileName, true);
     }
   }
 }

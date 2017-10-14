@@ -1,5 +1,6 @@
 ﻿using MyBook.BookContent;
 using MyBook.Pages.Write.Imaging;
+using MyBook.Pages.Write.Picture;
 using MyBook.Pages.Write.Text;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,8 @@ namespace MyBook.Pages.Write
 
     public Control Resolve(ImageParagraph imagesParagraph)
     {
-      // TODO label
+      ImageBox ibox = new ImageBox();
+      //ibox.Content
       return null;
     }
 

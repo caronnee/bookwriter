@@ -1,7 +1,7 @@
-﻿// settings in oene window
-// save image
+﻿// save image to the folder
 // construct one ridle
 // enable Location, Characters bookmarks
+// MetaData in cache
 
 Description
 

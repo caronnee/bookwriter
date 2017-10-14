@@ -18,12 +18,17 @@ namespace MyBook.Pages.Write.Text
   /// <summary>
   /// Interaction logic for TextSettings.xaml
   /// </summary>
-  public partial class TextSettings : UserControl
+  public partial class TextSettings : UserControl, ISettings
   {
     public TextSettings()
     {
       InitializeComponent();
-      DataContext = new TextParagraph();
+      Reset();
+    }
+
+    public void Reset()
+    {
+      DataContext = new WritingBox();
     }
   }
 }

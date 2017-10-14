@@ -9,8 +9,14 @@ using System.Xml;
 
 namespace MyBook.Pages.Write.Imaging
 { 
-  public class ImageParagraph : Image, IContent
+  public class ImageParagraph : IContent
   {
+    public String SourceName
+    {
+      get;
+      set;
+    }
+
     public Control Show(CacheToControlConverter converter)
     {
       return converter.Resolve(this);
@@ -19,24 +25,18 @@ namespace MyBook.Pages.Write.Imaging
     public XmlNode ToXmlNode(XmlDocument doc)
     {
       XmlElement node = doc.CreateElement(XmlNodeNames.ImageName);
+      node.InnerText = SourceName;
       return node;
-    }
-
-    public String ImageToLoad
-    {
-      get;
-      set;
     }
 
     public ImageParagraph()
     {
-      Uri uri = new Uri("pack://application:,,,/Resources/workinprogress.png");
-      Source = new BitmapImage(uri);
+      SourceName = "pack://application:,,,/Resources/workinprogress.png";
     }
 
     public ImageParagraph(String imageToLoad)
     {
-      ImageToLoad = imageToLoad;
+      SourceName = imageToLoad;
     }
   }
 }
