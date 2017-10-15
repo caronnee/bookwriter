@@ -10,6 +10,12 @@ namespace MyBook
   {
     private static readonly Settings settings = new Settings();
 
+    public static String TempFolder
+    {
+      get;
+      set;
+    }
+
     public static int LineCount
     {
       get;
@@ -60,6 +66,9 @@ namespace MyBook
 
     private Settings()
     {
+      TempFolder = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+      TempFolder += "\\temp\\";
+
       Author = "Eva Pešková";
       // Default initialization
       BooksFolder = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\Books";

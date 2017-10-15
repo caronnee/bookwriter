@@ -24,25 +24,19 @@ namespace MyBook.Pages.Write.Picture
     public ImageBox()
     {
       InitializeComponent();
-      SetImage("workinprogress.png",false);
+      SetImage("pack://application:,,,/Resources/workinprogress.png");
     }
 
     String SourceName;
 
-    public void SetImage(String name, bool fromFile)
+    public void SetImage(String name)
     {
       String str;
-      if (name.StartsWith("file:///") || name.StartsWith("pack:"))
-      {
+      if ( name.StartsWith("pack:") )
         str = name;
-      }
-      {
-        if (fromFile)
-          str = "file:///" + name;
-        else
-          str = "pack://application:,,,/Resources/" + name;
-      }
-      SourceName = str;
+      else
+        str = "file:///" + Settings.TempFolder + name;
+      SourceName = name;
       Uri uri = new Uri(str);
       Source = new BitmapImage(uri);
     }

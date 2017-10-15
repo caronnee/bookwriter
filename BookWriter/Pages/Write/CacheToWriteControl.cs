@@ -24,7 +24,8 @@ namespace MyBook.Pages.Write
     public UIElement Resolve(ImageParagraph imagesParagraph)
     {
       ImageBox l = new ImageBox();
-      l.SetImage(imagesParagraph.SourceName, true);
+      if (imagesParagraph.SourceName.Length > 0)
+        l.SetImage(imagesParagraph.SourceName);
       return l;
     }
 

@@ -2,6 +2,7 @@
 using MyBook.Pages.Write.Picture;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -38,11 +39,16 @@ namespace MyBook.Pages.Write.Imaging
     {
       // open dialog
       System.Windows.Forms.OpenFileDialog imageDialog = new System.Windows.Forms.OpenFileDialog();
+      imageDialog.Title = "Choose image file";
       imageDialog.Filter = "Image files (*.png,*.jpg,*.bmp)|*.png;*.jpg;*.bmp";
       if (imageDialog.ShowDialog() != System.Windows.Forms.DialogResult.OK )
         return;
       ImageBox im = DataContext as ImageBox;
-      im.SetImage(imageDialog.FileName, true);
+      // TODO remove the previous image?
+      string title = imageDialog.FileName;
+      title = title.Substring(title.LastIndexOf("\\")+1);
+      File.Copy(imageDialog.FileName, Settings.TempFolder + title,true);
+      im.SetImage(title);
     }
   }
 }

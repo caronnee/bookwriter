@@ -14,8 +14,10 @@ namespace MyBook.Pages.Write.Imaging
   {
     public void Load(XmlNode node)
     {
-      SourceName = node.InnerText;
+      if ( node.InnerText.Length > 0)
+        SourceName = node.InnerText;
     }
+
     public String SourceName
     {
       get;
@@ -36,7 +38,7 @@ namespace MyBook.Pages.Write.Imaging
 
     public ImageParagraph()
     {
-      SourceName = "pack://application:,,,/Resources/workinprogress.png";
+      SourceName = "";
     }
 
     public ImageParagraph(String imageToLoad)
