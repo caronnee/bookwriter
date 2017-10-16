@@ -28,14 +28,6 @@ namespace MyBook
       set;
     }
 
-    public static Settings BookSetting
-    {
-      get
-      {
-        return settings;
-      }
-    }
-
     public static String BooksFolder
     {
       get;

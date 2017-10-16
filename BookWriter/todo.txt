@@ -1,10 +1,10 @@
-﻿// save image to the folder
+﻿// create design of the riddles
 // construct one ridle
 // enable Location, Characters bookmarks
-// MetaData in cache
+// MetaData in cache like cover, autor genre...
 
 Description
-
+ - After save, move all the temo image to the book folder
 
 - Fix loading name of the chapter. Chapter should be like this:
     **  (number)  MIDDLESCRREN  ** If the name of the chapter is too long fo the like, display just Ch(number) ( like internet explorer optin in total comander )

@@ -16,36 +16,35 @@ using MyBook.BookContent;
 
 namespace MyBook
 {
-    /// <summary>
-    /// Interaction logic for BookRead.xaml
-    /// </summary>
-    public partial class BookRead : UserControl
+  /// <summary>
+  /// Interaction logic for BookRead.xaml
+  /// </summary>
+  public partial class BookRead : UserControl
+  {
+    private BookSource _source;
+    private Storyboard _turnPage;
+
+    public BookRead(String name)
     {
-        private BookSource _source;
-        private Storyboard _turnPage;
+      _source = new BookSource(name); // TODO check the correct syntax of the file
+      _source.Load(name);
+      InitializeComponent();
 
-
-        public BookRead(String name)
-        {
-          _source = new BookSource(name); // TODO check the correct syntax of the file
-          _source.Load(name);
-          InitializeComponent();
-
-          _turnPage = (Storyboard)this.Resources["TurnPage"];
-        }
-        public override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
-            //_leftPageTemplate = (ControlTemplate)this.Resources["Flippable"];
-            // Grid o = _leftPageTemplate.FindName("GridTest", this. ) as Grid;
-            
-            // System.Diagnostics.Debug.Assert(o!=null);
-        }
-
-
-        private void TestButton_Click(object sender, RoutedEventArgs e)
-        {
-            _turnPage.Begin(BookContent, HandoffBehavior.SnapshotAndReplace);
-        }
+      _turnPage = (Storyboard)this.Resources["TurnPage"];
     }
+    public override void OnApplyTemplate()
+    {
+      base.OnApplyTemplate();
+      //_leftPageTemplate = (ControlTemplate)this.Resources["Flippable"];
+      // Grid o = _leftPageTemplate.FindName("GridTest", this. ) as Grid;
+
+      // System.Diagnostics.Debug.Assert(o!=null);
+    }
+
+
+    private void TestButton_Click(object sender, RoutedEventArgs e)
+    {
+      _turnPage.Begin(BookContent, HandoffBehavior.SnapshotAndReplace);
+    }
+  }
 }
