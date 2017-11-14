@@ -69,6 +69,7 @@
     <Compile Include="Pages\Intro\BookItem.xaml.cs">
       <DependentUpon>BookItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Write\IRiddle.cs" />
     <Compile Include="Pages\Write\ISettings.cs" />
     <Compile Include="Pages\Write\IWrite.cs" />
     <Compile Include="Pages\Write\MetaData\SetBookName.xaml.cs">

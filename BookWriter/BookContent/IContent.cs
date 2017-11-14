@@ -8,6 +8,7 @@ using System.Xml;
 
 namespace MyBook.BookContent
 {
+  [Export]
   public interface IContent
   {
     UIElement Show(CacheToControlConverter converter);
