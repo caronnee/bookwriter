@@ -177,6 +177,7 @@ namespace MyBook.BookContent
       doc.Load(filepath);
       Init();
       Load(0);
+      Name = Path.GetFileNameWithoutExtension(filepath);
     }
     
     // Check if this book can be used

@@ -59,7 +59,7 @@ namespace MyBook
     {
       XmlDocument doc = new XmlDocument();
 
-      XmlNode node = doc.CreateNode(XmlNodeType.Element, ROOT_NODE, URI );
+      XmlNode node = doc.CreateNode(XmlNodeType.Element, ROOT_NODE, URI);
       XmlNode n2 = doc.CreateNode(XmlNodeType.Element, FOLDER_NODE, URI);
       XmlNode text = doc.CreateNode(XmlNodeType.Text, DEF_VALUE, URI);
       TextBox textbox = FindName("bFolder") as TextBox;
@@ -81,24 +81,27 @@ namespace MyBook
 
     static public string Folder
     {
-        get;
-        set;
+      get;
+      set;
     }
 
     private void UserControl_Loaded(object sender, RoutedEventArgs e)
     {
-        // if there is setting file, load from it
-        if (!File.Exists(SETTINGS_FILENAME))
-            return;
-        XmlDocument doc = new XmlDocument();
-        doc.Load(SETTINGS_FILENAME);
-        XmlNode no = doc.FirstChild;
-        XmlNodeList list = no.SelectNodes( FOLDER_NODE);
-        string str = "/" + ROOT_NODE; 
-        XmlNodeList root = doc.SelectNodes(str);
+      // if there is setting file, load from it
+      if (!File.Exists(SETTINGS_FILENAME))
+        return;
+      XmlDocument doc = new XmlDocument();
+      doc.Load(SETTINGS_FILENAME);
+      XmlNode no = doc.FirstChild;
+      XmlNodeList list = no.SelectNodes(FOLDER_NODE);
+      string str = "/" + ROOT_NODE;
+      XmlNodeList root = doc.SelectNodes(str);
+      if (root.Count > 0)
+      {
         TextBox textbox = FindName("bFolder") as TextBox;
         textbox.Text = root[0].InnerText;
-        
+      }
+
     }
   }
 }
