@@ -147,6 +147,8 @@ namespace MyBook.BookContent
         par.Load(paragraphs[p]);
         Paragraphs.Add(par);
       }
+      if ( Paragraphs.Count == 0 )
+        Paragraphs.Add(new TextParagraph());
     }
 
     // Root document

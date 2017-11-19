@@ -289,7 +289,7 @@ DependencyProperty.Register(
         }
         else
         {
-          Position.Clear();
+          Position.ParagraphId--;
         }
       }
       Show("At:");      
