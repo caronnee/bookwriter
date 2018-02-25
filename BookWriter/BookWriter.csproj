@@ -39,6 +39,12 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <OutputPath>bin\Debug\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -69,7 +75,6 @@
     <Compile Include="Pages\Intro\BookItem.xaml.cs">
       <DependentUpon>BookItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Write\IRiddle.cs" />
     <Compile Include="Pages\Write\ISettings.cs" />
     <Compile Include="Pages\Write\IWrite.cs" />
     <Compile Include="Pages\Write\MetaData\SetBookName.xaml.cs">

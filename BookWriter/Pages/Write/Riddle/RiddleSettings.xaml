@@ -6,8 +6,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel>
-        <Label>Somethign for rigglr</Label>
-        <Label>Text to check</Label>
+        <ComboBox ItemsSource="{Binding Plugins.Name}"></ComboBox>
         <Label>Actions to be done</Label>
     </StackPanel>
 </UserControl>
