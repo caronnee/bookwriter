@@ -9,10 +9,8 @@ namespace stringPlugin
 {
   public class TextPlugin : IRiddle
   {
-    public String Name()
-    {
-      return "String password";
-    }
+    public String Name { get; set; }
+
     public void OnStringInput()
     {
       throw new NotImplementedException();

@@ -5,8 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel>
-        <ComboBox ItemsSource="{Binding Plugins.Name}"></ComboBox>
-        <Label>Actions to be done</Label>
+    <StackPanel x:Name="riddlePlugins">
     </StackPanel>
 </UserControl>

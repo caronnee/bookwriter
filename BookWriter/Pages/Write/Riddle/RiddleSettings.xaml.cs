@@ -1,4 +1,5 @@
 ﻿using MyBook.BookContent;
+using RiddleInterface;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,7 +21,7 @@ namespace MyBook.Pages.Write.Riddle
     /// <summary>
     /// Interaction logic for RiddleSettings.xaml
     /// </summary>
-    public partial class RiddleSettings : UserControl, IWrite
+    public partial class RiddleSettings : UserControl, ISettings
     {
         public struct PluginInfo
         {
@@ -32,22 +33,58 @@ namespace MyBook.Pages.Write.Riddle
             // find all dlls
             InitializeComponent();
             DataContext = new RiddleParagraph();
-            if (Directory.Exists("Plugins"))
-                return;
+          
+            Assembly assem = Assembly.GetExecutingAssembly();
+            Uri ur = new Uri(assem.CodeBase);
+            FileInfo fi = new FileInfo(ur.AbsolutePath);
+            string s = fi.Directory.FullName;
+            
             //find all dlls
-            string[] dlls = Directory.GetFiles("Plugins", "*.dll");
-            ICollection<Assembly> assemblies = new List<Assembly>(dllFileNames.Length);
-            foreach ( string s in dlls )
+            string[] dlls = Directory.GetFiles( s + "\\Plugins", "*.dll");
+            ICollection<Assembly> assemblies = new List<Assembly>(dlls.Length);
+            List<IRiddle> riddles = new List<IRiddle>();
+            foreach ( string dllFile in dlls )
             {
-                AssemblyName an = GetAssemblyName(dllFile);
+                AssemblyName an = AssemblyName.GetAssemblyName(dllFile);
                 Assembly assembly = Assembly.Load(an);
                 assemblies.Add(assembly);
+            }
+            foreach( Assembly a in assemblies)
+            {
+                Type[] types = a.GetTypes();
+                foreach(Type t in types)
+                {
+                    if (t.IsAbstract || t.IsNotPublic )
+                        continue;
+                    // TODO just write from the static methods
+                    // create as instance
+                    object iRiddle = a.CreateInstance(t.ToString());
+                    IRiddle riddle = iRiddle as IRiddle;
+                    riddles.Add(riddle);
+                }
+            }
+            BindingGroup group = new BindingGroup();
+            
+            foreach (IRiddle r in riddles)
+            {
+                CheckBox c = new CheckBox
+                {
+                    DataContext = r,
+                    Content = r.Name
+                };
+                riddlePlugins.Children.Add(c);
+                c.BindingGroup = group;
             }
         }
 
         public IContent Create()
         {
             return new RiddleParagraph();
+        }
+
+        public void Reset()
+        {
+            // nothing to do right now
         }
     }
 }

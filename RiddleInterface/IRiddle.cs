@@ -8,7 +8,7 @@ namespace RiddleInterface
 {
     public interface IRiddle
     {
-      String Name();
+      String Name { get; set; }
       void OnStringInput();
       void OnMouseInput(int x, int y);
       void OnInit();
