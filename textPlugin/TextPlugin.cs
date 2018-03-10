@@ -4,26 +4,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
-namespace stringPlugin
+namespace TextPlugin
 {
-  public class TextPlugin : IRiddle
-  {
-    public String Name { get; set; }
-
-    public void OnStringInput()
+    public class TextPlugin : IRiddleHandler
     {
-      throw new NotImplementedException();
-    }
+        public TextPlugin()
+        {
+            Name = "TextPlugin";
+        }
 
-    public void OnMouseInput(int x, int y)
-    {
-      throw new NotImplementedException();
-    }
+        public string Name { get; set; }
 
-    public void OnInit()
-    {
-      throw new NotImplementedException();
+        public Control GetManipulationControl()
+        {
+            return new TextSettings();
+        }
     }
-  }
 }

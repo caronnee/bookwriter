@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookWriter", "BookWriter\Bo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RiddleInterface", "RiddleInterface\RiddleInterface.csproj", "{C3D84647-8A04-498C-9B37-A97944BA2ACA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "stringPlugin", "textPlugin\stringPlugin.csproj", "{1A3D7021-E301-4F87-AAFC-C7CF3840594B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextPlugin", "textPlugin\TextPlugin.csproj", "{1A3D7021-E301-4F87-AAFC-C7CF3840594B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

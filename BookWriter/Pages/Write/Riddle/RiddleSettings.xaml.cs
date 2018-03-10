@@ -42,7 +42,7 @@ namespace MyBook.Pages.Write.Riddle
             //find all dlls
             string[] dlls = Directory.GetFiles( s + "\\Plugins", "*.dll");
             ICollection<Assembly> assemblies = new List<Assembly>(dlls.Length);
-            List<IRiddle> riddles = new List<IRiddle>();
+            List<IRiddleHandler> riddles = new List<IRiddleHandler>();
             foreach ( string dllFile in dlls )
             {
                 AssemblyName an = AssemblyName.GetAssemblyName(dllFile);
@@ -59,22 +59,31 @@ namespace MyBook.Pages.Write.Riddle
                     // TODO just write from the static methods
                     // create as instance
                     object iRiddle = a.CreateInstance(t.ToString());
-                    IRiddle riddle = iRiddle as IRiddle;
+                    IRiddleHandler riddle = iRiddle as IRiddleHandler;
                     riddles.Add(riddle);
                 }
             }
             BindingGroup group = new BindingGroup();
             
-            foreach (IRiddle r in riddles)
+            foreach (IRiddleHandler r in riddles)
             {
-                CheckBox c = new CheckBox
+                RadioButton c = new RadioButton
                 {
                     DataContext = r,
                     Content = r.Name
                 };
                 riddlePlugins.Children.Add(c);
                 c.BindingGroup = group;
+                c.Checked += new RoutedEventHandler(riddleChanged);
             }
+        }
+
+        private void riddleChanged(object sender, RoutedEventArgs e)
+        {
+            RadioButton box = sender as RadioButton;
+            if (box.IsChecked == false)
+                return;
+            IRiddleHandler ir = box.DataContext as IRiddleHandler;
         }
 
         public IContent Create()
