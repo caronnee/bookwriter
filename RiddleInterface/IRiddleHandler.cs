@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.Windows.Controls;
 
 namespace RiddleInterface
 {
-    public interface IRiddle
-    {
-        // final string handlin g or so will be put here
-        void OnInit(Control drawOn);
-    }
-    public interface IRiddleHandler
-    {
-      String Name { get; private set; }
-      Control GetManipulationControl();
-    }
+  public interface IRiddle
+  {
+    // final string handling or so will be put here
+    void OnInit(UserControl drawOn);
+  }
+  public interface IRiddleHandler
+  {
+    String Name { get; set; }
+    UserControl Settings { get; set; }
+    UserControl Viewport { get; set; }
+    void Create();
+  }
 }

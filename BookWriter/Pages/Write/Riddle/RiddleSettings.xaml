@@ -6,10 +6,19 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel x:Name="riddlePlugins">
-        <StackPanel Orientation="Horizontal">
-            <Label>Next Page</Label>
-            <ComboBox>Pages</ComboBox>
-        </StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Label Grid.Column="0">Jump to page:</Label>
+            <ComboBox Grid.Column="1" SelectedIndex="0">TODO add pages that are marked</ComboBox>
+            <StackPanel x:Name="pluginControl" Grid.ColumnSpan="2" Grid.Row="1"></StackPanel>
+        </Grid>
         <Button HorizontalAlignment="Right" Width="100">Done</Button>
     </StackPanel>
 </UserControl>

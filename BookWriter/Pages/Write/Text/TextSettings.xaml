@@ -7,6 +7,7 @@
     <StackPanel>
         <Label>Font</Label>
         <Label>Something else</Label>
+        <Label>Shortcuts</Label>
         <TextBox x:Name="xyz" TextWrapping="Wrap" />
     </StackPanel>
 </UserControl>

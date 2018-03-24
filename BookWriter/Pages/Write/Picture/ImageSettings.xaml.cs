@@ -20,7 +20,7 @@ namespace MyBook.Pages.Write.Imaging
   /// <summary>
   /// Interaction logic for ImageSettings.xaml
   /// </summary>
-  public partial class ImageSettings : UserControl, ISettings
+  public partial class ImageSettings : UserControl
   {
     public ImageSettings()
     {
@@ -32,9 +32,7 @@ namespace MyBook.Pages.Write.Imaging
     {
       DataContext = new ImageBox();
     }
-
-
-
+    
     private void loadImage_Click(object sender, RoutedEventArgs e)
     {
       // open dialog

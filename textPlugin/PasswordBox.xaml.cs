@@ -13,16 +13,21 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace textPlugin
+namespace PasswordPlugin
 {
-    /// <summary>
-    /// Interaction logic for TextSetting.xaml
-    /// </summary>
-    public partial class TextSetting : UserControl
+  /// <summary>
+  /// Interaction logic for PasswordBox.xaml
+  /// </summary>
+  public partial class PasswordBox : UserControl
+  {
+    public PasswordBox()
     {
-        public TextSetting()
-        {
-            InitializeComponent();
-        }
+      InitializeComponent();
     }
+
+    private void Answer_PasswordChanged(object sender, RoutedEventArgs e)
+    {
+
+    }
+  }
 }

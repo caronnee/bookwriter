@@ -1,5 +1,4 @@
-﻿// create design of the riddles
-// construct one ridle
+﻿construct one riddle - text riddle
 // enable Location, Characters bookmarks
 // MetaData in cache like cover, autor genre...
 

@@ -9,6 +9,7 @@ using System.Xml;
 
 namespace MyBook.Pages.Write.Riddle
 {
+  // let corresponding model to create it
   class RiddleParagraph : IContent
   {
     public UIElement Show(CacheToControlConverter converter)

@@ -1,27 +1,19 @@
 ﻿using MyBook.BookContent;
 using MyBook.Pages.Meta;
 using MyBook.Pages.Write;
-using MyBook.Pages.Write.Bookmark;
 using MyBook.Pages.Write.DataWriteContext;
 using MyBook.Pages.Write.Imaging;
 using MyBook.Pages.Write.Meta;
+using MyBook.Pages.Write.Picture;
 using MyBook.Pages.Write.Riddle;
 using MyBook.Pages.Write.Text;
+using RiddleInterface;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Xml;
 
 namespace MyBook
 {
@@ -48,74 +40,79 @@ namespace MyBook
       return null;
     }
 
-    public static readonly DependencyProperty TextSettingsProperty =
-DependencyProperty.Register(
-"TextSettingsControl", typeof(TextSettings), typeof(BookWrite));
-
-    public TextSettings TextSettingsControl
-    {
-      get
-      {
-        return (TextSettings)GetValue(TextSettingsProperty);
-      }
-      set
-      {
-        SetValue(TextSettingsProperty, value);
-      }
-    }
-
-    public static readonly DependencyProperty ImageSettingsProperty =
-DependencyProperty.Register(
-"ImageSettingsControl", typeof(ImageSettings), typeof(BookWrite));
-
-    public ImageSettings ImageSettingsControl
-    {
-      get
-      {
-        return (ImageSettings)GetValue(ImageSettingsProperty);
-      }
-      set
-      {
-        SetValue(ImageSettingsProperty, value);
-      }
-    }
-
-    public static readonly DependencyProperty RiddleSettingsProperty =
-DependencyProperty.Register(
-"RiddleSettingsControl", typeof(RiddleSettings), typeof(BookWrite));
-
-    public RiddleSettings RiddleSettingsControl
-    {
-      get
-      {
-        return (RiddleSettings)GetValue(RiddleSettingsProperty);
-      }
-      set
-      {
-        SetValue(RiddleSettingsProperty, value);
-      }
-    }
-
     public void Show( String desc )
     {
       IContent content = Cache.GetContent(Position);
       if (content != null)
       {
-        // set corresponding radio button
-        RadioButton button = content.Show(this) as RadioButton;
-        ChangeSettings(button);
-        workingPage.Child = content.Show(workingPage.Converter);
-      }
-      else
-      {
-        Control work = writeSettings.Child as Control;
-        workingPage.Child = work.DataContext as UIElement;
+        // find out which setting should eb shown
+        MenuItem button = content.Show(this) as MenuItem;
+        //workingPage.Child = content.Show(workingPage.Converter);
       }
       ShowProgress(desc);
     }
 
     private BookSource Cache;
+
+    private void InitPlugins()
+    {
+      Assembly assem = Assembly.GetExecutingAssembly();
+      Uri ur = new Uri(assem.CodeBase);
+      FileInfo fi = new FileInfo(ur.AbsolutePath);
+      string s = fi.Directory.FullName;
+
+      //find all dlls
+      string[] dlls = Directory.GetFiles(s + "\\Plugins", "*.dll");
+      ICollection<Assembly> assemblies = new List<Assembly>(dlls.Length);
+      List<IRiddleHandler> riddles = new List<IRiddleHandler>();
+      foreach (string dllFile in dlls)
+      {
+        AssemblyName an = AssemblyName.GetAssemblyName(dllFile);
+        Assembly assembly = Assembly.Load(an);
+        assemblies.Add(assembly);
+      }
+
+      Type rh = typeof(IRiddleHandler);
+
+      foreach (Assembly a in assemblies)
+      {
+        Type[] types = a.GetTypes();
+        foreach (Type t in types)
+        {
+          if (t.IsAbstract || t.IsNotPublic || !rh.IsAssignableFrom(t))
+            continue;
+          // create as instance
+          object iRiddle = a.CreateInstance(t.ToString());
+          IRiddleHandler riddle = iRiddle as IRiddleHandler;
+          if (riddle != null)
+            riddles.Add(riddle);
+        }
+      }
+
+      foreach (IRiddleHandler r in riddles)
+      {
+        MenuItem menu = new MenuItem();
+        menu.Header = r.Name;
+        menu.DataContext = r;
+        menu.Click += new RoutedEventHandler(riddleChanged);
+        menu.Click += new RoutedEventHandler(setViewboxContent);
+        riddleSwitch.Items.Add(menu);
+      }
+    }
     
+    private void riddleChanged(object sender, RoutedEventArgs e)
+    {
+      MenuItem box = sender as MenuItem;
+      (box.Parent as MenuItem).IsChecked = true;
+     
+      if (box.IsChecked == false)
+        return;
+      Control c = box.DataContext as Control;
+      RiddleSettings rs = new RiddleSettings();
+      rs.DataContext = this;
+      rs.pluginControl.Children.Add(c);      
+    }
+
     public BookWrite(String name)
     {
       DataWriteContext data = new DataWriteContext();
@@ -123,18 +120,19 @@ DependencyProperty.Register(
       DataContext = data;
       InitializeComponent();
 
+      // initialize also all plugins
+      InitPlugins();
       // empty booksource
       Cache = new BookSource("");
-      TextSettingsControl = new TextSettings();
-      ImageSettingsControl = new ImageSettings();
-      RiddleSettingsControl = new RiddleSettings();
       workingPage.Converter = new CacheToWriteControl();
+      insertText.DataContext = new TextHandler();
+      insertImage.DataContext = new ImageHandler();
       // TODO continue form the last time
       Position = new PositionDesc();
       Position.Clear();
 
       // new book will always have as first thing writing box
-      insertText.IsChecked = true;
+      
       if (name.Length > 0)
         Cache.Load(name);
       Show("At");
@@ -196,17 +194,42 @@ DependencyProperty.Register(
       set;
     }
 
-    public void ChangeSettings(RadioButton b)
+    private void HelperEnableMenu(MenuItem parentMenu, MenuItem exc)
     {
-      // when this changes, child of the writing page must be changes also
-      Control control = (Control)b.DataContext;
-      writeSettings.Child = control;
+      foreach (MenuItem menu in parentMenu.Items)
+      {
+        if (menu == exc)
+          continue;
+        menu.IsEnabled = true;
+        menu.IsChecked = false;
+        HelperEnableMenu(menu, exc);
+      }
+    }
+    private void HelperEnableMenu(Menu parentMenu, MenuItem exc)
+    {
+      foreach (MenuItem menu in parentMenu.Items)
+      {
+        if (menu == exc)
+          continue;
+        menu.IsEnabled = true;
+        menu.IsChecked = false;
+        HelperEnableMenu(menu,exc);
+      }
     }
 
     private void setViewboxContent(object sender, RoutedEventArgs e)
     {
-      ChangeSettings(sender as RadioButton);
-      CreateNewPage();
+      MenuItem it = sender as MenuItem;
+      // enable all
+      HelperEnableMenu(contentMenu, it);
+      it.IsEnabled = false;
+      IRiddleHandler handler = it.DataContext as IRiddleHandler;      
+      System.Diagnostics.Debug.Assert(handler != null);
+      handler.Create();
+      Control control = handler.Settings;
+      writeSettings.Child = handler.Settings;
+      workingPage.Content = handler.Viewport;
+      PreparePage();
     }
 
     private void ShowProgress(String desc)
@@ -225,8 +248,8 @@ DependencyProperty.Register(
       SavePage();
       Position.ChapterId = Cache.InsertChapter(Position.ChapterId);
       Position.ParagraphId = 0;
-      workingPage.Child = null;
-      CreateNewPage();
+      workingPage.Content = null;
+      PreparePage();
       Show("Chapter created");
     }
 
@@ -304,15 +327,13 @@ DependencyProperty.Register(
       Show("At:");      
     }
 
-    private void CreateNewPage()
+    private void PreparePage()
     {
       // save the current child
       if (SavePage())
       {
         Position.ParagraphId++;
       }
-      ISettings settings = writeSettings.Child as ISettings;
-      settings.Reset();
       // setEmpty
       Cache.InsertParagraph(Position.ParagraphId, null);
       
@@ -321,7 +342,7 @@ DependencyProperty.Register(
 
     private void SetPageDoneClick(object sender, RoutedEventArgs e)
     {
-      CreateNewPage();
+      PreparePage();
     }
 
     private bool SavePage()

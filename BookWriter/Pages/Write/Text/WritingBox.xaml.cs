@@ -18,7 +18,7 @@ namespace MyBook.Pages.Write.Text
   /// <summary>
   /// Interaction logic for WritingBox.xaml
   /// </summary>
-  public partial class WritingBox : TextBox, IWrite
+  public partial class WritingBox : UserControl, IWrite
   {
     public WritingBox()
     {
@@ -27,11 +27,12 @@ namespace MyBook.Pages.Write.Text
 
     public IContent Create()
     {
-      if (Text.Length == 0)
+      /*if (Text.Length == 0)
         return null;
       TextParagraph par = new TextParagraph();
       par.Content = Text;
-      return par;
+      return par;*/
+      return null;
     }
   }
 }

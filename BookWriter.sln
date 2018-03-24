@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookWriter", "BookWriter\BookWriter.csproj", "{DFB8C42D-FB79-4897-8F29-6397E4D2B62E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RiddleInterface", "RiddleInterface\RiddleInterface.csproj", "{C3D84647-8A04-498C-9B37-A97944BA2ACA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextPlugin", "textPlugin\TextPlugin.csproj", "{1A3D7021-E301-4F87-AAFC-C7CF3840594B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PasswordPlugin", "textPlugin\PasswordPlugin.csproj", "{1A3D7021-E301-4F87-AAFC-C7CF3840594B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

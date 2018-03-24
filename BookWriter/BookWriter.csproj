@@ -78,7 +78,6 @@
     <Compile Include="Pages\Intro\BookItem.xaml.cs">
       <DependentUpon>BookItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Write\ISettings.cs" />
     <Compile Include="Pages\Write\IWrite.cs" />
     <Compile Include="Pages\Write\MetaData\SetBookName.xaml.cs">
       <DependentUpon>SetBookName.xaml</DependentUpon>
@@ -86,6 +85,8 @@
     <Compile Include="Pages\Write\Picture\ImageBox.xaml.cs">
       <DependentUpon>ImageBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Write\Picture\ImageHandler.cs" />
+    <Compile Include="Pages\Write\Text\TextHandler.cs" />
     <Compile Include="Pages\Write\Text\TextParagraph.cs" />
     <Compile Include="BookContent\IContent.cs" />
     <Compile Include="BookContent\CacheToControlConverter.cs" />

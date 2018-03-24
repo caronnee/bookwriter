@@ -1,19 +1,9 @@
 ﻿using MyBook.BookContent;
 using MyBook.Pages.Intro;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace MyBook
 {
@@ -52,8 +42,11 @@ namespace MyBook
       return b;
     }
     
+    public bool Empty { get; private set; }
+
     public Intro()
     {
+      Empty = true;
       InitializeComponent();
       String folder = Settings.BooksFolder;
       try
@@ -63,6 +56,7 @@ namespace MyBook
         {
           Control b = CreateBookControl(name);
           this.Shelf.Children.Add(b);
+          Empty = false;
         }
       }
       catch (Exception)

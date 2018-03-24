@@ -13,11 +13,10 @@ namespace MyBook.Pages.Write
 {
   class CacheToShowControl : CacheToControlConverter
   {
-
     public UIElement Resolve(TextParagraph textParagraph)
     {
+      // TODO for reading
       WritingBox p = new WritingBox();
-      p.IsReadOnly = true;
       return p;
     }
 

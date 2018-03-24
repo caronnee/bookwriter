@@ -44,6 +44,11 @@
             <MenuItem Header="Manual - TODO" />
             <MenuItem Header="About" Click="showAboutClick"/>
         </Menu>
+        <Menu DockPanel.Dock="Top" x:Name="contentMenu">
+            <MenuItem Header="Text"  x:Name="insertText" Checked="setViewboxContent"  IsCheckable="True"/>
+            <MenuItem Header="Image" x:Name="insertImage" Checked="setViewboxContent" IsCheckable="True"/>
+            <MenuItem Header="Riddle"  x:Name="riddleSwitch"/>
+        </Menu>
         <DockPanel DockPanel.Dock="Bottom">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -59,32 +64,24 @@
 
         <Grid x:Name="writingArea">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="86*" />
-                <ColumnDefinition Width="55*" />
-                <ColumnDefinition Width="175*"/>
+                <ColumnDefinition Width="54*" />
+                <ColumnDefinition Width="100*" />
+                <ColumnDefinition Width="69*"/>
+                <ColumnDefinition Width="31*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="10*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <DockPanel >
-                <Expander x:Name="tools" Header="Content" DockPanel.Dock="Top" >
-                    <StackPanel Orientation="Vertical" ScrollViewer.CanContentScroll="True" >
-                        <RadioButton x:Name="insertText"  GroupName="contentSettingsGroup" DataContext="{Binding TextSettingsControl,     ElementName=BookWriter}" Content="Text" Height="30" Checked="setViewboxContent" />
-                        <RadioButton x:Name="insertImage" GroupName="contentSettingsGroup" DataContext="{Binding ImageSettingsControl,   ElementName=BookWriter}" Content="Image" Height="30" Checked="setViewboxContent"/>
-                        <RadioButton x:Name="insertRiddle" GroupName="contentSettingsGroup" DataContext="{Binding RiddleSettingsControl, ElementName=BookWriter}" Content="Riddle" Height="30"  Checked="setViewboxContent"/>
-                        <Viewbox x:Name="writeSettings" >
-                        </Viewbox>
-                    </StackPanel>
-                </Expander>
-                <Expander Header="Pages" DockPanel.Dock="Top">
-                    <TreeView Background="Transparent" ItemsSource="{Binding Pages}">
+            <TreeView>
+                <TreeViewItem Header="Scenes" >
+                    <TreeView Background="Transparent">
                         <TreeViewItem Header="yb">One</TreeViewItem>
                         <TreeViewItem Header="ytf">Two</TreeViewItem>
                         <TreeViewItem Header="cc">Three</TreeViewItem>
                     </TreeView>
-                </Expander>
-                <Expander Header="Bookmarks" >
+                </TreeViewItem>
+                <TreeViewItem Header="Bookmarks">
                     <TreeView Background="Transparent" ItemsSource="{Binding Bookmarks}">
                         <TreeView.ItemTemplate>
                             <HierarchicalDataTemplate  ItemsSource="{Binding Bookmarks}">
@@ -92,11 +89,14 @@
                             </HierarchicalDataTemplate>
                         </TreeView.ItemTemplate>
                     </TreeView>
-                </Expander>
-            </DockPanel>
+                </TreeViewItem>
+                <TreeViewItem Header="Content change">
+                    <Viewbox Grid.Column="0" Grid.Row="1" x:Name="writeSettings" />
+                </TreeViewItem>
+            </TreeView>
 
-            <src:WorkingPage  Grid.Column="1" x:Name="workingPage" Grid.ColumnSpan="2"/>
-            <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="1">
+            <src:WorkingPage  Grid.Column="1" x:Name="workingPage" Grid.ColumnSpan="3"/>
+            <StackPanel Orientation="Horizontal" Grid.ColumnSpan="3" Grid.Column="1" Grid.Row="1">
                 <Button Width="50" Click="StartPageClick" Content="α"  />
                 <Button Width="50" Click="PreviousChapterClick" Content="--"  />
                 <Button Width="50" Click="PreviousPageClick" Content="-"  />

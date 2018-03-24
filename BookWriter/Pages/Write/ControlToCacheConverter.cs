@@ -11,10 +11,10 @@ namespace MyBook.Pages.Write
   {
     public IContent Create(WritingBox box)
     {
-      if (box.Text.Length == 0)
+      if (box.textContent.Text.Length == 0)
         return null;
       TextParagraph paragraph = new TextParagraph();
-      paragraph.Content = box.Text.ToString();
+      paragraph.Content = box.textContent.Text.ToString();
       return paragraph;
     }
   }

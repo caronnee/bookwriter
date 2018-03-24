@@ -16,8 +16,7 @@ namespace MyBook.Pages.Write
     public UIElement Resolve(TextParagraph textParagraph)
     {
       WritingBox p = new WritingBox();
-      p.IsReadOnly = false;
-      p.Text = textParagraph.Content.ToString();
+      p.textContent.Text = textParagraph.Content.ToString();
       return p;
     }
 

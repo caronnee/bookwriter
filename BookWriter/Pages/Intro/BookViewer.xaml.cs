@@ -1,15 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace MyBook
 {
@@ -29,7 +19,10 @@ namespace MyBook
       intro.LoadBook += LoadWriteBook;
       intro.NewBook += CreateBook;
       intro.OnSettingsPage += ShowSettingsBook;
-      Content = intro;
+      if (intro.Empty)
+        CreateBook();
+      else
+        Content = intro;
     }
 
     public void CreateBook()

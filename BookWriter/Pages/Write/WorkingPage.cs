@@ -44,7 +44,7 @@ namespace MyBook
   }*/
 
   // this will be shown when there is some text to be written
-  public class WorkingPage : Viewbox
+  public class WorkingPage : ScrollViewer
   {
     public WorkingPage()
     {
@@ -53,11 +53,7 @@ namespace MyBook
 
     public IContent Create()
     {
-      // TODO through dependency
-      IWrite c = Child as IWrite;
-      if (c == null)
-        return null;
-      return c.Create();
+      return null;
     }
 
     public ControlToCacheConverter CacheConverter
