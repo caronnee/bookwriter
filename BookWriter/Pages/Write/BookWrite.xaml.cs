@@ -228,10 +228,15 @@ namespace MyBook
       handler.Create();
       Control control = handler.Settings;
       writeSettings.Child = handler.Settings;
+      handler.Settings.Height = 200;
+      handler.Settings.Width = contentSettings.Width;
+      // TODO in regard of the font, this should ne be handled by handler
+      handler.Viewport.Height = workingPage.ActualHeight;
+      handler.Viewport.Width = workingPage.ActualWidth;
       workingPage.Content = handler.Viewport;
       PreparePage();
     }
-
+    
     private void ShowProgress(String desc)
     {
       String str = String.Format("{4} ( Chapter {0}/{1}, Page {2}/{3} )", 

@@ -75,14 +75,14 @@
             </Grid.RowDefinitions>
             <TreeView>
                 <TreeViewItem Header="Scenes" >
-                    <TreeView Background="Transparent">
+                    <TreeView BorderBrush="Transparent">
                         <TreeViewItem Header="yb">One</TreeViewItem>
                         <TreeViewItem Header="ytf">Two</TreeViewItem>
                         <TreeViewItem Header="cc">Three</TreeViewItem>
                     </TreeView>
                 </TreeViewItem>
                 <TreeViewItem Header="Bookmarks">
-                    <TreeView Background="Transparent" ItemsSource="{Binding Bookmarks}">
+                    <TreeView BorderBrush="Transparent" ItemsSource="{Binding Bookmarks}">
                         <TreeView.ItemTemplate>
                             <HierarchicalDataTemplate  ItemsSource="{Binding Bookmarks}">
                                 <TreeViewItem Header="{Binding Name}"/>
@@ -90,8 +90,8 @@
                         </TreeView.ItemTemplate>
                     </TreeView>
                 </TreeViewItem>
-                <TreeViewItem Header="Content change">
-                    <Viewbox Grid.Column="0" Grid.Row="1" x:Name="writeSettings" />
+                <TreeViewItem Header="Content change" x:Name="contentSettings">
+                    <Viewbox Grid.Column="0" Grid.Row="1" x:Name="writeSettings"/>
                 </TreeViewItem>
             </TreeView>
 
