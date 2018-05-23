@@ -13,21 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PasswordPlugin
+namespace MyBook.Pages.Write
 {
-  /// <summary>
-  /// Interaction logic for PasswordBox.xaml
-  /// </summary>
-  public partial class PasswordBox : UserControl
-  {
-    public PasswordBox()
+    /// <summary>
+    /// Interaction logic for WorkingPage.xaml
+    /// </summary>
+    public partial class WorkingPage : ScrollViewer
     {
-      InitializeComponent();
+        public WorkingPage()
+        {
+            InitializeComponent();
+        }
     }
-
-    private void Answer_PasswordChanged(object sender, RoutedEventArgs e)
-    {
-
-    }
-  }
 }

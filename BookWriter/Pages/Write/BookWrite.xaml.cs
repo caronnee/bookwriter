@@ -124,7 +124,7 @@ namespace MyBook
       InitPlugins();
       // empty booksource
       Cache = new BookSource("");
-      workingPage.Converter = new CacheToWriteControl();
+     // workingPage.Converter = new CacheToWriteControl();
       insertText.DataContext = new TextHandler();
       insertImage.DataContext = new ImageHandler();
       // TODO continue form the last time
@@ -231,8 +231,6 @@ namespace MyBook
       handler.Settings.Height = 200;
       handler.Settings.Width = contentSettings.Width;
       // TODO in regard of the font, this should ne be handled by handler
-      handler.Viewport.Height = workingPage.ActualHeight;
-      handler.Viewport.Width = workingPage.ActualWidth;
       workingPage.Content = handler.Viewport;
       PreparePage();
     }
@@ -253,7 +251,6 @@ namespace MyBook
       SavePage();
       Position.ChapterId = Cache.InsertChapter(Position.ChapterId);
       Position.ParagraphId = 0;
-      workingPage.Content = null;
       PreparePage();
       Show("Chapter created");
     }
@@ -353,7 +350,7 @@ namespace MyBook
     private bool SavePage()
     {
       // create another working page of the same type
-      IContent content = workingPage.Create();
+      IContent content = null;// workingPage.Create();
       if (content == null)
       {
         if (Cache.Paragraphs.Count > Position.ParagraphId 

@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:write="clr-namespace:MyBook.Pages.Write"
-      xmlns:src="clr-namespace:MyBook"
+      xmlns:src="clr-namespace:MyBook.Pages.Write"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="MyBook.BookWrite" 
       mc:Ignorable="d" x:Name="BookWriter" >
@@ -95,7 +95,7 @@
                 </TreeViewItem>
             </TreeView>
 
-            <src:WorkingPage  Grid.Column="1" x:Name="workingPage" Grid.ColumnSpan="3"/>
+            <src:WorkingPage HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled"  Grid.Column="1" x:Name="workingPage" Grid.ColumnSpan="3" />
             <StackPanel Orientation="Horizontal" Grid.ColumnSpan="3" Grid.Column="1" Grid.Row="1">
                 <Button Width="50" Click="StartPageClick" Content="α"  />
                 <Button Width="50" Click="PreviousChapterClick" Content="--"  />

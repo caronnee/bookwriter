@@ -141,7 +141,9 @@
     <Compile Include="Pages\Write\Text\WritingBox.xaml.cs">
       <DependentUpon>WritingBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Write\WorkingPage.cs" />
+    <Compile Include="Pages\Write\WorkingPage.xaml.cs">
+      <DependentUpon>WorkingPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Write\WritingConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -256,6 +258,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Write\Text\WritingBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Write\WorkingPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
