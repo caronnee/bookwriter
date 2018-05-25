@@ -13,9 +13,19 @@ namespace PasswordPlugin
       InitializeComponent();
     }
 
+    // delegate
+    delegate void CheckHandler();
+    CheckHandler onCheckHander;
+
     private void Answer_PasswordChanged(object sender, RoutedEventArgs e)
     {
 
+    }
+
+    private void verifyClick(object sender, RoutedEventArgs e)
+    {
+      if (onCheckHander != null)
+        onCheckHander();
     }
   }
 }
