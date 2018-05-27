@@ -14,9 +14,11 @@ namespace MyBook.Pages.Write.Picture
     public string Name { get; set; }
     public UserControl Settings { get; set; }
     public UserControl Viewport { get; set; }
-
     public ImageHandler()
     { }
+
+    public event OnSuccessAction OnSuccess;
+
     public void Create()
     {
       Settings = new ImageSettings();

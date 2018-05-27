@@ -14,14 +14,9 @@ namespace PasswordPlugin
     }
 
     // delegate
-    delegate void CheckHandler();
-    CheckHandler onCheckHander;
-
-    private void Answer_PasswordChanged(object sender, RoutedEventArgs e)
-    {
-
-    }
-
+    public delegate void CheckHandler();
+    public event CheckHandler onCheckHander;
+    
     private void verifyClick(object sender, RoutedEventArgs e)
     {
       if (onCheckHander != null)

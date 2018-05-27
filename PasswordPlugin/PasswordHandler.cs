@@ -16,8 +16,11 @@ namespace PasswordPlugin
     public UserControl Settings { get; set; }
     public UserControl Viewport { get; set; }
 
+    public event OnSuccessAction OnSuccess;
+
     public void Create()
     {
+      // do nothing, just fill out the scenes this can jump to
       Settings = new PasswordSetting();
       Viewport = new PasswordBox();
     }

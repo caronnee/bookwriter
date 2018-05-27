@@ -4,11 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PasswordPlugin"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel>
-        <Label>Hint</Label>
-        <TextBlock> Here comes regexp to trigger the hint</TextBlock>
-        <TextBlock> Here comes the hint</TextBlock>
+             mc:Ignorable="d" >
+    <StackPanel Orientation="Horizontal">
+        <TextBox> Here comes regexp to trigger the hint</TextBox>
+        <TextBox> Here comes the hint</TextBox>
     </StackPanel>
 </UserControl>

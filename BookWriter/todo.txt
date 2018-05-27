@@ -1,4 +1,6 @@
 ﻿construct one riddle - text riddle
+save riddle
+On succes, move to set scene
 // enable Location, Characters bookmarks
 // MetaData in cache like cover, autor genre...
 

@@ -64,10 +64,8 @@
 
         <Grid x:Name="writingArea">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="54*" />
-                <ColumnDefinition Width="100*" />
-                <ColumnDefinition Width="69*"/>
-                <ColumnDefinition Width="31*"/>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="10*" />
