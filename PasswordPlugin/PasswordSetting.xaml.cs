@@ -11,5 +11,10 @@ namespace PasswordPlugin
     {
       InitializeComponent();
     }
+
+    private void newHint_Click(object sender, System.Windows.RoutedEventArgs e)
+    {
+      hintPanel.Children.Insert(0, new HintItem());
+    }
   }
 }

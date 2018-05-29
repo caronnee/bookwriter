@@ -229,7 +229,6 @@ namespace MyBook
       Control control = handler.Settings;
       writeSettings.Child = handler.Settings;
       handler.Settings.Height = 200;
-      handler.Settings.Width = contentSettings.Width;
       // TODO in regard of the font, this should ne be handled by handler
       workingPage.Content = handler.Viewport;
       PreparePage();
