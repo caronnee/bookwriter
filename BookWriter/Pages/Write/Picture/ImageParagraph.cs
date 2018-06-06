@@ -1,4 +1,5 @@
 ﻿using MyBook.BookContent;
+using RiddleInterface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,13 @@ namespace MyBook.Pages.Write.Imaging
 { 
   public class ImageParagraph : IContent
   {
-    public void Load(XmlNode node)
+    public bool Load(XmlNode node)
     {
+      if (node.Name != XmlNodeNames.ImageName)
+        return false;
       if ( node.InnerText.Length > 0)
         SourceName = node.InnerText;
+      return true;
     }
 
     public String SourceName
@@ -23,10 +27,15 @@ namespace MyBook.Pages.Write.Imaging
       get;
       set;
     }
-
-    public UIElement Show(CacheToControlConverter converter)
+    public String ImageHeader
     {
-      return converter.Resolve(this);
+      get;
+      set;
+    }
+    public String ImageFooter
+    {
+      get;
+      set;
     }
 
     public XmlNode ToXmlNode(XmlDocument doc)
@@ -34,6 +43,11 @@ namespace MyBook.Pages.Write.Imaging
       XmlElement node = doc.CreateElement(XmlNodeNames.ImageName);
       node.InnerText = SourceName;
       return node;
+    }
+
+    public UserControl ConvertToReadonly()
+    {
+      throw new NotImplementedException();
     }
 
     public ImageParagraph()

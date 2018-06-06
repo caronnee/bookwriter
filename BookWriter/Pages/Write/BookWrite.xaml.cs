@@ -1,11 +1,8 @@
 ﻿using MyBook.BookContent;
 using MyBook.Pages.Meta;
-using MyBook.Pages.Write;
-using MyBook.Pages.Write.DataWriteContext;
-using MyBook.Pages.Write.Imaging;
+using MyBook.Pages.Write.Bookmark;
 using MyBook.Pages.Write.Meta;
 using MyBook.Pages.Write.Picture;
-using MyBook.Pages.Write.Riddle;
 using MyBook.Pages.Write.Text;
 using RiddleInterface;
 using System;
@@ -20,41 +17,11 @@ namespace MyBook
   /// <summary>
   /// Interaction logic for BookWrite.xaml
   /// </summary>
-  public partial class BookWrite : UserControl, CacheToControlConverter
+  public partial class BookWrite : UserControl
   {
-    // what to do when type is tex
-    public UIElement Resolve(TextParagraph textParagraph)
-    {
-      return insertText;
-    }
-
-    // What to do when type is image 
-    public UIElement Resolve(ImageParagraph imagesParagraph)
-    {
-      return insertImage;
-    }
-
-    // Default resolve
-    public UIElement Resolve(object o)
-    {
-      return null;
-    }
-
-    public void Show( String desc )
-    {
-      IContent content = Cache.GetContent(Position);
-      if (content != null)
-      {
-        // find out which setting should eb shown
-        MenuItem button = content.Show(this) as MenuItem;
-        //workingPage.Child = content.Show(workingPage.Converter);
-      }
-      ShowProgress(desc);
-    }
-
     private BookSource Cache;
 
-    private void InitPlugins()
+    private List<IRiddleHandler> InitPlugins()
     {
       Assembly assem = Assembly.GetExecutingAssembly();
       Uri ur = new Uri(assem.CodeBase);
@@ -98,44 +65,39 @@ namespace MyBook
         menu.Click += new RoutedEventHandler(setViewboxContent);
         riddleSwitch.Items.Add(menu);
       }
+      return riddles;
     }
     
     private void riddleChanged(object sender, RoutedEventArgs e)
     {
       MenuItem box = sender as MenuItem;
       (box.Parent as MenuItem).IsChecked = true;
-     
-      if (box.IsChecked == false)
-        return;
-      Control c = box.DataContext as Control;
-      RiddleSettings rs = new RiddleSettings();
-      rs.DataContext = this;
-      rs.pluginControl.Children.Add(c);      
     }
+
+    public List<BookmarksHeader> Bookmarks;
 
     public BookWrite(String name)
     {
-      DataWriteContext data = new DataWriteContext();
-      data.Init(name);
-      DataContext = data;
-      InitializeComponent();
-
+      //DataWriteContext data = new DataWriteContext();
+      //data.Init(name);
+      //DataContext = data;
       // initialize also all plugins
-      InitPlugins();
       // empty booksource
-      Cache = new BookSource("");
-     // workingPage.Converter = new CacheToWriteControl();
+      Cache = new BookSource();
+      DataContext = Cache;
+
+      // TODO continue form the last time
+      // new book will always have as first thing writing box
+      InitializeComponent();
       insertText.DataContext = new TextHandler();
       insertImage.DataContext = new ImageHandler();
-      // TODO continue form the last time
-      Position = new PositionDesc();
-      Position.Clear();
 
-      // new book will always have as first thing writing box
-      
+      List<IRiddleHandler> handlers = InitPlugins();
+
       if (name.Length > 0)
-        Cache.Load(name);
-      Show("At");
+        Cache.Load(name, handlers);
+
+      ShowProgress("At");
     }
 
     public delegate void BackHandler();
@@ -151,7 +113,7 @@ namespace MyBook
     private void SaveBook()
     {
       SavePage();
-      Cache.SaveChapter();
+      Cache.SaveScene(x_sceneName.Text);
       if (Cache.Name == null)
       {
         //
@@ -184,15 +146,11 @@ namespace MyBook
 
     private void startPage_Click(object sender, RoutedEventArgs e)
     {
-      Position.Clear();
-      Show("Start page");
+      Cache.Position.Clear();
+      ShowProgress("Start page");
     }
 
-    public PositionDesc Position
-    {
-      get;
-      set;
-    }
+   
 
     private void HelperEnableMenu(MenuItem parentMenu, MenuItem exc)
     {
@@ -219,149 +177,106 @@ namespace MyBook
 
     private void setViewboxContent(object sender, RoutedEventArgs e)
     {
+      SavePage();
       MenuItem it = sender as MenuItem;
       // enable all
       HelperEnableMenu(contentMenu, it);
       it.IsEnabled = false;
-      IRiddleHandler handler = it.DataContext as IRiddleHandler;      
-      System.Diagnostics.Debug.Assert(handler != null);
-      handler.Create();
-      Control control = handler.Settings;
-      writeSettings.Child = handler.Settings;
-      handler.Settings.Height = 200;
+      actualHandler = it.DataContext as IRiddleHandler;      
+      System.Diagnostics.Debug.Assert(actualHandler != null);
+      workingPage.Content = actualHandler.Viewport;
+      Control control = actualHandler.Settings;
+      writeSettings.Child = actualHandler.Settings;
+      actualHandler.Settings.Height = 200;
       // TODO in regard of the font, this should ne be handled by handler
-      workingPage.Content = handler.Viewport;
       PreparePage();
     }
     
     private void ShowProgress(String desc)
     {
-      String str = String.Format("{4} ( Chapter {0}/{1}, Page {2}/{3} )", 
-        Position.ChapterId + 1, 
-        Cache.NChapters(), 
-        Position.ParagraphId+1, 
-        Cache.Paragraphs.Count, 
+      String str = String.Format("{4} ( Scene {0}/{1}, Page {2}/{3} )", 
+        Cache.Position.ChapterId + 1, 
+        Cache.Scenes.Count,
+        Cache.Position.ParagraphId+1, 
+        Cache.ActualScene.Pages.Count, 
         desc );
       progressText.Text = str;
     }
-
-    private void NewChapterClick(object sender, RoutedEventArgs e)
-    {
-      SavePage();
-      Position.ChapterId = Cache.InsertChapter(Position.ChapterId);
-      Position.ParagraphId = 0;
-      PreparePage();
-      Show("Chapter created");
-    }
-
-    private void StartPageClick(object sender, RoutedEventArgs e)
-    {
-      SavePage();
-      Position.Clear();
-      Show("At:");
-    }
-
-    private void LastChapterClick(object sender, RoutedEventArgs e)
-    {
-      SavePage();
-      int chapterID =Cache.Chapters.Count - 1;
-      Position.ParagraphId = 0;
-      Position.ChapterId = Cache.Chapters.Count - 1;
-      Show("At:");      
-    }
-
-    private void PreviousChapterClick(object sender, RoutedEventArgs e)
-    {
-      SavePage();
-      Position.ParagraphId = 0;
-      if (Position.ChapterId > 0)
-        Position.ChapterId--;
-      Show("At:");      
-    }
-
-    private void PreviousPageClick(object sender, RoutedEventArgs e)
-    {
-      SavePage();
-      Position.ParagraphId--;
-      if (Position.ParagraphId == 0)
-      {
-        if (Position.ChapterId > 0)
-        {
-          Position.ChapterId--;
-          Cache.Load(Position.ChapterId);
-          Position.ParagraphId = Cache.Paragraphs.Count - 1;
-        }
-        else
-        {
-          Position.Clear();
-        }
-      }
-      Show("At:");      
-    }
-
-    private void NextPageClick(object sender, RoutedEventArgs e)
-    {
-      if (SavePage())
-        Position.ParagraphId++;
-
-      if (Position.ParagraphId == Cache.Paragraphs.Count)
-      {
-        if (Position.ChapterId < (Cache.Chapters.Count - 1))
-        {
-          Position.ChapterId++;
-          Position.ParagraphId = 0;
-        }
-        else
-        {
-          Position.ParagraphId--;
-        }
-      }
-      Show("At:");      
-    }
-
-    private void NextChapterClick(object sender, RoutedEventArgs e)
-    {
-      SavePage();
-      Position.ParagraphId = 0;
-      if (Position.ChapterId < (Cache.Chapters.Count - 1))
-        Position.ChapterId++;
-      Show("At:");      
-    }
-
+    
     private void PreparePage()
     {
-      // save the current child
-      if (SavePage())
-      {
-        Position.ParagraphId++;
-      }
-      // setEmpty
-      Cache.InsertParagraph(Position.ParagraphId, null);
-      
-      Show("At");
+      // create new page according to the handler
+      actualHandler.Create();
+      workingPage.Content = actualHandler.Viewport;      
     }
 
-    private void SetPageDoneClick(object sender, RoutedEventArgs e)
+    private void createPage(object sender, RoutedEventArgs e)
     {
+      SavePage();
+      CreatePage();
+    }
+
+    private void savePage(object sender, RoutedEventArgs e)
+    {
+      SavePage();
+    }
+    private void saveScene(object sender, RoutedEventArgs e)
+    {
+      string name = x_sceneName.Text;
+      Cache.SaveScene(name);
+      m_scenes.Items.Refresh();
+    }
+
+    private void moveBack(object sender, RoutedEventArgs e)
+    {
+      Cache.MoveBack();
+      ShowProgress("At");
+    }
+
+    private void moveForward(object sender, RoutedEventArgs e)
+    {
+      Cache.MoveForward();
+      ShowProgress("At");
+    }
+
+    private void saveAndCreateScene(object sender, RoutedEventArgs e)
+    {
+      string name = x_sceneName.Text;
+      Cache.SaveScene(name);
+      Cache.CreateScene();
+      Cache.Position.ParagraphId = 0;
       PreparePage();
+      m_scenes.Items.Refresh();
+    
+    }
+    private IRiddleHandler actualHandler { get; set; }
+
+    private void CreatePage()
+    {
+      if (actualHandler == null)
+      {
+        ShowProgress("No content chosen");      
+        return;
+      }
+      SavePage();
+
+      PreparePage();
+      Cache.CreatePage();
+     
+      ShowProgress("Page created");
     }
 
-    private bool SavePage()
+    private void SavePage()
     {
-      // create another working page of the same type
-      IContent content = null;// workingPage.Create();
-      if (content == null)
+      if (actualHandler == null)
       {
-        if (Cache.Paragraphs.Count > Position.ParagraphId 
-          && Cache.Paragraphs[Position.ParagraphId] == null)
-        {
-          Cache.Paragraphs.RemoveAt(Position.ParagraphId);
-        }
-        return false;
-      }
-      Cache.SetParagraph(Position, content);
+        Cache.SetPage(null);
+        return;
+      } 
+      // create another working page of the same type
+      IContent content = actualHandler.CreateRiddle();
+      Cache.SetPage(content);
       ShowProgress("Page saved");
-      return true;
     }
 
     private void showAboutClick(object sender, RoutedEventArgs e)
@@ -369,5 +284,6 @@ namespace MyBook
       Window w = new AboutBox();
       w.Show();
     }
+    
   }
 }

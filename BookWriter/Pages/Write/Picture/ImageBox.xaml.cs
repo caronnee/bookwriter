@@ -19,7 +19,7 @@ namespace MyBook.Pages.Write.Picture
   /// <summary>
   /// Interaction logic for ImageBox.xaml
   /// </summary>
-  public partial class ImageBox : UserControl, IWrite
+  public partial class ImageBox : UserControl
   {
     public ImageBox()
     {
@@ -38,14 +38,7 @@ namespace MyBook.Pages.Write.Picture
         str = "file:///" + Settings.TempFolder + name;
       SourceName = name;
       Uri uri = new Uri(str);
-      picture.Source = new BitmapImage(uri);
-    }
-    
-    public IContent Create()
-    {
-      ImageParagraph im = new ImageParagraph();
-      im.SourceName = SourceName;
-      return im;
+      x_picture.Source = new BitmapImage(uri);
     }
   }
 }

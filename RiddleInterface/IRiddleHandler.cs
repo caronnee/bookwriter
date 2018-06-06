@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Windows.Controls;
+using System.Xml;
 
 namespace RiddleInterface
 {
-  public interface IRiddle
+  public interface IContent
   {
-    // final string handling or so will be put here
-    void OnInit(UserControl drawOn);
+    XmlNode ToXmlNode(XmlDocument doc);
+    bool Load(XmlNode node);
+    UserControl ConvertToReadonly();
   }
 
   public delegate void OnSuccessAction();
@@ -17,6 +19,8 @@ namespace RiddleInterface
     UserControl Settings { get; set; }
     UserControl Viewport { get; set; }
     void Create();
-    event OnSuccessAction OnSuccess;
+    //void Load(IContent content);
+    IContent CreateRiddle();
+    IContent Load(XmlNode node);
   }
 }

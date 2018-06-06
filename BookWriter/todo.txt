@@ -1,5 +1,8 @@
-﻿construct one riddle - text riddle
+﻿pages switches
+save page
+on click, load the scene
 save riddle
+loas riddle 
 On succes, move to set scene
 // enable Location, Characters bookmarks
 // MetaData in cache like cover, autor genre...

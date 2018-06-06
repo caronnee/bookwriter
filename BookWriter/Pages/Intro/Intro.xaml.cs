@@ -61,7 +61,7 @@ namespace MyBook
       }
       catch (Exception)
       {
-        System.Diagnostics.Debug.Assert(false);
+        // do nothing
       }
       Control createButton = CreateNewBookControl();
       this.Shelf.Children.Add(createButton);

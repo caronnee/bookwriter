@@ -1,5 +1,6 @@
 ﻿using RiddleInterface;
 using System.Windows.Controls;
+using System.Xml;
 
 namespace PasswordPlugin
 {
@@ -8,21 +9,49 @@ namespace PasswordPlugin
     public PasswordHandler()
     {
       Name = "PasswordPlugin";
-
-      //TODO set dependencies
+      // setting are the same for the book
+      Settings = new PasswordSetting();
     }
 
     public string Name { get; set; }
     public UserControl Settings { get; set; }
     public UserControl Viewport { get; set; }
-
-    public event OnSuccessAction OnSuccess;
-
+    
+    public IContent CreateContent()
+    {
+      return null;
+    }
     public void Create()
     {
-      // do nothing, just fill out the scenes this can jump to
-      Settings = new PasswordSetting();
-      Viewport = new PasswordBox();
+      Viewport = new PasswordWriteBox();
+    }
+
+    public IContent CreateRiddle()
+    {
+      PasswordParagraph p = new PasswordParagraph();
+      PasswordWriteBox box = Viewport as PasswordWriteBox;
+      p.description = box.description.Text;
+      // all hints
+      p.items = new System.Collections.Generic.List<PasswordParagraph.PassItem>();
+      foreach(HintItem hi in box.hintPanel.Children)
+      {
+        PasswordParagraph.PassItem item = new PasswordParagraph.PassItem();
+        item.hint = hi.x_showText.Text;
+        if (hi.x_isCorrect.IsChecked == true)
+          item.pagedesc = hi.x_toSkip.SelectedValue.ToString();
+        item.regexp = hi.x_regexp.Text;
+        p.items.Add(item);
+      }
+      p.questionText = box.x_question.Text;
+      return p;
+    }
+
+    public IContent Load(XmlNode node)
+    {
+      PasswordParagraph p = new PasswordParagraph();
+      if (p.Load(node))
+        return p;
+      return null;
     }
   }
 }

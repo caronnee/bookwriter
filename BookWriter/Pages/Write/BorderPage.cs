@@ -27,11 +27,6 @@ namespace MyBook
       Position = new PositionDesc();
     }
 
-    public CacheToControlConverter Converter
-    {
-      get;
-      set;
-    }
     public void Load(BookSource cache)
     {
       //this.Child = Converter.Resolve(cache,Position);

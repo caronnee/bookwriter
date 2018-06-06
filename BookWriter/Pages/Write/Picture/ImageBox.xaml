@@ -7,9 +7,9 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Viewbox>
         <StackPanel>
-            <TextBox x:Name="header">image name</TextBox>
-            <Image x:Name="picture"></Image>
-            <TextBox x:Name="footer">Description</TextBox>
+            <TextBox x:Name="x_header">image name</TextBox>
+            <Image x:Name="x_picture"></Image>
+            <TextBox x:Name="x_footer">Description</TextBox>
         </StackPanel>
     </Viewbox>
 </UserControl>

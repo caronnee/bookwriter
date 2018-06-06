@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Xml;
 
 namespace MyBook.Pages.Write.Picture
 {
@@ -15,14 +16,32 @@ namespace MyBook.Pages.Write.Picture
     public UserControl Settings { get; set; }
     public UserControl Viewport { get; set; }
     public ImageHandler()
-    { }
-
-    public event OnSuccessAction OnSuccess;
-
+    {
+      Name = "Image";
+      Settings = new ImageSettings();
+    }
+    
     public void Create()
     {
-      Settings = new ImageSettings();
       Viewport = new ImageBox();
+    }
+
+    public IContent CreateRiddle()
+    {
+      ImageParagraph p = new ImageParagraph();
+      ImageBox box = Viewport as ImageBox;
+      p.SourceName = box.x_picture.Source.ToString();
+      p.ImageHeader = box.x_header.Text;
+      p.ImageFooter = box.x_footer.Text;
+      return p;
+    }
+
+    public IContent Load(XmlNode node)
+    {
+      ImageParagraph p = new ImageParagraph();
+      if (p.Load(node))
+        return p;
+      return null;
     }
   }
 }

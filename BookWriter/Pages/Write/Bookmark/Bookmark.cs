@@ -6,14 +6,7 @@ using System.Text;
 
 namespace MyBook.Pages.Write.Bookmark
 {
-  public interface IBookmark
-  {
-    string Name { get; }
-    string Content{ get; }
-    List<IBookmark> Bookmarks { get; }
-  }
-
-  public class BookmarksHeader :  IBookmark
+  public class BookmarksHeader
   {
     public BookmarksHeader()
     {
@@ -21,6 +14,6 @@ namespace MyBook.Pages.Write.Bookmark
     }
     public string Name { get; set; }
     public string Content { get; set; }
-    public List<IBookmark> Bookmarks { get; set; }
+    public List<BookmarksHeader> Bookmarks { get; set; }
   }
 }

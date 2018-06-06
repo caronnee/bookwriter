@@ -47,6 +47,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
+    <DefineConstants>DEBUG</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -78,7 +79,6 @@
     <Compile Include="Pages\Intro\BookItem.xaml.cs">
       <DependentUpon>BookItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Write\IWrite.cs" />
     <Compile Include="Pages\Write\MetaData\SetBookName.xaml.cs">
       <DependentUpon>SetBookName.xaml</DependentUpon>
     </Compile>
@@ -88,8 +88,6 @@
     <Compile Include="Pages\Write\Picture\ImageHandler.cs" />
     <Compile Include="Pages\Write\Text\TextHandler.cs" />
     <Compile Include="Pages\Write\Text\TextParagraph.cs" />
-    <Compile Include="BookContent\IContent.cs" />
-    <Compile Include="BookContent\CacheToControlConverter.cs" />
     <Compile Include="BookContent\PositionDesc.cs" />
     <Compile Include="Pages\Read\BookPageContent.xaml.cs">
       <DependentUpon>BookPageContent.xaml</DependentUpon>
@@ -120,10 +118,6 @@
     <Compile Include="Pages\Intro\Intro.xaml.cs">
       <DependentUpon>Intro.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Write\CacheToShowControl.cs" />
-    <Compile Include="Pages\Write\CacheToWriteControl.cs" />
-    <Compile Include="Pages\Write\ControlToCacheConverter.cs" />
-    <Compile Include="Pages\Write\DataWriteContext\DataWriteContext.cs" />
     <Compile Include="Pages\Write\MetaData\MetaData.xaml.cs">
       <DependentUpon>MetaData.xaml</DependentUpon>
     </Compile>
@@ -131,10 +125,6 @@
       <DependentUpon>ImageSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Write\Picture\ImageParagraph.cs" />
-    <Compile Include="Pages\Write\Riddle\RiddleParagraph.cs" />
-    <Compile Include="Pages\Write\Riddle\RiddleSettings.xaml.cs">
-      <DependentUpon>RiddleSettings.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\Write\Text\TextSettings.xaml.cs">
       <DependentUpon>TextSettings.xaml</DependentUpon>
     </Compile>
@@ -242,10 +232,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Write\Picture\ImageSettings.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\Write\Riddle\RiddleSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
