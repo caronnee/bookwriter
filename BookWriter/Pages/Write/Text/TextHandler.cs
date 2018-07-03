@@ -29,7 +29,7 @@ namespace MyBook.Pages.Write.Text
     {
       TextParagraph p = new TextParagraph();
       WritingBox box = Viewport as WritingBox;
-      p.Content = box.textContent.Text;
+      p.Content = box.x_textContent.Text;
       return p;
     }
 

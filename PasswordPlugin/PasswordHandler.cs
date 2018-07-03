@@ -30,10 +30,10 @@ namespace PasswordPlugin
     {
       PasswordParagraph p = new PasswordParagraph();
       PasswordWriteBox box = Viewport as PasswordWriteBox;
-      p.description = box.description.Text;
+      p.description = box.x_description.Text;
       // all hints
       p.items = new System.Collections.Generic.List<PasswordParagraph.PassItem>();
-      foreach(HintItem hi in box.hintPanel.Children)
+      foreach(HintItem hi in box.x_hintPanel.Children)
       {
         PasswordParagraph.PassItem item = new PasswordParagraph.PassItem();
         item.hint = hi.x_showText.Text;

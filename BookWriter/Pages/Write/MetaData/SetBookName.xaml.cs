@@ -24,12 +24,12 @@ namespace MyBook.Pages.Meta
     }
     public void CancelClick(object sender, RoutedEventArgs e)
     {
-      BookName.Text = "";
+      x_bookName.Text = "";
       Close();
     }
     public void DoneClick(object sender, RoutedEventArgs e)
     {
-      if (BookName.Text.Length == 0)
+      if (x_bookName.Text.Length == 0)
       {
         //red
         return;

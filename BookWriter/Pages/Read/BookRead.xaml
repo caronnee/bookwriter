@@ -5,13 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:src="clr-namespace:MyBook"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="500" x:Name="BookContent">
+             d:DesignHeight="300" d:DesignWidth="500" x:Name="x_bookContent">
     <UserControl.Resources>
         <ControlTemplate x:Key="Flippable" TargetType="{x:Type Label}">
-            <Grid x:Name="GridTest">
+            <Grid x:Name="x_gridTest">
                 <Border BorderThickness="100">
                     <Border.Clip>
-                        <CombinedGeometry x:Name="LeftPageClip" GeometryCombineMode="Exclude">
+                        <CombinedGeometry x:Name="x_leftPageClip" GeometryCombineMode="Exclude">
                             <CombinedGeometry.Geometry1>
                                 <RectangleGeometry> <!--- inital configuration. It might be changed during execution. And probaby will -->
                                     <RectangleGeometry.Rect>
@@ -81,11 +81,11 @@
             <RowDefinition Height="9*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <src:TestLabel x:Name="TestName" Grid.Column="0" Grid.Row="0" Content="XXX" Template="{StaticResource ResourceKey=Flippable}"/>
-        <src:BookPageContent x:Name="BookPageLeft" Background="Green" Grid.Column="1" Grid.Row="1" Opacity="0.3">Test</src:BookPageContent>
-        <src:BookPageContent x:Name="BookPageLeftMirror" Background="BlanchedAlmond" Grid.Column="1" Grid.Row="1" BorderBrush="Black" BorderThickness="2" RenderTransform="{StaticResource MirrorShiftedLeft}">
+        <src:TestLabel x:Name="x_testName" Grid.Column="0" Grid.Row="0" Content="XXX" Template="{StaticResource ResourceKey=Flippable}"/>
+        <src:BookPageContent x:Name="x_bookPageLeft" Background="Green" Grid.Column="1" Grid.Row="1" Opacity="0.3">Test</src:BookPageContent>
+        <src:BookPageContent x:Name="x_bookPageLeftMirror" Background="BlanchedAlmond" Grid.Column="1" Grid.Row="1" BorderBrush="Black" BorderThickness="2" RenderTransform="{StaticResource MirrorShiftedLeft}">
                 Mirrorred page</src:BookPageContent>
-        <src:BookPageContent x:Name="BookPageRight" Background="Yellow" Grid.Column="2" Grid.Row="1"></src:BookPageContent>
+        <src:BookPageContent x:Name="x_bookPageRight" Background="Yellow" Grid.Column="2" Grid.Row="1"></src:BookPageContent>
         <Button Name="TestButton" Content="Start!" Grid.Column="1" Grid.Row="3" Click="TestButton_Click" />
         <!-- <src:BookPageContent x:Name="BookPageRightMirror" Grid.Column="2" Grid.Row="1" RenderTransform="{StaticResource MirrorShiftedRight}"></src:BookPageContent> -->
     </Grid>

@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:MyBook.Pages.Write"
              mc:Ignorable="d" 
              d:DesignHeight="120" d:DesignWidth="300">
-    <StackPanel x:Name="context">
+    <StackPanel x:Name="x_context">
         <TextBox TextWrapping="Wrap"
                  AcceptsReturn="True"></TextBox>
         <Label>xyz</Label>

@@ -24,10 +24,10 @@ namespace MyBook
     {
       BookItem b = new BookItem();
       //Style s = TryFindResource("Rotated") as Style;
-      b.buttonLoader.DataContext = name;
+      b.x_buttonLoader.DataContext = name;
       //b.Style = s;
-      b.buttonLoader.Content = GetTitle(name);
-      b.buttonLoader.Click += new RoutedEventHandler(Load);
+      b.x_buttonLoader.Content = GetTitle(name);
+      b.x_buttonLoader.Click += new RoutedEventHandler(Load);
       return b;
     }
 
@@ -37,8 +37,8 @@ namespace MyBook
       //Style s = TryFindResource("Rotated") as Style;
       
       //b.Style = s;
-      b.buttonLoader.Content = "New book";     
-      b.buttonLoader.Click += new RoutedEventHandler(CreateNew);
+      b.x_buttonLoader.Content = "New book";     
+      b.x_buttonLoader.Click += new RoutedEventHandler(CreateNew);
       return b;
     }
     
@@ -55,7 +55,7 @@ namespace MyBook
         foreach (string name in strings)
         {
           Control b = CreateBookControl(name);
-          this.Shelf.Children.Add(b);
+          this.x_shelf.Children.Add(b);
           Empty = false;
         }
       }
@@ -64,7 +64,7 @@ namespace MyBook
         // do nothing
       }
       Control createButton = CreateNewBookControl();
-      this.Shelf.Children.Add(createButton);
+      this.x_shelf.Children.Add(createButton);
     }
 
     public delegate void LoadHandler(String str, int flags);

@@ -27,7 +27,7 @@ namespace PasswordPlugin
     
     private void AddButton(object sender, System.Windows.RoutedEventArgs e)
     {
-      hintPanel.Children.Insert(0, new HintItem());
+      x_hintPanel.Children.Insert(0, new HintItem());
     }
   }
 }

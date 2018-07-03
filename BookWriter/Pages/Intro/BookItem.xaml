@@ -9,7 +9,7 @@
         <BitmapImage x:Key="metadataImage" UriSource="/resources/edit.png" />
     </UserControl.Resources>
     <StackPanel Orientation="Horizontal">
-        <Button x:Name="buttonLoader" MinWidth="100">Test</Button>
+        <Button x:Name="x_buttonLoader" MinWidth="100">Test</Button>
         <Button>
             <Image Source="{StaticResource ResourceKey=removeImage}"/>
         </Button>

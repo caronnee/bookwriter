@@ -44,10 +44,10 @@
             <MenuItem Header="Manual - TODO" />
             <MenuItem Header="About" Click="showAboutClick"/>
         </Menu>
-        <Menu DockPanel.Dock="Top" x:Name="contentMenu">
-            <MenuItem Header="Text"  x:Name="insertText" Checked="setViewboxContent"  IsCheckable="True"/>
-            <MenuItem Header="Image" x:Name="insertImage" Checked="setViewboxContent" IsCheckable="True"/>
-            <MenuItem Header="Riddle"  x:Name="riddleSwitch"/>
+        <Menu DockPanel.Dock="Top" x:Name="x_contentMenu">
+            <MenuItem Header="Text"  x:Name="x_insertText" Checked="setViewboxContent"  IsCheckable="True"/>
+            <MenuItem Header="Image" x:Name="x_insertImage" Checked="setViewboxContent" IsCheckable="True"/>
+            <MenuItem Header="Riddle"  x:Name="x_riddleSwitch"/>
         </Menu>
         <DockPanel DockPanel.Dock="Bottom">
             <Grid>
@@ -55,14 +55,14 @@
                     <ColumnDefinition Width="127*"/>
                     <ColumnDefinition Width="94*"/>
                 </Grid.ColumnDefinitions>
-                <ProgressBar x:Name="progressBar" Foreground="Bisque"  Minimum="0" Maximum="100" Value="75" Grid.ColumnSpan="2" />
-                <TextBlock x:Name="Status" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="57,0,56,0">
-                    <Run x:Name="progressText" Text="Chapter name, page"/>
+                <ProgressBar x:Name="x_progressBar" Foreground="Bisque"  Minimum="0" Maximum="100" Value="75" Grid.ColumnSpan="2" />
+                <TextBlock x:Name="x_status" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="57,0,56,0">
+                    <Run x:Name="x_progressText" Text="Chapter name, page"/>
                 </TextBlock>
             </Grid>
         </DockPanel>
 
-        <Grid x:Name="writingArea">
+        <Grid x:Name="x_writingArea">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="3*" />
@@ -73,7 +73,7 @@
             </Grid.RowDefinitions>
             <TreeView>
                 <TreeViewItem Header="Scenes">
-                    <TreeView x:Name="m_scenes" BorderBrush="Transparent" ItemsSource="{Binding Scenes}">
+                    <TreeView x:Name="x_scenes" BorderBrush="Transparent" ItemsSource="{Binding Scenes}">
                         <TreeView.ItemTemplate>
                             <HierarchicalDataTemplate >
                                 <TreeViewItem Header="{Binding Name}" />
@@ -90,8 +90,8 @@
                         </TreeView.ItemTemplate>
                     </TreeView>
                 </TreeViewItem>
-                <TreeViewItem Header="Content change" x:Name="contentSettings">
-                    <Viewbox Grid.Column="0" Grid.Row="1" x:Name="writeSettings"/>
+                <TreeViewItem Header="Content change" x:Name="x_contentSettings">
+                    <Viewbox Grid.Column="0" Grid.Row="1" x:Name="x_writeSettings"/>
                 </TreeViewItem>
             </TreeView>
             <Grid Grid.Column="2">
@@ -100,7 +100,7 @@
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
                 <TextBox x:Name="x_sceneName" Grid.Row="0" HorizontalContentAlignment="Center">Name of the scene</TextBox>
-                <src:WorkingPage Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" x:Name="workingPage" Margin="0,2,0,14" Grid.RowSpan="2" />
+                <src:WorkingPage Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" x:Name="x_workingPage" Margin="0,2,0,14" Grid.RowSpan="2" />
             </Grid>
             <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2">
                 <Button Width="80" Content="-" IsEnabled="{Binding CanGoBack}" Click="moveBack"/>

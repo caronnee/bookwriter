@@ -8,6 +8,6 @@
         <Label>Font</Label>
         <Label>Something else</Label>
         <Label>Shortcuts</Label>
-        <TextBox x:Name="xyz" TextWrapping="Wrap" />
+        <TextBox x:Name="x_yz" TextWrapping="Wrap" />
     </StackPanel>
 </UserControl>

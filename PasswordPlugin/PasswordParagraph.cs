@@ -36,9 +36,9 @@ namespace PasswordPlugin
     public UserControl ConvertToReadonly()
     {
       PasswordBox box = new PasswordBox();
-      box.question.Text = questionText;
+      box.x_question.Text = questionText;
       // TODO switch text according to the page size
-      box.description.Text = description;
+      box.x_description.Text = description;
       return box;
     }
 

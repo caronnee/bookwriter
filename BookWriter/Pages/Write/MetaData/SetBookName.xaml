@@ -6,6 +6,6 @@
         <Label>Set name of the book: </Label>
         <Button DockPanel.Dock="Right" Width="60" Click="DoneClick">Done</Button>
         <Button DockPanel.Dock="Right" Width="60" Click="CancelClick">Cancel</Button>
-        <TextBox x:Name="BookName" VerticalAlignment="Center"></TextBox>
+        <TextBox x:Name="x_bookName" VerticalAlignment="Center"></TextBox>
     </DockPanel>
 </Window>

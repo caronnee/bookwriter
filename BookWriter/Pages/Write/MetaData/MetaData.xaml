@@ -32,10 +32,10 @@ SizeToContent="WidthAndHeight" Height="328.642" Width="516.224"
             <Label Grid.Row="1" Grid.Column="0">Author</Label>
             <Label Grid.Row="2" Grid.Column="0">Tag</Label>
 
-            <TextBox x:Name="BookName" Grid.Row="0" Grid.Column="1"></TextBox>
-            <Label x:Name="Author" Grid.Row="1" Grid.Column="1"
+            <TextBox x:Name="x_bookName" Grid.Row="0" Grid.Column="1"></TextBox>
+            <Label x:Name="x_author" Grid.Row="1" Grid.Column="1"
                  Content="{Binding Source={x:Static local:Settings.Author}}" Height="31" VerticalAlignment="Top" ></Label>
-            <ComboBox x:Name="Type" Grid.Row="2" Grid.Column="1" SelectedIndex="0">
+            <ComboBox x:Name="x_type" Grid.Row="2" Grid.Column="1" SelectedIndex="0">
                 <ComboBoxItem>Sci-fi</ComboBoxItem>
                 <ComboBoxItem>Historical</ComboBoxItem>
                 <ComboBoxItem>Fantasy</ComboBoxItem>

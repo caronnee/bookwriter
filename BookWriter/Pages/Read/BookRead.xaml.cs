@@ -44,7 +44,7 @@ namespace MyBook
 
     private void TestButton_Click(object sender, RoutedEventArgs e)
     {
-      _turnPage.Begin(BookContent, HandoffBehavior.SnapshotAndReplace);
+      _turnPage.Begin(x_bookContent, HandoffBehavior.SnapshotAndReplace);
     }
   }
 }

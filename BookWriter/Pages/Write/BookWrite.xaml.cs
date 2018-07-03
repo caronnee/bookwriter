@@ -63,7 +63,7 @@ namespace MyBook
         menu.DataContext = r;
         menu.Click += new RoutedEventHandler(riddleChanged);
         menu.Click += new RoutedEventHandler(setViewboxContent);
-        riddleSwitch.Items.Add(menu);
+        x_riddleSwitch.Items.Add(menu);
       }
       return riddles;
     }
@@ -89,8 +89,8 @@ namespace MyBook
       // TODO continue form the last time
       // new book will always have as first thing writing box
       InitializeComponent();
-      insertText.DataContext = new TextHandler();
-      insertImage.DataContext = new ImageHandler();
+      x_insertText.DataContext = new TextHandler();
+      x_insertImage.DataContext = new ImageHandler();
 
       List<IRiddleHandler> handlers = InitPlugins();
 
@@ -119,12 +119,12 @@ namespace MyBook
         //
         SetBookName name = new SetBookName();
         bool? set = name.ShowDialog();
-        if (name.BookName.Text.Length == 0)
+        if (name.x_bookName.Text.Length == 0)
         {
           ShowProgress("Book not saved");
           return;
         }
-        Cache.Name = name.BookName.Text;
+        Cache.Name = name.x_bookName.Text;
       }
       Cache.Save();
       // export to XML format. DTD
@@ -180,13 +180,13 @@ namespace MyBook
       SavePage();
       MenuItem it = sender as MenuItem;
       // enable all
-      HelperEnableMenu(contentMenu, it);
+      HelperEnableMenu(x_contentMenu, it);
       it.IsEnabled = false;
       actualHandler = it.DataContext as IRiddleHandler;      
       System.Diagnostics.Debug.Assert(actualHandler != null);
-      workingPage.Content = actualHandler.Viewport;
+      x_workingPage.Content = actualHandler.Viewport;
       Control control = actualHandler.Settings;
-      writeSettings.Child = actualHandler.Settings;
+      x_writeSettings.Child = actualHandler.Settings;
       actualHandler.Settings.Height = 200;
       // TODO in regard of the font, this should ne be handled by handler
       PreparePage();
@@ -200,14 +200,14 @@ namespace MyBook
         Cache.Position.ParagraphId+1, 
         Cache.ActualScene.Pages.Count, 
         desc );
-      progressText.Text = str;
+      x_progressText.Text = str;
     }
     
     private void PreparePage()
     {
       // create new page according to the handler
       actualHandler.Create();
-      workingPage.Content = actualHandler.Viewport;      
+      x_workingPage.Content = actualHandler.Viewport;      
     }
 
     private void createPage(object sender, RoutedEventArgs e)
@@ -224,7 +224,7 @@ namespace MyBook
     {
       string name = x_sceneName.Text;
       Cache.SaveScene(name);
-      m_scenes.Items.Refresh();
+      x_scenes.Items.Refresh();
     }
 
     private void moveBack(object sender, RoutedEventArgs e)
@@ -246,7 +246,7 @@ namespace MyBook
       Cache.CreateScene();
       Cache.Position.ParagraphId = 0;
       PreparePage();
-      m_scenes.Items.Refresh();
+      x_scenes.Items.Refresh();
     
     }
     private IRiddleHandler actualHandler { get; set; }

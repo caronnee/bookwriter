@@ -22,11 +22,11 @@
       <RadioButton GroupName="BookModes" Style="{StaticResource {x:Type ToggleButton}}" Name="hideButton" Content="Sections" HorizontalAlignment="Left" IsEnabled="False" />
       
       <DockPanel HorizontalAlignment="Right">
-        <Button x:Name="settingButton" Content="Settings" Click="settingButton_Click" />
+        <Button x:Name="x_settingButton" Content="Settings" Click="settingButton_Click" />
       </DockPanel>
     </DockPanel>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" >
-      <StackPanel x:Name="Shelf" HorizontalAlignment="Center">
+      <StackPanel x:Name="x_shelf" HorizontalAlignment="Center">
 
       </StackPanel>
     </ScrollViewer>
