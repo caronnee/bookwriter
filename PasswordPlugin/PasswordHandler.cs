@@ -38,7 +38,7 @@ namespace PasswordPlugin
         PasswordParagraph.PassItem item = new PasswordParagraph.PassItem();
         item.hint = hi.x_showText.Text;
         if (hi.x_isCorrect.IsChecked == true)
-          item.pagedesc = hi.x_toSkip.SelectedValue.ToString();
+          item.sceneId = hi.x_toSkip.SelectedValue.ToString();
         item.regexp = hi.x_regexp.Text;
         p.items.Add(item);
       }
@@ -52,6 +52,26 @@ namespace PasswordPlugin
       if (p.Load(node))
         return p;
       return null;
+    }
+
+    public bool ToViewport(IContent content)
+    {
+      PasswordParagraph p = content as PasswordParagraph;
+      if (p == null)
+        return false;
+      PasswordWriteBox box = new PasswordWriteBox();
+      box.x_description.Text = p.description;
+      box.x_question.Text = p.questionText;
+      foreach ( var a in p.items )
+      {
+        HintItem item = new HintItem();
+        box.x_hintPanel.Children.Add(item);
+        item.x_regexp.Text = a.regexp;
+        item.x_showText.Text = a.hint;
+        item.x_toSkip.Text = a.sceneId;
+        item.x_isCorrect.IsChecked = a.sceneId != null;
+      }
+      return true;
     }
   }
 }

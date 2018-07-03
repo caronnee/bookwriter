@@ -19,6 +19,7 @@ namespace PasswordPlugin
     static public String RegExp = "Desc";
     static public String Correct = "Correct";
     static public String GoTo = "Goto";
+    static public String SceneName = "Scene";
   }
 
   class PasswordParagraph : IContent
@@ -26,7 +27,7 @@ namespace PasswordPlugin
     public struct PassItem
     {
       public String regexp;
-      public String pagedesc;
+      public String sceneId;
       public String hint;
     }
     public String description;
@@ -61,8 +62,16 @@ namespace PasswordPlugin
           {
             PassItem item = new PassItem();
             item.hint = t.Attributes[PasswordXmlNames.Hint].InnerText;
-            item.pagedesc = t.Attributes[PasswordXmlNames.GoTo].InnerText;
+            item.sceneId = t.Attributes[PasswordXmlNames.GoTo].InnerText;
             item.regexp = t.Attributes[PasswordXmlNames.RegExp].InnerText;
+            try
+            {
+              item.sceneId = t.Attributes[PasswordXmlNames.SceneName].InnerText;
+            }
+            catch (Exception e)
+            {
+              item.sceneId = null;
+            }
             items.Add(item);
           }
         }
@@ -88,7 +97,7 @@ namespace PasswordPlugin
         att.Value = a.hint;
         tempNode.Attributes.Append(att);
         att = doc.CreateAttribute(PasswordXmlNames.GoTo);
-        att.Value = a.pagedesc;
+        att.Value = a.sceneId;
         tempNode.Attributes.Append(att);
         att = doc.CreateAttribute(PasswordXmlNames.RegExp);
         att.Value = a.regexp;

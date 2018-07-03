@@ -64,14 +64,15 @@
 
         <Grid x:Name="x_writingArea">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="17*" />
+                <ColumnDefinition Width="91*"/>
+                <ColumnDefinition Width="480*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="10*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <TreeView>
+            <TreeView Grid.ColumnSpan="2">
                 <TreeViewItem Header="Scenes">
                     <TreeView x:Name="x_scenes" BorderBrush="Transparent" ItemsSource="{Binding Scenes}">
                         <TreeView.ItemTemplate>
@@ -102,13 +103,11 @@
                 <TextBox x:Name="x_sceneName" Grid.Row="0" HorizontalContentAlignment="Center">Name of the scene</TextBox>
                 <src:WorkingPage Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" x:Name="x_workingPage" Margin="0,2,0,14" Grid.RowSpan="2" />
             </Grid>
-            <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2">
+            <StackPanel Orientation="Horizontal" Grid.Column="2" Grid.Row="1">
                 <Button Width="80" Content="-" IsEnabled="{Binding CanGoBack}" Click="moveBack"/>
-                <Button Width="80" Content="Save page" Click="savePage"  />
                 <Button Width="80" Content="New page" Click="createPage"  />
-                <Button Width="80" Content="Save scene" Click="saveScene"  />
                 <Button Width="80" Click="saveAndCreateScene" Content="New scene"  />
-                <Button Width="80" Content="+" IsEnabled="{Binding CanGoFurther}" Click="moveForward"/> 
+                <Button Width="80" Content="+" IsEnabled="{Binding CanGoFurther}" Click="moveForward"/>
             </StackPanel>
         </Grid>
     </DockPanel>

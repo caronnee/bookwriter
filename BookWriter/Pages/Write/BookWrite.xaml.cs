@@ -76,6 +76,8 @@ namespace MyBook
 
     public List<BookmarksHeader> Bookmarks;
 
+    public List<IRiddleHandler> ContentHandlers;
+
     public BookWrite(String name)
     {
       //DataWriteContext data = new DataWriteContext();
@@ -89,13 +91,17 @@ namespace MyBook
       // TODO continue form the last time
       // new book will always have as first thing writing box
       InitializeComponent();
-      x_insertText.DataContext = new TextHandler();
-      x_insertImage.DataContext = new ImageHandler();
-
-      List<IRiddleHandler> handlers = InitPlugins();
+      TextHandler th = new TextHandler();
+      x_insertText.DataContext = th;
+      ImageHandler ih = new ImageHandler();
+      x_insertImage.DataContext = ih;
+      ContentHandlers = new List<IRiddleHandler>();
+      ContentHandlers.Add(th);
+      ContentHandlers.Add(ih);
+      ContentHandlers.AddRange(InitPlugins());
 
       if (name.Length > 0)
-        Cache.Load(name, handlers);
+        Cache.Load(name, ContentHandlers);
 
       ShowProgress("At");
     }
@@ -174,7 +180,13 @@ namespace MyBook
         HelperEnableMenu(menu,exc);
       }
     }
-
+    private void SetHandler(IRiddleHandler handler)
+    {
+      System.Diagnostics.Debug.Assert(handler != null);
+      actualHandler = handler;
+      Control control = actualHandler.Settings;
+      x_writeSettings.Child = actualHandler.Settings;
+    }
     private void setViewboxContent(object sender, RoutedEventArgs e)
     {
       SavePage();
@@ -182,24 +194,17 @@ namespace MyBook
       // enable all
       HelperEnableMenu(x_contentMenu, it);
       it.IsEnabled = false;
-      actualHandler = it.DataContext as IRiddleHandler;      
-      System.Diagnostics.Debug.Assert(actualHandler != null);
-      x_workingPage.Content = actualHandler.Viewport;
-      Control control = actualHandler.Settings;
-      x_writeSettings.Child = actualHandler.Settings;
-      actualHandler.Settings.Height = 200;
+      SetHandler(it.DataContext as IRiddleHandler);
       // TODO in regard of the font, this should ne be handled by handler
       PreparePage();
     }
     
     private void ShowProgress(String desc)
     {
-      String str = String.Format("{4} ( Scene {0}/{1}, Page {2}/{3} )", 
-        Cache.Position.ChapterId + 1, 
-        Cache.Scenes.Count,
+      String str = String.Format("{0} ( Page {1}/{2} )", 
+        desc,
         Cache.Position.ParagraphId+1, 
-        Cache.ActualScene.Pages.Count, 
-        desc );
+        Cache.ActualScene.Pages.Count);
       x_progressText.Text = str;
     }
     
@@ -210,32 +215,41 @@ namespace MyBook
       x_workingPage.Content = actualHandler.Viewport;      
     }
 
+    // Show page fro the position
+    private void Show()
+    {
+      IContent content = Cache.GetContent();
+      // first find the handler - we have ensured that 
+      foreach (IRiddleHandler h in ContentHandlers)
+      {
+        if ( h.ToViewport(content) )
+        {
+          SetHandler(h);
+          x_workingPage.Content = actualHandler.Viewport;
+          break;
+        }
+      }
+    }
+
     private void createPage(object sender, RoutedEventArgs e)
     {
       SavePage();
       CreatePage();
     }
 
-    private void savePage(object sender, RoutedEventArgs e)
-    {
-      SavePage();
-    }
-    private void saveScene(object sender, RoutedEventArgs e)
-    {
-      string name = x_sceneName.Text;
-      Cache.SaveScene(name);
-      x_scenes.Items.Refresh();
-    }
-
     private void moveBack(object sender, RoutedEventArgs e)
     {
+      SavePage();
       Cache.MoveBack();
+      Show();
       ShowProgress("At");
     }
 
     private void moveForward(object sender, RoutedEventArgs e)
     {
+      SavePage();
       Cache.MoveForward();
+      Show();
       ShowProgress("At");
     }
 

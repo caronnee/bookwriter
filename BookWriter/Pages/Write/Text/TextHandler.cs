@@ -40,5 +40,16 @@ namespace MyBook.Pages.Write.Text
         return p;
       return null;
     }
+
+    public bool ToViewport(IContent content)
+    {
+      TextParagraph p = content as TextParagraph;
+      if (p == null)
+        return false;
+      WritingBox b = new WritingBox();
+      b.x_textContent.Text = p.Content;
+      Viewport = b;
+      return true;
+    }
   }
 }

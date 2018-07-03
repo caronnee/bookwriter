@@ -25,7 +25,14 @@ namespace MyBook.Pages.Write.Picture
     {
       Viewport = new ImageBox();
     }
-
+    private void LoadContent(ImageParagraph p)
+    {
+      ImageBox box = new ImageBox();
+      box.x_footer.Text = p.ImageFooter;
+      box.x_header.Text = p.ImageHeader;
+      box.x_picture.Source = null;// TODO
+      Viewport = box;
+    }
     public IContent CreateRiddle()
     {
       ImageParagraph p = new ImageParagraph();
@@ -42,6 +49,15 @@ namespace MyBook.Pages.Write.Picture
       if (p.Load(node))
         return p;
       return null;
+    }
+
+    public bool ToViewport(IContent content)
+    {
+      ImageParagraph p = content as ImageParagraph;
+      if (p == null)
+        return false;
+
+      return true;
     }
   }
 }

@@ -8,7 +8,7 @@ namespace MyBook.BookContent
   // identifier what we are actually showing
   public class PositionDesc
   {
-    public int ChapterId
+    public String SceneName
     {
       get;
       set;
@@ -34,7 +34,7 @@ namespace MyBook.BookContent
 
     public void Clear()
     {
-      ChapterId = 0;
+      SceneName = null;
       Lenght = 0;
       ParagraphId = 0;
       ContentPos = 0;

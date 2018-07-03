@@ -196,6 +196,14 @@ namespace MyBook.BookContent
       get { return Position.ParagraphId < ActualScene.Pages.Count - 1; }
     }
 
+    public IContent GetContent()
+    {
+      if (Position.SceneName != null)
+        ActualScene = Scenes.Find(new Predicate<SceneDescription>(x => x.Name == Position.SceneName));
+      System.Diagnostics.Debug.Assert(ActualScene != null);
+      return ActualScene.Pages[Position.ParagraphId];
+    }
+
     public BookSource()
     {
       // init
