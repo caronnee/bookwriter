@@ -253,7 +253,10 @@ namespace MyBook
       Show();
       ShowProgress("At");
     }
-
+    private void removePage(object sender, RoutedEventArgs e)
+    {
+      Cache.RemovePage();
+    }
     private void saveAndCreateScene(object sender, RoutedEventArgs e)
     {
       string name = x_sceneName.Text;

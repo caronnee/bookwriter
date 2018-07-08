@@ -91,7 +91,12 @@ namespace MyBook.BookContent
         Order = 0;
       }
     }
-
+    public void RemovePage()
+    {
+      Position.Scene.Pages.RemoveAt(Position.ParagraphId);
+      if (Position.ParagraphId == Position.Scene.Pages.Count)
+        Position.ParagraphId--;
+    }
     public void SetPage(IContent content)
     {
       if (Position.ParagraphId == Position.Scene.Pages.Count)

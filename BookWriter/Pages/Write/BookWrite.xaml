@@ -116,6 +116,7 @@
             <StackPanel Orientation="Horizontal" Grid.Column="2" Grid.Row="1">
                 <Button Width="80" Content="-" IsEnabled="{Binding CanGoBack}" Click="moveBack"/>
                 <Button Width="80" Content="New page" Click="createPage"  />
+                <Button Width="80" Content="Remove page" IsEnabled="{Binding CanGoBack}" Click="removePage"/>
                 <Button Width="80" Click="saveAndCreateScene" Content="New scene"  />
                 <Button Width="80" Content="+" IsEnabled="{Binding CanGoFurther}" Click="moveForward"/>
             </StackPanel>

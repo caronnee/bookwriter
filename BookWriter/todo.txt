@@ -1,5 +1,4 @@
-﻿remove page
-save riddle
+﻿save riddle
 load riddle 
 On succes, move to set scene
 // enable Location, Characters bookmarks
