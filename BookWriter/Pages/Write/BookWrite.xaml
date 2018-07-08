@@ -74,25 +74,35 @@
             </Grid.RowDefinitions>
             <TreeView Grid.ColumnSpan="2">
                 <TreeViewItem Header="Scenes">
-                    <TreeView x:Name="x_scenes" BorderBrush="Transparent" ItemsSource="{Binding Scenes}">
+                    <TreeView x:Name="x_scenes" BorderBrush="Transparent" ItemsSource="{Binding Scenes}" SelectedItemChanged="x_scenes_SelectedItemChanged">
                         <TreeView.ItemTemplate>
                             <HierarchicalDataTemplate >
-                                <TreeViewItem Header="{Binding Name}" />
+                                <TextBlock Text="{Binding Name}" />
                             </HierarchicalDataTemplate>
                         </TreeView.ItemTemplate>
                     </TreeView>
                 </TreeViewItem>
                 <TreeViewItem Header="Bookmarks">
-                    <TreeView BorderBrush="Transparent" ItemsSource="{Binding Bookmarks}">
+                    <TreeView BorderBrush="Transparent" ItemsSource="{Binding Bookmarks}" SelectedItemChanged="TreeView_SelectedItemChanged">
                         <TreeView.ItemTemplate>
                             <HierarchicalDataTemplate  ItemsSource="{Binding Bookmarks}">
-                                <TreeViewItem Header="{Binding Name}"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Name}"/>
+                                </StackPanel>
                             </HierarchicalDataTemplate>
                         </TreeView.ItemTemplate>
                     </TreeView>
                 </TreeViewItem>
                 <TreeViewItem Header="Content change" x:Name="x_contentSettings">
                     <Viewbox Grid.Column="0" Grid.Row="1" x:Name="x_writeSettings"/>
+                </TreeViewItem>
+                <TreeViewItem Header="test">
+                    <TreeView SelectedItemChanged="TreeView_SelectedItemChanged">
+                        <TreeViewItem Header="1" />
+                        <TreeViewItem Header="1" />
+                        <TreeViewItem Header="1" />
+                        <TreeViewItem Header="1" />
+                    </TreeView>
                 </TreeViewItem>
             </TreeView>
             <Grid Grid.Column="2">

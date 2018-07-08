@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using static MyBook.BookContent.BookSource;
 
 namespace MyBook.BookContent
 {
   // identifier what we are actually showing
   public class PositionDesc
   {
-    public String SceneName
+    public SceneDescription Scene
     {
-      get;
-      set;
+      get;set;
     }
-
     public int ParagraphId
     {
       get;
@@ -34,7 +29,6 @@ namespace MyBook.BookContent
 
     public void Clear()
     {
-      SceneName = null;
       Lenght = 0;
       ParagraphId = 0;
       ContentPos = 0;

@@ -11,6 +11,7 @@ using System.IO;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using static MyBook.BookContent.BookSource;
 
 namespace MyBook
 {
@@ -204,7 +205,7 @@ namespace MyBook
       String str = String.Format("{0} ( Page {1}/{2} )", 
         desc,
         Cache.Position.ParagraphId+1, 
-        Cache.ActualScene.Pages.Count);
+        Cache.Position.Scene.Pages.Count);
       x_progressText.Text = str;
     }
     
@@ -298,6 +299,25 @@ namespace MyBook
       Window w = new AboutBox();
       w.Show();
     }
-    
+
+    private void x_scenes_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+    {
+      string name = x_sceneName.Text;
+      Cache.SaveScene(name);
+      Cache.Position.Clear();
+      Cache.Position.Scene = x_scenes.SelectedValue as SceneDescription;
+      Show();
+      ShowProgress("At");
+    }
+
+    private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+    {
+      //System.Diagnostics.Debug.Assert(false);
+    }
+
+    private void TreeViewItem_Selected(object sender, RoutedEventArgs e)
+    {
+      //System.Diagnostics.Debug.Assert(false);
+    }
   }
 }

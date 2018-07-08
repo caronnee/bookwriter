@@ -94,18 +94,12 @@ namespace MyBook.BookContent
 
     public void SetPage(IContent content)
     {
-      if (Position.ParagraphId == ActualScene.Pages.Count)
+      if (Position.ParagraphId == Position.Scene.Pages.Count)
       {
-        ActualScene.Pages.Add(content);
+        Position.Scene.Pages.Add(content);
       }
       else
-        ActualScene.Pages[Position.ParagraphId] = content;
-
-    }
-    public SceneDescription ActualScene
-    {
-      get;
-      set;
+        Position.Scene.Pages[Position.ParagraphId] = content;
     }
 
     // name of the book 
@@ -126,14 +120,14 @@ namespace MyBook.BookContent
 
     public void CreatePage()
     {
-      if (ActualScene.Pages[ActualScene.Pages.Count-1] == null)
+      if (Position.Scene.Pages[Position.Scene.Pages.Count-1] == null)
         return;
-      ActualScene.Pages.Add(null);
+      Position.Scene.Pages.Add(null);
       MoveForward();
     }
     public void MoveForward()
     {
-      if (Position.ParagraphId == ActualScene.Pages.Count - 1)
+      if (Position.ParagraphId ==Position.Scene.Pages.Count - 1)
         return;
       Position.ParagraphId++;
       NotifyPropertyChanged("CanGoFurther");
@@ -168,7 +162,7 @@ namespace MyBook.BookContent
       XmlNode parent = doc.FirstChild;
       foreach (XmlNode node in parent.ChildNodes)
       {
-        ActualScene = new SceneDescription();
+        Position.Scene = new SceneDescription();
         String sn = node.Attributes[XmlNodeNames.SceneId].Value;
         foreach (XmlNode contentNode in node.ChildNodes)
         {
@@ -178,7 +172,7 @@ namespace MyBook.BookContent
             content = handler.Load(node);
             if (content != null)
             {
-              ActualScene.Pages.Add(content);
+              Position.Scene.Pages.Add(content);
               break;
             }
           }
@@ -188,20 +182,18 @@ namespace MyBook.BookContent
 
     public bool CanGoBack
     {
-      get { return Position.ParagraphId != 0; }
+      get { return Position.ParagraphId > 0; }
     }
 
     public bool CanGoFurther
     {
-      get { return Position.ParagraphId < ActualScene.Pages.Count - 1; }
+      get { return Position.ParagraphId < Position.Scene.Pages.Count - 1; }
     }
 
     public IContent GetContent()
     {
-      if (Position.SceneName != null)
-        ActualScene = Scenes.Find(new Predicate<SceneDescription>(x => x.Name == Position.SceneName));
-      System.Diagnostics.Debug.Assert(ActualScene != null);
-      return ActualScene.Pages[Position.ParagraphId];
+      //Position.Scene = Scenes.Find(new Predicate<SceneDescription>(x => x.Name == Position.SceneName));
+      return Position.Scene.Pages[Position.ParagraphId];
     }
 
     public BookSource()
@@ -223,13 +215,14 @@ namespace MyBook.BookContent
 
     public void CreateScene()
     {
-      ActualScene = new SceneDescription();      
-      Scenes.Add(ActualScene);
+      Position.Scene = new SceneDescription();      
+      Scenes.Add(Position.Scene);
+      Position.Clear();
       SetPage(null);
     }
     public void SaveScene(String sceneName)
     {
-      ActualScene.Name = sceneName;            
+      Position.Scene.Name = sceneName;            
       NotifyPropertyChanged("Scenes");
     }
 

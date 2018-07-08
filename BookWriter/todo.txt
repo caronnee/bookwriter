@@ -1,8 +1,6 @@
-﻿pages switches
-save page
-on click, load the scene
+﻿remove page
 save riddle
-loas riddle 
+load riddle 
 On succes, move to set scene
 // enable Location, Characters bookmarks
 // MetaData in cache like cover, autor genre...
