@@ -160,9 +160,9 @@ namespace MyBook.BookContent
 
     public void Load(String name, List<IRiddleHandler> handlers)
     {
-      Name = name;
+      Name = Path.GetFileNameWithoutExtension(name);
       XmlDocument doc = new XmlDocument();
-      doc.Load(Name);
+      doc.Load(name);
       // load whole
       XmlNode parent = doc.FirstChild;
       foreach (XmlNode node in parent.ChildNodes)
@@ -174,7 +174,7 @@ namespace MyBook.BookContent
           IContent content = null;
           foreach (IRiddleHandler handler in handlers)
           {
-            content = handler.Load(node);
+            content = handler.Load(contentNode);
             if (content != null)
             {
               Position.Scene.Pages.Add(content);
@@ -183,6 +183,8 @@ namespace MyBook.BookContent
           }
         }
       }
+      NotifyPropertyChanged("CanGoFurther");
+      NotifyPropertyChanged("CanGoBack");
     }
 
     public bool CanGoBack
@@ -208,14 +210,6 @@ namespace MyBook.BookContent
       Position = new PositionDesc();
       Position.Clear();
       Init();
-    }
-
-    public BookSource(String name)
-    {
-      // init
-      Name = name;
-      Init();
-      Load(name);
     }
 
     public void CreateScene()
@@ -249,6 +243,8 @@ namespace MyBook.BookContent
         att.Value = d.Name;
         foreach (IContent content in d.Pages)
         {
+          if (content == null)
+            continue;
           XmlNode node = content.ToXmlNode(doc);
           e.AppendChild(node);
         }
@@ -257,17 +253,6 @@ namespace MyBook.BookContent
       doc.AppendChild(parent);
       doc.Save(fullpath);
       return 0;
-    }
-
-
-    public void Load(String filepath)
-    {
-      Init();
-      // read the sample xml
-      XmlDocument doc = new XmlDocument();
-      doc.Load(filepath);
-
-      Name = Path.GetFileNameWithoutExtension(filepath);
     }
 
     // Check if this book can be used

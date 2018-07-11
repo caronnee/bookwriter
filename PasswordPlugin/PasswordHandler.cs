@@ -71,6 +71,7 @@ namespace PasswordPlugin
         item.x_toSkip.Text = a.sceneId;
         item.x_isCorrect.IsChecked = a.sceneId != null;
       }
+      Viewport = box;
       return true;
     }
   }

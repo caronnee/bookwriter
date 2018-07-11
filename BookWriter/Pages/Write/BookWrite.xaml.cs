@@ -103,8 +103,7 @@ namespace MyBook
 
       if (name.Length > 0)
         Cache.Load(name, ContentHandlers);
-
-      ShowProgress("At");
+      Show();
     }
 
     public delegate void BackHandler();

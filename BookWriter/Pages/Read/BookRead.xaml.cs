@@ -26,8 +26,8 @@ namespace MyBook
 
     public BookRead(String name)
     {
-      _source = new BookSource(name); // TODO check the correct syntax of the file
-      _source.Load(name);
+      _source = new BookSource(); // TODO check the correct syntax of the file
+      //_source.Load(name);
       InitializeComponent();
 
       _turnPage = (Storyboard)this.Resources["TurnPage"];
