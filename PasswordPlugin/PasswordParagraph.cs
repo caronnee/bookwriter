@@ -14,8 +14,9 @@ namespace PasswordPlugin
     static public String Name = "PasswordParagraph";
     static public String Description = "Description";
     static public String Question = "Question";
-    static public String Option = "Option";
-    static public String Hint = "Hints";
+    static public String Help = "Help";
+    static public String Hints = "Hints";
+    static public String Hint = "Hint";
     static public String RegExp = "Desc";
     static public String Correct = "Correct";
     static public String GoTo = "Goto";
@@ -55,20 +56,19 @@ namespace PasswordPlugin
           questionText = node.InnerText;
         else if (node.Name == PasswordXmlNames.Description)
           description = node.InnerText;
-        else if (node.Name == PasswordXmlNames.Hint)
+        else if (node.Name == PasswordXmlNames.Hints)
         {
           XmlNodeList list = node.ChildNodes;
           foreach ( XmlNode t in list )
           {
             PassItem item = new PassItem();
-            item.hint = t.Attributes[PasswordXmlNames.Hint].InnerText;
-            item.sceneId = t.Attributes[PasswordXmlNames.GoTo].InnerText;
+            item.hint = t.Attributes[PasswordXmlNames.Help].InnerText;
             item.regexp = t.Attributes[PasswordXmlNames.RegExp].InnerText;
             try
             {
-              item.sceneId = t.Attributes[PasswordXmlNames.SceneName].InnerText;
+              item.sceneId = t.Attributes[PasswordXmlNames.GoTo].InnerText;
             }
-            catch (Exception e)
+            catch (Exception)
             {
               item.sceneId = null;
             }
@@ -88,12 +88,13 @@ namespace PasswordPlugin
       contentNode = doc.CreateElement(PasswordXmlNames.Description);
       contentNode.InnerText = description;
       node.AppendChild(contentNode);
+      XmlNode hintsNode = doc.CreateElement(PasswordXmlNames.Hints);
 
       // save all hints
       foreach (var a in items)
       {
-        XmlNode tempNode = doc.CreateElement(PasswordXmlNames.Option);
-        XmlAttribute att = doc.CreateAttribute(PasswordXmlNames.Hint);
+        XmlNode tempNode = doc.CreateElement(PasswordXmlNames.Hint);
+        XmlAttribute att = doc.CreateAttribute(PasswordXmlNames.Help);
         att.Value = a.hint;
         tempNode.Attributes.Append(att);
         att = doc.CreateAttribute(PasswordXmlNames.GoTo);
@@ -102,8 +103,9 @@ namespace PasswordPlugin
         att = doc.CreateAttribute(PasswordXmlNames.RegExp);
         att.Value = a.regexp;
         tempNode.Attributes.Append(att);
-        node.AppendChild(tempNode);
+        hintsNode.AppendChild(tempNode);
       }
+      node.AppendChild(hintsNode);
       return node;
     }
     

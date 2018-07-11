@@ -9,6 +9,6 @@
         <TextBox x:Name="x_regexp"> Here comes regexp to trigger the hint</TextBox>
         <TextBox x:Name="x_showText">Here comes the hint</TextBox>
         <CheckBox x:Name="x_isCorrect">Skip to scene</CheckBox>
-        <ComboBox x:Name="x_toSkip" IsEnabled="{Binding ElementName=x_isCorrect, Path=IsChecked}"></ComboBox>
+        <ComboBox x:Name="x_toSkip" IsEnabled="{Binding ElementName=x_isCorrect, Path=IsChecked}" ItemsSource="{Binding Scenes}" DisplayMemberPath="Name" ></ComboBox>
     </StackPanel>
 </UserControl>

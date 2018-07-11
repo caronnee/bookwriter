@@ -90,20 +90,24 @@ namespace MyBook
       DataContext = Cache;
 
       // TODO continue form the last time
-      // new book will always have as first thing writing box
-      InitializeComponent();
       TextHandler th = new TextHandler();
-      x_insertText.DataContext = th;
       ImageHandler ih = new ImageHandler();
-      x_insertImage.DataContext = ih;
+
       ContentHandlers = new List<IRiddleHandler>();
       ContentHandlers.Add(th);
       ContentHandlers.Add(ih);
+
+      // initialize UI
+      InitializeComponent();
+      x_insertText.DataContext = th;
+      x_insertImage.DataContext = ih;
       ContentHandlers.AddRange(InitPlugins());
 
       if (name.Length > 0)
         Cache.Load(name, ContentHandlers);
+
       Show();
+      ShowProgress("Book loaded");
     }
 
     public delegate void BackHandler();
@@ -212,6 +216,7 @@ namespace MyBook
     {
       // create new page according to the handler
       actualHandler.Create();
+      actualHandler.Viewport.DataContext = Cache;
       x_workingPage.Content = actualHandler.Viewport;      
     }
 
@@ -219,6 +224,12 @@ namespace MyBook
     private void Show()
     {
       IContent content = Cache.GetContent();
+      if ( content == null )
+      {
+        SetHandler(ContentHandlers[0]);
+        PreparePage();
+        return;
+      }
       // first find the handler - we have ensured that 
       foreach (IRiddleHandler h in ContentHandlers)
       {
@@ -252,10 +263,12 @@ namespace MyBook
       Show();
       ShowProgress("At");
     }
+
     private void removePage(object sender, RoutedEventArgs e)
     {
       Cache.RemovePage();
     }
+
     private void saveAndCreateScene(object sender, RoutedEventArgs e)
     {
       string name = x_sceneName.Text;
@@ -263,9 +276,16 @@ namespace MyBook
       Cache.CreateScene();
       Cache.Position.ParagraphId = 0;
       PreparePage();
+      SceneDescription scene = Cache.Position.Scene;
       x_scenes.Items.Refresh();
-    
+      // changed number of added items
+      // select newly added scenel
+      object o = x_scenes.ItemContainerGenerator.ContainerFromItem(scene);
+      TreeViewItem i = o as TreeViewItem;
+      if (i != null)
+        i.IsSelected = true;
     }
+
     private IRiddleHandler actualHandler { get; set; }
 
     private void CreatePage()
@@ -306,8 +326,7 @@ namespace MyBook
     {
       string name = x_sceneName.Text;
       Cache.SaveScene(name);
-      Cache.Position.Clear();
-      Cache.Position.Scene = x_scenes.SelectedValue as SceneDescription;
+      Cache.SetScene(x_scenes.SelectedValue as SceneDescription);
       Show();
       ShowProgress("At");
     }

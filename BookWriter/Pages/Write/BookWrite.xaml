@@ -96,21 +96,13 @@
                 <TreeViewItem Header="Content change" x:Name="x_contentSettings">
                     <Viewbox Grid.Column="0" Grid.Row="1" x:Name="x_writeSettings"/>
                 </TreeViewItem>
-                <TreeViewItem Header="test">
-                    <TreeView SelectedItemChanged="TreeView_SelectedItemChanged">
-                        <TreeViewItem Header="1" />
-                        <TreeViewItem Header="1" />
-                        <TreeViewItem Header="1" />
-                        <TreeViewItem Header="1" />
-                    </TreeView>
-                </TreeViewItem>
             </TreeView>
             <Grid Grid.Column="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <TextBox x:Name="x_sceneName" Grid.Row="0" HorizontalContentAlignment="Center">Name of the scene</TextBox>
+                <TextBox x:Name="x_sceneName" Grid.Row="0" HorizontalContentAlignment="Center" Text="{Binding Position.Scene.Name}" />
                 <src:WorkingPage Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" x:Name="x_workingPage" Margin="0,2,0,14" Grid.RowSpan="2" />
             </Grid>
             <StackPanel Orientation="Horizontal" Grid.Column="2" Grid.Row="1">

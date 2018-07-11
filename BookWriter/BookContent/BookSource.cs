@@ -16,7 +16,7 @@ namespace MyBook.BookContent
     static public String SceneParentName = "Scenes";
 
     // Attributes
-    static public String SceneId = "SceneName";
+    static public String SceneId = "Name";
 
     // content types
     static public String ParagraphName = "Text";
@@ -165,10 +165,12 @@ namespace MyBook.BookContent
       doc.Load(name);
       // load whole
       XmlNode parent = doc.FirstChild;
+      if (parent.ChildNodes != null)
+        Scenes.Clear();
       foreach (XmlNode node in parent.ChildNodes)
       {
         Position.Scene = new SceneDescription();
-        String sn = node.Attributes[XmlNodeNames.SceneId].Value;
+        Position.Scene.Name = node.Attributes[XmlNodeNames.SceneId].Value;
         foreach (XmlNode contentNode in node.ChildNodes)
         {
           IContent content = null;
@@ -182,6 +184,7 @@ namespace MyBook.BookContent
             }
           }
         }
+        Scenes.Add(Position.Scene);
       }
       NotifyPropertyChanged("CanGoFurther");
       NotifyPropertyChanged("CanGoBack");
@@ -216,8 +219,12 @@ namespace MyBook.BookContent
     {
       Position.Scene = new SceneDescription();      
       Scenes.Add(Position.Scene);
+      Position.Scene.Name = $"Scene #{Scenes.Count}"; 
       Position.Clear();
       SetPage(null);
+      NotifyPropertyChanged("Position");
+      NotifyPropertyChanged("CanGoBack");
+      NotifyPropertyChanged("CanGoFirther");
     }
     public void SaveScene(String sceneName)
     {
@@ -241,14 +248,17 @@ namespace MyBook.BookContent
         e.Attributes.Append(att);
         SceneDescription d = scene;
         att.Value = d.Name;
+        bool canBeSaved = false;
         foreach (IContent content in d.Pages)
         {
           if (content == null)
             continue;
+          canBeSaved = true;
           XmlNode node = content.ToXmlNode(doc);
           e.AppendChild(node);
         }
-        parent.AppendChild(e);
+        if ( canBeSaved )
+          parent.AppendChild(e);
       }
       doc.AppendChild(parent);
       doc.Save(fullpath);
@@ -259,6 +269,15 @@ namespace MyBook.BookContent
     public bool IsValid(String filepath, int flags = 0)
     {
       return (System.IO.File.Exists(filepath));
+    }
+
+    public void SetScene(SceneDescription sceneDescription)
+    {
+      Position.Clear();
+      Position.Scene = sceneDescription;
+      NotifyPropertyChanged("Position");
+      NotifyPropertyChanged("CanGoFurther");
+      NotifyPropertyChanged("CanGoBack");
     }
   }
 }

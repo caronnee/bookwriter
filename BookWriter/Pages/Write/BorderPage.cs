@@ -27,19 +27,6 @@ namespace MyBook
       Position = new PositionDesc();
     }
 
-    public void Load(BookSource cache)
-    {
-      //this.Child = Converter.Resolve(cache,Position);
-      //Text = cache.SubString(0, PositionStart);
-      //StringBuilder str = new StringBuilder();
-      //int lines = Math.Min(LineCount, MaxLines) - 1;
-      //for (int i = 0; i < lines; i++)
-      //{
-      //  str.Append(GetLineText(lines - i));
-      //}
-      //PositionStart -= str.Length;
-    }
-
     public int FindEnd(BookSource cache)
     {
       this.Child = new TextBlock();

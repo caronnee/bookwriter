@@ -23,6 +23,10 @@ namespace PasswordPlugin
     public HintItem()
     {
       InitializeComponent();
+      DataContextChanged += delegate
+      {
+        this.UpdateLayout();
+      };
     }
   }
 }

@@ -16,11 +16,6 @@ namespace PasswordPlugin
     public string Name { get; set; }
     public UserControl Settings { get; set; }
     public UserControl Viewport { get; set; }
-    
-    public IContent CreateContent()
-    {
-      return null;
-    }
     public void Create()
     {
       Viewport = new PasswordWriteBox();
@@ -38,7 +33,7 @@ namespace PasswordPlugin
         PasswordParagraph.PassItem item = new PasswordParagraph.PassItem();
         item.hint = hi.x_showText.Text;
         if (hi.x_isCorrect.IsChecked == true)
-          item.sceneId = hi.x_toSkip.SelectedValue.ToString();
+          item.sceneId = hi.x_toSkip.SelectedIndex.ToString();
         item.regexp = hi.x_regexp.Text;
         p.items.Add(item);
       }
@@ -62,14 +57,18 @@ namespace PasswordPlugin
       PasswordWriteBox box = new PasswordWriteBox();
       box.x_description.Text = p.description;
       box.x_question.Text = p.questionText;
+      box.x_hintPanel.Children.Clear();
       foreach ( var a in p.items )
       {
         HintItem item = new HintItem();
         box.x_hintPanel.Children.Add(item);
         item.x_regexp.Text = a.regexp;
         item.x_showText.Text = a.hint;
-        item.x_toSkip.Text = a.sceneId;
-        item.x_isCorrect.IsChecked = a.sceneId != null;
+        if (a.sceneId!=null)
+        {
+          item.x_toSkip.SelectedIndex = System.Int32.Parse(a.sceneId);
+          item.x_isCorrect.IsChecked = true;
+        }
       }
       Viewport = box;
       return true;
