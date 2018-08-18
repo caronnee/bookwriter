@@ -125,9 +125,10 @@ namespace MyBook.BookContent
 
     public void CreatePage()
     {
-      if (Position.Scene.Pages[Position.Scene.Pages.Count-1] == null)
+      // if current page is null - ok
+      if (Position.Scene.Pages[Position.ParagraphId] == null)
         return;
-      Position.Scene.Pages.Add(null);
+      Position.Scene.Pages.Insert(Position.ParagraphId+1,null);
       MoveForward();
     }
     public void MoveForward()

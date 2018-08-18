@@ -1,16 +1,15 @@
-﻿save riddle
-load riddle 
-On succes, move to set scene
+﻿Set scene saved as string, loaded as string
 // enable Location, Characters bookmarks
 // MetaData in cache like cover, autor genre...
 
 Description
  - After save, move all the temo image to the book folder
+ - On succes, move to set scene
 
 - Fix loading name of the chapter. Chapter should be like this:
     **  (number)  MIDDLESCRREN  ** If the name of the chapter is too long fo the like, display just Ch(number) ( like internet explorer optin in total comander )
-- chapter name should be saved
-- possibility to upload to server
+
+- possibility to upload to server in resonable format
 - use the loaded settings, according to relative paths
 - distingush between paragraph by adding three stars to another line ( how to distinusj should go later to the config file)
 - move to another chapter when left is there and no further content is available

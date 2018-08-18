@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="DecisionMaker.DecisionBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DecisionMaker"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <DockPanel LastChildFill="True">
+        <StackPanel DockPanel.Dock="Bottom" x:Name="x_decisions">
+        </StackPanel>
+        <StackPanel>
+                <Button x:Name="x_add" Click="x_add_Click">Add decision</Button>
+            </StackPanel>
+        <TextBox x:Name="x_description"></TextBox>
+    </DockPanel>
+</UserControl>

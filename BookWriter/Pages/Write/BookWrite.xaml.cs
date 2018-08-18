@@ -87,7 +87,6 @@ namespace MyBook
       // initialize also all plugins
       // empty booksource
       Cache = new BookSource();
-      DataContext = Cache;
 
       // TODO continue form the last time
       TextHandler th = new TextHandler();
@@ -102,6 +101,7 @@ namespace MyBook
       x_insertText.DataContext = th;
       x_insertImage.DataContext = ih;
       ContentHandlers.AddRange(InitPlugins());
+      DataContext = Cache;
 
       if (name.Length > 0)
         Cache.Load(name, ContentHandlers);

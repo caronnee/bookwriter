@@ -11,7 +11,7 @@ namespace PasswordPlugin
 {
   static class PasswordXmlNames
   {
-    static public String Name = "PasswordParagraph";
+    static public String Name = "Password";
     static public String Description = "Description";
     static public String Question = "Question";
     static public String Help = "Help";
@@ -23,7 +23,7 @@ namespace PasswordPlugin
     static public String SceneName = "Scene";
   }
 
-  class PasswordParagraph : IContent
+  class ContentPassword : IContent
   {
     public struct PassItem
     {

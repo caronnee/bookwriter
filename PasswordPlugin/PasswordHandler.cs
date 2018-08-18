@@ -23,14 +23,14 @@ namespace PasswordPlugin
 
     public IContent CreateRiddle()
     {
-      PasswordParagraph p = new PasswordParagraph();
+      ContentPassword p = new ContentPassword();
       PasswordWriteBox box = Viewport as PasswordWriteBox;
       p.description = box.x_description.Text;
       // all hints
-      p.items = new System.Collections.Generic.List<PasswordParagraph.PassItem>();
+      p.items = new System.Collections.Generic.List<ContentPassword.PassItem>();
       foreach(HintItem hi in box.x_hintPanel.Children)
       {
-        PasswordParagraph.PassItem item = new PasswordParagraph.PassItem();
+        ContentPassword.PassItem item = new ContentPassword.PassItem();
         item.hint = hi.x_showText.Text;
         if (hi.x_isCorrect.IsChecked == true)
           item.sceneId = hi.x_toSkip.SelectedIndex.ToString();
@@ -43,7 +43,7 @@ namespace PasswordPlugin
 
     public IContent Load(XmlNode node)
     {
-      PasswordParagraph p = new PasswordParagraph();
+      ContentPassword p = new ContentPassword();
       if (p.Load(node))
         return p;
       return null;
@@ -51,7 +51,7 @@ namespace PasswordPlugin
 
     public bool ToViewport(IContent content)
     {
-      PasswordParagraph p = content as PasswordParagraph;
+      ContentPassword p = content as ContentPassword;
       if (p == null)
         return false;
       PasswordWriteBox box = new PasswordWriteBox();
