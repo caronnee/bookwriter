@@ -1,4 +1,15 @@
-﻿Set scene saved as string, loaded as string
+﻿On default, show all scenes on some border
+on click on bordered one, move cursor to the place outsie
+move the default ones with the scrooling to stay in view
+make controls having resizeable height
+on double clik skip to the page
+Add charater page
+Add pages for character, locations, bestiary, timeline, logial sections
+Add pages for links to learn
+Add pages for materials
+Summary in the chapter
+Network choises
+Set scene saved as string, loaded as string
 // enable Location, Characters bookmarks
 // MetaData in cache like cover, autor genre...
 

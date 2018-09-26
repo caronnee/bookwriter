@@ -10,5 +10,4 @@ namespace MyBook.BookContent
     static public String Extension = ".book";
     static public String SearchExt = "*.book";
   }
-
 }

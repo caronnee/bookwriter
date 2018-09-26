@@ -26,6 +26,7 @@ namespace RiddleInterface
 
     // create empty viewport to ve filled / converted to content
     void Create();
+
     // create riddle from what was in the viewport
     IContent CreateRiddle();
 

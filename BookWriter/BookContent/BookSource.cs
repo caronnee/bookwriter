@@ -1,4 +1,4 @@
-﻿using MyBook.Pages.Write.Bookmark;
+﻿using MyBook.Write.Bookmark;
 using RiddleInterface;
 using System;
 using System.Collections.Generic;
@@ -8,20 +8,30 @@ using System.Xml;
 
 namespace MyBook.BookContent
 {
-  static class XmlNodeNames
+  public class XmlNodeNames
   {
-    static public String BookRoot = "Book";
-    static public String SceneName = "Chapter";
-    static public String CoverName = "Cover";
-    static public String SceneParentName = "Scenes";
-
-    // Attributes
-    static public String SceneId = "Name";
-
+    // main nodes
+    public const String BookRoot = "Book";
+    public const String SceneName = "Chapter";
+    public const String CoverName = "Cover";
+    public const String SceneParentName = "Scenes";
+    
     // content types
-    static public String ParagraphName = "Text";
-    static public String ImageName = "Image";
-    static public String RiddleName = "Riddle";
+    public const String ParagraphName = "Text";
+    public const String ImageName = "Image";
+    
+    // external one
+    public const String RiddleName = "Riddle";
+  }
+
+  static class XmlAttributeNames
+  { 
+    // Attributes
+    public const String SceneId = "Name";
+    public const String Description = "Description";
+    public const String Column = "Column";
+    public const String TimePosition = "TimePosition";
+    public const String Duration = "Duration";    
   }
 
   public class BookSource : INotifyPropertyChanged
@@ -82,13 +92,33 @@ namespace MyBook.BookContent
 
     public class SceneDescription
     {
+      // name of the scene
       public String Name { get; set; }
-      public int Order { get; set; }
+
+      // description what will happen in the scene ( hint )
+      public String Description { get; set; }
+
+      // content of the book for writing
       public List<IContent> Pages { get; set; }
+
+      // order between parallel scenes
+      public int Column { get; set; }
+
+      // vertical position when the scene happens
+      public int TimePosition { get; set; }
+
+      // size of the scene
+      public int Duration { get; set; }
+      
+      // constructor
       public SceneDescription()
       {
         Pages = new List<IContent>();
-        Order = 0;
+        Duration = 1;
+        TimePosition = -1;
+        Column = 0;
+        Description = "";
+        Name = "";
       }
     }
     public void RemovePage()
@@ -158,7 +188,6 @@ namespace MyBook.BookContent
       _scenes = new List<SceneDescription>();
       CreateScene();
     }
-
     public void Load(String name, List<IRiddleHandler> handlers)
     {
       Name = Path.GetFileNameWithoutExtension(name);
@@ -168,10 +197,32 @@ namespace MyBook.BookContent
       XmlNode parent = doc.FirstChild;
       if (parent.ChildNodes != null)
         Scenes.Clear();
+      SceneDescription d;
       foreach (XmlNode node in parent.ChildNodes)
       {
-        Position.Scene = new SceneDescription();
-        Position.Scene.Name = node.Attributes[XmlNodeNames.SceneId].Value;
+        d = new SceneDescription();
+        // traverse each attribute
+        foreach( XmlAttribute a in node.Attributes)
+        {
+          switch ( a.Name )
+          { 
+            case XmlAttributeNames.SceneId:
+              d.Name = a.Value;
+              break;
+            case XmlAttributeNames.Description:
+              d.Description = a.Value;
+              break;
+            case XmlAttributeNames.Column:
+              d.Column = Int32.Parse(a.Value);
+              break;
+            case XmlAttributeNames.TimePosition:
+              d.TimePosition = Int32.Parse(a.Value);
+              break;
+            case XmlAttributeNames.Duration:
+              d.Duration = Int32.Parse(a.Value);
+              break;
+          }
+        }
         foreach (XmlNode contentNode in node.ChildNodes)
         {
           IContent content = null;
@@ -180,13 +231,14 @@ namespace MyBook.BookContent
             content = handler.Load(contentNode);
             if (content != null)
             {
-              Position.Scene.Pages.Add(content);
+              d.Pages.Add(content);
               break;
             }
           }
         }
-        Scenes.Add(Position.Scene);
+        Scenes.Add(d);
       }
+      Position.Scene = Scenes[0];
       NotifyPropertyChanged("CanGoFurther");
       NotifyPropertyChanged("CanGoBack");
     }
@@ -233,6 +285,13 @@ namespace MyBook.BookContent
       NotifyPropertyChanged("Scenes");
     }
 
+    public void AddAttribute(XmlDocument doc, XmlNode node,String name, String value)
+    {
+      XmlAttribute att = doc.CreateAttribute(name);
+      att.Value = value;
+      node.Attributes.Append(att);
+    }
+
     public int Save()
     {
       if (!Directory.Exists(Settings.BooksFolder))
@@ -242,15 +301,19 @@ namespace MyBook.BookContent
       String fullpath = Settings.BooksFolder + "\\" + Name + Constants.Extension;
       XmlDocument doc = new XmlDocument();
       XmlElement parent = doc.CreateElement(XmlNodeNames.BookRoot);
-      foreach (var scene in Scenes)
+      foreach (SceneDescription scene in Scenes)
       {
         XmlElement e = doc.CreateElement(XmlNodeNames.SceneName);
-        XmlAttribute att = doc.CreateAttribute(XmlNodeNames.SceneId);
-        e.Attributes.Append(att);
-        SceneDescription d = scene;
-        att.Value = d.Name;
+        AddAttribute(doc, e, XmlAttributeNames.SceneId, scene.Name);
+        AddAttribute(doc, e, XmlAttributeNames.Description, scene.Description);
+        if (scene.TimePosition >= 0)
+        {
+          AddAttribute(doc, e, XmlAttributeNames.Column, scene.Column.ToString());
+          AddAttribute(doc, e, XmlAttributeNames.Duration, scene.Duration.ToString());
+          AddAttribute(doc, e, XmlAttributeNames.TimePosition, scene.TimePosition.ToString());
+        }
         bool canBeSaved = false;
-        foreach (IContent content in d.Pages)
+        foreach (IContent content in scene.Pages)
         {
           if (content == null)
             continue;
@@ -271,6 +334,8 @@ namespace MyBook.BookContent
     {
       return (System.IO.File.Exists(filepath));
     }
+
+    public delegate void OnSceneSet();
 
     public void SetScene(SceneDescription sceneDescription)
     {

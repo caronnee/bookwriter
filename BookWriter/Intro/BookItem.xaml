@@ -1,0 +1,20 @@
+﻿<UserControl x:Class=" MyBook.Intro.BookItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" >
+    <UserControl.Resources>
+        <BitmapImage x:Key="removeImage" UriSource="/resources/remove.png" />
+        <BitmapImage x:Key="metadataImage" UriSource="/resources/edit.png" />
+    </UserControl.Resources>
+    <StackPanel Orientation="Horizontal">
+        <Button x:Name="x_buttonLoader" MinWidth="100">Test</Button>
+        <Button>
+            <Image Source="{StaticResource ResourceKey=removeImage}"/>
+        </Button>
+        <Button>
+            <Image Source="{StaticResource ResourceKey=metadataImage}"/>
+        </Button>
+    </StackPanel>
+</UserControl>
