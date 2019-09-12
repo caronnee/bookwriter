@@ -1,0 +1,81 @@
+﻿<localInterface:IGuiContent x:Class="MyBook.Write.Character.CharacterHolder"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MyBook.Write.Character"
+             xmlns:consts="clr-namespace:MyBook.BookContent"
+             xmlns:localInterface="clr-namespace:MyBook.Write"
+             xmlns:text="clr-namespace:MyBook.Write.WriteContent.Text"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" x:Name="x_c_holder">
+    <localInterface:IGuiContent.Resources>
+        <ObjectDataProvider x:Key="CharacterStatus"
+                            MethodName="GetValues" 
+                            ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="consts:CharacterStatus"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="Gender"
+                            MethodName="GetValues" 
+                            ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="consts:CharacterGender"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </localInterface:IGuiContent.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+        <DockPanel Grid.Column="0">
+            <DockPanel DockPanel.Dock="Top">
+                <Label>Name</Label>
+                <TextBox x:Name="x_c_name" Text="{Binding Character.Name, ElementName=x_c_holder}" ></TextBox>
+            </DockPanel>
+            <ScrollViewer>
+                <StackPanel x:Name="x_episodesHolder">
+                </StackPanel>
+            </ScrollViewer>            
+        </DockPanel>
+        <StackPanel Grid.Column="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Image x:Name="x_characterImage" Source="c:\Users\cara\Pictures\bg.png" Grid.ColumnSpan="2">
+                    <Image.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Change picture" Click="ChangeImageClick" />
+                        </ContextMenu>
+                    </Image.ContextMenu>
+                </Image>
+                <Label Grid.Column="0" Grid.Row="1">Mother</Label>
+                <ComboBox Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Females, ElementName=x_c_holder}" SelectedValue="{Binding Character.Mother, ElementName=x_c_holder}" DisplayMemberPath="Name"/>
+                <Label Grid.Column="0" Grid.Row="2">Father</Label>
+                <ComboBox Grid.Column="1" Grid.Row="2" ItemsSource="{Binding Males, ElementName=x_c_holder}" SelectedValue="{Binding Character.Father, ElementName=x_c_holder}" DisplayMemberPath="Name"/>
+                <Label Grid.Column="0" Grid.Row="3">Gender</Label>
+                <ComboBox Grid.Column="1" Grid.Row="3" ItemsSource="{Binding Source={StaticResource Gender}}" SelectedValue="{Binding Character.Gender, ElementName=x_c_holder}"/>
+                <Label Grid.Column="0" Grid.Row="4">Status</Label>
+                <ComboBox Grid.Column="1" Grid.Row="4" ItemsSource="{Binding Source={StaticResource CharacterStatus}}" SelectedValue="{Binding Character.Status, ElementName=x_c_holder}" />
+                <Label Grid.Column="0" Grid.Row="5">Spouse(s)</Label>
+                <ComboBox Grid.Column="1" Grid.Row="5" SelectedIndex="0">
+                    <ComboBoxItem>None</ComboBoxItem>
+                </ComboBox>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</localInterface:IGuiContent>

@@ -13,8 +13,8 @@ namespace MyBook.Write.Picture
   public class ImageHandler : IRiddleHandler
   {
     public string Name { get; set; }
-    public UserControl Settings { get; set; }
-    public UserControl Viewport { get; set; }
+    public Control Settings { get; set; }
+    public Control Viewport { get; set; }
     public ImageHandler()
     {
       Name = "Image";
@@ -41,6 +41,13 @@ namespace MyBook.Write.Picture
       p.ImageHeader = box.x_header.Text;
       p.ImageFooter = box.x_footer.Text;
       return p;
+    }
+
+    public bool CanLoad(XmlNode node)
+    {
+      if (node.Name != BookContent.XmlNodeNames.ImageName)
+        return false;
+      return true;
     }
 
     public IContent Load(XmlNode node)

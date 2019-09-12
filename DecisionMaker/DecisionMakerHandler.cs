@@ -8,8 +8,8 @@ namespace DecisionMaker
   public class DecisionMakerHandler : IRiddleHandler
   {
     public string Name { get; set; }
-    public UserControl Settings { get; set; }
-    public UserControl Viewport { get; set; }
+    public Control Settings { get; set; }
+    public Control Viewport { get; set; }
 
     public DecisionMakerHandler()
     {
@@ -34,6 +34,13 @@ namespace DecisionMaker
         s.Decisions.Add(dd);
       }
       return s;
+    }
+
+    public bool CanLoad(XmlNode node)
+    {
+      if (node.Name != DecisionXmlNames.Name)
+        return false;
+      return true;
     }
 
     public IContent Load(XmlNode node)

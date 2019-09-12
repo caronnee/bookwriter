@@ -1,0 +1,36 @@
+﻿<local:IGuiContent x:Class="MyBook.Write.SceneHolder" 
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MyBook.Write"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="30px"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="30px" />
+        </Grid.ColumnDefinitions>
+        <TextBox x:Name="x_sceneName" Text="{Binding Position.Scene.Name}" Grid.Row="0" Grid.Column="1" HorizontalContentAlignment="Center"/>
+        <ContentControl x:Name="x_sceneContent" Grid.Row="1" Grid.Column="1"/>
+        <Button Content="-" IsEnabled="{Binding CanGoBack}" Grid.Row="1" Grid.Column="0" Click="MoveBackClick"/>
+        <Button Content="+" IsEnabled="{Binding CanGoFurther}" Grid.Row="1" Grid.Column="2" Click="MoveForwardClick"/>
+        <Grid Grid.Row="2" Grid.Column="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <ComboBox x:Name="x_types" ItemsSource="{Binding ContentHandlers}" DisplayMemberPath="Name" SelectedIndex="0"></ComboBox>
+            <Button Content="Save" Click="saveScene" Grid.Column="2" />
+            <Button Content="Create" Grid.Column="1" Click="CreateContentClick"/>
+        </Grid>
+        
+    </Grid>
+</local:IGuiContent>

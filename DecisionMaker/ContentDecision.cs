@@ -37,10 +37,13 @@ namespace DecisionMaker
       throw new NotImplementedException();
     }
 
+    public bool IsLoaded()
+    {
+      return true;
+    }
+
     public bool Load(XmlNode node)
     {
-      if (node.Name!= DecisionXmlNames.Name)
-        return false;
       foreach (XmlElement el in node.ChildNodes)
       {
         if (el.Name == DecisionXmlNames.Desc)

@@ -20,7 +20,6 @@ namespace PasswordPlugin
     static public String RegExp = "Desc";
     static public String Correct = "Correct";
     static public String GoTo = "Goto";
-    static public String SceneName = "Scene";
   }
 
   class ContentPassword : IContent
@@ -46,8 +45,6 @@ namespace PasswordPlugin
 
     public bool Load(XmlNode paragraph)
     {
-      if ( paragraph.Name != PasswordXmlNames.Name)
-        return false;
       items = new List<PassItem>();
       XmlNodeList nodes = paragraph.ChildNodes;
       foreach (XmlNode node in nodes)
@@ -108,6 +105,10 @@ namespace PasswordPlugin
       node.AppendChild(hintsNode);
       return node;
     }
-    
+
+    public bool IsLoaded()
+    {
+      return true;
+    }
   }
 }

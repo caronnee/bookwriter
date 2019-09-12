@@ -47,5 +47,13 @@ namespace MyBook
       page.OnDone += ShowShelf;
       Content = page;
     }
+
+    private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+    {
+      BookWrite b = Content as BookWrite;
+      if (b != null)
+        b.Done();
+    }
   }
 }
+

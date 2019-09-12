@@ -14,8 +14,8 @@ namespace PasswordPlugin
     }
 
     public string Name { get; set; }
-    public UserControl Settings { get; set; }
-    public UserControl Viewport { get; set; }
+    public Control Settings { get; set; }
+    public Control Viewport { get; set; }
     public void Create()
     {
       Viewport = new PasswordWriteBox();
@@ -39,6 +39,13 @@ namespace PasswordPlugin
       }
       p.questionText = box.x_question.Text;
       return p;
+    }
+
+    public bool CanLoad(XmlNode node)
+    {
+      if (node.Name != PasswordXmlNames.Name)
+        return false;
+      return true;
     }
 
     public IContent Load(XmlNode node)
