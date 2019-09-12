@@ -1,0 +1,53 @@
+﻿<UserControl x:Class="MyBook.Write.Character.CharacterInfo"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MyBook.Write.Character"
+             xmlns:text="clr-namespace:MyBook.Write.WriteContent.Text"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+        <DockPanel Grid.Column="0">
+            <DockPanel DockPanel.Dock="Top">
+                <Label>Name</Label>
+                <TextBox>Anonymous</TextBox>
+            </DockPanel>
+            <ScrollViewer>
+                <text:WritingBox/>
+            </ScrollViewer>
+        </DockPanel>
+        <StackPanel Grid.Column="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Image x:Name="x_characterImage" Source="c:\Users\cara\Pictures\bg.png" Grid.ColumnSpan="2">
+                    <Image.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Change picture" Click="ChangeImageClick" />
+                        </ContextMenu>
+                    </Image.ContextMenu>
+                </Image>
+                <Label Grid.Column="0" Grid.Row="1">Mother</Label>
+                <TextBox Grid.Column="1" Grid.Row="1">XX</TextBox>
+                <Label Grid.Column="0" Grid.Row="2">Father</Label>
+                <TextBox Grid.Column="1" Grid.Row="2">XY</TextBox>
+                <Label Grid.Column="0" Grid.Row="3">Status</Label>
+                <TextBox Grid.Column="1" Grid.Row="3">Alive</TextBox>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</UserControl>

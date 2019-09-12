@@ -79,15 +79,23 @@
     <Compile Include="Intro\BookItem.xaml.cs">
       <DependentUpon>BookItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Write\Character\CharacterInfo.xaml.cs">
+      <DependentUpon>CharacterInfo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Write\Content\UnrecognizedContent.cs" />
+    <Compile Include="Write\IGuiContent.cs" />
     <Compile Include="Write\MetaData\SetBookName.xaml.cs">
       <DependentUpon>SetBookName.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Write\Timeline\WriteContent\Picture\ImageBox.xaml.cs">
+    <Compile Include="Write\Picture\ImageBox.xaml.cs">
       <DependentUpon>ImageBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Write\Timeline\WriteContent\Picture\ImageHandler.cs" />
-    <Compile Include="Write\Timeline\WriteContent\Text\TextHandler.cs" />
-    <Compile Include="Write\Timeline\WriteContent\Text\TextParagraph.cs" />
+    <Compile Include="Write\Picture\ImageHandler.cs" />
+    <Compile Include="Write\SceneHolder.xaml.cs">
+      <DependentUpon>SceneHolder.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Write\Text\TextHandler.cs" />
+    <Compile Include="Write\Text\TextParagraph.cs" />
     <Compile Include="BookContent\PositionDesc.cs" />
     <Compile Include="Read\BookPageContent.xaml.cs">
       <DependentUpon>BookPageContent.xaml</DependentUpon>
@@ -120,21 +128,18 @@
     <Compile Include="Write\MetaData\MetaData.xaml.cs">
       <DependentUpon>MetaData.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Write\Timeline\WriteContent\Picture\ImageSettings.xaml.cs">
+    <Compile Include="Write\Picture\ImageSettings.xaml.cs">
       <DependentUpon>ImageSettings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Write\Timeline\WriteContent\Picture\ImageParagraph.cs" />
-    <Compile Include="Write\Timeline\WriteContent\Text\TextSettings.xaml.cs">
+    <Compile Include="Write\Picture\ImageParagraph.cs" />
+    <Compile Include="Write\Text\TextSettings.xaml.cs">
       <DependentUpon>TextSettings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Write\Timeline\WriteContent\Text\WritingBox.xaml.cs">
+    <Compile Include="Write\Text\WritingBox.xaml.cs">
       <DependentUpon>WritingBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Write\Timeline\Timeline.xaml.cs">
       <DependentUpon>Timeline.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Write\Timeline\WriteContent\WorkingPage.xaml.cs">
-      <DependentUpon>WorkingPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="BookContent\WritingConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -209,6 +214,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Write\Character\CharacterInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Write\MetaData\SetBookName.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -229,15 +238,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Write\Timeline\WriteContent\Picture\ImageBox.xaml">
+    <Page Include="Write\Picture\ImageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Write\Timeline\WriteContent\Picture\ImageSettings.xaml">
+    <Page Include="Write\Picture\ImageSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Write\Timeline\WriteContent\Text\TextSettings.xaml">
+    <Page Include="Write\SceneHolder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Write\Text\TextSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -245,15 +258,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Write\Timeline\WriteContent\Text\WritingBox.xaml">
+    <Page Include="Write\Text\WritingBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Write\Timeline\Timeline.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Write\Timeline\WriteContent\WorkingPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

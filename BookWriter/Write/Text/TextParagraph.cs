@@ -1,10 +1,6 @@
 ﻿using MyBook.BookContent;
 using RiddleInterface;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
 using System.Windows.Controls;
 using System.Xml;
 
@@ -12,6 +8,11 @@ namespace MyBook.Write.Text
 {
   public class TextParagraph : IContent
   {
+    public bool IsLoaded()
+    {
+      return true;
+    }
+
     public XmlNode ToXmlNode(XmlDocument doc)
     {
       XmlElement node = doc.CreateElement(XmlNodeNames.ParagraphName);

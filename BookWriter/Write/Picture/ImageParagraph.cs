@@ -13,6 +13,10 @@ namespace MyBook.Write.Imaging
 { 
   public class ImageParagraph : IContent
   {
+    public bool IsLoaded()
+    {
+      return true;
+    }
     public bool Load(XmlNode node)
     {
       if (node.Name != XmlNodeNames.ImageName)

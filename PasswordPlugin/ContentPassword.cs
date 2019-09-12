@@ -108,6 +108,10 @@ namespace PasswordPlugin
       node.AppendChild(hintsNode);
       return node;
     }
-    
+
+    public bool IsLoaded()
+    {
+      return true;
+    }
   }
 }

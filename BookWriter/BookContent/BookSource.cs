@@ -1,9 +1,13 @@
 ﻿using MyBook.Write.Bookmark;
+using MyBook.Write.Character;
+using MyBook.Write.Content;
 using RiddleInterface;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Reflection;
+using System.Windows.Controls;
 using System.Xml;
 
 namespace MyBook.BookContent
@@ -12,10 +16,14 @@ namespace MyBook.BookContent
   {
     // main nodes
     public const String BookRoot = "Book";
+    public const String Chapters = "Chapters";
     public const String SceneName = "Chapter";
+    public const String Characters = "Characters";
+    public const String Character = "Character";
     public const String CoverName = "Cover";
     public const String SceneParentName = "Scenes";
-    
+    public const String Episode = "Episode";
+
     // content types
     public const String ParagraphName = "Text";
     public const String ImageName = "Image";
@@ -27,7 +35,7 @@ namespace MyBook.BookContent
   static class XmlAttributeNames
   { 
     // Attributes
-    public const String SceneId = "Name";
+    public const String Name = "Name";
     public const String Description = "Description";
     public const String Column = "Column";
     public const String TimePosition = "TimePosition";
@@ -36,6 +44,68 @@ namespace MyBook.BookContent
 
   public class BookSource : INotifyPropertyChanged
   {
+    List<IRiddleHandler> ContentHandlers { get; set; }
+
+    private List<IRiddleHandler> InitPlugins()
+    {
+      Assembly assem = Assembly.GetExecutingAssembly();
+      Uri ur = new Uri(assem.CodeBase);
+      FileInfo fi = new FileInfo(ur.AbsolutePath);
+      string s = fi.Directory.FullName;
+
+      //find all dlls
+      string[] dlls = Directory.GetFiles(s + "\\Plugins", "*.dll");
+      ICollection<Assembly> assemblies = new List<Assembly>(dlls.Length);
+      List<IRiddleHandler> riddles = new List<IRiddleHandler>();
+      foreach (string dllFile in dlls)
+      {
+        AssemblyName an = AssemblyName.GetAssemblyName(dllFile);
+        Assembly assembly = Assembly.Load(an);
+        assemblies.Add(assembly);
+      }
+
+      Type rh = typeof(IRiddleHandler);
+
+      foreach (Assembly a in assemblies)
+      {
+        Type[] types = a.GetTypes();
+        foreach (Type t in types)
+        {
+          if (t.IsAbstract || t.IsNotPublic || !rh.IsAssignableFrom(t))
+            continue;
+          // create as instance
+          object iRiddle = a.CreateInstance(t.ToString());
+          IRiddleHandler riddle = iRiddle as IRiddleHandler;
+          if (riddle != null)
+            riddles.Add(riddle);
+        }
+      }
+
+      //foreach (IRiddleHandler r in riddles)
+      //{
+      //  MenuItem menu = new MenuItem();
+      //  menu.Header = r.Name;
+      //  menu.DataContext = r;
+      //  menu.Click += new RoutedEventHandler(riddleChanged);
+      //  menu.Click += new RoutedEventHandler(setViewboxContent);
+      //  x_riddleSwitch.Items.Add(menu);
+      //}
+      return riddles;
+    }
+    public IRiddleHandler GetCurrentHandler()
+    {
+      // first find the handler - we have ensured that 
+      IContent content = GetContent();
+      foreach (IRiddleHandler h in ContentHandlers)
+      {
+        if (h.ToViewport(content))
+        {
+          return h;
+        }
+      }
+      // todo return not known content handler - please update :D
+      return null;
+    }
     public event PropertyChangedEventHandler PropertyChanged;
     void NotifyPropertyChanged(string property)
     {
@@ -59,36 +129,36 @@ namespace MyBook.BookContent
         NotifyPropertyChanged("Bookmarks");
       }
     }
-    public void InitB()
-    {
-      Bookmarks = new List<BookmarksHeader>();
-      Bookmarks.Add(new BookmarksHeader { Name = "Locations", Content = "Something else" });
-      Bookmarks.Add(new BookmarksHeader
-      {
-        Name = "Characters",
-        Content = "Something else",
-        Bookmarks = new List<BookmarksHeader>() {
-          new BookmarksHeader { Name = "Relicts2", Content = "Something else" },
-          new BookmarksHeader { Name = "Relicts2", Content = "Something else" },
-          new BookmarksHeader { Name = "Relicts2", Content = "Something else" },
-          new BookmarksHeader { Name = "Relicts2", Content = "Something else" }
-        }
-      });
-      Bookmarks.Add(new BookmarksHeader
-      {
-        Name = "Relicts",
-        Content = "Something else",
-        Bookmarks = new List<BookmarksHeader>() {
-          new BookmarksHeader { Name = "Relicts2", Content = "Something else" },
-          new BookmarksHeader { Name = "Relicts2", Content = "Something else" },
-          new BookmarksHeader { Name = "Relicts2", Content = "Something else" },
-          new BookmarksHeader { Name = "Relicts2", Content = "Something else" }
-        }
-      });
+    //public void InitB()
+    //{
+    //  Bookmarks = new List<BookmarksHeader>();
+    //  Bookmarks.Add(new BookmarksHeader { Name = "Locations", Content = "Something else" });
+    //  Bookmarks.Add(new BookmarksHeader
+    //  {
+    //    Name = "Characters",
+    //    Content = "Something else",
+    //    Bookmarks = new List<BookmarksHeader>() {
+    //      new BookmarksHeader { Name = "Relicts2", Content = "Something else" },
+    //      new BookmarksHeader { Name = "Relicts2", Content = "Something else" },
+    //      new BookmarksHeader { Name = "Relicts2", Content = "Something else" },
+    //      new BookmarksHeader { Name = "Relicts2", Content = "Something else" }
+    //    }
+    //  });
+    //  Bookmarks.Add(new BookmarksHeader
+    //  {
+    //    Name = "Relicts",
+    //    Content = "Something else",
+    //    Bookmarks = new List<BookmarksHeader>() {
+    //      new BookmarksHeader { Name = "Relicts2", Content = "Something else" },
+    //      new BookmarksHeader { Name = "Relicts2", Content = "Something else" },
+    //      new BookmarksHeader { Name = "Relicts2", Content = "Something else" },
+    //      new BookmarksHeader { Name = "Relicts2", Content = "Something else" }
+    //    }
+    //  });
 
-      Bookmarks.Add(new BookmarksHeader { Name = "History", Content = "Something else" });
-      Bookmarks.Add(new BookmarksHeader { Name = "Timeline", Content = "Something else" });
-    }
+    //  Bookmarks.Add(new BookmarksHeader { Name = "History", Content = "Something else" });
+    //  Bookmarks.Add(new BookmarksHeader { Name = "Timeline", Content = "Something else" });
+    //}
 
     public class SceneDescription
     {
@@ -121,6 +191,22 @@ namespace MyBook.BookContent
         Name = "";
       }
     }
+    public struct CharacterEpisodes
+    {
+      public string Name;
+      public string Content;
+    }
+
+    public class CharacterContent
+    {
+      public string Name { get; set; }
+      public List<CharacterEpisodes> Info { get; set; }
+      public CharacterContent()
+      {
+        Info = new List<CharacterEpisodes>();
+      }
+    }
+
     public void RemovePage()
     {
       Position.Scene.Pages.RemoveAt(Position.ParagraphId);
@@ -181,20 +267,40 @@ namespace MyBook.BookContent
         _scenes = value;
       }
     }
+    private List<CharacterContent> _characters;
+    public List<CharacterContent> Characters
+    {
+      get
+      {
+        return _characters;
+      }
+      private set
+      {
+        _characters = value;
+      }
+    }
 
     public void Init()
     {
-      InitB();
+      ContentHandlers = InitPlugins();
       _scenes = new List<SceneDescription>();
+      _characters = new List<CharacterContent>();     
       CreateScene();
+      // create first person
+      CreateCharacter();
     }
-    public void Load(String name, List<IRiddleHandler> handlers)
+    public void CreateCharacter()
     {
-      Name = Path.GetFileNameWithoutExtension(name);
-      XmlDocument doc = new XmlDocument();
-      doc.Load(name);
-      // load whole
-      XmlNode parent = doc.FirstChild;
+      CharacterContent c = new CharacterContent();
+      c.Name = "Anonymous";
+      CharacterEpisodes ep = new CharacterEpisodes();
+      ep.Name = "Life";
+      ep.Content = "";
+      c.Info.Add(ep);
+
+    }
+    private void LoadScenes(XmlNode parent)
+    {
       if (parent.ChildNodes != null)
         Scenes.Clear();
       SceneDescription d;
@@ -202,11 +308,11 @@ namespace MyBook.BookContent
       {
         d = new SceneDescription();
         // traverse each attribute
-        foreach( XmlAttribute a in node.Attributes)
+        foreach (XmlAttribute a in node.Attributes)
         {
-          switch ( a.Name )
-          { 
-            case XmlAttributeNames.SceneId:
+          switch (a.Name)
+          {
+            case XmlAttributeNames.Name:
               d.Name = a.Value;
               break;
             case XmlAttributeNames.Description:
@@ -225,19 +331,51 @@ namespace MyBook.BookContent
         }
         foreach (XmlNode contentNode in node.ChildNodes)
         {
-          IContent content = null;
-          foreach (IRiddleHandler handler in handlers)
-          {
-            content = handler.Load(contentNode);
-            if (content != null)
-            {
-              d.Pages.Add(content);
-              break;
-            }
-          }
+          IContent content = new UnrecognizedContent();
+          content.Load(contentNode);
+          d.Pages.Add(content);
         }
         Scenes.Add(d);
       }
+    }
+    private void LoadCharacters(XmlNode parent)
+    {
+      foreach (XmlNode node in parent.ChildNodes)
+      {
+        CharacterContent i = new CharacterContent();
+        foreach (XmlAttribute att in node.Attributes)
+        {
+          if (att.Name == XmlAttributeNames.Name)
+            i.Name = att.Name;
+        }
+        foreach(XmlNode n in node.ChildNodes)
+        {
+          switch (n.Name)
+          {
+            case XmlNodeNames.Episode:
+              {
+                CharacterEpisodes ep = new CharacterEpisodes();
+                ep.Name = n.Attributes.GetNamedItem(XmlAttributeNames.Name).Value;
+                ep.Content = n.Value;
+                i.Info.Add(ep);
+                break;
+              }
+          }
+        }
+        Characters.Add(i);
+      }
+    }
+
+    public void Load(String name)
+    {
+      XmlDocument doc = new XmlDocument();
+      doc.Load(name);
+      // load whole
+      XmlNodeList n = doc.GetElementsByTagName(XmlNodeNames.Chapters);
+      Name = Path.GetFileNameWithoutExtension(name);
+      LoadScenes(n[0]);
+      n = doc.GetElementsByTagName(XmlNodeNames.Characters);
+      LoadCharacters(n[0]);
       Position.Scene = Scenes[0];
       NotifyPropertyChanged("CanGoFurther");
       NotifyPropertyChanged("CanGoBack");
@@ -279,6 +417,7 @@ namespace MyBook.BookContent
       NotifyPropertyChanged("CanGoBack");
       NotifyPropertyChanged("CanGoFirther");
     }
+    
     public void SaveScene(String sceneName)
     {
       Position.Scene.Name = sceneName;            
@@ -291,20 +430,32 @@ namespace MyBook.BookContent
       att.Value = value;
       node.Attributes.Append(att);
     }
-
-    public int Save()
+    private void SaveCharacters(XmlDocument doc, XmlElement el)
     {
-      if (!Directory.Exists(Settings.BooksFolder))
+      XmlNode parent = doc.CreateElement(XmlNodeNames.Characters);
+      el.AppendChild(parent);
+      foreach (CharacterContent c in Characters)
       {
-        Directory.CreateDirectory(Settings.BooksFolder);
+        XmlNode character = doc.CreateElement(XmlNodeNames.Character);
+        parent.AppendChild(character);
+        AddAttribute(doc,character,XmlAttributeNames.Name, c.Name);
+        foreach( CharacterEpisodes ep in c.Info)
+        {
+          XmlNode n = doc.CreateElement(XmlNodeNames.Episode);
+          AddAttribute(doc,n,XmlAttributeNames.Name, ep.Name);
+          n.InnerText = ep.Content;
+          character.AppendChild(n);
+        }
       }
-      String fullpath = Settings.BooksFolder + "\\" + Name + Constants.Extension;
-      XmlDocument doc = new XmlDocument();
-      XmlElement parent = doc.CreateElement(XmlNodeNames.BookRoot);
+    }
+    private void SaveScenes(XmlDocument doc, XmlElement el)
+    {
+      XmlNode parent = doc.CreateElement(XmlNodeNames.Chapters);
+      el.AppendChild(parent);
       foreach (SceneDescription scene in Scenes)
       {
         XmlElement e = doc.CreateElement(XmlNodeNames.SceneName);
-        AddAttribute(doc, e, XmlAttributeNames.SceneId, scene.Name);
+        AddAttribute(doc, e, XmlAttributeNames.Name, scene.Name);
         AddAttribute(doc, e, XmlAttributeNames.Description, scene.Description);
         if (scene.TimePosition >= 0)
         {
@@ -321,9 +472,21 @@ namespace MyBook.BookContent
           XmlNode node = content.ToXmlNode(doc);
           e.AppendChild(node);
         }
-        if ( canBeSaved )
+        if (canBeSaved)
           parent.AppendChild(e);
       }
+    }
+    public int Save()
+    {
+      if (!Directory.Exists(Settings.BooksFolder))
+      {
+        Directory.CreateDirectory(Settings.BooksFolder);
+      }
+      String fullpath = Settings.BooksFolder + "\\" + Name + Constants.Extension;
+      XmlDocument doc = new XmlDocument();
+      XmlElement parent = doc.CreateElement(XmlNodeNames.BookRoot);
+      SaveScenes(doc,parent);
+      SaveCharacters(doc, parent);
       doc.AppendChild(parent);
       doc.Save(fullpath);
       return 0;

@@ -1,5 +1,4 @@
-﻿On default, show all scenes on some border
-on click on bordered one, move cursor to the place outsie
+﻿on click on bordered one, move cursor to the place outsie
 move the default ones with the scrooling to stay in view
 make controls having resizeable height
 on double clik skip to the page

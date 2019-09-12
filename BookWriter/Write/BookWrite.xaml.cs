@@ -2,14 +2,11 @@
 using MyBook.Meta;
 using MyBook.Write;
 using MyBook.Write.Bookmark;
-using MyBook.Write.Picture;
-using MyBook.Write.Text;
 using MyBook.Write.Timeline;
 using RiddleInterface;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using static MyBook.BookContent.BookSource;
@@ -19,98 +16,55 @@ namespace MyBook
   /// <summary>
   /// Interaction logic for BookWrite.xaml
   /// </summary>
-  public partial class BookWrite : UserControl
+  public partial class BookWrite : UserControl, INotifyPropertyChanged
   {
+    // loaded data
     private BookSource Cache;
-
-    private List<IRiddleHandler> InitPlugins()
-    {
-      Assembly assem = Assembly.GetExecutingAssembly();
-      Uri ur = new Uri(assem.CodeBase);
-      FileInfo fi = new FileInfo(ur.AbsolutePath);
-      string s = fi.Directory.FullName;
-
-      //find all dlls
-      string[] dlls = Directory.GetFiles(s + "\\Plugins", "*.dll");
-      ICollection<Assembly> assemblies = new List<Assembly>(dlls.Length);
-      List<IRiddleHandler> riddles = new List<IRiddleHandler>();
-      foreach (string dllFile in dlls)
-      {
-        AssemblyName an = AssemblyName.GetAssemblyName(dllFile);
-        Assembly assembly = Assembly.Load(an);
-        assemblies.Add(assembly);
-      }
-
-      Type rh = typeof(IRiddleHandler);
-
-      foreach (Assembly a in assemblies)
-      {
-        Type[] types = a.GetTypes();
-        foreach (Type t in types)
-        {
-          if (t.IsAbstract || t.IsNotPublic || !rh.IsAssignableFrom(t))
-            continue;
-          // create as instance
-          object iRiddle = a.CreateInstance(t.ToString());
-          IRiddleHandler riddle = iRiddle as IRiddleHandler;
-          if (riddle != null)
-            riddles.Add(riddle);
-        }
-      }
-
-      foreach (IRiddleHandler r in riddles)
-      {
-        MenuItem menu = new MenuItem();
-        menu.Header = r.Name;
-        menu.DataContext = r;
-        menu.Click += new RoutedEventHandler(riddleChanged);
-        menu.Click += new RoutedEventHandler(setViewboxContent);
-        x_riddleSwitch.Items.Add(menu);
-      }
-      return riddles;
-    }
-    
-    private void riddleChanged(object sender, RoutedEventArgs e)
-    {
-      MenuItem box = sender as MenuItem;
-      (box.Parent as MenuItem).IsChecked = true;
-    }
 
     public List<BookmarksHeader> Bookmarks;
 
-    public List<IRiddleHandler> ContentHandlers;
+    private SceneHolder _sceneHolder;
+    
+    // content to show - characters, scenes, worlds...research
+    private IGuiContent _currentContent;
+    public IGuiContent CurrentContent
+    {
+      get
+      {
+        return _currentContent;
+      }
+
+      set
+      {
+        _currentContent = value;
+        NotifyPropertyChanged("CurrentContent");
+      }
+    }
 
     public BookWrite(String name)
     {
-      //DataWriteContext data = new DataWriteContext();
-      //data.Init(name);
-      //DataContext = data;
-      // initialize also all plugins
       // empty booksource
       Cache = new BookSource();
-
+      DataContext = Cache;
       // TODO continue form the last time
-      TextHandler th = new TextHandler();
-      ImageHandler ih = new ImageHandler();
-
-      ContentHandlers = new List<IRiddleHandler>();
-      ContentHandlers.Add(th);
-      ContentHandlers.Add(ih);
-
+      Cache.Load(name);
+      _sceneHolder = new SceneHolder();
       // initialize UI
       InitializeComponent();
-      x_insertText.DataContext = th;
-      x_insertImage.DataContext = ih;
-      ContentHandlers.AddRange(InitPlugins());
-      DataContext = Cache;
-
-      if (name.Length > 0)
-        Cache.Load(name, ContentHandlers);
-      
-      ShowProgress("Book loaded");
       SelectionPickup();
+      ShowProgress("Book loaded");
     }
-
+    
+    private void ShowProgress(String desc)
+    {
+      BookSource c = DataContext as BookSource;
+      String str = String.Format("{0} ( Page {1}/{2} )",
+        desc,
+        c.Position.ParagraphId + 1,
+        c.Position.Scene.Pages.Count);
+      x_progressText.Text = str;
+    }
+    // back to main menyu
     public delegate void BackHandler();
     public event BackHandler Back;
 
@@ -120,11 +74,11 @@ namespace MyBook
       if (Back != null)
         Back();
     }
-
+    
+    // saves whole data
     private void SaveBook()
     {
-      SavePage();
-      Cache.SaveScene(x_sceneName.Text);
+      CurrentContent.Save();
       if (Cache.Name == null)
       {
         //
@@ -142,23 +96,19 @@ namespace MyBook
       ShowProgress("Book saved");
     }
 
+    // settings of the book
     private void Settings_Click(object sender, RoutedEventArgs e)
     {
       MetaData metadata = new MetaData();
       // metadata.DataContext = Cache.Metadata.clone();
       metadata.ShowDialog();
       // SetCover, Set Name, save to the cache
-      
-    } 
+    }
+
+    // saves whole data handler
     private void SaveBook_Click(object sender, RoutedEventArgs e)
     {
       SaveBook();
-    }
-
-    private void startPage_Click(object sender, RoutedEventArgs e)
-    {
-      Cache.Position.Clear();
-      ShowProgress("Start page");
     }  
 
     private void HelperEnableMenu(MenuItem parentMenu, MenuItem exc)
@@ -183,48 +133,22 @@ namespace MyBook
         HelperEnableMenu(menu,exc);
       }
     }
-    private void SetHandler(IRiddleHandler handler)
-    {
-      System.Diagnostics.Debug.Assert(handler != null);
-      actualHandler = handler;
-      Control control = actualHandler.Settings;
-      x_writeSettings.Child = actualHandler.Settings;
-    }
-    private void setViewboxContent(object sender, RoutedEventArgs e)
-    {
-      SavePage();
-      MenuItem it = sender as MenuItem;
-      // enable all
-      HelperEnableMenu(x_contentMenu, it);
-      it.IsEnabled = false;
-      SetHandler(it.DataContext as IRiddleHandler);
-      // TODO in regard of the font, this should not be handled by handler, but by settings
-      PreparePage();
-    }
-    
-    private void ShowProgress(String desc)
-    {
-      String str = String.Format("{0} ( Page {1}/{2} )", 
-        desc,
-        Cache.Position.ParagraphId+1, 
-        Cache.Position.Scene.Pages.Count);
-      x_progressText.Text = str;
-    }
-    
-    private void PreparePage()
-    {
-      // create new page according to the handler
-      actualHandler.Create();
-      actualHandler.Viewport.DataContext = Cache;
-      x_workingPage.Content = actualHandler.Viewport;      
-    }
-
+   
+    // create timeline show
     private void ShowTimeline()
     {
       Timeline t = new Timeline(Cache.Scenes);
       t.OnFinished += SelectionPickup;
       x_workingPage.Content = t;
     }
+
+    public event PropertyChangedEventHandler PropertyChanged;
+    void NotifyPropertyChanged(string property)
+    {
+      if (PropertyChanged != null)
+        PropertyChanged(this, new PropertyChangedEventArgs(property));
+    }
+
     private void SelectionPickup()
     {
       x_scenes_holder.IsExpanded = true;
@@ -232,98 +156,12 @@ namespace MyBook
       TreeViewItem i = o as TreeViewItem;
       if (i != null)
         i.IsSelected = true;
-      Show();
-    }
-    // Show page fro the position
-    private void Show()
-    {
-      IContent content = Cache.GetContent();
-      if ( content == null )
-      {
-        SetHandler(ContentHandlers[0]);
-        PreparePage();
-        return;
-      }
-      // first find the handler - we have ensured that 
-      foreach (IRiddleHandler h in ContentHandlers)
-      {
-        if ( h.ToViewport(content) )
-        {
-          SetHandler(h);
-          x_workingPage.Content = actualHandler.Viewport;
-          break;
-        }
-      }
+      CurrentContent = _sceneHolder;
+      _sceneHolder.LoadScene();
     }
 
-    private void createPage(object sender, RoutedEventArgs e)
-    {
-      SavePage();
-      CreatePage();
-    }
+    private IRiddleHandler CurrentHandler { get; set; }
 
-    private void moveBack(object sender, RoutedEventArgs e)
-    {
-      SavePage();
-      Cache.MoveBack();
-      Show();
-      ShowProgress("At");
-    }
-
-    private void moveForward(object sender, RoutedEventArgs e)
-    {
-      SavePage();
-      Cache.MoveForward();
-      Show();
-      ShowProgress("At");
-    }
-
-    private void removePage(object sender, RoutedEventArgs e)
-    {
-      Cache.RemovePage();
-    }
-
-    private void saveAndCreateScene(object sender, RoutedEventArgs e)
-    {
-      string name = x_sceneName.Text;
-      Cache.SaveScene(name);
-      Cache.CreateScene();
-      Cache.Position.ParagraphId = 0;
-      PreparePage();
-      // changed number of added items
-      // select newly added scene
-      SelectionPickup();
-      x_scenes.Items.Refresh();
-    }
-
-    private IRiddleHandler actualHandler { get; set; }
-
-    private void CreatePage()
-    {
-      if (actualHandler == null)
-      {
-        ShowProgress("No content chosen");      
-        return;
-      }
-
-      SavePage();
-      PreparePage();
-      Cache.CreatePage();     
-      ShowProgress("Page created");
-    }
-
-    private void SavePage()
-    {
-      if (actualHandler == null)
-      {
-        Cache.SetPage(null);
-        return;
-      } 
-      // create another working page of the same type
-      IContent content = actualHandler.CreateRiddle();
-      Cache.SetPage(content);
-      ShowProgress("Page saved");
-    }
 
     private void showAboutClick(object sender, RoutedEventArgs e)
     {
@@ -331,14 +169,17 @@ namespace MyBook
       w.Show();
     }
 
+    private void x_characters_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+    {
+      x_workingPage.Content = x_characters.SelectedItem as UserControl;
+    }
+
     private void x_scenes_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
     {
-      string name = x_sceneName.Text;
-      SavePage();
-      Cache.SaveScene(name);
+      if (CurrentContent == null)
+        return;
+      CurrentContent.Save();
       Cache.SetScene(x_scenes.SelectedValue as SceneDescription);
-      Show();
-      ShowProgress("At");
     }
 
     private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -359,6 +200,32 @@ namespace MyBook
     private void Test_Click(object sender, RoutedEventArgs e)
     {
       SelectionPickup();
+    }
+
+    private void AddCharacter_Click(object sender, RoutedEventArgs e)
+    {
+      CharacterContent chi = new CharacterContent();
+      chi.Name = "Unknown";
+      CharacterEpisodes ep = new CharacterEpisodes();
+      ep.Name = "Life";
+      chi.Info.Add(ep);
+      Cache.Characters.Add(chi);
+      x_characters.Items.Refresh();
+    }
+
+    private void TextBox_KeyUpLocation(object sender, System.Windows.Input.KeyEventArgs e)
+    {
+      if (e.Key == System.Windows.Input.Key.Enter)
+      {
+        // find the parent bookmark
+      }
+    }
+    private void TextBox_KeyUpWorld(object sender, System.Windows.Input.KeyEventArgs e)
+    {
+      if (e.Key == System.Windows.Input.Key.Enter)
+      {
+        // find the parent bookmark
+      }
     }
   }
 }

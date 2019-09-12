@@ -6,6 +6,7 @@ namespace RiddleInterface
 {
   public interface IContent
   {
+    bool IsLoaded();
     XmlNode ToXmlNode(XmlDocument doc);
     bool Load(XmlNode node);
     UserControl ConvertToReadonly();

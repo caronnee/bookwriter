@@ -6,7 +6,7 @@
       xmlns:src="clr-namespace:MyBook.Write.WriteContent"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="MyBook.BookWrite" 
-      mc:Ignorable="d" x:Name="BookWriter"  >
+      mc:Ignorable="d" x:Name="x_bookViewer"  >
     <UserControl.Resources>
         <misc:WritingConverter x:Key="WritingConverter" />
         <ImageBrush x:Key="tripplearrowleft" ImageSource="/resources/start.png" Stretch="UniformToFill"/>
@@ -43,13 +43,7 @@
             </MenuItem>
             <MenuItem Header="Timeline" Click="SetTimeline"></MenuItem>
             <MenuItem Header="Manual - TODO" />
-            <MenuItem Header="Test" Click="Test_Click" />
             <MenuItem Header="About" Click="showAboutClick"/>
-        </Menu>
-        <Menu DockPanel.Dock="Top" x:Name="x_contentMenu">
-            <MenuItem Header="Text"  x:Name="x_insertText" Checked="setViewboxContent"  IsCheckable="True"/>
-            <MenuItem Header="Image" x:Name="x_insertImage" Checked="setViewboxContent" IsCheckable="True"/>
-            <MenuItem Header="Riddle"  x:Name="x_riddleSwitch"/>
         </Menu>
         <DockPanel DockPanel.Dock="Bottom">
             <Grid>
@@ -70,13 +64,10 @@
                 <ColumnDefinition Width="27*"/>
                 <ColumnDefinition Width="14*" />
                 <ColumnDefinition Width="186*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="10*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+            </Grid.ColumnDefinitions>            
             <TreeView Grid.ColumnSpan="2">
                 <TreeViewItem Header="Scenes" x:Name="x_scenes_holder">
+                    <!-- treeview because treeviewitem sdoes not have seleteditemchanged -->
                     <TreeView x:Name="x_scenes" BorderBrush="Transparent" ItemsSource="{Binding Scenes}" SelectedItemChanged="x_scenes_SelectedItemChanged">
                         <TreeView.ItemTemplate>
                             <HierarchicalDataTemplate >
@@ -85,15 +76,19 @@
                         </TreeView.ItemTemplate>
                     </TreeView>
                 </TreeViewItem>
-                <TreeViewItem Header="Background">
-                    <TreeView BorderBrush="Transparent" ItemsSource="{Binding Bookmarks}" SelectedItemChanged="TreeView_SelectedItemChanged">
+                <TreeViewItem Header="Characters" x:Name="x_character_holder">
+                    <TreeViewItem.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem  Header="Add character" Click="AddCharacter_Click" ></MenuItem>
+                        </ContextMenu>
+                    </TreeViewItem.ContextMenu>
+                    <TreeView x:Name="x_characters" BorderBrush="Transparent" ItemsSource="{Binding Characters}" SelectedItemChanged="x_characters_SelectedItemChanged">
                         <TreeView.ItemTemplate>
-                            <HierarchicalDataTemplate  ItemsSource="{Binding Bookmarks}">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Name}"/>
-                                </StackPanel>
+                            <HierarchicalDataTemplate >
+                                <TextBlock Text="{Binding Name}" />
                             </HierarchicalDataTemplate>
                         </TreeView.ItemTemplate>
+                        
                     </TreeView>
                 </TreeViewItem>
                 <TreeViewItem Header="Content change" x:Name="x_contentSettings">
@@ -105,16 +100,10 @@
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <TextBox x:Name="x_sceneName" Grid.Row="0" HorizontalContentAlignment="Center" Text="{Binding Position.Scene.Name}" />
-                <src:WorkingPage Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" x:Name="x_workingPage" Margin="0,2,0,14" Grid.RowSpan="2" />
+                <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" x:Name="x_workingPage" Grid.RowSpan="2" Content="{Binding CurrentContent,ElementName=x_bookViewer}">
+                </ScrollViewer> 
             </Grid>
-            <StackPanel Orientation="Horizontal" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2">
-                <Button Width="80" Content="-" IsEnabled="{Binding CanGoBack}" Click="moveBack"/>
-                <Button Width="80" Content="New page" Click="createPage"  />
-                <Button Width="80" Content="Remove page" IsEnabled="{Binding CanGoBack}" Click="removePage"/>
-                <Button Width="80" Click="saveAndCreateScene" Content="New scene" />
-                <Button Width="80" Content="+" IsEnabled="{Binding CanGoFurther}" Click="moveForward"/>
-            </StackPanel>
+            
         </Grid>
     </DockPanel>
 </UserControl>
