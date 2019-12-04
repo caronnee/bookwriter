@@ -44,7 +44,10 @@ namespace MyBook.BookContent
 
   public class BookSource : INotifyPropertyChanged
   {
-    List<IRiddleHandler> ContentHandlers { get; set; }
+    public List<IRiddleHandler> ContentHandlers {
+      get;
+      private set;
+    }
 
     private List<IRiddleHandler> InitPlugins()
     {
@@ -84,15 +87,6 @@ namespace MyBook.BookContent
         }
       }
 
-      //foreach (IRiddleHandler r in riddles)
-      //{
-      //  MenuItem menu = new MenuItem();
-      //  menu.Header = r.Name;
-      //  menu.DataContext = r;
-      //  menu.Click += new RoutedEventHandler(riddleChanged);
-      //  menu.Click += new RoutedEventHandler(setViewboxContent);
-      //  x_riddleSwitch.Items.Add(menu);
-      //}
       return riddles;
     }
     public IRiddleHandler GetCurrentHandler()
@@ -174,10 +168,10 @@ namespace MyBook.BookContent
       // content of the book for writing
       public List<IContent> Pages { get; set; }
 
-      // order between parallel scenes
+      // for timeline - order between parallel scenes
       public int Column { get; set; }
 
-      // vertical position when the scene happens
+      // for timeline - vertical position when the scene happens
       public int TimePosition { get; set; }
 
       // size of the scene
@@ -425,7 +419,7 @@ namespace MyBook.BookContent
       NotifyPropertyChanged("CanGoFirther");
     }
     
-    public void SaveScene(String sceneName)
+    public void SaveSceneName(String sceneName)
     {
       Position.Scene.Name = sceneName;            
       NotifyPropertyChanged("Scenes");

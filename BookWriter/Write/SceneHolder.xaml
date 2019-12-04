@@ -17,11 +17,20 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="30px" />
         </Grid.ColumnDefinitions>
-        <TextBox x:Name="x_sceneName"/>
-        <StackPanel x:Name="x_types" Grid.Row="0" Grid.Column="1" />
+        <TextBox x:Name="x_sceneName" Text="{Binding Position.Scene.Name}" Grid.Row="0" Grid.Column="1" HorizontalContentAlignment="Center"/>
         <ContentControl x:Name="x_sceneContent" Grid.Row="1" Grid.Column="1"/>
-        <Button Content="-" IsEnabled="{Binding CanGoBack}" Grid.Row="1" Grid.Column="0"/>
-        <Button Content="+" IsEnabled="{Binding CanGoFurther}" Grid.Row="1" Grid.Column="2" />
-        <Button Content="Save" Click="saveScene" Grid.Row="2" Grid.Column="1" />
+        <Button Content="-" IsEnabled="{Binding CanGoBack}" Grid.Row="1" Grid.Column="0" Click="MoveBackClick"/>
+        <Button Content="+" IsEnabled="{Binding CanGoFurther}" Grid.Row="1" Grid.Column="2" Click="MoveForwardClick"/>
+        <Grid Grid.Row="2" Grid.Column="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <ComboBox x:Name="x_types" ItemsSource="{Binding ContentHandlers}" DisplayMemberPath="Name" SelectedIndex="0"></ComboBox>
+            <Button Content="Save" Click="saveScene" Grid.Column="2" />
+            <Button Content="Create" Grid.Column="1"/>
+        </Grid>
+        
     </Grid>
 </local:IGuiContent>

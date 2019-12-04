@@ -6,7 +6,9 @@
       xmlns:src="clr-namespace:MyBook.Write.WriteContent"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="MyBook.BookWrite" 
-      mc:Ignorable="d" x:Name="x_bookViewer"  >
+      mc:Ignorable="d" x:Name="x_bookViewer" 
+    Unloaded="x_bookViewer_Unloaded"
+    >
     <UserControl.Resources>
         <misc:WritingConverter x:Key="WritingConverter" />
         <ImageBrush x:Key="tripplearrowleft" ImageSource="/resources/start.png" Stretch="UniformToFill"/>

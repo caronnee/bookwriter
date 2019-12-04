@@ -36,9 +36,7 @@ namespace MyBook.Write
 
     private void saveScene(object sender, RoutedEventArgs e)
     {
-      string name = x_sceneName.Text;
-      BookSource s = DataContext as BookSource;
-      s.SaveScene(name);
+      SavePage();
       //// changed number of added items
       //// select newly added scene
       if (OnSceneSaved != null)
@@ -76,12 +74,6 @@ namespace MyBook.Write
       BookSource c = DataContext as BookSource;
       c.Position.Clear();
     }
-    
-    private void riddleChanged(object sender, RoutedEventArgs e)
-    {
-      MenuItem box = sender as MenuItem;
-      (box.Parent as MenuItem).IsChecked = true;
-    }
 
     private void PreparePage()
     {
@@ -90,20 +82,28 @@ namespace MyBook.Write
       x_sceneContent.Content = Handler.Viewport;
     }
 
-    private void setViewboxContent(object sender, RoutedEventArgs e)
+    private void MoveBackClick(object sender, RoutedEventArgs e)
     {
       SavePage();
-      MenuItem it = sender as MenuItem;
-      Handler = it.DataContext as IRiddleHandler;
-      // TODO in regard of the font, this should not be handled by handler, but by settings
-      PreparePage();
+      BookSource s = DataContext as BookSource;
+      s.MoveBack();
+      LoadScene();
+    }
+
+    private void MoveForwardClick(object sender, RoutedEventArgs e)
+    {
+      SavePage();
+      BookSource s = DataContext as BookSource;
+      s.MoveForward();
+      LoadScene();
     }
 
     public override void Save()
     {
-      //BookSource s = DataContext as BookSource;
-      //System.Diagnostics.Debug.Assert(s != null);
-      //s.SaveScene(x_sceneName.Text);
+      BookSource s = DataContext as BookSource;
+      System.Diagnostics.Debug.Assert(s != null);
+      SavePage();
+      s.Save();
     }
   }
 }

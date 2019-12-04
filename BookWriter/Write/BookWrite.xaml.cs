@@ -24,7 +24,7 @@ namespace MyBook
     public List<BookmarksHeader> Bookmarks;
 
     private SceneHolder _sceneHolder;
-    
+
     // content to show - characters, scenes, worlds...research
     private IGuiContent _currentContent;
     public IGuiContent CurrentContent
@@ -61,7 +61,7 @@ namespace MyBook
       SelectionPickup();
       ShowProgress("Book loaded");
     }
-    
+
     private void ShowProgress(String desc)
     {
       BookSource c = DataContext as BookSource;
@@ -81,7 +81,7 @@ namespace MyBook
       if (Back != null)
         Back();
     }
-    
+
     // saves whole data
     private void SaveBook()
     {
@@ -116,7 +116,7 @@ namespace MyBook
     private void SaveBook_Click(object sender, RoutedEventArgs e)
     {
       SaveBook();
-    }  
+    }
 
     private void HelperEnableMenu(MenuItem parentMenu, MenuItem exc)
     {
@@ -137,10 +137,10 @@ namespace MyBook
           continue;
         menu.IsEnabled = true;
         menu.IsChecked = false;
-        HelperEnableMenu(menu,exc);
+        HelperEnableMenu(menu, exc);
       }
     }
-   
+
     // create timeline show
     private void ShowTimeline()
     {
@@ -187,6 +187,7 @@ namespace MyBook
         return;
       CurrentContent.Save();
       Cache.SetScene(x_scenes.SelectedValue as SceneDescription);
+      SelectionPickup();
     }
 
     private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -233,6 +234,18 @@ namespace MyBook
       {
         // find the parent bookmark
       }
+    }
+    
+    public void Done()
+    {
+      BookSource s = DataContext as BookSource;
+      CurrentContent.Save();
+      s.Save();
+    }
+
+    private void x_bookViewer_Unloaded(object sender, RoutedEventArgs e)
+    {
+      Done();
     }
   }
 }
