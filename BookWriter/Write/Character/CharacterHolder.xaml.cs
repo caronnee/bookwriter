@@ -8,15 +8,15 @@ namespace MyBook.Write.Character
   /// <summary>
   /// Interaction logic for CharacterInfo.xaml
   /// </summary>
-  public partial class CharacterInfo : UserControl
+  public partial class CharacterHolder : IGuiContent
+  {
+    public CharacterHolder()
     {
-        public CharacterInfo()
-        {
-            InitializeComponent();
-        }
+      InitializeComponent();
+    }
     public String CharacterName
     {
-      get;set;
+      get; set;
     }
 
     private void ChangeImageClick(object sender, RoutedEventArgs e)

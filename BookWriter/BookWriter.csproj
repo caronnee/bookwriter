@@ -79,8 +79,8 @@
     <Compile Include="Intro\BookItem.xaml.cs">
       <DependentUpon>BookItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Write\Character\CharacterInfo.xaml.cs">
-      <DependentUpon>CharacterInfo.xaml</DependentUpon>
+    <Compile Include="Write\Character\CharacterHolder.xaml.cs">
+      <DependentUpon>CharacterHolder.xaml</DependentUpon>
     </Compile>
     <Compile Include="Write\Content\UnrecognizedContent.cs" />
     <Compile Include="Write\IGuiContent.cs" />
@@ -214,7 +214,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Write\Character\CharacterInfo.xaml">
+    <Page Include="Write\Character\CharacterHolder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

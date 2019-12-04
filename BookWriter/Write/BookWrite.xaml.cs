@@ -2,6 +2,7 @@
 using MyBook.Meta;
 using MyBook.Write;
 using MyBook.Write.Bookmark;
+using MyBook.Write.Character;
 using MyBook.Write.Timeline;
 using RiddleInterface;
 using System;
@@ -24,6 +25,7 @@ namespace MyBook
     public List<BookmarksHeader> Bookmarks;
 
     private SceneHolder _sceneHolder;
+    private CharacterHolder _characterHolder;
 
     // content to show - characters, scenes, worlds...research
     private IGuiContent _currentContent;
@@ -54,6 +56,7 @@ namespace MyBook
       DataContext = Cache;
       // TODO continue form the last time
       Cache.Load(name);
+      _characterHolder = new CharacterHolder();
       _sceneHolder = new SceneHolder();
       _sceneHolder.OnSceneSaved += SceneSaved;
       // initialize UI
@@ -178,7 +181,7 @@ namespace MyBook
 
     private void x_characters_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
     {
-      x_workingPage.Content = x_characters.SelectedItem as UserControl;
+      CurrentContent = _characterHolder;
     }
 
     private void x_scenes_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
