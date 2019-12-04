@@ -105,5 +105,15 @@ namespace MyBook.Write
       SavePage();
       s.Save();
     }
+
+    private void CreateContentClick(object sender, RoutedEventArgs e)
+    {
+      BookSource s = DataContext as BookSource;
+      IRiddleHandler h = x_types.SelectedItem as IRiddleHandler;
+      h.Create();
+      s.CreatePage();
+      s.SetPage(h.CreateRiddle());
+      LoadScene();
+    }
   }
 }

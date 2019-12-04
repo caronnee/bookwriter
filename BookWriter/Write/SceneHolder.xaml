@@ -29,7 +29,7 @@
             </Grid.ColumnDefinitions>
             <ComboBox x:Name="x_types" ItemsSource="{Binding ContentHandlers}" DisplayMemberPath="Name" SelectedIndex="0"></ComboBox>
             <Button Content="Save" Click="saveScene" Grid.Column="2" />
-            <Button Content="Create" Grid.Column="1"/>
+            <Button Content="Create" Grid.Column="1" Click="CreateContentClick"/>
         </Grid>
         
     </Grid>
