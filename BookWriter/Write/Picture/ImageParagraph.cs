@@ -19,8 +19,6 @@ namespace MyBook.Write.Imaging
     }
     public bool Load(XmlNode node)
     {
-      if (node.Name != XmlNodeNames.ImageName)
-        return false;
       if ( node.InnerText.Length > 0)
         SourceName = node.InnerText;
       return true;

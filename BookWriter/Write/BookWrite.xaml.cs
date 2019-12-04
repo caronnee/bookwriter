@@ -40,6 +40,12 @@ namespace MyBook
         NotifyPropertyChanged("CurrentContent");
       }
     }
+    private void SceneSaved()
+    {
+      SelectionPickup();
+      x_scenes.Items.Refresh();
+      ShowProgress("Scene saved");
+    }
 
     public BookWrite(String name)
     {
@@ -49,6 +55,7 @@ namespace MyBook
       // TODO continue form the last time
       Cache.Load(name);
       _sceneHolder = new SceneHolder();
+      _sceneHolder.OnSceneSaved += SceneSaved;
       // initialize UI
       InitializeComponent();
       SelectionPickup();

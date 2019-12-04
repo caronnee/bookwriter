@@ -8,7 +8,6 @@ namespace RiddleInterface
   {
     bool IsLoaded();
     XmlNode ToXmlNode(XmlDocument doc);
-    bool Load(XmlNode node);
     UserControl ConvertToReadonly();
   }
 
@@ -33,6 +32,9 @@ namespace RiddleInterface
 
     // create content from stream
     IContent Load(XmlNode node);
+
+    // create content from stream
+    bool CanLoad(XmlNode node);
 
     // Load the content into the viewport
     bool ToViewport(IContent content);

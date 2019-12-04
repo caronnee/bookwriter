@@ -12,18 +12,16 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="30px"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="30px" />
+        </Grid.ColumnDefinitions>
         <TextBox x:Name="x_sceneName"/>
-        <ContentControl x:Name="x_sceneContent" Grid.Row="1"/>
-        <StackPanel Orientation="Horizontal" Grid.Row="2">
-            <Button Width="80" Content="New page" />
-            <Button Width="80" Content="Remove page" IsEnabled="{Binding CanGoBack}"/>
-            <Button Width="80" Click="saveAndCreateScene" Content="New scene" />
-            <Button Width="80" Content="+" IsEnabled="{Binding CanGoFurther}" />
-            <Menu DockPanel.Dock="Top" x:Name="x_contentMenu">
-                <MenuItem Header="Text" x:Name="x_insertText" Checked="setViewboxContent"  IsCheckable="True"/>
-                <MenuItem Header="Image" x:Name="x_insertImage" Checked="setViewboxContent" IsCheckable="True"/>
-                <MenuItem Header="Riddle"  x:Name="x_riddleSwitch"/>
-            </Menu>
-        </StackPanel>
+        <StackPanel x:Name="x_types" Grid.Row="0" Grid.Column="1" />
+        <ContentControl x:Name="x_sceneContent" Grid.Row="1" Grid.Column="1"/>
+        <Button Content="-" IsEnabled="{Binding CanGoBack}" Grid.Row="1" Grid.Column="0"/>
+        <Button Content="+" IsEnabled="{Binding CanGoFurther}" Grid.Row="1" Grid.Column="2" />
+        <Button Content="Save" Click="saveScene" Grid.Row="2" Grid.Column="1" />
     </Grid>
 </local:IGuiContent>

@@ -46,8 +46,6 @@ namespace PasswordPlugin
 
     public bool Load(XmlNode paragraph)
     {
-      if ( paragraph.Name != PasswordXmlNames.Name)
-        return false;
       items = new List<PassItem>();
       XmlNodeList nodes = paragraph.ChildNodes;
       foreach (XmlNode node in nodes)

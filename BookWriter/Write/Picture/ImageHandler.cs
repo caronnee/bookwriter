@@ -43,6 +43,13 @@ namespace MyBook.Write.Picture
       return p;
     }
 
+    public bool CanLoad(XmlNode node)
+    {
+      if (node.Name != BookContent.XmlNodeNames.ImageName)
+        return false;
+      return true;
+    }
+
     public IContent Load(XmlNode node)
     {
       ImageParagraph p = new ImageParagraph();

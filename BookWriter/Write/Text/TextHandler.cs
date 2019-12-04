@@ -34,6 +34,13 @@ namespace MyBook.Write.Text
       return p;
     }
 
+    public bool CanLoad(XmlNode node)
+    {
+      if (node.Name != BookContent.XmlNodeNames.ParagraphName)
+        return false;
+      return true;
+    }
+
     public IContent Load(XmlNode node)
     {
       TextParagraph p = new TextParagraph();

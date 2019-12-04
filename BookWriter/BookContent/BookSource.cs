@@ -57,6 +57,9 @@ namespace MyBook.BookContent
       string[] dlls = Directory.GetFiles(s + "\\Plugins", "*.dll");
       ICollection<Assembly> assemblies = new List<Assembly>(dlls.Length);
       List<IRiddleHandler> riddles = new List<IRiddleHandler>();
+      // first  the basic ones:
+      riddles.Add(new Write.Text.TextHandler());
+      riddles.Add(new Write.Picture.ImageHandler());
       foreach (string dllFile in dlls)
       {
         AssemblyName an = AssemblyName.GetAssemblyName(dllFile);
@@ -332,7 +335,11 @@ namespace MyBook.BookContent
         foreach (XmlNode contentNode in node.ChildNodes)
         {
           IContent content = new UnrecognizedContent();
-          content.Load(contentNode);
+          foreach ( IRiddleHandler h in ContentHandlers)
+          {
+            if (h.CanLoad(contentNode))
+              content = h.Load(contentNode);
+          }
           d.Pages.Add(content);
         }
         Scenes.Add(d);
@@ -497,8 +504,6 @@ namespace MyBook.BookContent
     {
       return (System.IO.File.Exists(filepath));
     }
-
-    public delegate void OnSceneSet();
 
     public void SetScene(SceneDescription sceneDescription)
     {

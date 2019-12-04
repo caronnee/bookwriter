@@ -36,6 +36,13 @@ namespace DecisionMaker
       return s;
     }
 
+    public bool CanLoad(XmlNode node)
+    {
+      if (node.Name != DecisionXmlNames.Name)
+        return false;
+      return true;
+    }
+
     public IContent Load(XmlNode node)
     {
       ContentDecision p = new ContentDecision();

@@ -31,15 +31,18 @@ namespace MyBook.Write
       PreparePage();
     }
 
-    private void saveAndCreateScene(object sender, RoutedEventArgs e)
+    public delegate void OnSceneSavedDlg();
+    public OnSceneSavedDlg OnSceneSaved;
+
+    private void saveScene(object sender, RoutedEventArgs e)
     {
-      //string name = x_sceneName.Text;
-      //Cache.SaveScene(name);
-      //Cache.CreateScene();
-      //Cache.Position.ParagraphId = 0;
-      //PreparePage();
+      string name = x_sceneName.Text;
+      BookSource s = DataContext as BookSource;
+      s.SaveScene(name);
       //// changed number of added items
       //// select newly added scene
+      if (OnSceneSaved != null)
+        OnSceneSaved();
       //SelectionPickup();
       //x_scenes.Items.Refresh();
     }

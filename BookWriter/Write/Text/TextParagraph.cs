@@ -33,8 +33,6 @@ namespace MyBook.Write.Text
 
     public bool Load(XmlNode paragraph)
     {
-      if (paragraph.Name != XmlNodeNames.ParagraphName)
-        return false;
       Content = paragraph.InnerText;
       Content = Content.Replace("\r", "");
       Content = Content.Replace("\n", "");

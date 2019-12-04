@@ -41,6 +41,13 @@ namespace PasswordPlugin
       return p;
     }
 
+    public bool CanLoad(XmlNode node)
+    {
+      if (node.Name != PasswordXmlNames.Name)
+        return false;
+      return true;
+    }
+
     public IContent Load(XmlNode node)
     {
       ContentPassword p = new ContentPassword();
