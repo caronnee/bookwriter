@@ -204,6 +204,11 @@ namespace MyBook.BookContent
       }
     }
 
+    public CharacterContent Get(string name)
+    {
+      return Characters.Find(x => x.Name == name);
+    }
+
     public void RemovePage()
     {
       Position.Scene.Pages.RemoveAt(Position.ParagraphId);
@@ -264,29 +269,22 @@ namespace MyBook.BookContent
         _scenes = value;
       }
     }
-    private List<CharacterContent> _characters;
+
     public List<CharacterContent> Characters
     {
-      get
-      {
-        return _characters;
-      }
-      private set
-      {
-        _characters = value;
-      }
+      get;set;
     }
 
     public void Init()
     {
       ContentHandlers = InitPlugins();
       _scenes = new List<SceneDescription>();
-      _characters = new List<CharacterContent>();     
+      Characters = new List<CharacterContent>();     
       CreateScene();
       // create first person
       CreateCharacter();
     }
-    public void CreateCharacter()
+    public CharacterContent CreateCharacter()
     {
       CharacterContent c = new CharacterContent();
       c.Name = "Anonymous";
@@ -294,7 +292,7 @@ namespace MyBook.BookContent
       ep.Name = "Life";
       ep.Content = "";
       c.Info.Add(ep);
-
+      return c;
     }
     private void LoadScenes(XmlNode parent)
     {
@@ -347,17 +345,17 @@ namespace MyBook.BookContent
         foreach (XmlAttribute att in node.Attributes)
         {
           if (att.Name == XmlAttributeNames.Name)
-            i.Name = att.Name;
+            i.Name = att.Value;
         }
         foreach(XmlNode n in node.ChildNodes)
         {
           switch (n.Name)
           {
             case XmlNodeNames.Episode:
-              {
+               {
                 CharacterEpisodes ep = new CharacterEpisodes();
                 ep.Name = n.Attributes.GetNamedItem(XmlAttributeNames.Name).Value;
-                ep.Content = n.Value;
+                ep.Content = n.InnerText;
                 i.Info.Add(ep);
                 break;
               }

@@ -1,7 +1,9 @@
-﻿using System;
+﻿using MyBook.BookContent;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using static MyBook.BookContent.BookSource;
 
 namespace MyBook.Write.Character
 {
@@ -14,6 +16,25 @@ namespace MyBook.Write.Character
     {
       InitializeComponent();
     }
+    public CharacterContent Character;
+
+    public void Load( CharacterContent c)
+    {
+      Character = c;
+      //todo change for episodes
+      x_c_name.Text = Character.Name;
+      x_info.x_textContent.Text = Character.Info[0].Content;      
+    }
+    
+    public override void Save()
+    {
+      Character.Name = x_c_name.Text;
+      CharacterEpisodes ep = Character.Info[0];
+      ep.Name = "Biography";
+      ep.Content = x_info.x_textContent.Text;
+      Character.Info[0] = ep;
+    }
+
     public String CharacterName
     {
       get; set;

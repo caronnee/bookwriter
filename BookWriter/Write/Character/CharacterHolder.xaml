@@ -7,7 +7,7 @@
              xmlns:localInterface="clr-namespace:MyBook.Write"
              xmlns:text="clr-namespace:MyBook.Write.WriteContent.Text"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800" x:Name="x_c_holder">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -16,10 +16,10 @@
         <DockPanel Grid.Column="0">
             <DockPanel DockPanel.Dock="Top">
                 <Label>Name</Label>
-                <TextBox>Anonymous</TextBox>
+                <TextBox x:Name="x_c_name" Text="{Binding Character.Name, ElementName=x_c_holder}"></TextBox>
             </DockPanel>
             <ScrollViewer>
-                <text:WritingBox/>
+                <text:WritingBox x:Name="x_info"/>
             </ScrollViewer>
         </DockPanel>
         <StackPanel Grid.Column="1">

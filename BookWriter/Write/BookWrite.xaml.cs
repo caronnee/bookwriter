@@ -181,6 +181,8 @@ namespace MyBook
 
     private void x_characters_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
     {
+      CurrentContent.Save();
+      _characterHolder.Load(x_characters.SelectedValue as CharacterContent);
       CurrentContent = _characterHolder;
     }
 
@@ -207,20 +209,11 @@ namespace MyBook
     {
       ShowTimeline();
     }
-
-    private void Test_Click(object sender, RoutedEventArgs e)
-    {
-      SelectionPickup();
-    }
-
+    
     private void AddCharacter_Click(object sender, RoutedEventArgs e)
     {
-      CharacterContent chi = new CharacterContent();
-      chi.Name = "Unknown";
-      CharacterEpisodes ep = new CharacterEpisodes();
-      ep.Name = "Life";
-      chi.Info.Add(ep);
-      Cache.Characters.Add(chi);
+      _characterHolder.Load(Cache.CreateCharacter());
+      CurrentContent = _characterHolder;
       x_characters.Items.Refresh();
     }
 

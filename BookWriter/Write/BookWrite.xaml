@@ -90,7 +90,6 @@
                                 <TextBlock Text="{Binding Name}" />
                             </HierarchicalDataTemplate>
                         </TreeView.ItemTemplate>
-                        
                     </TreeView>
                 </TreeViewItem>
                 <TreeViewItem Header="Content change" x:Name="x_contentSettings">
