@@ -42,6 +42,7 @@ namespace MyBook
         NotifyPropertyChanged("CurrentContent");
       }
     }
+
     private void SceneSaved()
     {
       SelectionPickup();

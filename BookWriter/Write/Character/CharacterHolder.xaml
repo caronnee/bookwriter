@@ -16,7 +16,7 @@
         <DockPanel Grid.Column="0">
             <DockPanel DockPanel.Dock="Top">
                 <Label>Name</Label>
-                <TextBox x:Name="x_c_name" Text="{Binding Character.Name, ElementName=x_c_holder}"></TextBox>
+                <TextBox x:Name="x_c_name" Text="{Binding Character.Name, ElementName=x_c_holder}" TextInput="x_c_name_TextInput"></TextBox>
             </DockPanel>
             <ScrollViewer>
                 <text:WritingBox x:Name="x_info"/>

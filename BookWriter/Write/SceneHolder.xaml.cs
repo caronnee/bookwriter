@@ -41,8 +41,6 @@ namespace MyBook.Write
       //// select newly added scene
       if (OnSceneSaved != null)
         OnSceneSaved();
-      //SelectionPickup();
-      //x_scenes.Items.Refresh();
     }
 
     private void CreatePage()

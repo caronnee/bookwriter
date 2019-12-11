@@ -416,12 +416,6 @@ namespace MyBook.BookContent
       NotifyPropertyChanged("CanGoBack");
       NotifyPropertyChanged("CanGoFirther");
     }
-    
-    public void SaveSceneName(String sceneName)
-    {
-      Position.Scene.Name = sceneName;            
-      NotifyPropertyChanged("Scenes");
-    }
 
     public void AddAttribute(XmlDocument doc, XmlNode node,String name, String value)
     {

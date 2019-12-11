@@ -1,5 +1,6 @@
 ﻿using MyBook.BookContent;
 using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -10,13 +11,21 @@ namespace MyBook.Write.Character
   /// <summary>
   /// Interaction logic for CharacterInfo.xaml
   /// </summary>
-  public partial class CharacterHolder : IGuiContent
+  public partial class CharacterHolder : IGuiContent, INotifyPropertyChanged
   {
     public CharacterHolder()
     {
       InitializeComponent();
     }
-    public CharacterContent Character;
+
+    public CharacterContent Character { get; set; }
+    
+    public event PropertyChangedEventHandler PropertyChanged;
+    void NotifyPropertyChanged(string property)
+    {
+      if (PropertyChanged != null)
+        PropertyChanged(this, new PropertyChangedEventArgs(property));
+    }
 
     public void Load( CharacterContent c)
     {
@@ -34,12 +43,7 @@ namespace MyBook.Write.Character
       ep.Content = x_info.x_textContent.Text;
       Character.Info[0] = ep;
     }
-
-    public String CharacterName
-    {
-      get; set;
-    }
-
+    
     private void ChangeImageClick(object sender, RoutedEventArgs e)
     {
       System.Windows.Forms.OpenFileDialog openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
@@ -59,6 +63,12 @@ namespace MyBook.Write.Character
       im.UriSource = new Uri(selectedFileName);
       im.EndInit();
       x_characterImage.Source = im;
+    }
+
+    private void x_c_name_TextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+    {
+      NotifyPropertyChanged("Character");
+      
     }
   }
 }
