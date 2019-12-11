@@ -30,16 +30,14 @@ namespace MyBook.Write.Character
     public void Load( CharacterContent c)
     {
       Character = c;
-      //todo change for episodes
-      x_c_name.Text = Character.Name;
+      NotifyPropertyChanged("Character");
       x_info.x_textContent.Text = Character.Info[0].Content;      
     }
     
     public override void Save()
     {
-      Character.Name = x_c_name.Text;
       CharacterEpisodes ep = Character.Info[0];
-      ep.Name = "Biography";
+      ep.Title = "Biography";
       ep.Content = x_info.x_textContent.Text;
       Character.Info[0] = ep;
     }
@@ -65,10 +63,9 @@ namespace MyBook.Write.Character
       x_characterImage.Source = im;
     }
 
-    private void x_c_name_TextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
-    {
-      NotifyPropertyChanged("Character");
-      
-    }
+    //private void x_c_name_TextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+    //{
+    //  NotifyPropertyChanged("Character"); 
+    //}
   }
 }

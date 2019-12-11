@@ -20,7 +20,6 @@ namespace PasswordPlugin
     static public String RegExp = "Desc";
     static public String Correct = "Correct";
     static public String GoTo = "Goto";
-    static public String SceneName = "Scene";
   }
 
   class ContentPassword : IContent

@@ -70,12 +70,7 @@
             <TreeView Grid.ColumnSpan="2">
                 <TreeViewItem Header="Scenes" x:Name="x_scenes_holder">
                     <!-- treeview because treeviewitem sdoes not have seleteditemchanged -->
-                    <TreeView x:Name="x_scenes" BorderBrush="Transparent" ItemsSource="{Binding Scenes}" SelectedItemChanged="x_scenes_SelectedItemChanged">
-                        <TreeView.ItemTemplate>
-                            <HierarchicalDataTemplate >
-                                <TextBlock Text="{Binding Name}" />
-                            </HierarchicalDataTemplate>
-                        </TreeView.ItemTemplate>
+                    <TreeView x:Name="x_scenes" BorderBrush="Transparent" ItemsSource="{Binding Scenes}" SelectedItemChanged="x_scenes_SelectedItemChanged" DisplayMemberPath="Name">
                     </TreeView>
                 </TreeViewItem>
                 <TreeViewItem Header="Characters" x:Name="x_character_holder">
@@ -84,12 +79,7 @@
                             <MenuItem  Header="Add character" Click="AddCharacter_Click" ></MenuItem>
                         </ContextMenu>
                     </TreeViewItem.ContextMenu>
-                    <TreeView x:Name="x_characters" BorderBrush="Transparent" ItemsSource="{Binding Characters}" SelectedItemChanged="x_characters_SelectedItemChanged">
-                        <TreeView.ItemTemplate>
-                            <HierarchicalDataTemplate >
-                                <TextBlock Text="{Binding Name}" />
-                            </HierarchicalDataTemplate>
-                        </TreeView.ItemTemplate>
+                    <TreeView x:Name="x_characters" BorderBrush="Transparent" ItemsSource="{Binding Characters}" DisplayMemberPath="Name" SelectedItemChanged="x_characters_SelectedItemChanged">                        
                     </TreeView>
                 </TreeViewItem>
                 <TreeViewItem Header="Content change" x:Name="x_contentSettings">

@@ -21,7 +21,6 @@ namespace MyBook.BookContent
     public const String Characters = "Characters";
     public const String Character = "Character";
     public const String CoverName = "Cover";
-    public const String SceneParentName = "Scenes";
     public const String Episode = "Episode";
 
     // content types
@@ -190,13 +189,15 @@ namespace MyBook.BookContent
     }
     public struct CharacterEpisodes
     {
-      public string Name;
-      public string Content;
+      public String Title;
+      public String Content;
     }
 
     public class CharacterContent
     {
-      public string Name { get; set; }
+      // name of the scene
+      public String Name { get; set; }
+
       public List<CharacterEpisodes> Info { get; set; }
       public CharacterContent()
       {
@@ -289,9 +290,10 @@ namespace MyBook.BookContent
       CharacterContent c = new CharacterContent();
       c.Name = "Anonymous";
       CharacterEpisodes ep = new CharacterEpisodes();
-      ep.Name = "Life";
+      ep.Title = "Life";
       ep.Content = "";
       c.Info.Add(ep);
+      Characters.Add(c);
       return c;
     }
     private void LoadScenes(XmlNode parent)
@@ -354,7 +356,7 @@ namespace MyBook.BookContent
             case XmlNodeNames.Episode:
                {
                 CharacterEpisodes ep = new CharacterEpisodes();
-                ep.Name = n.Attributes.GetNamedItem(XmlAttributeNames.Name).Value;
+                ep.Title = n.Attributes.GetNamedItem(XmlAttributeNames.Name).Value;
                 ep.Content = n.InnerText;
                 i.Info.Add(ep);
                 break;
@@ -435,7 +437,7 @@ namespace MyBook.BookContent
         foreach( CharacterEpisodes ep in c.Info)
         {
           XmlNode n = doc.CreateElement(XmlNodeNames.Episode);
-          AddAttribute(doc,n,XmlAttributeNames.Name, ep.Name);
+          AddAttribute(doc,n,XmlAttributeNames.Name, ep.Title);
           n.InnerText = ep.Content;
           character.AppendChild(n);
         }
