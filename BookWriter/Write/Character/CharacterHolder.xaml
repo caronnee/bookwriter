@@ -4,10 +4,28 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MyBook.Write.Character"
+             xmlns:consts="clr-namespace:MyBook.BookContent"
              xmlns:localInterface="clr-namespace:MyBook.Write"
              xmlns:text="clr-namespace:MyBook.Write.WriteContent.Text"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" x:Name="x_c_holder">
+    <localInterface:IGuiContent.Resources>
+        <ObjectDataProvider x:Key="CharacterStatus"
+                            MethodName="GetValues" 
+                            ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="consts:CharacterStatus"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="Gender"
+                            MethodName="GetValues" 
+                            ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="consts:CharacterGender"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </localInterface:IGuiContent.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -30,6 +48,8 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -46,8 +66,15 @@
                 <TextBox Grid.Column="1" Grid.Row="1">XX</TextBox>
                 <Label Grid.Column="0" Grid.Row="2">Father</Label>
                 <TextBox Grid.Column="1" Grid.Row="2">XY</TextBox>
-                <Label Grid.Column="0" Grid.Row="3">Status</Label>
-                <TextBox Grid.Column="1" Grid.Row="3">Alive</TextBox>
+                <Label Grid.Column="0" Grid.Row="3">Gender</Label>
+                <ComboBox Grid.Column="1" Grid.Row="3" ItemsSource="{Binding Source={StaticResource Gender}}" SelectedValue="{Binding Character.Gender, ElementName=x_c_holder}"/>
+                <Label Grid.Column="0" Grid.Row="4">Status</Label>
+                <ComboBox Grid.Column="1" Grid.Row="4" ItemsSource="{Binding Source={StaticResource CharacterStatus}}" SelectedValue="{Binding Character.Status, ElementName=x_c_holder}" />
+                <Label Grid.Column="0" Grid.Row="5">Spouse(s)</Label>
+                <ComboBox Grid.Column="1" Grid.Row="5" SelectedIndex="0">
+                    <ComboBoxItem>None</ComboBoxItem>
+                </ComboBox>
+                <Label Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2">Children</Label>
             </Grid>
         </StackPanel>
     </Grid>

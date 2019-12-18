@@ -16,19 +16,28 @@ namespace MyBook.BookContent
   {
     // main nodes
     public const String BookRoot = "Book";
+    public const String CoverName = "Cover";
+
+    /// <summary>
+    /// Scenes
+    /// </summary>
     public const String Chapters = "Chapters";
     public const String SceneName = "Chapter";
-    public const String Characters = "Characters";
-    public const String Character = "Character";
-    public const String CoverName = "Cover";
-    public const String Episode = "Episode";
-
     // content types
     public const String ParagraphName = "Text";
     public const String ImageName = "Image";
-    
-    // external one
     public const String RiddleName = "Riddle";
+
+    /// <summary>
+    /// Character
+    /// </summary>
+    public const String Characters = "Characters";
+    public const String Character = "Character";
+    public const String Episode = "Episode";
+    public const String Father = "Father";
+    public const String Mother = "Mother";
+    public const String Gender = "Gender";
+    public const String Status = "Status";
   }
 
   static class XmlAttributeNames
@@ -193,12 +202,32 @@ namespace MyBook.BookContent
       public String Content;
     }
 
+    // whole info about character
     public class CharacterContent
     {
       // name of the scene
       public String Name { get; set; }
 
+      // spouse of the character
+      public CharacterContent Spouse { get; set; }
+
+      // father of the character
+      public CharacterContent Father { get; set; }
+
+      // mother of the character
+      public CharacterContent Mother { get; set; }
+
+      // current status of the character
+      public CharacterStatus Status { get; set; }
+
+      public CharacterGender Gender { get; set; }
+        
+      // details
       public List<CharacterEpisodes> Info { get; set; }
+
+      /// <summary>
+      /// Functions
+      /// </summary>
       public CharacterContent()
       {
         Info = new List<CharacterEpisodes>();
@@ -339,11 +368,22 @@ namespace MyBook.BookContent
         Scenes.Add(d);
       }
     }
+    struct ParentFind
+    {
+      public CharacterContent c;
+      public String father;
+      public String mother;
+    }
+
     private void LoadCharacters(XmlNode parent)
     {
+      List<ParentFind> parentFinds = new List<ParentFind>();
       foreach (XmlNode node in parent.ChildNodes)
       {
         CharacterContent i = new CharacterContent();
+        ParentFind parentFind = new ParentFind();
+        parentFind.c = i;
+        parentFinds.Add(parentFind);
         foreach (XmlAttribute att in node.Attributes)
         {
           if (att.Name == XmlAttributeNames.Name)
@@ -359,6 +399,30 @@ namespace MyBook.BookContent
                 ep.Title = n.Attributes.GetNamedItem(XmlAttributeNames.Name).Value;
                 ep.Content = n.InnerText;
                 i.Info.Add(ep);
+                break;
+              }
+            case XmlNodeNames.Father:
+              {
+                parentFind.father = n.InnerText;
+                break;
+              }
+            case XmlNodeNames.Mother:
+              {
+                parentFind.mother = n.InnerText;
+                break;
+              }
+            case XmlNodeNames.Status:
+              {
+                CharacterStatus s;
+                Enum.TryParse(n.InnerText, out s);
+                i.Status = s;
+                break;
+              }
+            case XmlNodeNames.Gender:
+              {
+                CharacterGender s;
+                Enum.TryParse(n.InnerText, out s);
+                i.Gender = s;
                 break;
               }
           }
@@ -441,8 +505,30 @@ namespace MyBook.BookContent
           n.InnerText = ep.Content;
           character.AppendChild(n);
         }
+        // save basic info
+        
+        if (c.Father!=null)
+        {
+          XmlNode fn = doc.CreateElement(XmlNodeNames.Father);
+          character.AppendChild(fn);
+          fn.InnerText = c.Father.Name;
+        }
+        if (c.Mother != null)
+        {
+          XmlNode mn = doc.CreateElement(XmlNodeNames.Mother);
+          character.AppendChild(mn);
+          mn.InnerText = c.Mother.Name;
+        }
+
+        XmlNode on = doc.CreateElement(XmlNodeNames.Gender);
+        on.InnerText = c.Gender.ToString();
+        character.AppendChild(on);
+        on = doc.CreateElement(XmlNodeNames.Status);
+        on.InnerText = c.Status.ToString();
+        character.AppendChild(on);
       }
     }
+
     private void SaveScenes(XmlDocument doc, XmlElement el)
     {
       XmlNode parent = doc.CreateElement(XmlNodeNames.Chapters);

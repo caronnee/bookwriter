@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MyBook.BookContent
 {
@@ -10,4 +7,17 @@ namespace MyBook.BookContent
     static public String Extension = ".book";
     static public String SearchExt = "*.book";
   }
+  
+  public enum CharacterGender
+  {
+    Man,
+    Female
+  }
+
+  public enum CharacterStatus
+  {
+    Alive,
+    Dead,
+    Unknown
+  }  
 }
