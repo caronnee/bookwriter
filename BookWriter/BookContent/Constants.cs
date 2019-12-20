@@ -10,7 +10,7 @@ namespace MyBook.BookContent
   
   public enum CharacterGender
   {
-    Man,
+    Male,
     Female
   }
 

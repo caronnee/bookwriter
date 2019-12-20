@@ -44,6 +44,7 @@ namespace MyBook.BookContent
   { 
     // Attributes
     public const String Name = "Name";
+    public const String Id = "Id";
     public const String Description = "Description";
     public const String Column = "Column";
     public const String TimePosition = "TimePosition";
@@ -205,6 +206,9 @@ namespace MyBook.BookContent
     // whole info about character
     public class CharacterContent
     {
+      // unique identificator of the character
+      public int Id { get; set; }
+
       // name of the scene
       public String Name { get; set; }
 
@@ -300,6 +304,8 @@ namespace MyBook.BookContent
       }
     }
 
+    public CharacterContent DummyCharacter { get; set; }
+
     public List<CharacterContent> Characters
     {
       get;set;
@@ -307,6 +313,9 @@ namespace MyBook.BookContent
 
     public void Init()
     {
+      DummyCharacter = new CharacterContent();
+      DummyCharacter.Id = -1;
+      DummyCharacter.Name = "Unknown";
       ContentHandlers = InitPlugins();
       _scenes = new List<SceneDescription>();
       Characters = new List<CharacterContent>();     
@@ -314,15 +323,22 @@ namespace MyBook.BookContent
       // create first person
       CreateCharacter();
     }
+
+    int LastOne = 0;
+
     public CharacterContent CreateCharacter()
     {
       CharacterContent c = new CharacterContent();
+      c.Id = LastOne;
       c.Name = "Anonymous";
+      c.Father = DummyCharacter;
+      c.Mother = DummyCharacter;
       CharacterEpisodes ep = new CharacterEpisodes();
       ep.Title = "Life";
       ep.Content = "";
       c.Info.Add(ep);
       Characters.Add(c);
+      LastOne++;
       return c;
     }
     private void LoadScenes(XmlNode parent)
@@ -368,16 +384,19 @@ namespace MyBook.BookContent
         Scenes.Add(d);
       }
     }
-    struct ParentFind
+   class ParentFind
     {
       public CharacterContent c;
-      public String father;
-      public String mother;
+      public Int32 father;
+      public Int32 mother;
     }
 
     private void LoadCharacters(XmlNode parent)
     {
+      if (parent.HasChildNodes == false)
+        return;
       List<ParentFind> parentFinds = new List<ParentFind>();
+      Characters = new List<CharacterContent>();
       foreach (XmlNode node in parent.ChildNodes)
       {
         CharacterContent i = new CharacterContent();
@@ -388,6 +407,12 @@ namespace MyBook.BookContent
         {
           if (att.Name == XmlAttributeNames.Name)
             i.Name = att.Value;
+          if (att.Name == XmlAttributeNames.Id)
+          {
+            Int32 id;
+            Int32.TryParse(att.Value,out id);
+            i.Id = id;
+          }
         }
         foreach(XmlNode n in node.ChildNodes)
         {
@@ -403,12 +428,12 @@ namespace MyBook.BookContent
               }
             case XmlNodeNames.Father:
               {
-                parentFind.father = n.InnerText;
+                Int32.TryParse(n.InnerText, out parentFind.father);
                 break;
               }
             case XmlNodeNames.Mother:
               {
-                parentFind.mother = n.InnerText;
+                Int32.TryParse(n.InnerText, out parentFind.mother);
                 break;
               }
             case XmlNodeNames.Status:
@@ -429,6 +454,23 @@ namespace MyBook.BookContent
         }
         Characters.Add(i);
       }
+      foreach(ParentFind c in parentFinds)
+      {
+        c.c.Father = Characters.Find(delegate (CharacterContent bk)
+            {
+              return bk.Id == c.father;
+            });
+        if (c.c.Father == null)
+          c.c.Father = DummyCharacter;
+
+        c.c.Mother = Characters.Find(delegate (CharacterContent bk)
+        {
+          return bk.Id == c.mother;
+        });
+        if (c.c.Mother == null)
+          c.c.Mother = DummyCharacter;
+      }
+      LastOne = Characters.Count;
     }
 
     public void Load(String name)
@@ -497,8 +539,9 @@ namespace MyBook.BookContent
       {
         XmlNode character = doc.CreateElement(XmlNodeNames.Character);
         parent.AppendChild(character);
-        AddAttribute(doc,character,XmlAttributeNames.Name, c.Name);
-        foreach( CharacterEpisodes ep in c.Info)
+        AddAttribute(doc, character, XmlAttributeNames.Name, c.Name);
+        AddAttribute(doc, character, XmlAttributeNames.Id, c.Id.ToString());
+        foreach ( CharacterEpisodes ep in c.Info)
         {
           XmlNode n = doc.CreateElement(XmlNodeNames.Episode);
           AddAttribute(doc,n,XmlAttributeNames.Name, ep.Title);
@@ -511,13 +554,13 @@ namespace MyBook.BookContent
         {
           XmlNode fn = doc.CreateElement(XmlNodeNames.Father);
           character.AppendChild(fn);
-          fn.InnerText = c.Father.Name;
+          fn.InnerText = c.Father.Id.ToString();
         }
         if (c.Mother != null)
         {
           XmlNode mn = doc.CreateElement(XmlNodeNames.Mother);
           character.AppendChild(mn);
-          mn.InnerText = c.Mother.Name;
+          mn.InnerText = c.Mother.Id.ToString();
         }
 
         XmlNode on = doc.CreateElement(XmlNodeNames.Gender);

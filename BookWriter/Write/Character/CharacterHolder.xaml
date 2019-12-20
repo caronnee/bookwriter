@@ -63,9 +63,9 @@
                     </Image.ContextMenu>
                 </Image>
                 <Label Grid.Column="0" Grid.Row="1">Mother</Label>
-                <TextBox Grid.Column="1" Grid.Row="1">XX</TextBox>
+                <ComboBox Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Females, ElementName=x_c_holder}" SelectedValue="{Binding Character.Mother, ElementName=x_c_holder}" DisplayMemberPath="Name"/>
                 <Label Grid.Column="0" Grid.Row="2">Father</Label>
-                <TextBox Grid.Column="1" Grid.Row="2">XY</TextBox>
+                <ComboBox Grid.Column="1" Grid.Row="2" ItemsSource="{Binding Males, ElementName=x_c_holder}" SelectedValue="{Binding Character.Father, ElementName=x_c_holder}" DisplayMemberPath="Name"/>
                 <Label Grid.Column="0" Grid.Row="3">Gender</Label>
                 <ComboBox Grid.Column="1" Grid.Row="3" ItemsSource="{Binding Source={StaticResource Gender}}" SelectedValue="{Binding Character.Gender, ElementName=x_c_holder}"/>
                 <Label Grid.Column="0" Grid.Row="4">Status</Label>
@@ -74,7 +74,7 @@
                 <ComboBox Grid.Column="1" Grid.Row="5" SelectedIndex="0">
                     <ComboBoxItem>None</ComboBoxItem>
                 </ComboBox>
-                <Label Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2">Children</Label>
+                <Button Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" Click="Button_Click">dbg</Button>
             </Grid>
         </StackPanel>
     </Grid>

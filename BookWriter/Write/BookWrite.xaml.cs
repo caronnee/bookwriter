@@ -183,8 +183,8 @@ namespace MyBook
     private void x_characters_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
     {
       CurrentContent.Save();
-      _characterHolder.Load(x_characters.SelectedValue as CharacterContent);
       CurrentContent = _characterHolder;
+      _characterHolder.Load(x_characters.SelectedValue as CharacterContent);
     }
 
     private void x_scenes_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

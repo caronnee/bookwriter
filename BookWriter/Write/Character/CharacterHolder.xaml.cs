@@ -1,5 +1,6 @@
 ﻿using MyBook.BookContent;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,6 +19,8 @@ namespace MyBook.Write.Character
       InitializeComponent();
     }
 
+    public List<CharacterContent> Females { get; set; }
+    public List<CharacterContent> Males { get; set; }
     public CharacterContent Character { get; set; }
     
     public event PropertyChangedEventHandler PropertyChanged;
@@ -27,13 +30,30 @@ namespace MyBook.Write.Character
         PropertyChanged(this, new PropertyChangedEventArgs(property));
     }
 
-    public void Load( CharacterContent c)
+    public void Load( CharacterContent input)
     {
-      Character = c;
+      Females = new List<CharacterContent>();
+      Males = new List<CharacterContent>();
+      Character = input;
+      x_info.x_textContent.Text = Character.Info[0].Content;
+      // find possible mothers and fathers
+      BookSource s = DataContext as BookSource;
+      foreach ( CharacterContent c in s.Characters)
+      {
+        if (c == input)
+          continue;
+        if (c.Gender == CharacterGender.Male)
+          Males.Add(c);
+        else
+          Females.Add(c);
+      }
+      Males.Add(s.DummyCharacter);
+      Females.Add(s.DummyCharacter);
+      NotifyPropertyChanged("Males");
+      NotifyPropertyChanged("Females");
       NotifyPropertyChanged("Character");
-      x_info.x_textContent.Text = Character.Info[0].Content;      
     }
-    
+
     public override void Save()
     {
       CharacterEpisodes ep = Character.Info[0];
@@ -61,6 +81,11 @@ namespace MyBook.Write.Character
       im.UriSource = new Uri(selectedFileName);
       im.EndInit();
       x_characterImage.Source = im;
+    }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+
     }
 
     //private void x_c_name_TextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
