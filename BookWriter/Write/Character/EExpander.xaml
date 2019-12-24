@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="MyBook.Write.Character.EExpander"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MyBook.Write.Character"
+             xmlns:text="clr-namespace:MyBook.Write.WriteContent.Text"
+             mc:Ignorable="d" x:Name="x_expander">
+    <Expander>
+        <Expander.ContextMenu>
+            <ContextMenu>
+                <MenuItem Header="Remove" Click="Remove_Click" />
+                <MenuItem Header="Add before" Click="AddBefore_Click"/>
+                <MenuItem Header="Add after" Click="AddAfter_Click"/>
+            </ContextMenu>
+        </Expander.ContextMenu>
+        <Expander.Header>
+            <TextBox Background="Transparent" Text="{Binding Episode.Title, ElementName=x_expander}"/>
+        </Expander.Header>
+        <text:WritingBox Text="{Binding Episode.Content, ElementName=x_expander}" />
+    </Expander>
+</UserControl>

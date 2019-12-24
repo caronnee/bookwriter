@@ -197,10 +197,11 @@ namespace MyBook.BookContent
         Name = "";
       }
     }
-    public struct CharacterEpisodes
+
+    public class CharacterEpisodes
     {
-      public String Title;
-      public String Content;
+      public String Title { get; set; }
+      public String Content { get; set; }
     }
 
     // whole info about character

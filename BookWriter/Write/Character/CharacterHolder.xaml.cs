@@ -35,7 +35,6 @@ namespace MyBook.Write.Character
       Females = new List<CharacterContent>();
       Males = new List<CharacterContent>();
       Character = input;
-      x_info.x_textContent.Text = Character.Info[0].Content;
       // find possible mothers and fathers
       BookSource s = DataContext as BookSource;
       foreach ( CharacterContent c in s.Characters)
@@ -49,17 +48,52 @@ namespace MyBook.Write.Character
       }
       Males.Add(s.DummyCharacter);
       Females.Add(s.DummyCharacter);
+      x_episodesHolder.Children.Clear();
+      foreach (CharacterEpisodes ep in Character.Info)
+      {
+        x_episodesHolder.Children.Add(CreateExpander(ep));
+      }
+      // notify all
       NotifyPropertyChanged("Males");
       NotifyPropertyChanged("Females");
       NotifyPropertyChanged("Character");
     }
 
+    private EExpander CreateExpander (CharacterEpisodes ep)
+    {
+      EExpander e = new EExpander(ep);
+      e.OnAddBefore += AddBefore;
+      e.OnRemove += Remove;
+      e.OnAddAfter += OnAddAfter;
+      return e; ;
+    }
+    private void OnAddAfter(EExpander ex)
+    {
+      CharacterEpisodes nep = new CharacterEpisodes();
+      nep.Title = "Episode";
+      int index = Character.Info.IndexOf(ex.Episode);
+      Character.Info.Insert(index+1, nep);
+      x_episodesHolder.Children.Insert(index+1, CreateExpander(nep));
+    }
+
+    private void Remove(EExpander ee)
+    {
+      Character.Info.Remove(ee.Episode);
+      x_episodesHolder.Children.Remove(ee);
+    }
+
+    private void AddBefore(EExpander ee)
+    {
+      CharacterEpisodes nep = new CharacterEpisodes();
+      nep.Title = "Episode";
+      int index = Character.Info.IndexOf(ee.Episode);
+      Character.Info.Insert(index, nep);
+      x_episodesHolder.Children.Insert(index,CreateExpander(nep));
+    }
+
     public override void Save()
     {
-      CharacterEpisodes ep = Character.Info[0];
-      ep.Title = "Biography";
-      ep.Content = x_info.x_textContent.Text;
-      Character.Info[0] = ep;
+
     }
     
     private void ChangeImageClick(object sender, RoutedEventArgs e)
@@ -82,15 +116,5 @@ namespace MyBook.Write.Character
       im.EndInit();
       x_characterImage.Source = im;
     }
-
-    private void Button_Click(object sender, RoutedEventArgs e)
-    {
-
-    }
-
-    //private void x_c_name_TextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
-    //{
-    //  NotifyPropertyChanged("Character"); 
-    //}
   }
 }

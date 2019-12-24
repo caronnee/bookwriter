@@ -14,8 +14,8 @@ namespace PasswordPlugin
     }
 
     public string Name { get; set; }
-    public UserControl Settings { get; set; }
-    public UserControl Viewport { get; set; }
+    public Control Settings { get; set; }
+    public Control Viewport { get; set; }
     public void Create()
     {
       Viewport = new PasswordWriteBox();

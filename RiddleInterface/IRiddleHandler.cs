@@ -19,10 +19,10 @@ namespace RiddleInterface
     String Name { get; set; }
 
     // setting assotiated with the content handler
-    UserControl Settings { get; set; }
+    Control Settings { get; set; }
 
     // showble content
-    UserControl Viewport { get; set; }
+    Control Viewport { get; set; }
 
     // create empty viewport to ve filled / converted to content
     void Create();

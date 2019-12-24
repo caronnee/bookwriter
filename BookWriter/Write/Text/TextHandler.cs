@@ -18,8 +18,8 @@ namespace MyBook.Write.Text
       Settings = new TextSettings();
     }
     public string Name { get; set; }
-    public UserControl Settings { get; set; }
-    public UserControl Viewport { get; set; }
+    public Control Settings { get; set; }
+    public Control Viewport { get; set; }
 
     public void Create()
     {
@@ -30,7 +30,7 @@ namespace MyBook.Write.Text
     {
       TextParagraph p = new TextParagraph();
       WritingBox box = Viewport as WritingBox;
-      p.Content = box.x_textContent.Text;
+      p.Content = box.Text;
       return p;
     }
 
@@ -55,7 +55,7 @@ namespace MyBook.Write.Text
       if (p == null)
         return false;
       WritingBox b = new WritingBox();
-      b.x_textContent.Text = p.Content;
+      b.Text = p.Content;
       Viewport = b;
       return true;
     }

@@ -37,8 +37,9 @@
                 <TextBox x:Name="x_c_name" Text="{Binding Character.Name, ElementName=x_c_holder}" ></TextBox>
             </DockPanel>
             <ScrollViewer>
-                <text:WritingBox x:Name="x_info"/>
-            </ScrollViewer>
+                <StackPanel x:Name="x_episodesHolder">
+                </StackPanel>
+            </ScrollViewer>            
         </DockPanel>
         <StackPanel Grid.Column="1">
             <Grid>
@@ -74,7 +75,6 @@
                 <ComboBox Grid.Column="1" Grid.Row="5" SelectedIndex="0">
                     <ComboBoxItem>None</ComboBoxItem>
                 </ComboBox>
-                <Button Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" Click="Button_Click">dbg</Button>
             </Grid>
         </StackPanel>
     </Grid>

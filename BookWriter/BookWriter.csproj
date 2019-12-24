@@ -82,6 +82,9 @@
     <Compile Include="Write\Character\CharacterHolder.xaml.cs">
       <DependentUpon>CharacterHolder.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Write\Character\EExpander.xaml.cs">
+      <DependentUpon>EExpander.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Write\Content\UnrecognizedContent.cs" />
     <Compile Include="Write\IGuiContent.cs" />
     <Compile Include="Write\MetaData\SetBookName.xaml.cs">
@@ -215,6 +218,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Write\Character\CharacterHolder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Write\Character\EExpander.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
