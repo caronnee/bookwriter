@@ -86,7 +86,6 @@
         <src:BookPageContent x:Name="x_bookPageLeftMirror" Background="BlanchedAlmond" Grid.Column="1" Grid.Row="1" BorderBrush="Black" BorderThickness="2" RenderTransform="{StaticResource MirrorShiftedLeft}">
                 Mirrorred page</src:BookPageContent>
         <src:BookPageContent x:Name="x_bookPageRight" Background="Yellow" Grid.Column="2" Grid.Row="1"></src:BookPageContent>
-        <Button Name="TestButton" Content="Start!" Grid.Column="1" Grid.Row="3" Click="TestButton_Click" />
         <!-- <src:BookPageContent x:Name="BookPageRightMirror" Grid.Column="2" Grid.Row="1" RenderTransform="{StaticResource MirrorShiftedRight}"></src:BookPageContent> -->
     </Grid>
 </UserControl>

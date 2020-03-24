@@ -34,11 +34,5 @@ namespace MyBook
 
       // System.Diagnostics.Debug.Assert(o!=null);
     }
-
-
-    private void TestButton_Click(object sender, RoutedEventArgs e)
-    {
-      _turnPage.Begin(x_bookContent, HandoffBehavior.SnapshotAndReplace);
-    }
   }
 }
