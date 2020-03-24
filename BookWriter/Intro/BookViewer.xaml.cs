@@ -12,12 +12,13 @@ namespace MyBook
     public BookViewPort()
     {
       InitializeComponent();
-      ShowShelf();
+      ShowLibrary();
     }
-    public void ShowShelf()
+    public void ShowLibrary()
     {
       Initial intro = new Initial();
-      intro.LoadBook += LoadWriteBook;
+      intro.LoadWriteBook += LoadWriteBook;
+      intro.LoadReadBook += LoadReadBook;
       intro.NewBook += CreateBook;
       intro.OnSettingsPage += ShowSettingsBook;
       if (intro.Empty)
@@ -29,14 +30,21 @@ namespace MyBook
     public void CreateBook()
     {
       BookWrite write = new BookWrite("");
-      write.Back += ShowShelf;
+      write.Back += ShowLibrary;
       Content = write;
     }
 
-    public void LoadWriteBook(String str, int flags)
+    public void LoadReadBook(String str)
+    {
+      BookRead r = new BookRead(str);
+      r.Back += ShowLibrary;
+      Content = r;
+    }
+
+    public void LoadWriteBook(String str)
     {
       BookWrite workBook = new BookWrite(str);
-      workBook.Back += ShowShelf;
+      workBook.Back += ShowLibrary;
       Content = workBook;
       return;
     }
@@ -44,7 +52,7 @@ namespace MyBook
     public void ShowSettingsBook()
     {
       SettingPage page = new SettingPage();
-      page.OnDone += ShowShelf;
+      page.OnDone += ShowLibrary;
       Content = page;
     }
 

@@ -7,14 +7,18 @@
     <UserControl.Resources>
         <BitmapImage x:Key="removeImage" UriSource="/resources/remove.png" />
         <BitmapImage x:Key="metadataImage" UriSource="/resources/edit.png" />
+        <BitmapImage x:Key="openImage" UriSource="/resources/bookopen.png" />
     </UserControl.Resources>
     <StackPanel Orientation="Horizontal">
-        <Button x:Name="x_buttonLoader" MinWidth="100">Test</Button>
-        <Button>
-            <Image Source="{StaticResource ResourceKey=removeImage}"/>
+        <Label x:Name="x_bookname" Width="100" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center">name</Label>
+        <Button x:Name="x_open_for_reading">
+            <Image Source="{StaticResource ResourceKey=openImage}"/>
+        </Button>
+        <Button x:Name="x_open_for_writing">
+            <Image Source="{StaticResource ResourceKey=metadataImage}"/>
         </Button>
         <Button>
-            <Image Source="{StaticResource ResourceKey=metadataImage}"/>
+            <Image Source="{StaticResource ResourceKey=removeImage}"/>
         </Button>
     </StackPanel>
 </UserControl>
