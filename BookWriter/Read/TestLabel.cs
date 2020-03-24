@@ -18,9 +18,9 @@ namespace MyBook
         {
             base.OnApplyTemplate();
             _leftPageTemplate = Template;
-            Grid o = _leftPageTemplate.FindName("GridTest", this) as Grid;
+            //Grid o = _leftPageTemplate.FindName("GridTest", this) as Grid;
 
-            System.Diagnostics.Debug.Assert(o != null);
+            //System.Diagnostics.Debug.Assert(o != null);
         }
     }
 }

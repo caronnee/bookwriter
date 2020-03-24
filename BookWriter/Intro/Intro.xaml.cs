@@ -23,21 +23,21 @@ namespace MyBook.Intro
     {
       BookItem b = new BookItem();
       //Style s = TryFindResource("Rotated") as Style;
-      b.x_buttonLoader.DataContext = name;
-      //b.Style = s;
-      b.x_buttonLoader.Content = GetTitle(name);
-      b.x_buttonLoader.Click += new RoutedEventHandler(Load);
+      b.x_bookname.Content = GetTitle( name );
+      b.x_open_for_writing.DataContext = name;
+      b.x_open_for_writing.Click += new RoutedEventHandler(Write);
+      b.x_open_for_reading.Click += new RoutedEventHandler(Read);
       return b;
     }
 
     private Control CreateNewBookControl()
     {
-      BookItem b = new BookItem();
+      Button b = new Button();
       //Style s = TryFindResource("Rotated") as Style;
       
       //b.Style = s;
-      b.x_buttonLoader.Content = "New book";     
-      b.x_buttonLoader.Click += new RoutedEventHandler(CreateNew);
+      b.Content = "New book";     
+      b.Click += new RoutedEventHandler(CreateNew);
       return b;
     }
     
@@ -66,8 +66,9 @@ namespace MyBook.Intro
       this.x_shelf.Children.Add(createButton);
     }
 
-    public delegate void LoadHandler(String str, int flags);
-    public event LoadHandler LoadBook;
+    public delegate void LoadHandler(String str);
+    public event LoadHandler LoadReadBook;
+    public event LoadHandler LoadWriteBook;
 
     public delegate void NewBookHandler();
     public event NewBookHandler NewBook;
@@ -78,18 +79,26 @@ namespace MyBook.Intro
     private void CreateNew(object sender, RoutedEventArgs e)
     {
       BookItem ctrl = sender as BookItem;
-      int typeFlags = writeButton.IsChecked == true ? 1 : 0;
       NewBook(); 
     }
 
-    private void Load(object sender, RoutedEventArgs e)
+    private void Read(object sender, RoutedEventArgs e)
     {
-      if (LoadBook != null)
+      if (LoadReadBook != null)
       {
         Button ctrl = sender as Button;
-        int typeFlags = writeButton.IsChecked == true ? 1 : 0;
         String filename = ctrl.DataContext as String;
-        LoadBook(filename, typeFlags); // name of the book
+        LoadReadBook(filename); // name of the book
+      }
+    }
+
+    private void Write(object sender, RoutedEventArgs e)
+    {
+      if (LoadWriteBook != null)
+      {
+        Button ctrl = sender as Button;
+        String filename = ctrl.DataContext as String;
+        LoadWriteBook(filename); // name of the book
       }
     }
 
@@ -99,7 +108,6 @@ namespace MyBook.Intro
         return;
 
       BookItem ctrl = sender as BookItem;
-      int typeFlags = writeButton.IsChecked == true ? 1 : 0;
       OnSettingsPage(); // name of the book
     }
   }
