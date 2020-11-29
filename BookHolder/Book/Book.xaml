@@ -1,0 +1,22 @@
+﻿<ItemsControl x:Class="Book.BookContainer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Book"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" Loaded="OnLoaded" ClipToBounds="False" >
+    <ItemsControl.Template>
+        <ControlTemplate>
+            <Grid Margin="50" MouseMove="ContentControl_MouseMove">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <local:BookPage Grid.Column="0"  x:Name="x_sheet_0" MouseDown="ContentControl_MouseDown" MouseUp="ContentControl_MouseUp" />
+                <local:BookPage Grid.Column="1" x:Name="x_sheet_1" MouseDown="ContentControl_MouseDown" MouseUp="ContentControl_MouseUp" 
+                />
+            </Grid>
+        </ControlTemplate>
+    </ItemsControl.Template>
+</ItemsControl>
