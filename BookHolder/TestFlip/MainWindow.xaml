@@ -10,16 +10,16 @@
     <flip:BookContainer >
         <flip:BookContainer.ItemTemplate>
             <DataTemplate>
-                <Border BorderThickness="4" BorderBrush="Gray" Background="Transparent">
+                <Border >
                     <ContentControl Content="{Binding .}" />
                 </Border>
             </DataTemplate>
         </flip:BookContainer.ItemTemplate>
-        <local:UserControl1 Background="Red" />
-        <local:UserControl2 Background="Blue" />
-        <local:UserControl3 Background="Green" />
-        <local:UserControl4 Background="Chocolate" />
-        <local:UserControl5 Background="DarkBlue" />
-        <local:UserControl6 Background="Firebrick" />
+        <local:UserControl1 />
+        <local:UserControl2 />
+        <local:UserControl3 />
+        <local:UserControl4 />
+        <local:UserControl5 />
+        <local:UserControl6 />
     </flip:BookContainer>
 </Window>

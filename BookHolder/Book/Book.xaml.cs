@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -88,6 +90,21 @@ namespace Book
         Items.Add(c);
       }
       Items.Add(new Cover());
+
+      Assembly assem = Assembly.GetExecutingAssembly();
+      Uri ur = new Uri(assem.CodeBase);
+      FileInfo fi = new FileInfo(ur.AbsolutePath);
+      string s = fi.Directory.FullName;
+
+      for (int i = 0; i < Items.Count; i++)
+      {
+        UserControl el = Items[i] as UserControl;
+        ImageSource source = new BitmapImage( new Uri( s+"\\..\\..\\..\\book\\back.jpg"));
+        ImageBrush b = new ImageBrush(source);
+        el.BorderBrush = b;
+        el.BorderThickness = new Thickness(30);
+        el.Background = Brushes.SandyBrown;
+      }
 
       BookPage s1 = GetTemplateChild("x_sheet_1") as BookPage;
       s1.StartPoint = new Point( s1.RenderSize.Width, 0 );
