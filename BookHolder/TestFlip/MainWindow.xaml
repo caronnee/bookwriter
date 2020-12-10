@@ -21,5 +21,6 @@
         <local:UserControl4 />
         <local:UserControl5 />
         <local:UserControl6 />
+        <local:UserControl7 />
     </flip:BookContainer>
 </Window>

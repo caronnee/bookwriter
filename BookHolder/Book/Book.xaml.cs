@@ -35,7 +35,7 @@ namespace Book
 
       Canvas c = new Canvas();
       //c.RenderSize = new Size(300, 300);
-      c.Background = Brushes.White;
+      c.Background = Brushes.SandyBrown;
 
       return c;
     }
@@ -81,15 +81,15 @@ namespace Book
 
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
-      _startPage = -2;
+      _startPage = -3;
       Items.Insert(0, new Cover());
       if (Items.Count % 2 == 0)
       {
-        Canvas c = new Canvas();
-        c.Background = Brushes.White;
-        Items.Add(c);
+        // todo Empty
+        Items.Add(new EmptyPage());
       }
-      Items.Add(new Cover());
+
+      Items.Add(new EndCover());
 
       Assembly assem = Assembly.GetExecutingAssembly();
       Uri ur = new Uri(assem.CodeBase);
@@ -239,10 +239,14 @@ namespace Book
         BookPage b = GetTemplateChild("x_sheet_0") as BookPage;
         if (p.X < b.RenderSize.Width)
         {
+          if (_startPage ==-3)
+            return;
           startDrag = (p.X < _cornerSize) && (p.Y < _cornerSize);
         }
         else
         {
+          if (_startPage == Items.Count-3)
+            return;
           b = GetTemplateChild("x_sheet_1") as BookPage;
           startDrag = ((holder.RenderSize.Width - p.X) < _cornerSize) && (p.Y < _cornerSize);
         }

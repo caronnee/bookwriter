@@ -12,7 +12,6 @@
                 <GradientStop Color="Yellow" Offset="0" />
                 <GradientStop Color="Green" Offset="0.25" />
                 <GradientStop Color="Blue" Offset="0.5" />
-
             </LinearGradientBrush>
         </Canvas.Background>
     </Canvas>

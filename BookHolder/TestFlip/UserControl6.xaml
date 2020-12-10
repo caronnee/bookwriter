@@ -6,8 +6,9 @@
              xmlns:local="clr-namespace:TestFlip"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <DockPanel LastChildFill="True">
-        <Label DockPanel.Dock="Top">Second</Label>
+    <DockPanel LastChildFill="True" Background="Green">
+        <Label DockPanel.Dock="Top">Transparent content</Label>
         <Label DockPanel.Dock="Bottom" HorizontalAlignment="Center" VerticalAlignment="Bottom">Page 6</Label>
+        <Ellipse Fill="Transparent" RenderSize="30 30"></Ellipse>
     </DockPanel>
 </UserControl>
