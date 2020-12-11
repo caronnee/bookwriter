@@ -6,6 +6,6 @@
              xmlns:local="clr-namespace:Book"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Image Source="c:\work\BookWriter\BookHolder\Book\Midnight Moon.jpg">
+    <Image Source="c:\work\BookWriter\BookHolder\Book\Midnight Moon.jpg" Stretch="Fill">
     </Image>
 </UserControl>

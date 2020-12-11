@@ -7,6 +7,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Background="Transparent">
-        <Image Source="c:\work\BookWriter\BookHolder\Book\mermaid_sit.jpg" />
+        <Image Source="c:\work\BookWriter\BookHolder\Book\mermaid_sit.jpg" Stretch="Fill"/>
     </Grid>
 </UserControl>

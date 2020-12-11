@@ -10,8 +10,6 @@ namespace Book
   /// </summary>
   public partial class BookPage : ContentControl
   {
-    static private double offset = 100;
-
     public BookPage()
     {
       InitializeComponent();

@@ -96,7 +96,7 @@ namespace Book
       FileInfo fi = new FileInfo(ur.AbsolutePath);
       string s = fi.Directory.FullName;
 
-      for (int i = 0; i < Items.Count; i++)
+      for (int i = 1; i < Items.Count-1; i++)
       {
         UserControl el = Items[i] as UserControl;
         ImageSource source = new BitmapImage( new Uri( s+"\\..\\..\\..\\book\\back.jpg"));
@@ -115,6 +115,8 @@ namespace Book
     
     private void ContentControl_MouseDown(object sender, MouseButtonEventArgs e)
     {
+      if (mAnimationActive)
+        return;
       BookPage s = sender as BookPage;
       if ( s == null )
         return;
@@ -168,6 +170,8 @@ namespace Book
       set { SetValue(BookContainer.FinalPointProperty, value); }
     }
 
+    private bool mAnimationActive = false;
+
     private void ContentControl_MouseUp(object sender, MouseButtonEventArgs e)
     {
       if (_isDragging == null)
@@ -175,42 +179,63 @@ namespace Book
       // set animation to finish
       BookPage b = _isDragging;
       _isDragging = null;
-
       Point p = e.GetPosition(b);
+      // free old animation - todo change
+      this.BeginAnimation(BookContainer.FinalPointProperty, null);
+      FinalPoint = p;
+      PointAnimation anim = new PointAnimation();
+      anim.Duration = new Duration(new TimeSpan(0, 0, 2));
+      anim.From = p;
+      mAnimationActive = true;
+
       if ( p.X > b.RenderSize.Width)
       {
-        PointAnimation anim = new PointAnimation();
-        anim.Duration = new Duration(new TimeSpan(0,0,2));
         anim.To = new Point(2*b.RenderSize.Width, 0);
-        anim.From = p;
         anim.CurrentTimeInvalidated += AnimateToRight;
         anim.Completed += Anim_Completed_Right;
-        this.BeginAnimation(BookContainer.FinalPointProperty, anim);
       }
       else if (p.X < 0)
       {
-        PointAnimation anim = new PointAnimation();
-        anim.Duration = new Duration(new TimeSpan(0, 0, 2));
         anim.To = new Point(-b.RenderSize.Width, 0);
-        anim.From = p;
         anim.CurrentTimeInvalidated += AnimateToLeft;
         anim.Completed += Anim_Completed_Left;
-        this.BeginAnimation(BookContainer.FinalPointProperty, anim);
       }
       else
       {
-        RefreshContent();
+        BookPage comp = GetTemplateChild("x_sheet_0") as BookPage;
+        if (comp == _isDragging)
+        {
+          anim.To = new Point(0, 0);
+          anim.CurrentTimeInvalidated += AnimateToLeft;
+          anim.Completed += Anim_Completed;
+        }
+        else
+        {
+          anim.To = new Point(b.RenderSize.Width, 0);
+          anim.CurrentTimeInvalidated += AnimateToLeft;
+          anim.Completed += Anim_Completed;
+        }
       }
+      this.BeginAnimation(BookContainer.FinalPointProperty, anim);
+
+    }
+
+    private void Anim_Completed(object sender, EventArgs e)
+    {
+      RefreshContent();
+      mAnimationActive = false;
     }
 
     private void Anim_Completed_Right(object sender, EventArgs e)
     {
       AnimateRightComplete();
+      mAnimationActive = false;
     }
 
     private void Anim_Completed_Left(object sender, EventArgs e)
     {
       AnimateLeftComplete();
+      mAnimationActive = false;
     }
 
     private void AnimateToRight(object sender, EventArgs e)
@@ -231,6 +256,8 @@ namespace Book
 
     private void ContentControl_MouseMove(object sender, MouseEventArgs e)
     {
+      if (mAnimationActive)
+        return;
       if (_isDragging == null)
       {
         UIElement holder = sender as UIElement;
