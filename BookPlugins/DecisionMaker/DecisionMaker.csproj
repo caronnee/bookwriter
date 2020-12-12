@@ -58,12 +58,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RiddleInterface\RiddleInterface.csproj">
-      <Project>{c3d84647-8a04-498c-9b37-a97944ba2aca}</Project>
-      <Name>RiddleInterface</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Page Include="DecisionBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -76,6 +70,12 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\RiddleInterface\RiddleInterface.csproj">
+      <Project>{c3d84647-8a04-498c-9b37-a97944ba2aca}</Project>
+      <Name>RiddleInterface</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
