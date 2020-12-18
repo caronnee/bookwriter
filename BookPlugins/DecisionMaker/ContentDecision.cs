@@ -34,7 +34,7 @@ namespace DecisionMaker
 
     public UserControl ConvertToReadonly()
     {
-      throw new NotImplementedException();
+      return new DecisionPick();
     }
 
     public bool IsLoaded()

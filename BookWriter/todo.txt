@@ -1,4 +1,4 @@
-﻿on click on bordered one, move cursor to the place outsie
+﻿on click on bordered one, move cursor to the place outside
 move the default ones with the scrooling to stay in view
 make controls having resizeable height
 on double clik skip to the page
@@ -52,6 +52,4 @@ RIDDLE one - we have page, when the leaf is rubbed, another page is revealed. Th
 
 -------------------Next things to happen------
 - if is inside the area of clip, change cursor
-- move page triangle on drag ( no other geometry needed )
-- add page numbers
-- add setting for the one page ( displays roman number or arabic number )
+- add setting for the one page ( displays roman number or arabic number ) - in settings?

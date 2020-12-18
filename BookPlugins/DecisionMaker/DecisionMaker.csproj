@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\bin\Debug\Plugins\</OutputPath>
+    <OutputPath>..\..\bin\Debug\Plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -52,6 +52,9 @@
       <DependentUpon>DecisionEntry.xaml</DependentUpon>
     </Compile>
     <Compile Include="DecisionMakerHandler.cs" />
+    <Compile Include="DecisionPick.xaml.cs">
+      <DependentUpon>DecisionPick.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DecisionSettings.xaml.cs">
       <DependentUpon>DecisionSettings.xaml</DependentUpon>
     </Compile>
@@ -63,6 +66,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="DecisionEntry.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DecisionPick.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

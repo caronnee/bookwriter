@@ -16,6 +16,7 @@ namespace DecisionMaker
       Name = "DecisionMaker";
       Settings = new DecisionSettings();
     }
+
     public void Create()
     {
       Viewport = new DecisionBox();
