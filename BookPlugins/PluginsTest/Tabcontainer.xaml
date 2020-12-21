@@ -12,8 +12,8 @@
             <ColumnDefinition Width="20"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <ContentControl x:Name="x_maker" Grid.Column="0"/>
-        <Button Background="Yellow" Grid.Column="1" Content=">>>" Click="Button_Click"/>
+        <ContentControl x:Name="x_maker" Grid.Column="0" Content="{Binding Viewport}"/>
+        <Button Background="Yellow" Grid.Column="1" Content=">>>" Click="Button_Click" />
         <ContentControl x:Name="x_show" Grid.Column="2" />
     </Grid>
 </TabItem>

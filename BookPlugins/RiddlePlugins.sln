@@ -3,15 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2018
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DecisionMaker", "..\DecisionMaker\DecisionMaker.csproj", "{D92FF8A9-F2C3-4C70-8DBE-9F38EF6CDDB8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PasswordPlugin", "PasswordPlugin\PasswordPlugin.csproj", "{1A3D7021-E301-4F87-AAFC-C7CF3840594B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PasswordPlugin", "..\PasswordPlugin\PasswordPlugin.csproj", "{1A3D7021-E301-4F87-AAFC-C7CF3840594B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RiddleInterface", "..\RiddleInterface\RiddleInterface.csproj", "{C3D84647-8A04-498C-9B37-A97944BA2ACA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RiddlePlugins", "RiddlePlugins.csproj", "{2DB0B77D-3198-4E68-B533-7B902FC59693}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginsTest", "PluginsTest\PluginsTest.csproj", "{11E59313-D98F-421C-BAEF-73F9FFB9CE7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RiddleInterface", "..\..\RiddleInterface\RiddleInterface.csproj", "{C3D84647-8A04-498C-9B37-A97944BA2ACA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginsTest", "..\PluginsTest\PluginsTest.csproj", "{11E59313-D98F-421C-BAEF-73F9FFB9CE7F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DecisionPlugin", "DecisionPlugin\DecisionPlugin.csproj", "{DFA3E32B-C7AA-45E2-B0F7-DA1CB801F68D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,18 +17,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D92FF8A9-F2C3-4C70-8DBE-9F38EF6CDDB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D92FF8A9-F2C3-4C70-8DBE-9F38EF6CDDB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D92FF8A9-F2C3-4C70-8DBE-9F38EF6CDDB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D92FF8A9-F2C3-4C70-8DBE-9F38EF6CDDB8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1A3D7021-E301-4F87-AAFC-C7CF3840594B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1A3D7021-E301-4F87-AAFC-C7CF3840594B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A3D7021-E301-4F87-AAFC-C7CF3840594B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A3D7021-E301-4F87-AAFC-C7CF3840594B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2DB0B77D-3198-4E68-B533-7B902FC59693}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2DB0B77D-3198-4E68-B533-7B902FC59693}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2DB0B77D-3198-4E68-B533-7B902FC59693}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2DB0B77D-3198-4E68-B533-7B902FC59693}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C3D84647-8A04-498C-9B37-A97944BA2ACA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C3D84647-8A04-498C-9B37-A97944BA2ACA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3D84647-8A04-498C-9B37-A97944BA2ACA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +29,10 @@ Global
 		{11E59313-D98F-421C-BAEF-73F9FFB9CE7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11E59313-D98F-421C-BAEF-73F9FFB9CE7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11E59313-D98F-421C-BAEF-73F9FFB9CE7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFA3E32B-C7AA-45E2-B0F7-DA1CB801F68D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFA3E32B-C7AA-45E2-B0F7-DA1CB801F68D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFA3E32B-C7AA-45E2-B0F7-DA1CB801F68D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFA3E32B-C7AA-45E2-B0F7-DA1CB801F68D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

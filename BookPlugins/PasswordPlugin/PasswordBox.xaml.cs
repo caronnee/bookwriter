@@ -1,4 +1,8 @@
-﻿using System.Windows;
+﻿using RiddleInterface;
+using System;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace PasswordPlugin
@@ -11,16 +15,6 @@ namespace PasswordPlugin
     public PasswordBox()
     {
       InitializeComponent();
-    }
-
-    // delegate
-    public delegate void CheckHandler();
-    public event CheckHandler onCheckHander;
-    
-    private void verifyClick(object sender, RoutedEventArgs e)
-    {
-      if (onCheckHander != null)
-        onCheckHander();
     }
   }
 }

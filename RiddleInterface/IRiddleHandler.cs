@@ -1,42 +1,75 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Xml;
 
 namespace RiddleInterface
 {
-  public interface IContent
+  public class Outcome
   {
-    bool IsLoaded();
-    XmlNode ToXmlNode(XmlDocument doc);
-    UserControl ConvertToReadonly();
+    // description showable in creator
+    public String Name { get; set; }
+
+    // id in the book
+    public int Id { get; set; }
+
   }
 
-  public delegate void OnSuccessAction();
+  public class OutcomeConverter : IValueConverter
+  {
+    List<Outcome> Outcomes { get; set; }
+
+    // from data(id) to Outcome
+    public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+    {
+      throw new Exception("Not implemented");
+    }
+
+    // back to the data
+    public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+    {
+      Outcome c = value as Outcome;
+      return c.Id;
+    }
+  }
+
+  public delegate void OnSuccessAction(int id);
 
   public interface IRiddleHandler
   {
+    // what should happen when riddle's aswer is recognized. It is common for every riddlr 
+    OnSuccessAction onAnswer { get; set; }
+
     // name of the content handler
-    String Name { get; set; }
+    String Name { get; }
+    
+    // list of the possible outcomes
+    List<Outcome> Outcomes { get; set; }
 
     // setting assotiated with the content handler
     Control Settings { get; set; }
 
-    // showble content
+    // showable content
     Control Viewport { get; set; }
 
-    // create empty viewport to ve filled / converted to content
+    // final page for displaying to reader
+    Control DisplayPage { get; set; }
+
+    // convert to read only control that can be showable
+    void CreateReadOnly();
+
+    // sets the page as not answered yet
+    void ClearAnswer();
+
+    // save to a file
+    void Load(Stream stream);
+
+    // save to a file
+    void Save(Stream stream);
+
+    // creates write module
     void Create();
-
-    // create riddle from what was in the viewport
-    IContent CreateRiddle();
-
-    // create content from stream
-    IContent Load(XmlNode node);
-
-    // create content from stream
-    bool CanLoad(XmlNode node);
-
-    // Load the content into the viewport
-    bool ToViewport(IContent content);
   }
 }

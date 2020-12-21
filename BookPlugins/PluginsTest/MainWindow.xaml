@@ -6,8 +6,17 @@
         xmlns:local="clr-namespace:PluginsTest"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <TabControl x:Name="x_test">
-        </TabControl>
-    </Grid>
+    <DockPanel LastChildFill="True">
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+            <Button Content="Load" Click="LoadClick"/>
+            <Button Content="Save" Click="SaveClick"/>
+        </StackPanel>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" >
+            <TextBlock x:Name="x_info">info</TextBlock>
+        </StackPanel>
+        <Grid>
+            <TabControl x:Name="x_test">
+            </TabControl>
+        </Grid>
+    </DockPanel>
 </Window>

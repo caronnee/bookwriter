@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace DecisionMaker
+namespace DecisionPlugin
 {
   /// <summary>
   /// Interaction logic for DecisionBox.xaml
@@ -23,21 +23,6 @@ namespace DecisionMaker
     public DecisionBox()
     {
       InitializeComponent();
-    }
-
-    private void removeItem(object sender, RoutedEventArgs w)
-    {
-      Button el = sender as Button;
-      DecisionEntry b = el.DataContext as DecisionEntry;
-      x_decisions.Children.Remove(b);
-    }
-
-    private void x_add_Click(object sender, RoutedEventArgs e)
-    {
-      DecisionEntry d = new DecisionEntry();
-      d.x_remove.Click += new RoutedEventHandler(removeItem);
-      d.x_remove.DataContext = d;
-      x_decisions.Children.Add(d);
     }
   }
 }

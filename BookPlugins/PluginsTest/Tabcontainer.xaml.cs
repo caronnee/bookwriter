@@ -1,4 +1,4 @@
-﻿using RiddleInterface;
+using RiddleInterface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,20 +21,20 @@ namespace PluginsTest
   /// </summary>
   public partial class Tabcontainer : TabItem
   {
-    private IRiddleHandler _interface;
-
     public Tabcontainer(IRiddleHandler handler)
     {
+      DataContext = handler;
       InitializeComponent();
-      _interface = handler;
-      _interface.Create();
-      Header = _interface.Name;
-      x_maker.Content = _interface.Viewport;
-      x_show.Content = _interface.CreateRiddle().ConvertToReadonly();
+      Header = handler.Name;
+      Preview();
     }
+
     private void Preview()
     {
-      x_show.Content = _interface.CreateRiddle().ConvertToReadonly();
+      IRiddleHandler h = DataContext as IRiddleHandler;
+      h.ClearAnswer();
+      h.CreateReadOnly();
+      x_show.Content = h.DisplayPage;
     }
 
     private void Button_Click(object sender, RoutedEventArgs e)
