@@ -1,4 +1,4 @@
-﻿using MyBook.BookContent;
+using MyBook.BookContent;
 using MyBook.Meta;
 using MyBook.Write;
 using MyBook.Write.Bookmark;
@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using static MyBook.BookContent.BookSource;
 
 namespace MyBook
 {
@@ -26,23 +25,7 @@ namespace MyBook
 
     private SceneHolder _sceneHolder;
     private CharacterHolder _characterHolder;
-
-    // content to show - characters, scenes, worlds...research
-    private IGuiContent _currentContent;
-    public IGuiContent CurrentContent
-    {
-      get
-      {
-        return _currentContent;
-      }
-
-      set
-      {
-        _currentContent = value;
-        NotifyPropertyChanged("CurrentContent");
-      }
-    }
-
+    
     private void SceneSaved()
     {
       SelectionPickup();
@@ -56,12 +39,15 @@ namespace MyBook
       Cache = new BookSource();
       DataContext = Cache;
       // TODO continue form the last time
-      Cache.Load(name);
+      if ( name.Length != 0)
+        Cache.Load(name);
       _characterHolder = new CharacterHolder();
       _sceneHolder = new SceneHolder();
       _sceneHolder.OnSceneSaved += SceneSaved;
+      _sceneHolder.OnReport += ShowProgress;
       // initialize UI
       InitializeComponent();
+      x_working_page.Content = _sceneHolder;
       SelectionPickup();
       ShowProgress("Book loaded");
     }
@@ -75,7 +61,7 @@ namespace MyBook
         c.Position.Scene.Pages.Count);
       x_progressText.Text = str;
     }
-    // back to main menyu
+    // back to main menu
     public delegate void BackHandler();
     public event BackHandler Back;
 
@@ -89,13 +75,13 @@ namespace MyBook
     // saves whole data
     private void SaveBook()
     {
-      CurrentContent.Save();
+      //CurrentContent.Save();
       if (Cache.Name == null)
       {
         //
         SetBookName name = new SetBookName();
         bool? set = name.ShowDialog();
-        if (name.x_bookName.Text.Length == 0)
+        if (set == null || set == false)
         {
           ShowProgress("Book not saved");
           return;
@@ -103,7 +89,6 @@ namespace MyBook
         Cache.Name = name.x_bookName.Text;
       }
       Cache.Save();
-      // export to XML format. DTD
       ShowProgress("Book saved");
     }
 
@@ -121,7 +106,7 @@ namespace MyBook
     {
       SaveBook();
     }
-
+    
     private void HelperEnableMenu(MenuItem parentMenu, MenuItem exc)
     {
       foreach (MenuItem menu in parentMenu.Items)
@@ -133,6 +118,7 @@ namespace MyBook
         HelperEnableMenu(menu, exc);
       }
     }
+
     private void HelperEnableMenu(Menu parentMenu, MenuItem exc)
     {
       foreach (MenuItem menu in parentMenu.Items)
@@ -150,7 +136,7 @@ namespace MyBook
     {
       Timeline t = new Timeline(Cache.Scenes);
       t.OnFinished += SelectionPickup;
-      x_workingPage.Content = t;
+      // todo change current content to timeline. Save not implemented
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -162,17 +148,14 @@ namespace MyBook
 
     private void SelectionPickup()
     {
-      x_scenes_holder.IsExpanded = true;
-      object o = x_scenes.ItemContainerGenerator.ContainerFromItem(Cache.Position.Scene);
-      TreeViewItem i = o as TreeViewItem;
-      if (i != null)
-        i.IsSelected = true;
-      CurrentContent = _sceneHolder;
-      _sceneHolder.LoadScene();
+      //x_scenes_holder.IsExpanded = true;
+      //object o = x_scenes.ItemContainerGenerator.ContainerFromItem(Cache.Position.Scene);
+      //TreeViewItem i = o as TreeViewItem;
+      //if (i != null)
+      //  i.IsSelected = true;
+      //CurrentContent = _sceneHolder;
+     // _sceneHolder.LoadScene();
     }
-
-    private IRiddleHandler CurrentHandler { get; set; }
-
 
     private void showAboutClick(object sender, RoutedEventArgs e)
     {
@@ -182,17 +165,17 @@ namespace MyBook
 
     private void x_characters_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
     {
-      CurrentContent.Save();
-      CurrentContent = _characterHolder;
-      _characterHolder.Load(x_characters.SelectedValue as CharacterContent);
+      //CurrentContent.Save();
+      //CurrentContent = _characterHolder;
+      //_characterHolder.Load(x_characters.SelectedValue as CharacterContent);
     }
 
     private void x_scenes_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
     {
-      if (CurrentContent == null)
-        return;
-      CurrentContent.Save();
-      Cache.SetScene(x_scenes.SelectedValue as SceneDescription);
+      //if (CurrentContent == null)
+      //  return;
+      //CurrentContent.Save();
+      //Cache.SetScene(x_scenes.SelectedValue as SceneDescription);
       SelectionPickup();
     }
 
@@ -214,29 +197,14 @@ namespace MyBook
     private void AddCharacter_Click(object sender, RoutedEventArgs e)
     {
       _characterHolder.Load(Cache.CreateCharacter());
-      CurrentContent = _characterHolder;
-      x_characters.Items.Refresh();
-    }
-
-    private void TextBox_KeyUpLocation(object sender, System.Windows.Input.KeyEventArgs e)
-    {
-      if (e.Key == System.Windows.Input.Key.Enter)
-      {
-        // find the parent bookmark
-      }
-    }
-    private void TextBox_KeyUpWorld(object sender, System.Windows.Input.KeyEventArgs e)
-    {
-      if (e.Key == System.Windows.Input.Key.Enter)
-      {
-        // find the parent bookmark
-      }
+      //CurrentContent = _characterHolder;
+      //x_characters.Items.Refresh();
     }
     
     public void Done()
     {
       BookSource s = DataContext as BookSource;
-      CurrentContent.Save();
+      //CurrentContent.Save();
       s.Save();
     }
 

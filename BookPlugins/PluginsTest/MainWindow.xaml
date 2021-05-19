@@ -8,7 +8,7 @@
         Title="MainWindow" Height="450" Width="800">
     <DockPanel LastChildFill="True">
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-            <Button Content="Load" Click="LoadClick"/>
+            <Button Content="Load" Click="x_load_click"/>
             <Button Content="Save" Click="SaveClick"/>
         </StackPanel>
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" >

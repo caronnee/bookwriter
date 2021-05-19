@@ -12,7 +12,7 @@ namespace MyBook.Write.Character
   /// <summary>
   /// Interaction logic for CharacterInfo.xaml
   /// </summary>
-  public partial class CharacterHolder : IGuiContent, INotifyPropertyChanged
+  public partial class CharacterHolder : UserControl
   {
     public CharacterHolder()
     {
@@ -91,7 +91,7 @@ namespace MyBook.Write.Character
       x_episodesHolder.Children.Insert(index,CreateExpander(nep));
     }
 
-    public override void Save()
+    public void Save()
     {
 
     }

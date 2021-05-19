@@ -49,8 +49,6 @@ namespace MyBook.Write.Timeline
       foreach (SceneDescription d in scenes)
       {
         Button b = new Button();
-        b.Content = d.Name;
-        b.ToolTip = d.Description;
         b.DataContext = d;
         b.Height = _height * d.Duration;
         b.Width = _width;

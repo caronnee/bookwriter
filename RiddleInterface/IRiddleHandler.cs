@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Globalization;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Xml;
 
 namespace RiddleInterface
 {
@@ -14,7 +13,19 @@ namespace RiddleInterface
 
     // id in the book
     public int Id { get; set; }
+  }
 
+  public class FullPathConverter : IMultiValueConverter
+  {
+    public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+    {
+      throw new NotImplementedException();
+    }
+
+    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+    {
+      throw new NotImplementedException();
+    }
   }
 
   public class OutcomeConverter : IValueConverter
@@ -31,14 +42,36 @@ namespace RiddleInterface
     public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
     {
       Outcome c = value as Outcome;
+      // no outcome
+      if (c == null)
+        return -1;
       return c.Id;
     }
+  }
+
+  public interface IRiddleSerializer
+  {
+    void SaveParameter(string name, string value);
+    void SaveValue(string name, string value);
+    
+    string LoadSection(int i);
+    string LoadSection(string name);
+    string LoadValue();
+    string LoadParameter(string name);
+
+    int Children();
+    void StartSection(string name);
+    void EndSection();
+    void Close();
   }
 
   public delegate void OnSuccessAction(int id);
 
   public interface IRiddleHandler
   {
+    // base folder for this plugin data
+    String BaseFolder { get; set; }
+
     // what should happen when riddle's aswer is recognized. It is common for every riddlr 
     OnSuccessAction onAnswer { get; set; }
 
@@ -64,10 +97,10 @@ namespace RiddleInterface
     void ClearAnswer();
 
     // save to a file
-    void Load(Stream stream);
+    bool Load(IRiddleSerializer s);
 
     // save to a file
-    void Save(Stream stream);
+    void Save(IRiddleSerializer s);
 
     // creates write module
     void Create();

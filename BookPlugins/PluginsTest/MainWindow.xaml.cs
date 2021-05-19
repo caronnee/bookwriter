@@ -6,6 +6,8 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace PluginsTest
 {
@@ -15,7 +17,9 @@ namespace PluginsTest
   public partial class MainWindow : Window
   {
     // possible outcomes
-    List<Outcome> Locations { get; set;}
+    [XmlIgnore]
+    List<Outcome> Locations { get; set; }
+    [XmlElement]
     List<IRiddleHandler> Handlers { get; set; }
     public MainWindow()
     {
@@ -63,6 +67,7 @@ namespace PluginsTest
           object iRiddle = a.CreateInstance(t.ToString());
           IRiddleHandler riddle = iRiddle as IRiddleHandler;
           riddle.Outcomes = Locations;
+          riddle.BaseFolder = s; 
           if (riddle != null)
           {
             riddles.Add(riddle);
@@ -73,7 +78,7 @@ namespace PluginsTest
       return riddles;
     }
 
-    private void ProcessAnswer( int id )
+    private void ProcessAnswer(int id)
     {
       x_info.Text = $"Chosen outcome {id}";
     }
@@ -88,42 +93,50 @@ namespace PluginsTest
         x_test.Items.Add(cont);
       }
     }
-
-    private void LoadClick(object sender, RoutedEventArgs e)
+    
+    private void x_load_click(object sender, RoutedEventArgs e)
     {
       Assembly assem = Assembly.GetExecutingAssembly();
       Uri ur = new Uri(assem.CodeBase);
       FileInfo fi = new FileInfo(ur.AbsolutePath);
       string s = fi.Directory.FullName + "TestBook.book";
-      Stream stream = new FileStream(s, FileMode.Open, FileAccess.Read);
-      IFormatter f = new BinaryFormatter();
-      while (stream.Position < stream.Length)
+      BookLoader f = new BookLoader(s);
+
+      f.StartSection(AppNodeNames.RiddlesString);
+      int c = f.Children();
+      for ( int i =0; i < c; i++)
       {
-        String name;
-        name = f.Deserialize(stream) as String;
-        IRiddleHandler h = Handlers.Find(x => x.Name == name);
-        h.Load(stream);
+        f.LoadSection(i);
+        foreach(IRiddleHandler h in Handlers)
+        {
+          if (h.Load(f))
+            break;
+        }
+        f.EndSection();
       }
-      stream.Close();
+      f.EndSection();
+      f.Close();
       MessageBox.Show($"Load succesfull to {s}");
       RefreshAll();
     }
-
+    
     private void SaveClick(object sender, RoutedEventArgs e)
     {
       Assembly assem = Assembly.GetExecutingAssembly();
       Uri ur = new Uri(assem.CodeBase);
       FileInfo fi = new FileInfo(ur.AbsolutePath);
       string s = fi.Directory.FullName + "TestBook.book";
-
-      Stream stream = new FileStream(s, FileMode.Create, FileAccess.Write);
-      IFormatter f = new BinaryFormatter();
+      BookSaver ms = new BookSaver(s);
+      ms.StartSection(AppNodeNames.RiddlesString);
       foreach (IRiddleHandler h in Handlers)
       {
-        f.Serialize(stream, h.Name);
-        h.Save(stream);
+        ms.StartSection(AppNodeNames.RiddleString);
+        h.Save(ms);
+        ms.EndSection();
       }
-      stream.Close();
+      ms.EndSection();
+      ms.Close();
+
       MessageBox.Show($"Save succesfull to {s}");
     }
   }

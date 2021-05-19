@@ -1,10 +1,5 @@
 using RiddleInterface;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Windows;
 using System.Windows.Controls;
 
 namespace DecisionPlugin
@@ -43,6 +38,8 @@ namespace DecisionPlugin
     public Control Viewport { get; set; }
 
     public Control DisplayPage { get; set; }
+
+    public string BaseFolder { get; set; }
 
     public void Answered()
     {
@@ -97,16 +94,49 @@ namespace DecisionPlugin
       Answered();
     }
     
-    public void Save(Stream stream)
+    public void Save(IRiddleSerializer r)
     {
-      IFormatter formatter = new BinaryFormatter();
-      formatter.Serialize(stream, Data);
+      r.SaveParameter(DecisionNodeNames.IdString,Name);
+      r.SaveValue(DecisionNodeNames.DescriptionString, Data.Description);
+      r.StartSection(DecisionNodeNames.PossibilitiesString);
+      for ( int i =0; i < Data.Posibilities.Count; i++)
+      {
+        r.StartSection(DecisionNodeNames.PossibilityString);
+        r.SaveValue(DecisionNodeNames.ActionString, Data.Posibilities[i].Action);
+        r.SaveValue(DecisionNodeNames.ReactionString, Data.Posibilities[i].Reaction);
+        r.SaveValue(DecisionNodeNames.ItemString, Data.Posibilities[i].Item);
+        r.SaveValue(DecisionNodeNames.IdString, Data.Posibilities[i].Id.ToString());
+        r.EndSection();
+
+      }
+      r.EndSection();
     }
-    public void Load(Stream stream)
+
+    public bool Load(IRiddleSerializer r)
     {
-      IFormatter formatter = new BinaryFormatter();
-      Data = formatter.Deserialize(stream) as DecisionData;
+      string s = r.LoadParameter(DecisionNodeNames.IdString);
+      if (s != Name)
+        return false;
+      Data = new DecisionData();
+      Data.Posibilities.Clear();
+      Data.Description = r.LoadSection(DecisionNodeNames.DescriptionString);
+      r.StartSection(DecisionNodeNames.PossibilitiesString);
+      int osize = r.Children();
+      for (int i = 0; i < osize; i++)
+      {
+        r.LoadSection(i);
+        DecisionPossibilities p = new DecisionPossibilities();
+        p.Action = r.LoadSection(DecisionNodeNames.ActionString);
+        p.Reaction = r.LoadSection(DecisionNodeNames.ReactionString);
+        p.Item = r.LoadSection(DecisionNodeNames.ItemString);
+        s = r.LoadSection(DecisionNodeNames.IdString);
+        p.Id = System.Int32.Parse(s);
+        Data.Posibilities.Add(p);
+        r.EndSection();
+      }
+      r.EndSection();
       Create();
+      return true;
     }
   }
 }

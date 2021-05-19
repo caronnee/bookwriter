@@ -26,7 +26,6 @@ namespace MyBook.Intro
       b.x_bookname.Content = GetTitle( name );
       b.x_open_for_writing.DataContext = name;
       b.x_open_for_writing.Click += new RoutedEventHandler(Write);
-      b.x_open_for_reading.Click += new RoutedEventHandler(Read);
       return b;
     }
 
@@ -67,7 +66,6 @@ namespace MyBook.Intro
     }
 
     public delegate void LoadHandler(String str);
-    public event LoadHandler LoadReadBook;
     public event LoadHandler LoadWriteBook;
 
     public delegate void NewBookHandler();
@@ -81,16 +79,7 @@ namespace MyBook.Intro
       BookItem ctrl = sender as BookItem;
       NewBook(); 
     }
-
-    private void Read(object sender, RoutedEventArgs e)
-    {
-      if (LoadReadBook != null)
-      {
-        Button ctrl = sender as Button;
-        String filename = ctrl.DataContext as String;
-        LoadReadBook(filename); // name of the book
-      }
-    }
+    
 
     private void Write(object sender, RoutedEventArgs e)
     {

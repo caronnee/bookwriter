@@ -18,7 +18,6 @@ namespace MyBook
     {
       Initial intro = new Initial();
       intro.LoadWriteBook += LoadWriteBook;
-      intro.LoadReadBook += LoadReadBook;
       intro.NewBook += CreateBook;
       intro.OnSettingsPage += ShowSettingsBook;
       if (intro.Empty)
@@ -33,14 +32,7 @@ namespace MyBook
       write.Back += ShowLibrary;
       Content = write;
     }
-
-    public void LoadReadBook(String str)
-    {
-      BookRead r = new BookRead(str);
-      r.Back += ShowLibrary;
-      Content = r;
-    }
-
+    
     public void LoadWriteBook(String str)
     {
       BookWrite workBook = new BookWrite(str);

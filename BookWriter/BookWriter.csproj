@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -85,37 +85,21 @@
     <Compile Include="Write\Character\EExpander.xaml.cs">
       <DependentUpon>EExpander.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Write\Content\UnrecognizedContent.cs" />
-    <Compile Include="Write\IGuiContent.cs" />
     <Compile Include="Write\MetaData\SetBookName.xaml.cs">
       <DependentUpon>SetBookName.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Write\Picture\ImageBox.xaml.cs">
-      <DependentUpon>ImageBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Write\Picture\ImageHandler.cs" />
     <Compile Include="Write\SceneHolder.xaml.cs">
       <DependentUpon>SceneHolder.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Write\Text\TextHandler.cs" />
-    <Compile Include="Write\Text\TextParagraph.cs" />
     <Compile Include="BookContent\PositionDesc.cs" />
-    <Compile Include="Read\BookPageContent.xaml.cs">
-      <DependentUpon>BookPageContent.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Read\BookRead.xaml.cs">
-      <DependentUpon>BookRead.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Intro\BookViewer.xaml.cs">
       <DependentUpon>BookViewer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Read\HalfConverter.cs" />
     <Compile Include="Options\SettingPage.xaml.cs">
       <DependentUpon>SettingPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Options\Settings.cs" />
     <Compile Include="BookContent\BookSource.cs" />
-    <Compile Include="Read\TestLabel.cs" />
     <Compile Include="AboutBox.xaml.cs">
       <DependentUpon>AboutBox.xaml</DependentUpon>
     </Compile>
@@ -130,16 +114,6 @@
     </Compile>
     <Compile Include="Write\MetaData\MetaData.xaml.cs">
       <DependentUpon>MetaData.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Write\Picture\ImageSettings.xaml.cs">
-      <DependentUpon>ImageSettings.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Write\Picture\ImageParagraph.cs" />
-    <Compile Include="Write\Text\TextSettings.xaml.cs">
-      <DependentUpon>TextSettings.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Write\Text\WritingBox.xaml.cs">
-      <DependentUpon>WritingBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Write\Timeline\Timeline.xaml.cs">
       <DependentUpon>Timeline.xaml</DependentUpon>
@@ -205,14 +179,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Read\BookPageContent.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Read\BookRead.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Intro\BookViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -245,27 +211,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Write\Picture\ImageBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Write\Picture\ImageSettings.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Write\SceneHolder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Write\Text\TextSettings.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="AboutBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Write\Text\WritingBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

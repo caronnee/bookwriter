@@ -13,7 +13,7 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <ContentControl x:Name="x_maker" Grid.Column="0" Content="{Binding Viewport}"/>
-        <Button Background="Yellow" Grid.Column="1" Content=">>>" Click="Button_Click" />
+        <Button Background="Yellow" Grid.Column="1" Content=">>>" Click="x_make_preview" />
         <ContentControl x:Name="x_show" Grid.Column="2" />
     </Grid>
 </TabItem>

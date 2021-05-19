@@ -11,7 +11,7 @@
     </UserControl.Resources>
     <StackPanel Orientation="Horizontal">
         <Label x:Name="x_bookname" Width="100" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center">name</Label>
-        <Button x:Name="x_open_for_reading">
+        <Button x:Name="x_export_for_reading">
             <Image Source="{StaticResource ResourceKey=openImage}"/>
         </Button>
         <Button x:Name="x_open_for_writing">

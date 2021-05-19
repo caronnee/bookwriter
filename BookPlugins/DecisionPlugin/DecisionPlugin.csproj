@@ -49,6 +49,7 @@
     </Compile>
     <Compile Include="DecisionCreator.cs" />
     <Compile Include="DecisionData.cs" />
+    <Compile Include="DecisionNodeNames.cs" />
     <Compile Include="DecisionWriteBox.xaml.cs">
       <DependentUpon>DecisionWriteBox.xaml</DependentUpon>
     </Compile>

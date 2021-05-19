@@ -3,7 +3,6 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:misc="clr-namespace:MyBook.BookContent"
-      xmlns:src="clr-namespace:MyBook.Write.WriteContent"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="MyBook.BookWrite" 
       mc:Ignorable="d" x:Name="x_bookViewer" 
@@ -91,7 +90,8 @@
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" x:Name="x_workingPage" Grid.RowSpan="2" Content="{Binding CurrentContent,ElementName=x_bookViewer}">
+                <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" x:Name="x_working_page" Grid.RowSpan="2" >
+                    
                 </ScrollViewer> 
             </Grid>
             

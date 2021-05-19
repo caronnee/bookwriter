@@ -1,12 +1,8 @@
 using RiddleInterface;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows;
 using System.Windows.Controls;
-using System.Xml;
 
 namespace PasswordPlugin
 {
@@ -112,20 +108,63 @@ namespace PasswordPlugin
       }
     }
 
+    // 
     public Control DisplayPage { get; set; }
-    
-    public void Save(Stream stream)
+
+    // folder for data. Not used for password. Yet
+    public string BaseFolder { get; set; }
+
+    public void Save(IRiddleSerializer r)
     {
-      // serialize definition and data
-      IFormatter formatter = new BinaryFormatter();
-      formatter.Serialize(stream, Data);
+      r.SaveParameter(PasswordNodeNames.IdString, Name);
+      r.SaveValue(PasswordNodeNames.DescString, Data.Definition.Description);
+      r.SaveValue(PasswordNodeNames.AnswerString, Data.Definition.AcceptableAnswer);
+      r.SaveValue(PasswordNodeNames.FailureString, Data.Definition.FailureId.ToString());
+      r.SaveValue(PasswordNodeNames.FailureReactionString, Data.Definition.FailureReaction);
+      r.SaveValue(PasswordNodeNames.FailuresString, Data.Definition.NAllowedFailures.ToString());
+      r.SaveValue(PasswordNodeNames.SuccessString, Data.Definition.SuccessId.ToString());
+      r.SaveValue(PasswordNodeNames.SuccessReactionString, Data.Definition.SuccessReaction);
+
+      r.StartSection(PasswordNodeNames.HintsString);
+      for ( int i = 0; i < Data.Definition.Hints.Count; i++)
+      {
+        r.SaveValue(PasswordNodeNames.HintString,Data.Definition.Hints[i].Hint);
+      }
+      r.EndSection();
+      
+      // answer does not need to be saved, because ot will be saved as in progress
     }
 
-    public void Load(Stream stream)
+    public bool Load(IRiddleSerializer r)
     {
-      IFormatter formatter = new BinaryFormatter();
-      Data = formatter.Deserialize(stream) as PasswordData;
+      string s = r.LoadParameter(PasswordNodeNames.IdString);
+      if (s != Name)
+        return false;
+      Data = new PasswordData();
+      Data.Definition.Description = r.LoadSection(PasswordNodeNames.DescString);
+      Data.Definition.AcceptableAnswer = r.LoadSection(PasswordNodeNames.AnswerString);
+      s = r.LoadSection(PasswordNodeNames.FailureString);
+      Data.Definition.FailureId = System.Int32.Parse(s);
+      Data.Definition.FailureReaction = r.LoadSection(PasswordNodeNames.FailureReactionString);
+      s = r.LoadSection(PasswordNodeNames.FailuresString);
+      Data.Definition.NAllowedFailures = System.Int32.Parse(s);
+      s = r.LoadSection(PasswordNodeNames.SuccessString);
+      Data.Definition.SuccessId = System.Int32.Parse(s);
+      Data.Definition.SuccessReaction = r.LoadSection(PasswordNodeNames.SuccessReactionString);
+
+      r.StartSection(PasswordNodeNames.HintsString);
+      int osize = r.Children();
+      for (int i = 0; i < osize; i++)
+      {
+        r.LoadSection(i);
+        HintItem item = new HintItem();
+        item.Hint = r.LoadValue();
+        Data.Definition.Hints.Add(item);
+        r.EndSection();
+      }
+      r.EndSection();
       Create();
+      return true;
     }
     
     private void CreateWrite()
@@ -133,8 +172,11 @@ namespace PasswordPlugin
       PasswordWriteBox b = new PasswordWriteBox();
       Viewport = b;
       Viewport.DataContext = this;
-      b.x_fail.SelectedItem = Outcomes[Data.Definition.FailureId];
-      b.x_success.SelectedItem = Outcomes[Data.Definition.SuccessId];
+      if (Outcomes.Count > 0)
+      {
+        b.x_fail.SelectedItem = Outcomes[Data.Definition.FailureId];
+        b.x_success.SelectedItem = Outcomes[Data.Definition.SuccessId];
+      }
       b.x_countdown.SelectedIndex = Data.Definition.Hints.Count;
       b.x_hints_holder.Visibility = Data.Definition.Hints.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
       b.RefillHints();

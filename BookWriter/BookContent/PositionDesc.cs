@@ -9,18 +9,22 @@ namespace MyBook.BookContent
     {
       get;set;
     }
+
+    // Index of the page in the scene. Needed for counting statistics
     public int ParagraphId
     {
       get;
       set;
     }
 
+    // position in book
     public int ContentPos
     {
       get;
       set;
     }
 
+    // size that this can occupy
     public int Lenght
     {
       get;
@@ -30,7 +34,7 @@ namespace MyBook.BookContent
     public void Clear()
     {
       Lenght = 0;
-      ParagraphId = 0;
+      ParagraphId = -1;
       ContentPos = 0;
     }
 

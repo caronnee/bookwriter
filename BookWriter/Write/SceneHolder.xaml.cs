@@ -1,11 +1,6 @@
 ﻿using MyBook.BookContent;
-using MyBook.Write.Picture;
-using MyBook.Write.Text;
 using RiddleInterface;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -14,25 +9,18 @@ namespace MyBook.Write
   /// <summary>
   /// Interaction logic for SceneHolder.xaml
   /// </summary>
-  public partial class SceneHolder : IGuiContent 
+  public partial class SceneHolder : UserControl
   {
     public SceneHolder()
     {
       InitializeComponent();
     }
-    
-    IRiddleHandler Handler { get; set; }
-    
-     // Show page fro the position
-    public void LoadScene()
-    {
-      BookSource Cache = DataContext as BookSource;
-      Handler = Cache.GetCurrentHandler();
-      PreparePage();
-    }
 
     public delegate void OnSceneSavedDlg();
     public OnSceneSavedDlg OnSceneSaved;
+
+    public delegate void ReportMsg(string message);
+    public ReportMsg OnReport;
 
     private void saveScene(object sender, RoutedEventArgs e)
     {
@@ -42,50 +30,23 @@ namespace MyBook.Write
       if (OnSceneSaved != null)
         OnSceneSaved();
     }
-
-    private void CreatePage()
-    {
-      if (Handler == null)
-      {
-        return;
-      }
-
-      SavePage();
-      PreparePage();
-    }
-
+    
     private void SavePage()
     {
-      BookSource Cache = DataContext as BookSource;
-      if (Handler == null)
-      {
-        Cache.SetPage(null);
-        return;
-      }
-      // create another working page of the same type
-      IContent content = Handler.CreateRiddle();
-      Cache.SetPage(content);
     }
 
     private void startPage_Click(object sender, RoutedEventArgs e)
     {
       BookSource c = DataContext as BookSource;
-      c.Position.Clear();
+      c.SetPage(0,0);
     }
-
-    private void PreparePage()
-    {
-      // create new page according to the handler
-      Handler.Viewport.DataContext = DataContext;
-      x_sceneContent.Content = Handler.Viewport;
-    }
-
+    
     private void MoveBackClick(object sender, RoutedEventArgs e)
     {
       SavePage();
       BookSource s = DataContext as BookSource;
       s.MoveBack();
-      LoadScene();
+      OnReport("");
     }
 
     private void MoveForwardClick(object sender, RoutedEventArgs e)
@@ -93,25 +54,24 @@ namespace MyBook.Write
       SavePage();
       BookSource s = DataContext as BookSource;
       s.MoveForward();
-      LoadScene();
+      OnReport("");
     }
 
-    public override void Save()
+    public void Save()
     {
       BookSource s = DataContext as BookSource;
       System.Diagnostics.Debug.Assert(s != null);
       SavePage();
       s.Save();
+      OnReport("Book saved");
     }
 
     private void CreateContentClick(object sender, RoutedEventArgs e)
     {
       BookSource s = DataContext as BookSource;
-      IRiddleHandler h = x_types.SelectedItem as IRiddleHandler;
-      h.Create();
-      s.CreatePage();
-      s.SetPage(h.CreateRiddle());
-      LoadScene();
+      AssemblyMap assembly = x_types.SelectedItem as AssemblyMap;
+      s.CreatePage(assembly);
+      OnReport("Page inserted");
     }
   }
 }

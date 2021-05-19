@@ -56,6 +56,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AppNodeNames.cs" />
+    <Compile Include="BookLoader.cs" />
+    <Compile Include="BookSaver.cs" />
     <Compile Include="Tabcontainer.xaml.cs">
       <DependentUpon>Tabcontainer.xaml</DependentUpon>
     </Compile>

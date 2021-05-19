@@ -1,8 +1,8 @@
-﻿using MyBook.BookContent;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -13,16 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MyBook.Write.WriteContent.Text
+namespace TextPlugin
 {
   /// <summary>
-  /// Interaction logic for TextSettings.xaml
+  /// Interaction logic for TextWriter.xaml
   /// </summary>
-  public partial class TextSettings : UserControl
+  public partial class TextWriter : UserControl
   {
-    public TextSettings()
+    public TextWriter()
     {
-      InitializeComponent();     
+      InitializeComponent();
     }
   }
 }
