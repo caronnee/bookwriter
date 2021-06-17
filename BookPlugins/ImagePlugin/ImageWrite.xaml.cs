@@ -1,18 +1,7 @@
 ﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ImagePlugin
 {
@@ -30,7 +19,16 @@ namespace ImagePlugin
     {
       OpenFileDialog openFileDialog = new OpenFileDialog();
       if (openFileDialog.ShowDialog() == true)
-        x_image_path.Text = openFileDialog.FileName;
+      {
+        int l = openFileDialog.FileName.LastIndexOf('\\');
+        string title = openFileDialog.FileName.Substring(l);
+
+        ImageCreator c = (DataContext as ImageCreator);
+        string full = c.BaseFolder + title;
+        File.Copy(openFileDialog.FileName, full,true);
+        c.Data.ImagePath = full;
+        x_image_path.Text = full;
+      }
     }
   }
 }

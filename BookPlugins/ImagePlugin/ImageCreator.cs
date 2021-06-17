@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using RiddleInterface;
 using System.Windows.Controls;
@@ -53,7 +53,7 @@ namespace ImagePlugin
 
       Data.Header = r.LoadSection(ImageNodeNames.Header);
       Data.Footer = r.LoadSection(ImageNodeNames.Footer);
-      Data.ImagePath = r.LoadSection(ImageNodeNames.Path);
+      Data.ImagePath = BaseFolder + r.LoadSection(ImageNodeNames.Path);
       Create();
       return true;
     }
@@ -61,7 +61,7 @@ namespace ImagePlugin
     public void Save(IRiddleSerializer r)
     {
       r.SaveParameter(ImageNodeNames.Id, Name);
-      r.SaveValue(ImageNodeNames.Path, Data.ImagePath);
+      r.SaveValue(ImageNodeNames.Path, Data.ImagePath.Substring(BaseFolder.Length));
       r.SaveValue(ImageNodeNames.Header, Data.Header);
       r.SaveValue(ImageNodeNames.Footer, Data.Footer);
     }

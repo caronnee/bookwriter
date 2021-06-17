@@ -20,7 +20,6 @@ namespace PluginsTest
     private void Preview()
     {
       IRiddleHandler h = DataContext as IRiddleHandler;
-      h.ClearAnswer();
       h.CreateReadOnly();
       x_show.Content = h.DisplayPage;
     }

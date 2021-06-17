@@ -8,11 +8,11 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <riddle:FullPathConverter x:Key="x_full_path_converter"></riddle:FullPathConverter>
+        <local:ImageConverter x:Key="valueconverter"></local:ImageConverter>
     </UserControl.Resources>
     <DockPanel LastChildFill="True">
-        <TextBox Text="{Binding Data.Header}" DockPanel.Dock="Top"></TextBox>
-        <TextBox Text="{Binding Data.Footer}" DockPanel.Dock="Bottom"></TextBox>
-        <Image Source="{Binding Data.ImagePath}"></Image>
+        <Label Content="{Binding Data.Header}" DockPanel.Dock="Top"></Label>
+        <Label Content="{Binding Data.Footer}" DockPanel.Dock="Bottom"></Label>
+        <Image Source="{Binding Data.ImagePath, Converter={StaticResource valueconverter}}" />
     </DockPanel>
 </UserControl>

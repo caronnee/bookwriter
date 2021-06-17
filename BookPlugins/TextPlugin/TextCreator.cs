@@ -1,12 +1,6 @@
 ﻿using RiddleInterface;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
-using System.Xml.Serialization;
 
 namespace TextPlugin
 {
@@ -29,10 +23,14 @@ namespace TextPlugin
       // no answer here
     }
 
-    public void Create()
+    public TextCreator()
     {
       Data = new TextData();
       Settings = null;
+    }
+
+    public void Create()
+    {
       Viewport = new TextWriter();
       Viewport.DataContext = Data;
       CreateReadOnly();
@@ -49,8 +47,8 @@ namespace TextPlugin
       string ret = r.LoadParameter(TextNodeNames.Id);
       if (ret != Name)
         return false;
-      r.LoadSection(TextNodeNames.Desc);
-      Data.Description = r.LoadValue();
+      Data.Description = r.LoadSection(TextNodeNames.Desc);
+      Create();
       return true;
     }
 

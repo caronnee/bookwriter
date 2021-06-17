@@ -14,20 +14,7 @@ namespace RiddleInterface
     // id in the book
     public int Id { get; set; }
   }
-
-  public class FullPathConverter : IMultiValueConverter
-  {
-    public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
-    {
-      throw new NotImplementedException();
-    }
-
-    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
-    {
-      throw new NotImplementedException();
-    }
-  }
-
+  
   public class OutcomeConverter : IValueConverter
   {
     List<Outcome> Outcomes { get; set; }
