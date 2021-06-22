@@ -10,6 +10,8 @@ namespace ImagePlugin
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
       String str = value as String;
+      if (str.Length == 0)
+        return null;
       return new Uri(str);
     }
 
