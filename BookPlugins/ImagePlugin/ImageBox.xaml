@@ -11,8 +11,8 @@
         <local:ImageConverter x:Key="valueconverter"></local:ImageConverter>
     </UserControl.Resources>
     <DockPanel LastChildFill="True">
-        <Label Content="{Binding Data.Header}" DockPanel.Dock="Top"></Label>
-        <Label Content="{Binding Data.Footer}" DockPanel.Dock="Bottom"></Label>
+        <Label Content="{Binding Data.Header}" DockPanel.Dock="Top" HorizontalAlignment="Center"></Label>
+        <Label Content="{Binding Data.Footer}" DockPanel.Dock="Bottom" HorizontalAlignment="Center"></Label>
         <Image Source="{Binding Data.ImagePath, Converter={StaticResource valueconverter}}" />
     </DockPanel>
 </UserControl>
