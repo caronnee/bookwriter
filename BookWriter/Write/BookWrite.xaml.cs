@@ -3,8 +3,8 @@ using MyBook.Meta;
 using MyBook.Write;
 using MyBook.Write.Bookmark;
 using MyBook.Write.Character;
+using MyBook.Write.GroupHandler;
 using MyBook.Write.Timeline;
-using RiddleInterface;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -179,16 +179,6 @@ namespace MyBook
       SelectionPickup();
     }
 
-    private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-    {
-      //System.Diagnostics.Debug.Assert(false);
-    }
-
-    private void TreeViewItem_Selected(object sender, RoutedEventArgs e)
-    {
-      //System.Diagnostics.Debug.Assert(false);
-    }
-
     private void SetTimeline(object sender, RoutedEventArgs e)
     {
       ShowTimeline();
@@ -215,6 +205,18 @@ namespace MyBook
     private void x_bookViewer_Unloaded(object sender, RoutedEventArgs e)
     {
       Done();
+    }
+
+    private void x_scenes_holder_Selected(object sender, RoutedEventArgs e)
+    {
+      GroupHandlerItem h = new GroupHandlerItem();
+      for ( int i =0; i < Cache.Scenes.Count; i++)
+      {
+        PreviewFolder pf = new PreviewFolder();
+        pf.x_summary.Text = Cache.Scenes[i].Name;
+        h.x_groupHandler.Children.Add(pf);
+      }
+      x_working_page.Content = h;
     }
   }
 }

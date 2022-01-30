@@ -8,97 +8,92 @@
       mc:Ignorable="d" x:Name="x_bookViewer" 
     Unloaded="x_bookViewer_Unloaded"
     >
-    <UserControl.Resources>
-        <ImageBrush x:Key="tripplearrowleft" ImageSource="/resources/start.png" Stretch="UniformToFill"/>
-        <ImageBrush x:Key="doublearrowleft" ImageSource="/resources/prevchapter.png" Stretch="UniformToFill"/>
-        <ImageBrush x:Key="arrowleft" ImageSource="/resources/prev.png" Stretch="UniformToFill"/>
-        <ImageBrush x:Key="tripplearrowright" ImageSource="/resources/last.png" Stretch="UniformToFill"/>
-        <ImageBrush x:Key="doublearrowright" ImageSource="/resources/nextchapter.png" Stretch="UniformToFill"/>
-        <ImageBrush x:Key="arrowright" ImageSource="/resources/next.png" Stretch="UniformToFill"/>
-        <Style x:Key="AddButtonImageStyle" TargetType="{x:Type Button}">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{Binding Background}"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </UserControl.Resources>
+  <UserControl.Resources>
+    <ImageBrush x:Key="tripplearrowleft" ImageSource="/resources/start.png" Stretch="UniformToFill"/>
+    <ImageBrush x:Key="doublearrowleft" ImageSource="/resources/prevchapter.png" Stretch="UniformToFill"/>
+    <ImageBrush x:Key="arrowleft" ImageSource="/resources/prev.png" Stretch="UniformToFill"/>
+    <ImageBrush x:Key="tripplearrowright" ImageSource="/resources/last.png" Stretch="UniformToFill"/>
+    <ImageBrush x:Key="doublearrowright" ImageSource="/resources/nextchapter.png" Stretch="UniformToFill"/>
+    <ImageBrush x:Key="arrowright" ImageSource="/resources/next.png" Stretch="UniformToFill"/>
+    <Style x:Key="AddButtonImageStyle" TargetType="{x:Type Button}">
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type Button}">
+            <Border Background="{TemplateBinding Background}">
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+      <Style.Triggers>
+        <Trigger Property="IsMouseOver" Value="True">
+          <Setter Property="Background" Value="{Binding Background}"/>
+        </Trigger>
+      </Style.Triggers>
+    </Style>
+  </UserControl.Resources>
 
-    <DockPanel >
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="Back" Click="Back_Click"/>
-            <MenuItem Header="Book">
-                <MenuItem Header="Save" Click="SaveBook_Click"></MenuItem>
-                <MenuItem Header="Save as" Click="SaveBook_Click"></MenuItem>
-                <MenuItem Header="Settings" Click="Settings_Click"></MenuItem>
-            </MenuItem>
-            <MenuItem Header="Timeline" Click="SetTimeline"></MenuItem>
-            <MenuItem Header="Manual - TODO" />
-            <MenuItem Header="About" Click="showAboutClick"/>
-        </Menu>
-        <DockPanel DockPanel.Dock="Bottom">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="127*"/>
-                    <ColumnDefinition Width="94*"/>
-                </Grid.ColumnDefinitions>
-                <ProgressBar x:Name="x_progressBar" Foreground="Bisque"  Minimum="0" Maximum="100" Value="75" Grid.ColumnSpan="2" />
-                <TextBlock x:Name="x_status" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="57,0,56,0">
+  <DockPanel >
+    <Menu DockPanel.Dock="Top">
+      <MenuItem Header="Back" Click="Back_Click"/>
+      <MenuItem Header="Book">
+        <MenuItem Header="Save" Click="SaveBook_Click"></MenuItem>
+        <MenuItem Header="Save as" Click="SaveBook_Click"></MenuItem>
+        <MenuItem Header="Settings" Click="Settings_Click"></MenuItem>
+      </MenuItem>
+      <MenuItem Header="Timeline" Click="SetTimeline"></MenuItem>
+      <MenuItem Header="Manual - TODO" />
+      <MenuItem Header="About" Click="showAboutClick"/>
+    </Menu>
+    <DockPanel DockPanel.Dock="Bottom">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="127*"/>
+          <ColumnDefinition Width="94*"/>
+        </Grid.ColumnDefinitions>
+        <ProgressBar x:Name="x_progressBar" Foreground="Bisque"  Minimum="0" Maximum="100" Value="75" Grid.ColumnSpan="2" />
+        <TextBlock x:Name="x_status" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="57,0,56,0">
                     <Run x:Name="x_progressText" Text="Chapter name, page"/>
-                </TextBlock>
-            </Grid>
-        </DockPanel>
-
-        <Grid x:Name="x_writingArea">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="27*" />
-                <ColumnDefinition Width="27*"/>
-                <ColumnDefinition Width="14*" />
-                <ColumnDefinition Width="186*"/>
-            </Grid.ColumnDefinitions>            
-            <TreeView Grid.ColumnSpan="2">
-                <TreeViewItem Header="Scenes" x:Name="x_scenes_holder">
-                    <TreeViewItem.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="Add scene" Click="AddScene_Click"/>
-                        </ContextMenu>
-                    </TreeViewItem.ContextMenu>
-                    <!-- treeview because treeviewitem sdoes not have seleteditemchanged -->
-                    <TreeView x:Name="x_scenes" BorderBrush="Transparent" ItemsSource="{Binding Scenes}" SelectedItemChanged="x_scenes_SelectedItemChanged" DisplayMemberPath="Name">
-                    </TreeView>
-                </TreeViewItem>
-                <TreeViewItem Header="Characters" x:Name="x_character_holder">
-                    <TreeViewItem.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem  Header="Add character" Click="AddCharacter_Click" ></MenuItem>
-                        </ContextMenu>
-                    </TreeViewItem.ContextMenu>
-                    <TreeView x:Name="x_characters" BorderBrush="Transparent" ItemsSource="{Binding Characters}" DisplayMemberPath="Name" SelectedItemChanged="x_characters_SelectedItemChanged">                        
-                    </TreeView>
-                </TreeViewItem>
-                <TreeViewItem Header="Content change" x:Name="x_contentSettings">
-                    <Viewbox Grid.Column="0" Grid.Row="1" x:Name="x_writeSettings"/>
-                </TreeViewItem>
-            </TreeView>
-            <Grid Grid.Column="2" Grid.ColumnSpan="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
-                </Grid.RowDefinitions>
-                <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" x:Name="x_working_page" Grid.RowSpan="2" >
-                    
-                </ScrollViewer> 
-            </Grid>
-            
-        </Grid>
+        </TextBlock>
+      </Grid>
     </DockPanel>
+
+    <Grid x:Name="x_writingArea">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="auto" />
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <TreeView>
+        <TreeViewItem Header="Scenes" x:Name="x_scenes_holder" Selected="x_scenes_holder_Selected">
+          <TreeViewItem.ContextMenu>
+            <ContextMenu>
+              <MenuItem Header="Add scene" Click="AddScene_Click"/>
+            </ContextMenu>
+          </TreeViewItem.ContextMenu>
+          <!-- treeview because treeviewitem sdoes not have seleteditemchanged -->
+          <TreeView x:Name="x_scenes" BorderBrush="Transparent" ItemsSource="{Binding Scenes}" SelectedItemChanged="x_scenes_SelectedItemChanged" DisplayMemberPath="Name">
+          </TreeView>
+        </TreeViewItem>
+        <TreeViewItem Header="Characters" x:Name="x_character_holder">
+          <TreeViewItem.ContextMenu>
+            <ContextMenu>
+              <MenuItem  Header="Add character" Click="AddCharacter_Click" ></MenuItem>
+            </ContextMenu>
+          </TreeViewItem.ContextMenu>
+          <TreeView x:Name="x_characters" BorderBrush="Transparent" ItemsSource="{Binding Characters}" DisplayMemberPath="Name" SelectedItemChanged="x_characters_SelectedItemChanged">
+          </TreeView>
+        </TreeViewItem>
+      </TreeView>
+      <Grid Grid.Column="2" Grid.ColumnSpan="2">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"></RowDefinition>
+          <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" x:Name="x_working_page" Grid.RowSpan="2" >
+
+        </ScrollViewer>
+      </Grid>
+
+    </Grid>
+  </DockPanel>
 </UserControl>

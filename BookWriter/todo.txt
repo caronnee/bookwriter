@@ -1,4 +1,11 @@
-﻿on click on bordered one, move cursor to the place outside
+﻿Writer:
+Add characters
+
+----------------------------
+Reader:
+
+----------------------------
+on click on bordered one, move cursor to the place outside
 move the default ones with the scrooling to stay in view
 make controls having resizeable height
 on double clik skip to the page
@@ -40,7 +47,6 @@ Description
 - implement replace
 
 -------------------------------------------------------
-support for Kindle? :P Why?:-o
 
 Initial screen - "This book belongs to...". After filling up the name, rest is shown. "
 
@@ -48,8 +54,6 @@ Initial screen - "This book belongs to...". After filling up the name, rest is s
 "look from the other side" - mirror. it is needed to find out that the person in question is lefthanded
 
 RIDDLE one - we have page, when the leaf is rubbed, another page is revealed. That page contain transparent page on some places. whe it is put on the first page, it shows image. The next page must me rearanged to path the transparent page, then the password is revealed.
-
-
 -------------------Next things to happen------
 - if is inside the area of clip, change cursor
 - add setting for the one page ( displays roman number or arabic number ) - in settings?

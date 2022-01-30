@@ -85,6 +85,12 @@
     <Compile Include="Write\Character\EExpander.xaml.cs">
       <DependentUpon>EExpander.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Write\GroupHandler\GroupHandlerItem.xaml.cs">
+      <DependentUpon>GroupHandlerItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Write\GroupHandler\PreviewFolder.xaml.cs">
+      <DependentUpon>PreviewFolder.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Write\MetaData\SetBookName.xaml.cs">
       <DependentUpon>SetBookName.xaml</DependentUpon>
     </Compile>
@@ -187,6 +193,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Write\Character\EExpander.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Write\GroupHandler\GroupHandlerItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Write\GroupHandler\PreviewFolder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
