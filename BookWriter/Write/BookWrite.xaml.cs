@@ -194,6 +194,10 @@ namespace MyBook
       ShowTimeline();
     }
     
+    private void AddScene_Click(object sender, RoutedEventArgs e)
+    {
+      Cache.CreateScene();
+    }
     private void AddCharacter_Click(object sender, RoutedEventArgs e)
     {
       _characterHolder.Load(Cache.CreateCharacter());

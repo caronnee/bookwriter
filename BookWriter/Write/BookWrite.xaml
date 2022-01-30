@@ -9,7 +9,6 @@
     Unloaded="x_bookViewer_Unloaded"
     >
     <UserControl.Resources>
-        <misc:WritingConverter x:Key="WritingConverter" />
         <ImageBrush x:Key="tripplearrowleft" ImageSource="/resources/start.png" Stretch="UniformToFill"/>
         <ImageBrush x:Key="doublearrowleft" ImageSource="/resources/prevchapter.png" Stretch="UniformToFill"/>
         <ImageBrush x:Key="arrowleft" ImageSource="/resources/prev.png" Stretch="UniformToFill"/>
@@ -68,6 +67,11 @@
             </Grid.ColumnDefinitions>            
             <TreeView Grid.ColumnSpan="2">
                 <TreeViewItem Header="Scenes" x:Name="x_scenes_holder">
+                    <TreeViewItem.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Add scene" Click="AddScene_Click"/>
+                        </ContextMenu>
+                    </TreeViewItem.ContextMenu>
                     <!-- treeview because treeviewitem sdoes not have seleteditemchanged -->
                     <TreeView x:Name="x_scenes" BorderBrush="Transparent" ItemsSource="{Binding Scenes}" SelectedItemChanged="x_scenes_SelectedItemChanged" DisplayMemberPath="Name">
                     </TreeView>
