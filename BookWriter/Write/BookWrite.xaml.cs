@@ -29,7 +29,7 @@ namespace MyBook
     private void SceneSaved()
     {
       SelectionPickup();
-      x_scenes.Items.Refresh();
+      x_scenes_holder.Items.Refresh();
       ShowProgress("Scene saved");
     }
 
@@ -170,15 +170,6 @@ namespace MyBook
       //_characterHolder.Load(x_characters.SelectedValue as CharacterContent);
     }
 
-    private void x_scenes_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-    {
-      //if (CurrentContent == null)
-      //  return;
-      //CurrentContent.Save();
-      //Cache.SetScene(x_scenes.SelectedValue as SceneDescription);
-      SelectionPickup();
-    }
-
     private void SetTimeline(object sender, RoutedEventArgs e)
     {
       ShowTimeline();
@@ -191,8 +182,7 @@ namespace MyBook
     private void AddCharacter_Click(object sender, RoutedEventArgs e)
     {
       _characterHolder.Load(Cache.CreateCharacter());
-      //CurrentContent = _characterHolder;
-      //x_characters.Items.Refresh();
+      x_characters.Items.Refresh();
     }
     
     public void Done()
@@ -207,7 +197,7 @@ namespace MyBook
       Done();
     }
 
-    private void x_scenes_holder_Selected(object sender, RoutedEventArgs e)
+    private void PreviewFolder()
     {
       GroupHandlerItem h = new GroupHandlerItem();
       for ( int i =0; i < Cache.Scenes.Count; i++)
@@ -217,6 +207,25 @@ namespace MyBook
         h.x_groupHandler.Children.Add(pf);
       }
       x_working_page.Content = h;
+    }
+
+    private void Item_Selected(object sender, RoutedEventArgs e)
+    {
+      TreeView it = sender as TreeView;
+      BookSource.SceneDescription i = it.SelectedItem as BookSource.SceneDescription;
+      if ( i!=null)
+      {
+        Cache.SetScene(i);
+        x_working_page.Content = _sceneHolder;
+        return;
+      }
+      BookSource.CharacterContent c = it.SelectedItem as BookSource.CharacterContent;
+      if ( c!= null )
+      {
+        x_working_page.Content = _characterHolder;
+        return;
+      }
+      PreviewFolder();
     }
   }
 }

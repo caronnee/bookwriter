@@ -1,5 +1,6 @@
 ﻿Writer:
 Add characters
+Go to the scene after the button
 
 ----------------------------
 Reader:

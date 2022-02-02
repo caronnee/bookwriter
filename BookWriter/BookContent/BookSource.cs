@@ -306,10 +306,7 @@ namespace MyBook.BookContent
 
     public CharacterContent DummyCharacter { get; set; }
 
-    public List<CharacterContent> Characters
-    {
-      get;set;
-    }
+    public List<CharacterContent> Characters { get;set; }
 
     public void Init()
     {
