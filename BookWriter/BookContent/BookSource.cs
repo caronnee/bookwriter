@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Reflection;
+using System.Xml.Serialization;
 
 namespace MyBook.BookContent
 {
@@ -29,7 +30,10 @@ namespace MyBook.BookContent
     /// </summary>
     public const String Characters = "Characters";
     public const String Character = "Character";
+    public const String CharacterName = "Name";
+    public const String Episodes = "Episodes";
     public const String Episode = "Episode";
+    public const String EpisodeContent = "EpisodeContent";
     public const String Father = "Father";
     public const String Mother = "Mother";
     public const String Gender = "Gender";
@@ -196,15 +200,6 @@ namespace MyBook.BookContent
       // name of the scene
       public String Name { get; set; }
 
-      // spouse of the character
-      public CharacterContent Spouse { get; set; }
-
-      // father of the character
-      public CharacterContent Father { get; set; }
-
-      // mother of the character
-      public CharacterContent Mother { get; set; }
-
       // current status of the character
       public CharacterStatus Status { get; set; }
 
@@ -220,6 +215,41 @@ namespace MyBook.BookContent
       public CharacterContent()
       {
         Info = new List<CharacterEpisodes>();
+      }
+      
+      public void FromSerialize(CharacterSerializeData d)
+      {
+        Name = d.name;
+        Id = d.id;
+        Gender = (CharacterGender)d.gender;
+        Status = (CharacterStatus)d.status;
+        // todo 
+        //Mother. father, sppuse
+        Info = new List<CharacterEpisodes>();
+        foreach ( EpisodesSerialization s in d.episodes)
+        {
+          CharacterEpisodes ep = new CharacterEpisodes();
+          ep.Content = s.content;
+          ep.Title = s.episodeName;
+          Info.Add(ep);
+        }
+      }
+      public CharacterSerializeData ToSerialize()
+      {
+        CharacterSerializeData d = new CharacterSerializeData();
+        d.name = Name;
+        d.id = Id;
+        d.gender = ((int)Gender);
+        d.status = ((int)Status);
+        d.episodes = new List<EpisodesSerialization>();
+        foreach (CharacterEpisodes ep in Info)
+        {
+          EpisodesSerialization es = new EpisodesSerialization();
+          es.episodeName = ep.Content;
+          es.content = ep.Content;
+          d.episodes.Add(es);
+        }
+        return d;
       }
     }
 
@@ -329,8 +359,6 @@ namespace MyBook.BookContent
       CharacterContent c = new CharacterContent();
       c.Id = LastOne;
       c.Name = "Anonymous";
-      c.Father = DummyCharacter;
-      c.Mother = DummyCharacter;
       CharacterEpisodes ep = new CharacterEpisodes();
       ep.Title = "Life";
       ep.Content = "";
@@ -339,38 +367,11 @@ namespace MyBook.BookContent
       LastOne++;
       return c;
     }
-    private void LoadScenes()
-    {
-
-    }
-
-    //class ParentFind
-    //{
-    //  public CharacterContent c;
-    //  public Int32 father;
-    //  public Int32 mother;
-    //}
-
-    private void LoadCharacters()
-    {
-
-    }
 
     public void Load(String name)
     {
-      //XmlDocument doc = new XmlDocument();
-      //doc.Load(name);
-      //// load whole
-      //XmlNodeList n = doc.GetElementsByTagName(XmlNodeNames.Chapters);
-      //Name = Path.GetFileNameWithoutExtension(name);
-      //LoadScenes(n[0]);
-      //n = doc.GetElementsByTagName(XmlNodeNames.Characters);
-      //LoadCharacters(n[0]);
-      //Position.Scene = Scenes[0];
-      //NotifyPropertyChanged("CanGoFurther");
-      //NotifyPropertyChanged("CanGoBack");
-      //object o = HandlersMap[0].Assembly.GetType("IRiddleHandler");
-      //CurrentPage = o as IRiddleHandler;
+      Serializer.XmlBookLoad b = new Serializer.XmlBookLoad(FullPath);
+      LoadCharacters(b);
     }
 
     public bool CanGoBack
@@ -417,26 +418,6 @@ namespace MyBook.BookContent
       // todo better
     }
 
-    public int Save()
-    {
-      if (!Directory.Exists(Settings.BooksFolder))
-      {
-        Directory.CreateDirectory(Settings.BooksFolder);
-      }
-      String fullpath = Settings.BooksFolder + "\\" + Name + Constants.Extension;
-      SaveScenes();
-      //SaveCharacters(doc, parent);
-      //doc.AppendChild(parent);
-      //doc.Save(fullpath);
-      return 0;
-    }
-
-    // Check if this book can be used
-    public bool IsValid(String filepath, int flags = 0)
-    {
-      return (System.IO.File.Exists(filepath));
-    }
-
     public void SetScene(SceneDescription sceneDescription)
     {
       Position.Clear();
@@ -444,6 +425,108 @@ namespace MyBook.BookContent
       NotifyPropertyChanged("Position");
       NotifyPropertyChanged("CanGoFurther");
       NotifyPropertyChanged("CanGoBack");
+    }
+
+    ////////////////////////////////////////////////////////////////////
+    //////////////////////////////Serialization/////////////////////////
+    ////////////////////////////////////////////////////////////////////
+    public struct EpisodesSerialization
+    {
+      public string episodeName;
+      public string content;
+    }
+    public struct CharacterSerializeData
+    {
+      public String name;
+      public int id;
+      public int father;
+      public int mother;
+      public int spouse;
+      public int gender;
+      public int status;
+      public List<EpisodesSerialization> episodes;
+    }
+
+    /// <summary>
+    /// Base function for character serialization
+    /// </summary>
+    /// <param name="s"></param>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    private List<CharacterSerializeData> SerializeCharacters(Serializer.BaseSerializer s, List<CharacterSerializeData> input)
+    {
+      string dummy = "";
+      int children = s.PushSection(XmlNodeNames.Characters, ref dummy, ref dummy);
+      List<CharacterSerializeData> ret = input;
+      if (input.Count == 0)
+      {
+        ret = new List<CharacterSerializeData>(children);
+      }
+
+      for (int i = 0; i < ret.Count; i++)
+      {
+        CharacterSerializeData a1 = ret[i];
+        s.SerializeString(XmlNodeNames.Character, ref a1.name);
+        s.SerializeInt(XmlNodeNames.Father, ref a1.father);
+        children = s.PushSection(XmlNodeNames.Episodes, ref dummy, ref dummy);
+        if (a1.episodes.Count != children)
+        {
+          a1.episodes = new List<EpisodesSerialization>(children);
+        }
+        for (int iEp = 0; iEp < children; iEp++)
+        {
+          EpisodesSerialization es = a1.episodes[i];
+          s.SerializeString(XmlNodeNames.Episode, ref es.episodeName);
+          s.SerializeString(XmlNodeNames.EpisodeContent, ref es.content);
+          a1.episodes[i] = es;
+        }
+        s.PopSection();
+        ret[i] = a1;
+      }
+      s.PopSection();
+      return ret;
+    }
+
+    private void LoadCharacters(Serializer.BaseSerializer s)
+    {
+      List<CharacterSerializeData> data = new List<CharacterSerializeData>();
+      data = SerializeCharacters(s, data);
+      foreach (CharacterSerializeData d in data)
+      {
+        CharacterContent c = new CharacterContent();
+        c.FromSerialize(d);
+        Characters.Add(c);
+      }
+    }
+    private void SaveCharacters(Serializer.BaseSerializer s)
+    {
+      List<CharacterSerializeData> data = new List<CharacterSerializeData>();
+      foreach (CharacterContent c in Characters)
+      {
+        CharacterSerializeData d = c.ToSerialize();
+        data.Add(d);
+      }
+      SerializeCharacters(s, data);
+    }
+
+    /// <summary>
+    /// Serialization to file itself
+    /// </summary>
+    public String FullPath
+    {
+      get => Settings.BooksFolder + "\\" + Name + "\\" + "base" + Constants.Extension;
+    }
+    public int Save()
+    {
+      if (!Directory.Exists(Settings.BooksFolder))
+      {
+        Directory.CreateDirectory(Settings.BooksFolder);
+      }
+
+      SaveScenes();
+      Serializer.XmlBookSave s = new Serializer.XmlBookSave(FullPath);
+      SaveCharacters(s);
+      return 0;
     }
   }
 }

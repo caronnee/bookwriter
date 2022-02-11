@@ -35,15 +35,16 @@
 
   <DockPanel LastChildFill="True">
     <Menu DockPanel.Dock="Top">
-      <MenuItem Header="Back" Click="Back_Click"/>
       <MenuItem Header="Book">
+        <MenuItem Header="New" Click="Back_Click" />
         <MenuItem Header="Save" Click="SaveBook_Click"></MenuItem>
         <MenuItem Header="Save as" Click="SaveBook_Click"></MenuItem>
         <MenuItem Header="Settings" Click="Settings_Click"></MenuItem>
       </MenuItem>
-      <MenuItem Header="Timeline" Click="SetTimeline"></MenuItem>
-      <MenuItem Header="Manual - TODO" />
-      <MenuItem Header="About" Click="showAboutClick"/>
+      <MenuItem Header="Info">
+        <MenuItem Header="Manual - TODO" />
+        <MenuItem Header="About" Click="showAboutClick"/>
+      </MenuItem>
     </Menu>
     <DockPanel DockPanel.Dock="Bottom">
       <Grid>

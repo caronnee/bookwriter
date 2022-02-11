@@ -36,31 +36,10 @@ namespace RiddleInterface
     }
   }
 
-  public interface IRiddleSerializer
-  {
-    void SaveParameter(string name, string value);
-    void SaveValue(string name, string value);
-    
-    string LoadSection(int i);
-    string LoadSection(string name);
-    string LoadValue();
-    string LoadParameter(string name);
-
-    int Children();
-    void StartSection(string name);
-    void EndSection();
-    void Close();
-  }
-
-  public delegate void OnSuccessAction(int id);
-
   public interface IRiddleHandler
   {
     // base folder for this plugin data
     String BaseFolder { get; set; }
-
-    // what should happen when riddle's aswer is recognized. It is common for every riddlr 
-    OnSuccessAction onAnswer { get; set; }
 
     // name of the content handler
     String Name { get; }
@@ -68,7 +47,7 @@ namespace RiddleInterface
     // list of the possible outcomes
     List<Outcome> Outcomes { get; set; }
 
-    // setting assotiated with the content handler
+    // setting assotiated with the content handler ( rotation etc )
     Control Settings { get; set; }
 
     // showable content
@@ -77,17 +56,10 @@ namespace RiddleInterface
     // final page for displaying to reader
     Control DisplayPage { get; set; }
 
-    // convert to read only control that can be showable
-    void CreateReadOnly();
-
     // sets the page as not answered yet
     void ClearAnswer();
-
-    // save to a file
-    bool Load(IRiddleSerializer s);
-
-    // save to a file
-    void Save(IRiddleSerializer s);
+    
+    void Save(String name);
 
     // creates write module
     void Create();
