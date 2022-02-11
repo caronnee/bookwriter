@@ -528,5 +528,10 @@ namespace MyBook.BookContent
       SaveCharacters(s);
       return 0;
     }
+    public void Load()
+    {
+      Serializer.XmlBookLoad s = new Serializer.XmlBookLoad(FullPath);
+      LoadCharacters(s);
+    }
   }
 }
