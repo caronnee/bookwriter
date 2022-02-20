@@ -4,7 +4,6 @@ using MyBook.Write;
 using MyBook.Write.Bookmark;
 using MyBook.Write.Character;
 using MyBook.Write.GroupHandler;
-using MyBook.Write.Timeline;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -131,14 +130,6 @@ namespace MyBook
       }
     }
 
-    // create timeline show
-    private void ShowTimeline()
-    {
-      Timeline t = new Timeline(Cache.Scenes);
-      t.OnFinished += SelectionPickup;
-      // todo change current content to timeline. Save not implemented
-    }
-
     public event PropertyChangedEventHandler PropertyChanged;
     void NotifyPropertyChanged(string property)
     {
@@ -169,12 +160,7 @@ namespace MyBook
       //CurrentContent = _characterHolder;
       //_characterHolder.Load(x_characters.SelectedValue as CharacterContent);
     }
-
-    private void SetTimeline(object sender, RoutedEventArgs e)
-    {
-      ShowTimeline();
-    }
-    
+        
     private void AddScene_Click(object sender, RoutedEventArgs e)
     {
       Cache.CreateScene();

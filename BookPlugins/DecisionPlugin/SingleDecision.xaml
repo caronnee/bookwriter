@@ -7,7 +7,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" x:Name="x_decision">
     <UserControl.Resources>
-        <riddle:OutcomeConverter x:Key="valueconverter"></riddle:OutcomeConverter>
     </UserControl.Resources>
     <UniformGrid Columns="3">
         <!-- Description of the decision -->

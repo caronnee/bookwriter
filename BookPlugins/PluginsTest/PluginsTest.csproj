@@ -57,8 +57,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppNodeNames.cs" />
-    <Compile Include="BookLoader.cs" />
-    <Compile Include="BookSaver.cs" />
+    <Compile Include="BookTest.cs" />
     <Compile Include="Tabcontainer.xaml.cs">
       <DependentUpon>Tabcontainer.xaml</DependentUpon>
     </Compile>
@@ -109,6 +108,10 @@
     <ProjectReference Include="..\..\RiddleInterface\RiddleInterface.csproj">
       <Project>{C3D84647-8A04-498C-9B37-A97944BA2ACA}</Project>
       <Name>RiddleInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Serializer\Serializer.csproj">
+      <Project>{b7e7cf06-b3a0-448f-a979-53ef8b0ff65d}</Project>
+      <Name>Serializer</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

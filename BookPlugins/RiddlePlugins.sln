@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2018
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31410.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PasswordPlugin", "PasswordPlugin\PasswordPlugin.csproj", "{1A3D7021-E301-4F87-AAFC-C7CF3840594B}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextPlugin", "TextPlugin\TextPlugin.csproj", "{D29DD6B4-D2CF-4368-B8D5-03C8FCA6ACA7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImagePlugin", "ImagePlugin\ImagePlugin.csproj", "{F45DA8BD-3F02-417C-A60F-A976ED77B410}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serializer", "..\Serializer\Serializer.csproj", "{B7E7CF06-B3A0-448F-A979-53EF8B0FF65D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{F45DA8BD-3F02-417C-A60F-A976ED77B410}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F45DA8BD-3F02-417C-A60F-A976ED77B410}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F45DA8BD-3F02-417C-A60F-A976ED77B410}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7E7CF06-B3A0-448F-A979-53EF8B0FF65D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7E7CF06-B3A0-448F-A979-53EF8B0FF65D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7E7CF06-B3A0-448F-A979-53EF8B0FF65D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7E7CF06-B3A0-448F-A979-53EF8B0FF65D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

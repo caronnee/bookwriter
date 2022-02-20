@@ -1,4 +1,5 @@
 using RiddleInterface;
+using Serializer;
 using System.Collections.Generic;
 using System.Windows.Controls;
 
@@ -6,6 +7,17 @@ namespace DecisionPlugin
 {
   public class DecisionCreator : IRiddleHandler
   {
+    public int Order { get; set; }
+    public string Name { get { return "Decision"; } }
+
+    public Control Settings { get; set; }
+
+    public Control Viewport { get; set; }
+
+    public Control DisplayPage { get; set; }
+
+    public string BaseFolder { get; set; }
+
     public DecisionData Data { get; set; }
     
     // detail about user input
@@ -13,7 +25,6 @@ namespace DecisionPlugin
 
     public DecisionCreator()
     {
-      Outcomes = new List<Outcome>();
       Data = new DecisionData();
       Settings = null;
       Viewport = null;
@@ -26,20 +37,6 @@ namespace DecisionPlugin
       b.DataContext = this;
       Viewport = b;
     }
-
-    public OnSuccessAction onAnswer { get; set; }
-
-    public string Name { get { return "Decision"; } }
-
-    public List<Outcome> Outcomes { get; set; }
-
-    public Control Settings { get; set; }
-
-    public Control Viewport { get; set; }
-
-    public Control DisplayPage { get; set; }
-
-    public string BaseFolder { get; set; }
 
     public void Answered()
     {
@@ -68,9 +65,9 @@ namespace DecisionPlugin
         {
           DecisionPossibilities s = Data.Posibilities[i];
           Button bt = new Button();
-          Outcome o = Outcomes.Find(x => x.Id == s.Id);
+          //Outcome o = Outcomes.Find(x => x.Id == s.Id);
           // this must be valid. Solved while loading
-          System.Diagnostics.Debug.Assert(o != null);
+          //System.Diagnostics.Debug.Assert(o != null);
           bt.Content = s.Action;
           bt.DataContext = s;
           bt.Click += Bt_Click;
@@ -82,61 +79,104 @@ namespace DecisionPlugin
     private void Bt_Click(object sender, System.Windows.RoutedEventArgs e)
     {
       Button b = sender as Button;
-      if (onAnswer!=null)
+      if (false)
       {
         DecisionPossibilities a = b.DataContext as DecisionPossibilities;
         Answer = new PostAnswerData();
         Answer.id = a.Id;
         Answer.Reaction = a.Reaction;
         Answer.ActionTaken = a.Action;
-        onAnswer(a.Id);
       }
       Answered();
     }
-    
-    public void Save(IRiddleSerializer r)
-    {
-      r.SaveParameter(DecisionNodeNames.IdString,Name);
-      r.SaveValue(DecisionNodeNames.DescriptionString, Data.Description);
-      r.StartSection(DecisionNodeNames.PossibilitiesString);
-      for ( int i =0; i < Data.Posibilities.Count; i++)
-      {
-        r.StartSection(DecisionNodeNames.PossibilityString);
-        r.SaveValue(DecisionNodeNames.ActionString, Data.Posibilities[i].Action);
-        r.SaveValue(DecisionNodeNames.ReactionString, Data.Posibilities[i].Reaction);
-        r.SaveValue(DecisionNodeNames.ItemString, Data.Posibilities[i].Item);
-        r.SaveValue(DecisionNodeNames.IdString, Data.Posibilities[i].Id.ToString());
-        r.EndSection();
 
-      }
-      r.EndSection();
+
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////// Serialization //////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////
+
+    struct PossibilitySerialize
+    {
+      public int id;
+      public string action;
+      public string reaction;
+      public string item;
+    }
+    struct DecisionSerialize
+    {
+      public string description;
+      public List<PossibilitySerialize> possibilities;
     }
 
-    public bool Load(IRiddleSerializer r)
+    public void Save(Serializer.BaseSerializer r)
     {
-      string s = r.LoadParameter(DecisionNodeNames.IdString);
-      if (s != Name)
-        return false;
-      Data = new DecisionData();
-      Data.Posibilities.Clear();
-      Data.Description = r.LoadSection(DecisionNodeNames.DescriptionString);
-      r.StartSection(DecisionNodeNames.PossibilitiesString);
-      int osize = r.Children();
-      for (int i = 0; i < osize; i++)
+      DecisionSerialize ds = new DecisionSerialize();
+      ds.description = Data.Description;
+      ds.possibilities = new List<PossibilitySerialize>();
+      for (int i =0; i < Data.Posibilities.Count; i++)
       {
-        r.LoadSection(i);
-        DecisionPossibilities p = new DecisionPossibilities();
-        p.Action = r.LoadSection(DecisionNodeNames.ActionString);
-        p.Reaction = r.LoadSection(DecisionNodeNames.ReactionString);
-        p.Item = r.LoadSection(DecisionNodeNames.ItemString);
-        s = r.LoadSection(DecisionNodeNames.IdString);
-        p.Id = System.Int32.Parse(s);
-        Data.Posibilities.Add(p);
-        r.EndSection();
+        DecisionPossibilities dp = Data.Posibilities[i];
+        PossibilitySerialize ps = new PossibilitySerialize();
+        ps.id = dp.Id;
+        ps.action = dp.Action;
+        ps.reaction = dp.Reaction;
+        ps.item = dp.Item;
+        ds.possibilities.Add(ps);
       }
-      r.EndSection();
+      Serialize(r, ref ds);
+    }
+    private void Serialize(Serializer.BaseSerializer r, ref DecisionSerialize ds)
+    {
+      r.SerializeString(DecisionNodeNames.DescriptionString, ref ds.description);
+      string dummystring = "";
+      int len = r.PushSection(DecisionNodeNames.PossibilitiesString, ref dummystring, ref dummystring);
+      if (r.IsLoading)
+      {
+        ds.possibilities = new List<PossibilitySerialize>(len);
+      }
+        
+      for ( int i =0; i <ds.possibilities.Count; i++)
+      {
+        PossibilitySerialize ps = ds.possibilities[i];
+        r.PushSection(DecisionNodeNames.PossibilityString, ref dummystring, ref dummystring);
+        r.SerializeString(DecisionNodeNames.ActionString, ref ps.action);
+        r.SerializeString(DecisionNodeNames.ReactionString, ref ps.reaction);
+        r.SerializeString(DecisionNodeNames.ItemString, ref ps.item);
+        r.SerializeInt(DecisionNodeNames.IdString, ref ps.id);
+        if (r.IsLoading)
+          ds.possibilities[i] = ps;
+        r.PopSection();
+      }
+      r.PopSection();
+    }
+
+    public bool Load(Serializer.BaseSerializer r)
+    {
+      DecisionSerialize ds = new DecisionSerialize();
+      Serialize(r, ref ds);
+      Data = new DecisionData();
+      Data.Description = ds.description;
+      for ( int i =0; i < ds.possibilities.Count; i++)
+      {
+        PossibilitySerialize ps = ds.possibilities[i];
+        DecisionPossibilities dp = new DecisionPossibilities();
+        dp.Id = ps.id;
+        dp.Action = ps.action;
+        dp.Reaction = ps.reaction;
+        dp.Item = ps.item;
+        Data.Posibilities.Add(dp);
+      }
+      
       Create();
       return true;
+    }
+
+    public void Serialize(BaseSerializer s)
+    {
+      if (s.IsLoading)
+        Load(s);
+      else
+        Save(s);
     }
   }
 }

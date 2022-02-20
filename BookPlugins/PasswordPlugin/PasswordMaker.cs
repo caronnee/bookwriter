@@ -13,8 +13,6 @@ namespace PasswordPlugin
     public string Name { get { return "Password"; } }
     public Control Settings { get; set; }
     public Control Viewport { get; set; }
-    public List<Outcome> Outcomes { get; set; }
-    public OnSuccessAction onAnswer { get; set; }
 
     #endregion
 

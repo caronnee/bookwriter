@@ -19,12 +19,12 @@ namespace DecisionPlugin
     {
       DecisionData d = dc.Data;
       sd.DataContext = p;
-      sd.x_crossroad.ItemsSource = dc.Outcomes;
+      //sd.x_crossroad.ItemsSource = dc.Outcomes;
       sd.x_crossroad.DisplayMemberPath = "Name";
-      int selected = dc.Outcomes.FindIndex(x => p.Id == x.Id);
+      int selected = 0;// dc.Outcomes.FindIndex(x => p.Id == x.Id);
       if (selected < 0)
         return;
-      sd.x_crossroad.SelectedItem = dc.Outcomes[selected];
+      //sd.x_crossroad.SelectedItem = dc.Outcomes[selected];
     }
 
     private void DecisionWriteBox_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)

@@ -15,6 +15,7 @@ namespace Serializer
     {
       _doc = new XmlDocument();
       _doc.LoadXml(name);
+      IsLoading = true;
     }
     public override void PopSection()
     {

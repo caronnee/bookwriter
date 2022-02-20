@@ -56,12 +56,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\RiddleInterface\RiddleInterface.csproj">
-      <Project>{c3d84647-8a04-498c-9b37-a97944ba2aca}</Project>
-      <Name>RiddleInterface</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Page Include="ImageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -70,6 +64,16 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\RiddleInterface\RiddleInterface.csproj">
+      <Project>{c3d84647-8a04-498c-9b37-a97944ba2aca}</Project>
+      <Name>RiddleInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Serializer\Serializer.csproj">
+      <Project>{b7e7cf06-b3a0-448f-a979-53ef8b0ff65d}</Project>
+      <Name>Serializer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

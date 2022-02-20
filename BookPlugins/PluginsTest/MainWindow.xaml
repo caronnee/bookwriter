@@ -6,17 +6,21 @@
         xmlns:local="clr-namespace:PluginsTest"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <DockPanel LastChildFill="True">
-        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-            <Button Content="Load" Click="x_load_click"/>
-            <Button Content="Save" Click="SaveClick"/>
-        </StackPanel>
-        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" >
-            <TextBlock x:Name="x_info">info</TextBlock>
-        </StackPanel>
-        <Grid>
-            <TabControl x:Name="x_test">
-            </TabControl>
-        </Grid>
-    </DockPanel>
+  <DockPanel LastChildFill="True">
+    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+      <Button Content="Load" Click="x_load_click"/>
+      <Button Content="Save" Click="SaveClick"/>
+    </StackPanel>
+    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" >
+      <TextBlock x:Name="x_info">info</TextBlock>
+    </StackPanel>
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition/>
+        <ColumnDefinition Width="32*"/>
+      </Grid.ColumnDefinitions>
+      <TabControl x:Name="x_test" Grid.ColumnSpan="2">
+      </TabControl>
+    </Grid>
+  </DockPanel>
 </Window>

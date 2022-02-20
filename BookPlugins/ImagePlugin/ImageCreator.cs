@@ -9,12 +9,9 @@ namespace ImagePlugin
   public class ImageCreator : IRiddleHandler
   {
     public ImageData Data { get; set; }
-
-    public OnSuccessAction onAnswer { get; set; }
-
+    
     public string Name => "Image";
 
-    public List<Outcome> Outcomes { get; set; }
     public Control Settings { get; set; }
     public Control Viewport { get; set; }
     public Control DisplayPage { get; set; }
@@ -27,6 +24,7 @@ namespace ImagePlugin
 
     // folder for data. Not used for password. Yet
     public string BaseFolder { get; set; }
+    public int Order { get; set; }
 
     public void ClearAnswer()
     {
@@ -45,25 +43,48 @@ namespace ImagePlugin
       DisplayPage.DataContext = this;
     }
 
-    public bool Load(IRiddleSerializer r)
-    {
-      string s = r.LoadParameter(ImageNodeNames.Id);
-      if ( s != Name )
-        return false;
+    #region Serialization
 
-      Data.Header = r.LoadSection(ImageNodeNames.Header);
-      Data.Footer = r.LoadSection(ImageNodeNames.Footer);
-      Data.ImagePath = BaseFolder + r.LoadSection(ImageNodeNames.Path);
+    struct ImageSerializationData
+    {
+      public string filename;
+      public string footer;
+      public string header;
+    };
+
+    private void Serialize(Serializer.BaseSerializer serialize, ref ImageSerializationData d)
+    {
+     
+    }
+
+    public bool Load(Serializer.BaseSerializer s)
+    {
+      ImageSerializationData d = new ImageSerializationData();
+      Serialize(s, ref d);
+
+      Data.ImagePath = d.filename;
+      Data.Footer = d.footer;
+      Data.Header = d.header;
       Create();
       return true;
     }
 
-    public void Save(IRiddleSerializer r)
+    private void Save(Serializer.BaseSerializer s)
     {
-      r.SaveParameter(ImageNodeNames.Id, Name);
-      r.SaveValue(ImageNodeNames.Path, Data.ImagePath.Substring(BaseFolder.Length));
-      r.SaveValue(ImageNodeNames.Header, Data.Header);
-      r.SaveValue(ImageNodeNames.Footer, Data.Footer);
+      ImageSerializationData d = new ImageSerializationData();
+      d.filename = Data.ImagePath;
+      d.footer = Data.Footer;
+      d.header = Data.Header;
     }
+
+    public void Serialize(Serializer.BaseSerializer s)
+    {
+      if (s.IsLoading)
+        Load(s);
+      else
+        Save(s);
+
+    }
+    #endregion
   }
 }

@@ -13,5 +13,6 @@ namespace Serializer
     public abstract void SerializeDouble(String name, ref double value);
     public abstract int PushSection(String name, ref String att, ref String value);
     public abstract void PopSection();
+    public bool IsLoading { get; set; }
     }
 }

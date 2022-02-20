@@ -3,11 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows;
-using System.Xml;
-using System.Xml.Serialization;
 
 namespace PluginsTest
 {
@@ -16,21 +12,11 @@ namespace PluginsTest
   /// </summary>
   public partial class MainWindow : Window
   {
-    // possible outcomes
-    [XmlIgnore]
-    List<Outcome> Locations { get; set; }
-    [XmlElement]
     List<IRiddleHandler> Handlers { get; set; }
     public MainWindow()
     {
       // all handlers that can be downloaded from dll
       InitializeComponent();
-      Locations = new List<Outcome>();
-
-      Locations.Add(new Outcome() { Name = "Page 0", Id = 0 });
-      Locations.Add(new Outcome() { Name = "Page 1", Id = 1 });
-      Locations.Add(new Outcome() { Name = "Page 2", Id = 2 });
-      Locations.Add(new Outcome() { Name = "Page 3", Id = 3 });
       Handlers = InitPlugins();
       RefreshAll();
     }

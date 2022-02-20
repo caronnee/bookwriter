@@ -121,9 +121,6 @@
     <Compile Include="Write\MetaData\MetaData.xaml.cs">
       <DependentUpon>MetaData.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Write\Timeline\Timeline.xaml.cs">
-      <DependentUpon>Timeline.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -229,10 +226,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AboutBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Write\Timeline\Timeline.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

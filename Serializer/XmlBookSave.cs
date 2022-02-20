@@ -12,6 +12,7 @@ namespace Serializer
     {
       _doc = new XmlDocument();
       _name = name;
+      IsLoading = false;
     }
     public override void PopSection()
     {

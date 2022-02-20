@@ -18,8 +18,11 @@ namespace MyBook.BookContent
     /// <summary>
     /// Scenes
     /// </summary>
-    public const String Chapters = "Chapters";
-    public const String SceneName = "Chapter";
+    public const String Scenes = "Scenes";
+    public const String Scene = "Scene";
+    public const String Page = "Page";
+    public const String Plugin = "Plugin";
+
     // content types
     public const String ParagraphName = "Text";
     public const String ImageName = "Image";
@@ -44,6 +47,7 @@ namespace MyBook.BookContent
   {
     public String Name { get; set; }
     public Assembly Assembly { get; set; }
+    public Type Type { get; set; }
   }
 
   public class BookSource : INotifyPropertyChanged
@@ -85,6 +89,7 @@ namespace MyBook.BookContent
           {
             AssemblyMap m = new AssemblyMap();
             m.Assembly = a;
+            m.Type = t;
             m.Name = riddle.Name;
             HandlersMap.Add(m);
           }
@@ -166,22 +171,10 @@ namespace MyBook.BookContent
       // content of the book for writing
       public List<IRiddleHandler> Pages { get; set; }
 
-      // for timeline - order between parallel scenes
-      public int Column { get; set; }
-
-      // for timeline - vertical position when the scene happens
-      public int TimePosition { get; set; }
-
-      // size of the scene
-      public int Duration { get; set; }
-
       // constructor
       public SceneDescription()
       {
         Pages = new List<IRiddleHandler>();
-        Duration = 1;
-        TimePosition = -1;
-        Column = 0;
       }
     }
 
@@ -412,12 +405,6 @@ namespace MyBook.BookContent
       NotifyPropertyChanged("CanGoFurther");
     }
 
-   
-    private void SaveScenes()
-    {
-      // todo better
-    }
-
     public void SetScene(SceneDescription sceneDescription)
     {
       Position.Clear();
@@ -458,7 +445,7 @@ namespace MyBook.BookContent
       string dummy = "";
       int children = s.PushSection(XmlNodeNames.Characters, ref dummy, ref dummy);
       List<CharacterSerializeData> ret = input;
-      if (input.Count == 0)
+      if (s.IsLoading)
       {
         ret = new List<CharacterSerializeData>(children);
       }
@@ -469,7 +456,7 @@ namespace MyBook.BookContent
         s.SerializeString(XmlNodeNames.Character, ref a1.name);
         s.SerializeInt(XmlNodeNames.Father, ref a1.father);
         children = s.PushSection(XmlNodeNames.Episodes, ref dummy, ref dummy);
-        if (a1.episodes.Count != children)
+        if (s.IsLoading)
         {
           a1.episodes = new List<EpisodesSerialization>(children);
         }
@@ -509,6 +496,75 @@ namespace MyBook.BookContent
       SerializeCharacters(s, data);
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////  Scenes  ////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    struct SceneSerializeData
+    {
+      public String name;
+      public List<PageSerializeData> pages;
+    }
+    struct PageSerializeData
+    {
+      public String type;
+      public int order;
+      public IRiddleHandler handler;
+    }
+    private void SaveScenes(Serializer.BaseSerializer s)
+    {
+      List<SceneSerializeData> data = new List<SceneSerializeData>();
+      foreach( SceneDescription sd in Scenes)
+      {
+        SceneSerializeData d = new SceneSerializeData();
+        d.name = sd.Name;
+        for(int i = 0; i < sd.Pages.Count; i++)
+        {
+          PageSerializeData pd = new PageSerializeData();
+          pd.type = sd.Pages[i].Name;
+          pd.order = i;
+          pd.handler = sd.Pages[i];
+        }
+        data.Add(d);
+      }
+      SerializeScenes(s, data);
+    }
+
+    private List<SceneSerializeData> SerializeScenes( Serializer.BaseSerializer s, List<SceneSerializeData> data)
+    {
+      List<SceneSerializeData> ret = data;
+      string dummy = "";
+      int len = s.PushSection(XmlNodeNames.Scenes, ref dummy, ref dummy);
+      if ( s.IsLoading )
+      {
+        ret = new List<SceneSerializeData>(len);
+      }
+      for ( int i =0; i < len; i++)
+      {
+        SceneSerializeData d = ret[i];
+        s.SerializeString(XmlNodeNames.Scene, ref d.name);
+        int pagesLen = s.PushSection(XmlNodeNames.Page, ref dummy, ref dummy);
+        if(d.pages.Count!= pagesLen)
+        {
+          d.pages = new List<PageSerializeData>(pagesLen);
+        }
+        for(int iPage =0; iPage <pagesLen; iPage++)
+        {
+          PageSerializeData psd = d.pages[iPage];
+          s.SerializeString(XmlNodeNames.Plugin, ref psd.type);
+          if ( s.IsLoading )
+          {
+            AssemblyMap m = HandlersMap.Find(x => x.Name == psd.type);
+            psd.handler = m.Assembly.CreateInstance(m.Type.ToString()) as IRiddleHandler;
+          }
+          psd.handler.Serialize(s);
+        }
+        s.PopSection();
+        ret[i] = d;
+      }
+      s.PopSection();
+      return ret;
+    }
+
     /// <summary>
     /// Serialization to file itself
     /// </summary>
@@ -523,9 +579,9 @@ namespace MyBook.BookContent
         Directory.CreateDirectory(Settings.BooksFolder);
       }
 
-      SaveScenes();
       Serializer.XmlBookSave s = new Serializer.XmlBookSave(FullPath);
       SaveCharacters(s);
+      SaveScenes(s);
       return 0;
     }
     public void Load()
