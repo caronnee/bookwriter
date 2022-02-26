@@ -14,14 +14,24 @@ namespace Serializer
       _name = name;
       IsLoading = false;
     }
+    public void Finish()
+    {
+      _doc.Save(_name);
+    }
     public override void PopSection()
     {
       _current = _current.ParentNode;
     }
 
-    public override int PushSection(string name, ref string att, ref string value)
+    public override int PushSection(string name, ref string attName, ref string value)
     {
       XmlElement el = _doc.CreateElement(name);
+      if (attName.Length!=0)
+      {
+        XmlAttribute att = _doc.CreateAttribute(attName);
+        att.InnerText = value;
+        el.Attributes.Append(att);
+      }
       int ret = 0;
       if ( _current == null )
       {
@@ -38,21 +48,21 @@ namespace Serializer
     public override void SerializeInt(string name, ref int value)
     {
       XmlElement el = _doc.CreateElement(name);
-      el.Value = value.ToString();
+      el.InnerText = value.ToString();
       _current.AppendChild(el);
     }
 
     public override void SerializeDouble(string name, ref double value)
     {
       XmlElement el = _doc.CreateElement(name);
-      el.Value = value.ToString();
+      el.InnerText = value.ToString();
       _current.AppendChild(el);
     }
 
     public override void SerializeString(string name, ref string value)
     {
       XmlElement el = _doc.CreateElement(name);
-      el.Value = value;
+      el.InnerText = value;
       _current.AppendChild(el);
     }
   }

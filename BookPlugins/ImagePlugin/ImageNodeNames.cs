@@ -8,7 +8,6 @@ namespace ImagePlugin
 {
   class ImageNodeNames
   {
-    static public string Id = "Id";
     static public string Path = "Path";
     static public string Header = "Header";
     static public string Footer = "Footer";

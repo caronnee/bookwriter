@@ -60,6 +60,10 @@
       <Project>{c3d84647-8a04-498c-9b37-a97944ba2aca}</Project>
       <Name>RiddleInterface</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Serializer\Serializer.csproj">
+      <Project>{b7e7cf06-b3a0-448f-a979-53ef8b0ff65d}</Project>
+      <Name>Serializer</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Page Include="TextWriter.xaml">

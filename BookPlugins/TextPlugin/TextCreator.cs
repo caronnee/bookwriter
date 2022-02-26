@@ -6,17 +6,16 @@ namespace TextPlugin
 {
   public class TextCreator : IRiddleHandler
   {
-    public OnSuccessAction onAnswer { get; set; }
-
     public string Name => "Text";
 
-    public List<Outcome> Outcomes { get; set; }
+    //public List<Outcome> Outcomes { get; set; }
     public Control Settings { get; set; }
     public Control Viewport { get; set; }
     public Control DisplayPage { get; set; }
 
     public TextData Data { get; set; }
     public string BaseFolder { get; set; }
+    public int Order { get; set; }
 
     public void ClearAnswer()
     {
@@ -42,20 +41,15 @@ namespace TextPlugin
       DisplayPage.DataContext = Data;
     }
 
-    public bool Load(IRiddleSerializer r)
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////// Serializer ////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    public void Serialize(Serializer.BaseSerializer s)
     {
-      string ret = r.LoadParameter(TextNodeNames.Id);
-      if (ret != Name)
-        return false;
-      Data.Description = r.LoadSection(TextNodeNames.Desc);
-      Create();
-      return true;
-    }
-
-    public void Save(IRiddleSerializer r)
-    {
-      r.SaveParameter(TextNodeNames.Id, Name);
-      r.SaveValue(TextNodeNames.Desc, Data.Description);
+      string str = Data.Description;
+      s.SerializeString(TextNodeNames.Desc, ref str);
+      Data.Description = str;
     }
   }
 }

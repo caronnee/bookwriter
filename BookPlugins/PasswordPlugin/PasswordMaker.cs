@@ -1,4 +1,5 @@
 using RiddleInterface;
+using Serializer;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -22,7 +23,6 @@ namespace PasswordPlugin
     {
       Data = new PasswordData();
       Data.Definition.AcceptableAnswer = "Hooray";
-      Outcomes = new List<Outcome>();
     }
 
     private void Answered()
@@ -76,10 +76,6 @@ namespace PasswordPlugin
         Data.Answer.Reactions.Add(Data.Definition.SuccessReaction);
         Data.Answer.Id = id;
         Answered();
-        if ( onAnswer!=null )
-        {
-          onAnswer(id);
-        }
       }
       else
       {
@@ -88,10 +84,6 @@ namespace PasswordPlugin
           int id = Data.Definition.FailureId;
           Data.Answer.Id = id;
           Data.Answer.Reactions.Add(Data.Definition.FailureReaction);
-          if (onAnswer != null)
-          {
-            onAnswer(id);
-          }
         }
         else 
         {
@@ -108,73 +100,20 @@ namespace PasswordPlugin
 
     // 
     public Control DisplayPage { get; set; }
-
     // folder for data. Not used for password. Yet
     public string BaseFolder { get; set; }
+    public int Order { get; set; }
 
-    public void Save(IRiddleSerializer r)
-    {
-      r.SaveParameter(PasswordNodeNames.IdString, Name);
-      r.SaveValue(PasswordNodeNames.DescString, Data.Definition.Description);
-      r.SaveValue(PasswordNodeNames.AnswerString, Data.Definition.AcceptableAnswer);
-      r.SaveValue(PasswordNodeNames.FailureString, Data.Definition.FailureId.ToString());
-      r.SaveValue(PasswordNodeNames.FailureReactionString, Data.Definition.FailureReaction);
-      r.SaveValue(PasswordNodeNames.FailuresString, Data.Definition.NAllowedFailures.ToString());
-      r.SaveValue(PasswordNodeNames.SuccessString, Data.Definition.SuccessId.ToString());
-      r.SaveValue(PasswordNodeNames.SuccessReactionString, Data.Definition.SuccessReaction);
-
-      r.StartSection(PasswordNodeNames.HintsString);
-      for ( int i = 0; i < Data.Definition.Hints.Count; i++)
-      {
-        r.SaveValue(PasswordNodeNames.HintString,Data.Definition.Hints[i].Hint);
-      }
-      r.EndSection();
-      
-      // answer does not need to be saved, because ot will be saved as in progress
-    }
-
-    public bool Load(IRiddleSerializer r)
-    {
-      string s = r.LoadParameter(PasswordNodeNames.IdString);
-      if (s != Name)
-        return false;
-      Data = new PasswordData();
-      Data.Definition.Description = r.LoadSection(PasswordNodeNames.DescString);
-      Data.Definition.AcceptableAnswer = r.LoadSection(PasswordNodeNames.AnswerString);
-      s = r.LoadSection(PasswordNodeNames.FailureString);
-      Data.Definition.FailureId = System.Int32.Parse(s);
-      Data.Definition.FailureReaction = r.LoadSection(PasswordNodeNames.FailureReactionString);
-      s = r.LoadSection(PasswordNodeNames.FailuresString);
-      Data.Definition.NAllowedFailures = System.Int32.Parse(s);
-      s = r.LoadSection(PasswordNodeNames.SuccessString);
-      Data.Definition.SuccessId = System.Int32.Parse(s);
-      Data.Definition.SuccessReaction = r.LoadSection(PasswordNodeNames.SuccessReactionString);
-
-      r.StartSection(PasswordNodeNames.HintsString);
-      int osize = r.Children();
-      for (int i = 0; i < osize; i++)
-      {
-        r.LoadSection(i);
-        HintItem item = new HintItem();
-        item.Hint = r.LoadValue();
-        Data.Definition.Hints.Add(item);
-        r.EndSection();
-      }
-      r.EndSection();
-      Create();
-      return true;
-    }
-    
     private void CreateWrite()
     {
       PasswordWriteBox b = new PasswordWriteBox();
       Viewport = b;
       Viewport.DataContext = this;
-      if (Outcomes.Count > 0)
-      {
-        b.x_fail.SelectedItem = Outcomes[Data.Definition.FailureId];
-        b.x_success.SelectedItem = Outcomes[Data.Definition.SuccessId];
-      }
+      //if (Outcomes.Count > 0)
+      //{
+      //  b.x_fail.SelectedItem = Outcomes[Data.Definition.FailureId];
+      //  b.x_success.SelectedItem = Outcomes[Data.Definition.SuccessId];
+      //}
       b.x_countdown.SelectedIndex = Data.Definition.Hints.Count;
       b.x_hints_holder.Visibility = Data.Definition.Hints.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
       b.RefillHints();
@@ -187,6 +126,98 @@ namespace PasswordPlugin
       Settings = new PasswordSetting();
       CreateWrite();      
       CreateReadOnly();
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////// Serialization ///////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    struct HintSerializeData
+    {
+      public string hint;
+    }
+    struct PasswordSerializeData
+    {
+      public string description;
+      public string acceptableAnswer;
+      public int failureId;
+      public string failureReaction;
+      public int maxFailures;
+      public int successId;
+      public string successReaction;
+      public List<HintSerializeData> hints;
+    }
+    public void Save(Serializer.BaseSerializer serializer)
+    {
+      PasswordSerializeData psd = new PasswordSerializeData();
+      psd.acceptableAnswer = Data.Definition.AcceptableAnswer;
+      psd.description = Data.Definition.Description;
+      psd.failureId = Data.Definition.FailureId;
+      psd.failureReaction = Data.Definition.FailureReaction;
+      psd.maxFailures = Data.Definition.NAllowedFailures;
+      psd.successId = Data.Definition.SuccessId;
+      psd.successReaction = Data.Definition.SuccessReaction;
+      psd.hints = new List<HintSerializeData>();
+      for ( int i =0;i < Data.Definition.Hints.Count; i++)
+      {
+        psd.hints.Add(new HintSerializeData() { hint = Data.Definition.Hints[i].Hint });
+      }
+      Serialize(serializer,ref psd);
+    }
+
+    public bool Load(Serializer.BaseSerializer s)
+    {
+      PasswordSerializeData d = new PasswordSerializeData();
+      Serialize(s, ref d);
+      Data = new PasswordData();
+      Data.Definition = new PasswordDefinition()
+      {
+        Description = d.description,
+        AcceptableAnswer = d.acceptableAnswer,
+        FailureId = d.failureId,
+        NAllowedFailures = d.maxFailures,
+        FailureReaction = d.failureReaction,
+        SuccessId = d.successId,
+        SuccessReaction = d.successReaction,
+      };
+      for ( int i =0;i < d.hints.Count; i++)
+      {
+        HintItem hi = new HintItem() { Hint = d.hints[i].hint };
+        Data.Definition.Hints.Add(hi);
+      }
+
+      Create();
+      return true;
+    }
+
+    private void Serialize( BaseSerializer serializer, ref PasswordSerializeData data)
+    {
+      serializer.SerializeString(PasswordNodeNames.DescString, ref data.description);
+      serializer.SerializeString(PasswordNodeNames.AnswerString, ref data.acceptableAnswer);
+      serializer.SerializeInt(PasswordNodeNames.FailureString, ref data.failureId);
+      serializer.SerializeString(PasswordNodeNames.FailureReactionString, ref data.failureReaction);
+      serializer.SerializeInt(PasswordNodeNames.FailuresString, ref data.maxFailures);
+      serializer.SerializeInt(PasswordNodeNames.SuccessString, ref data.successId);
+      serializer.SerializeString(PasswordNodeNames.SuccessReactionString, ref data.successReaction);
+      string dummy = "";
+      int len = serializer.PushSection(PasswordNodeNames.HintsString, ref dummy, ref dummy);
+      if (serializer.IsLoading)
+      {
+        data.hints = new List<HintSerializeData>(len);
+      }
+      for (int i = 0; i < Data.Definition.Hints.Count; i++)
+      {
+        string str = data.hints[i].hint;
+        serializer.SerializeString(PasswordNodeNames.HintString, ref str);
+        data.hints[i] = new HintSerializeData() { hint = str };
+      }
+      serializer.PopSection();
+    }
+    public void Serialize(BaseSerializer s)
+    {
+      if (s.IsLoading)
+        Load(s);
+      else
+        Save(s);
     }
   }
 }

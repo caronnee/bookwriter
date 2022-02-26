@@ -55,13 +55,11 @@ namespace PasswordPlugin
     }
   }
 
-  [Serializable]
   public class HintItem
   {
     public String Hint { get; set; }
   }
 
-  [Serializable]
   public class PasswordDefinition
   {
     // allowed failured from user. If this is -1, fail

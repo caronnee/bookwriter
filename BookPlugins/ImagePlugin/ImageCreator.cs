@@ -54,14 +54,15 @@ namespace ImagePlugin
 
     private void Serialize(Serializer.BaseSerializer serialize, ref ImageSerializationData d)
     {
-     
+      serialize.SerializeString(ImageNodeNames.Path, ref d.filename);
+      serialize.SerializeString(ImageNodeNames.Footer, ref d.footer);
+      serialize.SerializeString(ImageNodeNames.Header, ref d.header);
     }
 
     public bool Load(Serializer.BaseSerializer s)
     {
       ImageSerializationData d = new ImageSerializationData();
       Serialize(s, ref d);
-
       Data.ImagePath = d.filename;
       Data.Footer = d.footer;
       Data.Header = d.header;
@@ -75,6 +76,7 @@ namespace ImagePlugin
       d.filename = Data.ImagePath;
       d.footer = Data.Footer;
       d.header = Data.Header;
+      Serialize(s, ref d);
     }
 
     public void Serialize(Serializer.BaseSerializer s)
@@ -83,7 +85,6 @@ namespace ImagePlugin
         Load(s);
       else
         Save(s);
-
     }
     #endregion
   }
