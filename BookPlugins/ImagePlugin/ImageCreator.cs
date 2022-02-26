@@ -63,7 +63,7 @@ namespace ImagePlugin
     {
       ImageSerializationData d = new ImageSerializationData();
       Serialize(s, ref d);
-      Data.ImagePath = d.filename;
+      Data.ImagePath = BaseFolder + d.filename;
       Data.Footer = d.footer;
       Data.Header = d.header;
       Create();
@@ -73,7 +73,10 @@ namespace ImagePlugin
     private void Save(Serializer.BaseSerializer s)
     {
       ImageSerializationData d = new ImageSerializationData();
-      d.filename = Data.ImagePath;
+      if ( Data.ImagePath.Length!=0)
+      {
+        d.filename = Data.ImagePath.Substring(BaseFolder.Length);
+      }
       d.footer = Data.Footer;
       d.header = Data.Header;
       Serialize(s, ref d);
