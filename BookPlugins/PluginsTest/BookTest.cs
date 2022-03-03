@@ -64,17 +64,13 @@ namespace PluginsTest
     private void Serialize(Serializer.BaseSerializer s)
     {
       string dummy = "";
-      int len = s.PushSection("Riddles", ref dummy, ref dummy);
-      if (s.IsLoading == false )
+      string name = "";
+      // we know it will be just one
+      s.PushSection("Riddles", 0, "", ref dummy);
+      int iRiddle = 0;
+      while (s.PushSection("Riddle",iRiddle,"plugin", ref name))
       {
-        len = Handlers.Count;
-      }
-      for (int i = 0; i < len; i++)
-      {
-        string attName = "id";
-        string att =Handlers[i].Name;
-        s.PushSection("Riddle", ref attName, ref att);
-        IRiddleHandler correct = Handlers.Find(new Predicate<IRiddleHandler>(x => x.Name == att));
+        IRiddleHandler correct = Handlers.Find(new Predicate<IRiddleHandler>(x => x.Name == name));
         correct.Serialize(s);
         s.PopSection();
       }

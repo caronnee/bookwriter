@@ -199,18 +199,22 @@ namespace PasswordPlugin
       serializer.SerializeInt(PasswordNodeNames.SuccessString, ref data.successId);
       serializer.SerializeString(PasswordNodeNames.SuccessReactionString, ref data.successReaction);
       string dummy = "";
-      int len = serializer.PushSection(PasswordNodeNames.HintsString, ref dummy, ref dummy);
-      if (serializer.IsLoading)
+      int hOrder = 0;
+      while (serializer.PushSection(PasswordNodeNames.HintsString, hOrder, dummy, ref dummy))
       {
-        data.hints = new List<HintSerializeData>(len);
+        hOrder++;
+        if (serializer.IsLoading)
+          data.hints = new List<HintSerializeData>();
+        int hiOrder = 0;
+        while(serializer.PushSection(PasswordNodeNames.HintString, hiOrder, "", ref dummy))
+        {
+          string str = data.hints[hiOrder].hint;
+          serializer.SerializeString(ref str);
+          if (serializer.IsLoading)
+            data.hints.Add( new HintSerializeData() { hint = str } );
+        }
+        serializer.PopSection();
       }
-      for (int i = 0; i < Data.Definition.Hints.Count; i++)
-      {
-        string str = data.hints[i].hint;
-        serializer.SerializeString(PasswordNodeNames.HintString, ref str);
-        data.hints[i] = new HintSerializeData() { hint = str };
-      }
-      serializer.PopSection();
     }
     public void Serialize(BaseSerializer s)
     {

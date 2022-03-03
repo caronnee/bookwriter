@@ -8,11 +8,12 @@ namespace Serializer
 {
     public abstract class BaseSerializer
     {
-    public abstract void SerializeString(String name, ref String value);
-    public abstract void SerializeInt(String name, ref int value);
-    public abstract void SerializeDouble(String name, ref double value);
-    public abstract int PushSection(String name, ref String att, ref String value);
+    public abstract bool SerializeString(String name, ref String value);
+    public abstract bool SerializeInt(String name, ref int value);
+    public abstract bool SerializeDouble(String name, ref double value);
+    public abstract bool PushSection(string name, int order, string att, ref string attValue);
     public abstract void PopSection();
+    public abstract void SerializeString(ref string s);
     public bool IsLoading { get; set; }
     }
 }

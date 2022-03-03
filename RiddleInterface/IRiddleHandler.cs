@@ -13,8 +13,6 @@ namespace RiddleInterface
 
     // name of the content handler
     String Name { get; }
-    
-    int Order { get; set; }
 
     // setting assotiated with the content handler ( rotation etc )
     Control Settings { get; set; }

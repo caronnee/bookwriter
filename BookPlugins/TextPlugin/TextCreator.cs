@@ -15,7 +15,6 @@ namespace TextPlugin
 
     public TextData Data { get; set; }
     public string BaseFolder { get; set; }
-    public int Order { get; set; }
 
     public void ClearAnswer()
     {

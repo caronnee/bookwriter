@@ -78,15 +78,15 @@ namespace DecisionPlugin
 
     private void Bt_Click(object sender, System.Windows.RoutedEventArgs e)
     {
-      Button b = sender as Button;
-      if (false)
-      {
-        DecisionPossibilities a = b.DataContext as DecisionPossibilities;
-        Answer = new PostAnswerData();
-        Answer.id = a.Id;
-        Answer.Reaction = a.Reaction;
-        Answer.ActionTaken = a.Action;
-      }
+      //Button b = sender as Button;
+      //if (false)
+      //{
+      //  DecisionPossibilities a = b.DataContext as DecisionPossibilities;
+      //  Answer = new PostAnswerData();
+      //  Answer.id = a.Id;
+      //  Answer.Reaction = a.Reaction;
+      //  Answer.ActionTaken = a.Action;
+      //}
       Answered();
     }
 
@@ -129,25 +129,26 @@ namespace DecisionPlugin
     {
       r.SerializeString(DecisionNodeNames.DescriptionString, ref ds.description);
       string dummystring = "";
-      int len = r.PushSection(DecisionNodeNames.PossibilitiesString, ref dummystring, ref dummystring);
-      if (r.IsLoading)
+      int order = 0;
+      while( r.PushSection(DecisionNodeNames.PossibilitiesString, order, dummystring, ref dummystring) )
       {
-        ds.possibilities = new List<PossibilitySerialize>(len);
-      }
-        
-      for ( int i =0; i <ds.possibilities.Count; i++)
-      {
-        PossibilitySerialize ps = ds.possibilities[i];
-        r.PushSection(DecisionNodeNames.PossibilityString, ref dummystring, ref dummystring);
-        r.SerializeString(DecisionNodeNames.ActionString, ref ps.action);
-        r.SerializeString(DecisionNodeNames.ReactionString, ref ps.reaction);
-        r.SerializeString(DecisionNodeNames.ItemString, ref ps.item);
-        r.SerializeInt(DecisionNodeNames.IdString, ref ps.id);
         if (r.IsLoading)
-          ds.possibilities[i] = ps;
+          ds.possibilities = new List<PossibilitySerialize>();
+        int pOrder = 0;
+        while (r.PushSection(DecisionNodeNames.PossibilityString, order, dummystring, ref dummystring))
+        {
+          PossibilitySerialize ps = ds.possibilities[pOrder];
+          r.SerializeString(DecisionNodeNames.ActionString, ref ps.action);
+          r.SerializeString(DecisionNodeNames.ReactionString, ref ps.reaction);
+          r.SerializeString(DecisionNodeNames.ItemString, ref ps.item);
+          r.SerializeInt(DecisionNodeNames.IdString, ref ps.id);
+          if (r.IsLoading)
+            ds.possibilities.Add(ps);
+          r.PopSection();
+          pOrder++;
+        }
         r.PopSection();
       }
-      r.PopSection();
     }
 
     public bool Load(Serializer.BaseSerializer r)

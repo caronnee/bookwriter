@@ -23,7 +23,7 @@ namespace Serializer
       _current = _current.ParentNode;
     }
 
-    public override int PushSection(string name, ref string attName, ref string value)
+    public override bool PushSection(string name, int order, string attName, ref string value)
     {
       XmlElement el = _doc.CreateElement(name);
       if (attName.Length!=0)
@@ -37,33 +37,36 @@ namespace Serializer
       {
         _current = el;
         _doc.AppendChild(el);
-        return ret;
+        return true;
       }  
       ret = _current.ChildNodes.Count;
       _current.AppendChild(el);
       _current = el;
-      return ret;
+      return true;
     }
 
-    public override void SerializeInt(string name, ref int value)
+    public override bool SerializeInt(string name, ref int value)
     {
-      XmlElement el = _doc.CreateElement(name);
-      el.InnerText = value.ToString();
-      _current.AppendChild(el);
+      string val = value.ToString();
+      return SerializeString(name, ref val);
     }
 
-    public override void SerializeDouble(string name, ref double value)
+    public override bool SerializeDouble(string name, ref double value)
     {
-      XmlElement el = _doc.CreateElement(name);
-      el.InnerText = value.ToString();
-      _current.AppendChild(el);
+      string val = value.ToString();
+      return SerializeString(name, ref val);
+    }
+    public override void SerializeString(ref string s)
+    {
+      _current.InnerText = s;
     }
 
-    public override void SerializeString(string name, ref string value)
+    public override bool SerializeString(string name, ref string value)
     {
       XmlElement el = _doc.CreateElement(name);
       el.InnerText = value;
       _current.AppendChild(el);
+      return true;
     }
   }
 }
