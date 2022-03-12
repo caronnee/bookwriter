@@ -14,13 +14,7 @@
     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" >
       <TextBlock x:Name="x_info">info</TextBlock>
     </StackPanel>
-    <Grid>
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition/>
-        <ColumnDefinition Width="32*"/>
-      </Grid.ColumnDefinitions>
-      <TabControl x:Name="x_test" Grid.ColumnSpan="2">
-      </TabControl>
-    </Grid>
+    <TabControl x:Name="x_test">
+    </TabControl>
   </DockPanel>
 </Window>

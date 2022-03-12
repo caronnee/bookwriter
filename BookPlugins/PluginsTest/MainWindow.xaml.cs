@@ -43,12 +43,13 @@ namespace PluginsTest
         //Handlers[i].onAnswer += ProcessAnswer;
         x_test.Items.Add(cont);
       }
+      x_test.SelectedIndex = 0;
     }
     
     private void x_load_click(object sender, RoutedEventArgs e)
     {      
       _book.Load(FileName);
-      MessageBox.Show($"Load of {FileName} successfull");
+      //MessageBox.Show($"Load of {FileName} successfull");
       RefreshAll();
     }
     

@@ -30,9 +30,21 @@ namespace Serializer
       s = _current.InnerText;
     }
 
-    public override bool PushSection(string name, int order, string att, ref string attValue)
+    public override bool SerializeAttribute(string name, ref string val)
     {
-      if (_current.ChildNodes.Count >= order)
+      foreach (XmlAttribute a in _current.Attributes)
+      {
+        if (a.Name == name)
+        {
+          val = a.Value;
+          return true;
+        }
+      }
+      return false;
+    }
+    public override bool PushSection(string name, int order)
+    {
+      if (_current.ChildNodes.Count <= order)
         return false;
 
       int iter = 0;
@@ -50,18 +62,7 @@ namespace Serializer
           iter++;
         }
       }
-      if (!found)
-        return false;
-      attValue = "";
-      foreach(XmlAttribute a in _current.Attributes)
-      {
-        if (a.Name == att)
-        {
-          attValue = a.Value;
-          break;
-        }
-      }
-      return true;
+      return found;
     }
 
     public override bool SerializeDouble(string name, ref double value)
@@ -83,7 +84,7 @@ namespace Serializer
       {
         if (n.Name == name)
         {
-          value = Int32.Parse(n.Value);
+          value = Int32.Parse(n.InnerText);
           return true;
         }
       }
@@ -96,7 +97,7 @@ namespace Serializer
       {
         if (n.Name == name)
         {
-          value = n.Value;
+          value = n.InnerText;
           return true;
         }
       }

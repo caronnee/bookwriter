@@ -61,18 +61,42 @@ namespace PluginsTest
     {
       Handlers = InitPlugins();
     }
+
+    public delegate IRiddleHandler HasNextSession(Serializer.BaseSerializer s, int order);
+    public HasNextSession hasNextSession;
+
+    IRiddleHandler HasNextSessionLoad(Serializer.BaseSerializer s, int order)
+    {
+      if (!s.PushSection("Riddle", order))
+        return null;
+      string name = "";
+      s.SerializeAttribute("Plugin", ref name);
+      return Handlers.Find(new Predicate<IRiddleHandler>(x => x.Name == name));
+    }
+    IRiddleHandler HasNextSessionSave(Serializer.BaseSerializer s, int order)
+    {
+      if (order < Handlers.Count)
+      {
+        IRiddleHandler irh = Handlers[order];
+        s.PushSection("Riddle", order);
+        string name = irh.Name;
+        s.SerializeAttribute("Plugin", ref name);
+        return Handlers[order];
+      }
+      return null;
+    }
     private void Serialize(Serializer.BaseSerializer s)
     {
-      string dummy = "";
-      string name = "";
       // we know it will be just one
-      s.PushSection("Riddles", 0, "", ref dummy);
-      int iRiddle = 0;
-      while (s.PushSection("Riddle",iRiddle,"plugin", ref name))
+      s.PushSection("Riddles", 0);
+      int order = 0;
+      IRiddleHandler correct;
+      while ((correct = hasNextSession(s, order))!=null)
       {
-        IRiddleHandler correct = Handlers.Find(new Predicate<IRiddleHandler>(x => x.Name == name));
+        //Handlers.Find(new Predicate<IRiddleHandler>(x => x.Name == name));
         correct.Serialize(s);
         s.PopSection();
+        order++;
       }
       s.PopSection();
     }
@@ -80,13 +104,19 @@ namespace PluginsTest
     public void Save( string filename)
     {
       Serializer.XmlBookSave saver = new Serializer.XmlBookSave(filename);
+      hasNextSession = HasNextSessionSave;
       Serialize(saver);
       saver.Finish();
     }
     public void Load( string filename)
     {
-      Serializer.XmlBookLoad saver = new Serializer.XmlBookLoad(filename);
-      Serialize(saver);
+      Serializer.XmlBookLoad loader = new Serializer.XmlBookLoad(filename);
+      hasNextSession = HasNextSessionLoad;
+      Serialize(loader);
+      foreach(IRiddleHandler h in Handlers)
+      {
+        h.Create();
+      }
     }
   }
 }

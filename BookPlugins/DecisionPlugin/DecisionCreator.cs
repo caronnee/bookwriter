@@ -125,18 +125,32 @@ namespace DecisionPlugin
       }
       Serialize(r, ref ds);
     }
+
+    delegate bool PushingHandler(BaseSerializer s, string section, DecisionSerialize d);
+
+    private bool phLoad(BaseSerializer s, string section, DecisionSerialize d)
+    {
+      string str;
+      return s.PushSection(section, 0, "", ref str);
+    }
     private void Serialize(Serializer.BaseSerializer r, ref DecisionSerialize ds)
     {
       r.SerializeString(DecisionNodeNames.DescriptionString, ref ds.description);
       string dummystring = "";
       int order = 0;
-      while( r.PushSection(DecisionNodeNames.PossibilitiesString, order, dummystring, ref dummystring) )
+      while( true )
       {
+        if (!r.PushSection(DecisionNodeNames.PossibilitiesString, order, "", ref dummystring))
+          break;
         if (r.IsLoading)
           ds.possibilities = new List<PossibilitySerialize>();
         int pOrder = 0;
-        while (r.PushSection(DecisionNodeNames.PossibilityString, order, dummystring, ref dummystring))
+        while (true)
         {
+          if (!r.IsLoading && pOrder >= ds.possibilities.Count)
+            break;
+          if (r.PushSection(DecisionNodeNames.PossibilityString, pOrder, dummystring, ref dummystring) == false)
+            break;
           PossibilitySerialize ps = ds.possibilities[pOrder];
           r.SerializeString(DecisionNodeNames.ActionString, ref ps.action);
           r.SerializeString(DecisionNodeNames.ReactionString, ref ps.reaction);

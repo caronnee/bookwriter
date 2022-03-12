@@ -13,7 +13,7 @@ namespace PasswordPlugin
     public static string AnswerString = "Answer";
     public static string FailureString = "Failures";
     public static string FailureReactionString = "FailureReaction";
-    public static string FailuresString = "Failures";
+    public static string FailuresString = "MaxFailures";
     public static string SuccessString = "Success";
     public static string SuccessReactionString = "SuccessReaction";
     public static string HintsString = "Hints";

@@ -84,16 +84,15 @@ namespace PasswordPlugin
     public int FailureId { get; set; }
 
     // Count of hints is number of allowed failures
-    public List<HintItem> Hints { get; set; }
+    public HintItem[] Hints { get; set; }
 
     // constructor
     public PasswordDefinition()
     {
-      Hints = new List<HintItem>();
+      Hints = new HintItem[5];
     }
   }
 
-  [Serializable]
   public class PasswordData
   {
     // user input

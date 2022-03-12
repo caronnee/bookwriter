@@ -23,23 +23,22 @@ namespace Serializer
       _current = _current.ParentNode;
     }
 
-    public override bool PushSection(string name, int order, string attName, ref string value)
+    public override bool SerializeAttribute(string name, ref string val)
+    {
+      XmlAttribute att = _doc.CreateAttribute(name);
+      att.InnerText = val;
+      _current.Attributes.Append(att);
+      return true;
+    }
+    public override bool PushSection(string name, int order)
     {
       XmlElement el = _doc.CreateElement(name);
-      if (attName.Length!=0)
-      {
-        XmlAttribute att = _doc.CreateAttribute(attName);
-        att.InnerText = value;
-        el.Attributes.Append(att);
-      }
-      int ret = 0;
       if ( _current == null )
       {
         _current = el;
         _doc.AppendChild(el);
         return true;
       }  
-      ret = _current.ChildNodes.Count;
       _current.AppendChild(el);
       _current = el;
       return true;

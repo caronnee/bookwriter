@@ -20,7 +20,11 @@ namespace PasswordPlugin
 
     public void x_countdown_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-      int index = (DataContext as PasswordMaker).Data.Definition.NAllowedFailures;
+      int index = x_countdown.SelectedIndex;
+      if (index == x_countdown.Items.Count - 1)
+        index = -1;
+      PasswordMaker m = (DataContext as PasswordMaker);
+      m.Data.Definition.NAllowedFailures = index;
       if (index <= 0 )
       {
         x_hints_holder.Visibility = Visibility.Collapsed;
@@ -28,25 +32,6 @@ namespace PasswordPlugin
       else
       {
         x_hints_holder.Visibility = Visibility.Visible;
-        int oSize = x_hints.Children.Count;
-        if ( oSize > index )
-        {
-          // remove overflow textboxes
-          int toChange = oSize - index;
-          x_hints.Children.RemoveRange(index, toChange);
-          PasswordData d = (DataContext as PasswordMaker).Data;
-          d.Definition.Hints.RemoveRange(index, toChange);
-        }
-        else
-        {
-          int toChange = index - oSize;
-          for (int i = 0; i < toChange; i++)
-          {
-            PasswordData d = (DataContext as PasswordMaker).Data;
-            HintItem it = new HintItem();
-            d.Definition.Hints.Add(it);            
-          }
-        }
         RefillHints();
       }
     }
@@ -55,7 +40,7 @@ namespace PasswordPlugin
     {
       x_hints.Children.Clear();
       PasswordData d = (DataContext as PasswordMaker).Data;
-      for ( int i =0; i < d.Definition.Hints.Count; i++)
+      for ( int i =0; i < d.Definition.NAllowedFailures; i++)
       {
         TextBox b = new TextBox();
         x_hints.Children.Add(b);

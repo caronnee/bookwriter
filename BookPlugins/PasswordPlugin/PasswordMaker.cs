@@ -114,10 +114,11 @@ namespace PasswordPlugin
       //  b.x_fail.SelectedItem = Outcomes[Data.Definition.FailureId];
       //  b.x_success.SelectedItem = Outcomes[Data.Definition.SuccessId];
       //}
-      b.x_countdown.SelectedIndex = Data.Definition.Hints.Count;
-      b.x_hints_holder.Visibility = Data.Definition.Hints.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
-      b.RefillHints();
+      int index = Data.Definition.NAllowedFailures;
+      if (index < 0)
+        index = b.x_countdown.Items.Count - 1;
       b.x_countdown.SelectionChanged += b.x_countdown_SelectionChanged;
+      b.x_countdown.SelectedIndex = index;
     }
 
     public void Create()
@@ -134,6 +135,10 @@ namespace PasswordPlugin
     struct HintSerializeData
     {
       public string hint;
+      public void Serialize(BaseSerializer s)
+      {
+        s.SerializeString(ref hint);
+      }
     }
     struct PasswordSerializeData
     {
@@ -144,7 +149,7 @@ namespace PasswordPlugin
       public int maxFailures;
       public int successId;
       public string successReaction;
-      public List<HintSerializeData> hints;
+      public HintSerializeData[] hints;
     }
     public void Save(Serializer.BaseSerializer serializer)
     {
@@ -156,10 +161,10 @@ namespace PasswordPlugin
       psd.maxFailures = Data.Definition.NAllowedFailures;
       psd.successId = Data.Definition.SuccessId;
       psd.successReaction = Data.Definition.SuccessReaction;
-      psd.hints = new List<HintSerializeData>();
-      for ( int i =0;i < Data.Definition.Hints.Count; i++)
+      psd.hints = new HintSerializeData[5];
+      for ( int i =0;i < Data.Definition.NAllowedFailures; i++)
       {
-        psd.hints.Add(new HintSerializeData() { hint = Data.Definition.Hints[i].Hint });
+        psd.hints[i] = (new HintSerializeData() { hint = Data.Definition.Hints[i].Hint });
       }
       Serialize(serializer,ref psd);
     }
@@ -179,14 +184,46 @@ namespace PasswordPlugin
         SuccessId = d.successId,
         SuccessReaction = d.successReaction,
       };
-      for ( int i =0;i < d.hints.Count; i++)
+      for ( int i =0;i < d.maxFailures; i++)
       {
         HintItem hi = new HintItem() { Hint = d.hints[i].hint };
-        Data.Definition.Hints.Add(hi);
+        Data.Definition.Hints[i] = hi;
       }
 
       Create();
       return true;
+    }
+
+    private delegate bool HasNextHint(Serializer.BaseSerializer s, int num, ref PasswordSerializeData d);
+    private HasNextHint hasNextHint;
+    private HasNextHint hasHints;
+
+    bool HasHintsLoad(Serializer.BaseSerializer s, int num, ref PasswordSerializeData d)
+    {
+      bool ret = s.PushSection(PasswordNodeNames.HintsString, num);
+      d.hints = new HintSerializeData[5];
+      return ret;
+    }
+    bool HasHintsSave(Serializer.BaseSerializer s, int num, ref PasswordSerializeData d)
+    {
+      if (d.hints == null)
+        return false;
+      return s.PushSection(PasswordNodeNames.HintsString, num);
+    }
+
+    bool HasNextHintSave(Serializer.BaseSerializer s, int num, ref PasswordSerializeData d)
+    {
+      if (num >= d.maxFailures)
+        return false;
+      return s.PushSection(PasswordNodeNames.HintString, num);
+    }
+
+    bool HasNextHintLoad(Serializer.BaseSerializer s, int num, ref PasswordSerializeData d)
+    {
+      bool ret = s.PushSection(PasswordNodeNames.HintString, num);
+      //if (ret)
+      //  d.hints.Add(new HintSerializeData() { hint = "unknown"});
+      return ret;
     }
 
     private void Serialize( BaseSerializer serializer, ref PasswordSerializeData data)
@@ -198,20 +235,15 @@ namespace PasswordPlugin
       serializer.SerializeInt(PasswordNodeNames.FailuresString, ref data.maxFailures);
       serializer.SerializeInt(PasswordNodeNames.SuccessString, ref data.successId);
       serializer.SerializeString(PasswordNodeNames.SuccessReactionString, ref data.successReaction);
-      string dummy = "";
-      int hOrder = 0;
-      while (serializer.PushSection(PasswordNodeNames.HintsString, hOrder, dummy, ref dummy))
+     
+      if(hasHints(serializer,0,ref data))
       {
-        hOrder++;
-        if (serializer.IsLoading)
-          data.hints = new List<HintSerializeData>();
-        int hiOrder = 0;
-        while(serializer.PushSection(PasswordNodeNames.HintString, hiOrder, "", ref dummy))
+        int iHint = 0;
+        while (hasNextHint(serializer, iHint,ref data))
         {
-          string str = data.hints[hiOrder].hint;
-          serializer.SerializeString(ref str);
-          if (serializer.IsLoading)
-            data.hints.Add( new HintSerializeData() { hint = str } );
+          data.hints[iHint].Serialize(serializer);
+          serializer.PopSection();
+          iHint++;
         }
         serializer.PopSection();
       }
@@ -219,9 +251,17 @@ namespace PasswordPlugin
     public void Serialize(BaseSerializer s)
     {
       if (s.IsLoading)
+      {
+        hasHints = HasHintsLoad;
+        hasNextHint = HasNextHintLoad;
         Load(s);
+      }
       else
+      {
+        hasHints = HasHintsSave;
+        hasNextHint = HasNextHintSave;
         Save(s);
+      }
     }
   }
 }
