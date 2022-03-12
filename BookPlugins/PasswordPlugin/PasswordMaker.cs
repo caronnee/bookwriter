@@ -164,7 +164,7 @@ namespace PasswordPlugin
       psd.hints = new HintSerializeData[5];
       for ( int i =0;i < Data.Definition.NAllowedFailures; i++)
       {
-        psd.hints[i] = (new HintSerializeData() { hint = Data.Definition.Hints[i].Hint });
+        psd.hints[i] = new HintSerializeData() { hint = Data.Definition.Hints[i].Hint };
       }
       Serialize(serializer,ref psd);
     }
@@ -186,8 +186,7 @@ namespace PasswordPlugin
       };
       for ( int i =0;i < d.maxFailures; i++)
       {
-        HintItem hi = new HintItem() { Hint = d.hints[i].hint };
-        Data.Definition.Hints[i] = hi;
+        Data.Definition.Hints[i] = new HintItem() { Hint = d.hints[i].hint };
       }
 
       Create();

@@ -90,6 +90,10 @@ namespace PasswordPlugin
     public PasswordDefinition()
     {
       Hints = new HintItem[5];
+      for ( int i =0; i < 5; i++)
+      {
+        Hints[i] = new HintItem();
+      }
     }
   }
 
