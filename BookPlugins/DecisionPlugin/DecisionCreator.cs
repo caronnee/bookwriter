@@ -105,14 +105,15 @@ namespace DecisionPlugin
     struct DecisionSerialize
     {
       public string description;
-      public List<PossibilitySerialize> possibilities;
+      public PossibilitySerialize[] possibilities;
     }
 
     public void Save(Serializer.BaseSerializer r)
     {
+      hasNextDecision = NextDecisionSave;
       DecisionSerialize ds = new DecisionSerialize();
       ds.description = Data.Description;
-      ds.possibilities = new List<PossibilitySerialize>();
+      ds.possibilities = new PossibilitySerialize[Data.Posibilities.Count];
       for (int i =0; i < Data.Posibilities.Count; i++)
       {
         DecisionPossibilities dp = Data.Posibilities[i];
@@ -121,57 +122,60 @@ namespace DecisionPlugin
         ps.action = dp.Action;
         ps.reaction = dp.Reaction;
         ps.item = dp.Item;
-        ds.possibilities.Add(ps);
+        ds.possibilities[i] = ps;
       }
       Serialize(r, ref ds);
     }
 
-    delegate bool PushingHandler(BaseSerializer s, string section, DecisionSerialize d);
-
-    private bool phLoad(BaseSerializer s, string section, DecisionSerialize d)
+    delegate bool NextDecision(BaseSerializer s, int order, ref DecisionSerialize d);
+    private NextDecision hasNextDecision;
+    private bool NextDecisionLoad(BaseSerializer s, int order, ref DecisionSerialize d)
     {
-      string str;
-      return s.PushSection(section, 0, "", ref str);
+      if (!s.PushSection(DecisionNodeNames.PossibilityString, order))
+        return false;
+      PossibilitySerialize[] ps = new PossibilitySerialize[order+1];
+      if (order >0)
+        d.possibilities.CopyTo(ps, 0);
+      
+      d.possibilities = ps;
+      return true;
     }
+    private bool NextDecisionSave(BaseSerializer s, int order, ref DecisionSerialize d)
+    {
+      if (order >= d.possibilities.Length)
+        return false;
+      return s.PushSection(DecisionNodeNames.PossibilityString, order);
+    }
+
     private void Serialize(Serializer.BaseSerializer r, ref DecisionSerialize ds)
     {
       r.SerializeString(DecisionNodeNames.DescriptionString, ref ds.description);
-      string dummystring = "";
+      r.PushSection(DecisionNodeNames.PossibilitiesString, 0);
+
       int order = 0;
-      while( true )
+      while (hasNextDecision(r, order, ref ds))
       {
-        if (!r.PushSection(DecisionNodeNames.PossibilitiesString, order, "", ref dummystring))
-          break;
-        if (r.IsLoading)
-          ds.possibilities = new List<PossibilitySerialize>();
-        int pOrder = 0;
-        while (true)
-        {
-          if (!r.IsLoading && pOrder >= ds.possibilities.Count)
-            break;
-          if (r.PushSection(DecisionNodeNames.PossibilityString, pOrder, dummystring, ref dummystring) == false)
-            break;
-          PossibilitySerialize ps = ds.possibilities[pOrder];
-          r.SerializeString(DecisionNodeNames.ActionString, ref ps.action);
-          r.SerializeString(DecisionNodeNames.ReactionString, ref ps.reaction);
-          r.SerializeString(DecisionNodeNames.ItemString, ref ps.item);
-          r.SerializeInt(DecisionNodeNames.IdString, ref ps.id);
-          if (r.IsLoading)
-            ds.possibilities.Add(ps);
-          r.PopSection();
-          pOrder++;
-        }
+        ref PossibilitySerialize ps = ref ds.possibilities[order];
+        r.SerializeString(DecisionNodeNames.ActionString, ref ps.action);
+        r.SerializeString(DecisionNodeNames.ReactionString, ref ps.reaction);
+        r.SerializeString(DecisionNodeNames.ItemString, ref ps.item);
+        r.SerializeInt(DecisionNodeNames.IdString, ref ps.id);
         r.PopSection();
+        order++;
       }
+      r.PopSection();
     }
 
     public bool Load(Serializer.BaseSerializer r)
     {
+      hasNextDecision = NextDecisionLoad;
       DecisionSerialize ds = new DecisionSerialize();
       Serialize(r, ref ds);
       Data = new DecisionData();
+      // remove default one
+      Data.Posibilities.Clear();
       Data.Description = ds.description;
-      for ( int i =0; i < ds.possibilities.Count; i++)
+      for ( int i =0; i < ds.possibilities.Length; i++)
       {
         PossibilitySerialize ps = ds.possibilities[i];
         DecisionPossibilities dp = new DecisionPossibilities();
