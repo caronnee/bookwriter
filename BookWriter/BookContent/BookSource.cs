@@ -209,7 +209,7 @@ namespace MyBook.BookContent
       {
         Info = new List<CharacterEpisodes>();
       }
-      
+
       public void FromSerialize(CharacterSerializeData d)
       {
         Name = d.name;
@@ -219,7 +219,7 @@ namespace MyBook.BookContent
         // todo 
         //Mother. father, sppuse
         Info = new List<CharacterEpisodes>();
-        foreach ( EpisodesSerialization s in d.episodes)
+        foreach (EpisodesSerialization s in d.episodes)
         {
           CharacterEpisodes ep = new CharacterEpisodes();
           ep.Content = s.content;
@@ -234,13 +234,13 @@ namespace MyBook.BookContent
         d.id = Id;
         d.gender = ((int)Gender);
         d.status = ((int)Status);
-        d.episodes = new List<EpisodesSerialization>();
-        foreach (CharacterEpisodes ep in Info)
+        d.episodes = new EpisodesSerialization[this.Info.Count];
+        for (int i = 0; i < Info.Count; i++)
         {
           EpisodesSerialization es = new EpisodesSerialization();
-          es.episodeName = ep.Content;
-          es.content = ep.Content;
-          d.episodes.Add(es);
+          es.episodeName = Info[i].Content;
+          es.content = Info[i].Content;
+          d.episodes[i] = es;
         }
         return d;
       }
@@ -294,7 +294,7 @@ namespace MyBook.BookContent
       {
         Position.Scene.Pages.Insert(Position.ParagraphId + 1, h);
       }
-      MoveForward();      
+      MoveForward();
     }
 
     private void RefreshContent()
@@ -311,7 +311,7 @@ namespace MyBook.BookContent
       if (Position.ParagraphId == Position.Scene.Pages.Count - 1)
         return;
       Position.ParagraphId++;
-      RefreshContent();  
+      RefreshContent();
     }
 
     private List<SceneDescription> _scenes;
@@ -329,7 +329,7 @@ namespace MyBook.BookContent
 
     public CharacterContent DummyCharacter { get; set; }
 
-    public List<CharacterContent> Characters { get;set; }
+    public List<CharacterContent> Characters { get; set; }
 
     public void Init()
     {
@@ -374,8 +374,10 @@ namespace MyBook.BookContent
 
     public bool CanGoFurther
     {
-      get { return ( Position.Scene.Pages.Count >0 ) 
-          && (Position.ParagraphId < Position.Scene.Pages.Count - 1);
+      get
+      {
+        return (Position.Scene.Pages.Count > 0)
+      && (Position.ParagraphId < Position.Scene.Pages.Count - 1);
       }
     }
 
@@ -396,7 +398,7 @@ namespace MyBook.BookContent
 
     public void CreateScene()
     {
-      Position.Scene = new SceneDescription();      
+      Position.Scene = new SceneDescription();
       Scenes.Add(Position.Scene);
       Position.Scene.Name = $"Scene #{Scenes.Count}";
       Position.Clear();
@@ -431,54 +433,99 @@ namespace MyBook.BookContent
       public int spouse;
       public int gender;
       public int status;
-      public List<EpisodesSerialization> episodes;
+      public EpisodesSerialization[] episodes;
     }
 
+    public struct CharactersSerializeData
+    {
+      public CharacterSerializeData[] characters;
+    }
+
+    private delegate bool HasNextCharacterSection(Serializer.BaseSerializer a, int order, ref CharactersSerializeData characters);
+    private HasNextCharacterSection hasNextCharacterSection;
+    private bool HasNextCharacterSectionLoad(Serializer.BaseSerializer a, int order, ref CharactersSerializeData characters)
+    {
+      if (!a.PushSection(XmlNodeNames.Character, order))
+        return false;
+      CharacterSerializeData[] chrs = new CharacterSerializeData[order + 1];
+      if (order > 0)
+      {
+        characters.characters.CopyTo(chrs, 0);
+      }
+      characters.characters = chrs;
+      return true;
+    }
+
+    private bool HasNextCharacterSectionSave(Serializer.BaseSerializer a, int order, ref CharactersSerializeData characters)
+    {
+      if (order >= characters.characters.Length)
+        return false;
+      if (!a.PushSection(XmlNodeNames.Character, order))
+        return false;
+      return true;
+    }
+
+    private delegate bool HasNextEpisodeSection(Serializer.BaseSerializer a, int order, ref CharacterSerializeData character);
+    private HasNextEpisodeSection hasNextEpisodeSection;
+    private bool HasNextEpisodeSectionLoad(Serializer.BaseSerializer a, int order, ref CharacterSerializeData character)
+    {
+      if (!a.PushSection(XmlNodeNames.Episode, order))
+        return false;
+      EpisodesSerialization[] es = new EpisodesSerialization[order + 1];
+      if (order > 0)
+      {
+        character.episodes.CopyTo(es, 0);
+      }
+      character.episodes = es;
+      return true;
+    }
+    private bool HasNextEpisodeSectionSave(Serializer.BaseSerializer a, int order, ref CharacterSerializeData character)
+    {
+      if (order >= character.episodes.Length)
+        return false;
+      if (!a.PushSection(XmlNodeNames.Episode, order))
+        return false;
+      return true;
+    }
     /// <summary>
     /// Base function for character serialization
     /// </summary>
     /// <param name="s"></param>
     /// <param name="input"></param>
     /// <returns></returns>
-    private List<CharacterSerializeData> SerializeCharacters(Serializer.BaseSerializer s, List<CharacterSerializeData> input)
+    private void SerializeCharacters(Serializer.BaseSerializer s, ref CharactersSerializeData characters)
     {
-      string dummy = "";
-      int children = s.PushSection(XmlNodeNames.Characters, ref dummy, ref dummy);
-      List<CharacterSerializeData> ret = input;
-      if (s.IsLoading)
-      {
-        ret = new List<CharacterSerializeData>(children);
-      }
+      if (!s.PushSection(XmlNodeNames.Characters, 0))
+        return;
 
-      for (int i = 0; i < ret.Count; i++)
+      int iCharacters = 0;
+      while (hasNextCharacterSection(s, iCharacters, ref characters))
       {
-        CharacterSerializeData a1 = ret[i];
+        ref CharacterSerializeData a1 = ref characters.characters[iCharacters];
         s.SerializeString(XmlNodeNames.Character, ref a1.name);
         s.SerializeInt(XmlNodeNames.Father, ref a1.father);
-        children = s.PushSection(XmlNodeNames.Episodes, ref dummy, ref dummy);
-        if (s.IsLoading)
+        int iEpisode = 0;
+        while (hasNextEpisodeSection(s, iEpisode, ref a1))
         {
-          a1.episodes = new List<EpisodesSerialization>(children);
-        }
-        for (int iEp = 0; iEp < children; iEp++)
-        {
-          EpisodesSerialization es = a1.episodes[i];
+          ref EpisodesSerialization es = ref a1.episodes[iEpisode];
           s.SerializeString(XmlNodeNames.Episode, ref es.episodeName);
           s.SerializeString(XmlNodeNames.EpisodeContent, ref es.content);
-          a1.episodes[i] = es;
+          s.PopSection();
+          iEpisode++;
         }
         s.PopSection();
-        ret[i] = a1;
+        iCharacters++;
       }
       s.PopSection();
-      return ret;
     }
 
     private void LoadCharacters(Serializer.BaseSerializer s)
     {
-      List<CharacterSerializeData> data = new List<CharacterSerializeData>();
-      data = SerializeCharacters(s, data);
-      foreach (CharacterSerializeData d in data)
+      hasNextEpisodeSection = HasNextEpisodeSectionLoad;
+      hasNextCharacterSection = HasNextCharacterSectionLoad;
+      CharactersSerializeData data = new CharactersSerializeData();
+      SerializeCharacters(s, ref data);
+      foreach (CharacterSerializeData d in data.characters)
       {
         CharacterContent c = new CharacterContent();
         c.FromSerialize(d);
@@ -487,82 +534,165 @@ namespace MyBook.BookContent
     }
     private void SaveCharacters(Serializer.BaseSerializer s)
     {
-      List<CharacterSerializeData> data = new List<CharacterSerializeData>();
-      foreach (CharacterContent c in Characters)
+      hasNextEpisodeSection = HasNextEpisodeSectionSave;
+      hasNextCharacterSection = HasNextCharacterSectionSave;
+      CharactersSerializeData data = new CharactersSerializeData();
+      data.characters = new CharacterSerializeData[Characters.Count];
+      for (int i = 0; i < Characters.Count; i++)
       {
-        CharacterSerializeData d = c.ToSerialize();
-        data.Add(d);
+        CharacterSerializeData d = Characters[i].ToSerialize();
+        data.characters[i] = d;
       }
-      SerializeCharacters(s, data);
+      SerializeCharacters(s, ref data);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////  Scenes  ////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    struct SceneSerializeData
-    {
-      public String name;
-      public List<PageSerializeData> pages;
-    }
     struct PageSerializeData
     {
       public String type;
       public int order;
       public IRiddleHandler handler;
     }
+    struct SceneSerializeData
+    {
+      public String name;
+      public PageSerializeData[] pages;
+    }
+    struct ScenesSerializeData
+    {
+      public SceneSerializeData[] scenes;
+    }
+
+    private delegate bool HasNextScene(Serializer.BaseSerializer s, int order, ref ScenesSerializeData scenes);
+    private HasNextScene hasNextScene;
+    bool HasNextSceneLoad(Serializer.BaseSerializer s, int order, ref ScenesSerializeData scenes)
+    {
+      if (!s.PushSection(XmlNodeNames.Scene, order))
+        return false;
+      SceneSerializeData[] sd = new SceneSerializeData[order + 1];
+      if (order > 0)
+      {
+        scenes.scenes.CopyTo(sd, 0);
+      }
+      sd[order] = new SceneSerializeData();
+      scenes.scenes = sd;
+      return true;
+    }
+    bool HasNextSceneSave(Serializer.BaseSerializer s, int order, ref ScenesSerializeData scenes)
+    {
+      if (order >= scenes.scenes.Length)
+        return false;
+      if (!s.PushSection(XmlNodeNames.Scene, order))
+        return false;
+      return true;
+    }
+
+    private delegate bool HasNextPage(Serializer.BaseSerializer s, int order, ref SceneSerializeData d);
+    private HasNextPage hasNextPage;
+
+    private bool HasNextPageLoad(Serializer.BaseSerializer s, int order, ref SceneSerializeData d)
+    {
+      if (!s.PushSection(XmlNodeNames.Page, order))
+        return false;
+      PageSerializeData[] data = new PageSerializeData[order + 1];
+      if (order > 0)
+      {
+        d.pages.CopyTo(data, 0);
+      }
+      PageSerializeData psd = new PageSerializeData();
+      d.pages = data;
+      string plugin = "";
+      s.SerializeAttribute(XmlNodeNames.Plugin, ref plugin);
+
+      AssemblyMap m = HandlersMap.Find(x => x.Name == plugin);
+      psd.handler = m.Assembly.CreateInstance(m.Type.ToString()) as IRiddleHandler;
+      psd.type = plugin;
+      data[order] = psd;
+      return true;
+    }
+    private bool HasNextPageSave(Serializer.BaseSerializer s, int order, ref SceneSerializeData d)
+    {
+      if (order >= d.pages.Length)
+        return false;
+      if (!s.PushSection(XmlNodeNames.Page, order))
+        return false;
+      string name = d.pages[order].type;
+      AssemblyMap m = HandlersMap.Find(x => x.Name == name);
+      IRiddleHandler h = m.Assembly.CreateInstance(m.Type.ToString()) as IRiddleHandler;
+      d.pages[order].handler = h;
+      if (h == null)
+      {
+        s.PopSection();
+        return false;
+      }
+      return true;
+    }
     private void SaveScenes(Serializer.BaseSerializer s)
     {
-      List<SceneSerializeData> data = new List<SceneSerializeData>();
-      foreach( SceneDescription sd in Scenes)
+      hasNextScene = HasNextSceneSave;
+      hasNextPage = HasNextPageSave;
+      ScenesSerializeData data = new ScenesSerializeData();
+      data.scenes = new SceneSerializeData[Scenes.Count];
+      for (int iScene = 0; iScene < Scenes.Count; iScene++)
       {
+        SceneDescription sd = Scenes[iScene];
         SceneSerializeData d = new SceneSerializeData();
         d.name = sd.Name;
-        for(int i = 0; i < sd.Pages.Count; i++)
+        for (int i = 0; i < sd.Pages.Count; i++)
         {
           PageSerializeData pd = new PageSerializeData();
           pd.type = sd.Pages[i].Name;
           pd.order = i;
           pd.handler = sd.Pages[i];
         }
-        data.Add(d);
+        data.scenes[iScene] = d;
       }
-      SerializeScenes(s, data);
+      SerializeScenes(s, ref data);
     }
 
-    private List<SceneSerializeData> SerializeScenes( Serializer.BaseSerializer s, List<SceneSerializeData> data)
+    private void LoadScenes(Serializer.BaseSerializer s)
     {
-      List<SceneSerializeData> ret = data;
-      string dummy = "";
-      int len = s.PushSection(XmlNodeNames.Scenes, ref dummy, ref dummy);
-      if ( s.IsLoading )
+      hasNextScene = HasNextSceneLoad;
+      hasNextPage = HasNextPageLoad;
+      ScenesSerializeData data = new ScenesSerializeData();
+      SerializeScenes(s, ref data);
+      Scenes = new List<SceneDescription>();
+      data.scenes = new SceneSerializeData[Scenes.Count];
+      for (int iScene = 0; iScene < data.scenes.Length; iScene++)
       {
-        ret = new List<SceneSerializeData>(len);
-      }
-      for ( int i =0; i < len; i++)
-      {
-        SceneSerializeData d = ret[i];
-        s.SerializeString(XmlNodeNames.Scene, ref d.name);
-        int pagesLen = s.PushSection(XmlNodeNames.Page, ref dummy, ref dummy);
-        if(d.pages.Count!= pagesLen)
+        SceneDescription sd = new SceneDescription();
+        ref SceneSerializeData d = ref data.scenes[iScene];
+        sd.Name = d.name;
+        for (int iPage = 0; iPage < d.pages.Length; iPage++)
         {
-          d.pages = new List<PageSerializeData>(pagesLen);
+          ref PageSerializeData pd = ref d.pages[iPage];
+          sd.Pages.Add( pd.handler );
         }
-        for(int iPage =0; iPage <pagesLen; iPage++)
+      }
+    }
+    private void SerializeScenes(Serializer.BaseSerializer s, ref ScenesSerializeData data)
+    {
+      if (!s.PushSection(XmlNodeNames.Scenes, 0))
+        return;
+      int iScene = 0;
+      while (hasNextScene(s, iScene, ref data))
+      {
+        ref SceneSerializeData d = ref data.scenes[iScene];
+        s.SerializeString(XmlNodeNames.Scene, ref d.name);
+        int iPage = 0;
+        while (hasNextPage(s, iPage, ref d))
         {
-          PageSerializeData psd = d.pages[iPage];
+          ref PageSerializeData psd = ref d.pages[iPage];
           s.SerializeString(XmlNodeNames.Plugin, ref psd.type);
-          if ( s.IsLoading )
-          {
-            AssemblyMap m = HandlersMap.Find(x => x.Name == psd.type);
-            psd.handler = m.Assembly.CreateInstance(m.Type.ToString()) as IRiddleHandler;
-          }
           psd.handler.Serialize(s);
+          iPage++;
         }
         s.PopSection();
-        ret[i] = d;
+        iScene++;
       }
       s.PopSection();
-      return ret;
     }
 
     /// <summary>
@@ -588,6 +718,7 @@ namespace MyBook.BookContent
     {
       Serializer.XmlBookLoad s = new Serializer.XmlBookLoad(FullPath);
       LoadCharacters(s);
+      LoadScenes(s);
     }
   }
 }
