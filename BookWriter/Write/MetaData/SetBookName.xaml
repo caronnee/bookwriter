@@ -1,11 +1,11 @@
-﻿<Window x:Class=" MyBook.Meta.SetBookName"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="SetBookName"   SizeToContent="Height">
-    <DockPanel LastChildFill="True">
-        <Label>Set name of the book: </Label>
-        <Button DockPanel.Dock="Right" Width="60" Click="DoneClick">Done</Button>
-        <Button DockPanel.Dock="Right" Width="60" Click="CancelClick">Cancel</Button>
-        <TextBox x:Name="x_bookName" VerticalAlignment="Center"></TextBox>
-    </DockPanel>
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class=" MyBook.Meta.SetBookName"
+        Title="SetBookName" Height="128.106" Width="473.413">
+  <Canvas>
+    <TextBox x:Name="x_bookName" VerticalAlignment="Center" DockPanel.Dock="Top" Width="431" Canvas.Left="10" Canvas.Top="10" Height="29" />
+    <Button DockPanel.Dock="Right" Click="DoneClick" Content="Done" Canvas.Left="232" Canvas.Top="51" Width="89" Height="33" />
+    <Button DockPanel.Dock="Right" Click="CancelClick" Content="Cancel" Height="33" Width="80" Canvas.Left="361" Canvas.Top="51"/>
+  </Canvas>
 </Window>

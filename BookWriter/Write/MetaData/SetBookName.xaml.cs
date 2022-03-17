@@ -29,11 +29,6 @@ namespace  MyBook.Meta
     }
     public void DoneClick(object sender, RoutedEventArgs e)
     {
-      if (x_bookName.Text.Length == 0)
-      {
-        //red
-        return;
-      }
       Close();
     }
   }

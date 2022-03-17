@@ -258,7 +258,7 @@ namespace MyBook.BookContent
     }
 
     // name of the book 
-    public String Name
+    public string Name
     {
       get;
       set;
@@ -284,7 +284,7 @@ namespace MyBook.BookContent
         h = assembly.Assembly.CreateInstance(t.ToString()) as IRiddleHandler;
         break;
       }
-
+      h.BaseFolder = Settings.BooksFolder;
       h.Create();
       if (Position.ParagraphId < 0)
       {
@@ -359,12 +359,6 @@ namespace MyBook.BookContent
       Characters.Add(c);
       LastOne++;
       return c;
-    }
-
-    public void Load(String name)
-    {
-      Serializer.XmlBookLoad b = new Serializer.XmlBookLoad(FullPath);
-      LoadCharacters(b);
     }
 
     public bool CanGoBack
@@ -619,14 +613,7 @@ namespace MyBook.BookContent
       if (!s.PushSection(XmlNodeNames.Page, order))
         return false;
       string name = d.pages[order].type;
-      AssemblyMap m = HandlersMap.Find(x => x.Name == name);
-      IRiddleHandler h = m.Assembly.CreateInstance(m.Type.ToString()) as IRiddleHandler;
-      d.pages[order].handler = h;
-      if (h == null)
-      {
-        s.PopSection();
-        return false;
-      }
+      s.SerializeAttribute(XmlNodeNames.Plugin, ref name);
       return true;
     }
     private void SaveScenes(Serializer.BaseSerializer s)
@@ -639,6 +626,7 @@ namespace MyBook.BookContent
       {
         SceneDescription sd = Scenes[iScene];
         SceneSerializeData d = new SceneSerializeData();
+        d.pages = new PageSerializeData[sd.Pages.Count];
         d.name = sd.Name;
         for (int i = 0; i < sd.Pages.Count; i++)
         {
@@ -646,6 +634,7 @@ namespace MyBook.BookContent
           pd.type = sd.Pages[i].Name;
           pd.order = i;
           pd.handler = sd.Pages[i];
+          d.pages[i] = pd;
         }
         data.scenes[iScene] = d;
       }
@@ -668,6 +657,7 @@ namespace MyBook.BookContent
         for (int iPage = 0; iPage < d.pages.Length; iPage++)
         {
           ref PageSerializeData pd = ref d.pages[iPage];
+          pd.handler.BaseFolder = Settings.BooksFolder;
           sd.Pages.Add( pd.handler );
         }
       }
@@ -702,23 +692,23 @@ namespace MyBook.BookContent
     {
       get => Settings.BooksFolder + "\\" + Name + "\\" + "base" + Constants.Extension;
     }
-    public int Save()
+    public void Save()
     {
-      if (!Directory.Exists(Settings.BooksFolder))
-      {
-        Directory.CreateDirectory(Settings.BooksFolder);
-      }
-
       Serializer.XmlBookSave s = new Serializer.XmlBookSave(FullPath);
+      s.PushSection(XmlNodeNames.BookRoot, 0);
       SaveCharacters(s);
       SaveScenes(s);
-      return 0;
+      s.PopSection();
+      s.Finish();
     }
-    public void Load()
+    public void Load(string name)
     {
+      Name = name;
       Serializer.XmlBookLoad s = new Serializer.XmlBookLoad(FullPath);
+      s.PushSection(XmlNodeNames.BookRoot, 0);
       LoadCharacters(s);
       LoadScenes(s);
+      s.PopSection();
     }
   }
 }

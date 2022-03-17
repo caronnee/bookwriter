@@ -38,7 +38,7 @@ namespace MyBook
       Cache = new BookSource();
       DataContext = Cache;
       // TODO continue form the last time
-      if ( name.Length != 0)
+      if(name.Length > 0)
         Cache.Load(name);
       _characterHolder = new CharacterHolder();
       _sceneHolder = new SceneHolder();
@@ -66,29 +66,25 @@ namespace MyBook
 
     private void Back_Click(object sender, RoutedEventArgs e)
     {
-      SaveBook();
+
       if (Back != null)
         Back();
     }
 
     // saves whole data
-    private void SaveBook()
+    private void SetName()
     {
       //CurrentContent.Save();
       if (Cache.Name == null)
       {
         //
         SetBookName name = new SetBookName();
-        bool? set = name.ShowDialog();
-        if (set == null || set == false)
+        name.ShowDialog();
+        if (name.x_bookName.Text.Length > 0)
         {
-          ShowProgress("Book not saved");
-          return;
+          Cache.Name = name.x_bookName.Text;
         }
-        Cache.Name = name.x_bookName.Text;
       }
-      Cache.Save();
-      ShowProgress("Book saved");
     }
 
     // settings of the book
@@ -103,9 +99,20 @@ namespace MyBook
     // saves whole data handler
     private void SaveBook_Click(object sender, RoutedEventArgs e)
     {
-      SaveBook();
+      if (Cache.Name == null)
+      {
+        SetName();
+      }
+      Cache.Save();
+      ShowProgress("Book saved");
     }
-    
+    private void SaveBookName_Click(object sender, RoutedEventArgs e)
+    {
+      SetName();
+      Cache.Save();
+      ShowProgress("Book saved");
+    }
+
     private void HelperEnableMenu(MenuItem parentMenu, MenuItem exc)
     {
       foreach (MenuItem menu in parentMenu.Items)

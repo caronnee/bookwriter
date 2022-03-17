@@ -14,8 +14,15 @@ namespace Serializer
       _name = name;
       IsLoading = false;
     }
+    private void CheckFolder()
+    {
+      int index = _name.LastIndexOf('\\');
+      string str = _name.Substring(0, index);
+      System.IO.Directory.CreateDirectory(str);
+    }
     public void Finish()
     {
+      CheckFolder();
       _doc.Save(_name);
     }
     public override void PopSection()

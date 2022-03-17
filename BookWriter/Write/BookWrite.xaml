@@ -38,7 +38,7 @@
       <MenuItem Header="Book">
         <MenuItem Header="New" Click="Back_Click" />
         <MenuItem Header="Save" Click="SaveBook_Click"></MenuItem>
-        <MenuItem Header="Save as" Click="SaveBook_Click"></MenuItem>
+        <MenuItem Header="Save as" Click="SaveBookName_Click"></MenuItem>
         <MenuItem Header="Settings" Click="Settings_Click"></MenuItem>
       </MenuItem>
       <MenuItem Header="Info">
