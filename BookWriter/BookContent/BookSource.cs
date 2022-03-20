@@ -33,7 +33,7 @@ namespace MyBook.BookContent
     /// </summary>
     public const String Characters = "Characters";
     public const String Character = "Character";
-    public const String CharacterName = "Name";
+    public const String Name = "Name";
     public const String Episodes = "Episodes";
     public const String Episode = "Episode";
     public const String EpisodeContent = "EpisodeContent";
@@ -502,8 +502,8 @@ namespace MyBook.BookContent
         while (hasNextEpisodeSection(s, iEpisode, ref a1))
         {
           ref EpisodesSerialization es = ref a1.episodes[iEpisode];
-          s.SerializeString(XmlNodeNames.Episode, ref es.episodeName);
-          s.SerializeString(XmlNodeNames.EpisodeContent, ref es.content);
+          s.SerializeAttribute(XmlNodeNames.Name, ref es.episodeName);
+          s.SerializeString(ref es.content);
           s.PopSection();
           iEpisode++;
         }
@@ -675,7 +675,6 @@ namespace MyBook.BookContent
         while (hasNextPage(s, iPage, ref d))
         {
           ref PageSerializeData psd = ref d.pages[iPage];
-          s.SerializeString(XmlNodeNames.Plugin, ref psd.type);
           psd.handler.Serialize(s);
           iPage++;
         }
