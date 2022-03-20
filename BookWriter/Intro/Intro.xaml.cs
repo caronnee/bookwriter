@@ -23,8 +23,9 @@ namespace MyBook.Intro
     {
       BookItem b = new BookItem();
       //Style s = TryFindResource("Rotated") as Style;
-      b.x_bookname.Content = GetTitle( name );
-      b.x_open_for_writing.DataContext = name;
+      string title = GetTitle(name);
+      b.x_bookname.Content = title;
+      b.x_open_for_writing.DataContext = title;
       b.x_open_for_writing.Click += new RoutedEventHandler(Write);
       return b;
     }
@@ -49,7 +50,7 @@ namespace MyBook.Intro
       String folder = Settings.BooksFolder;
       try
       {
-        string[] strings = Directory.GetFiles(folder, Constants.SearchExt);
+        string[] strings = Directory.GetDirectories(folder, Constants.SearchExt);
         foreach (string name in strings)
         {
           Control b = CreateBookControl(name);

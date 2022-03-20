@@ -64,10 +64,10 @@
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
       <TreeView SelectedItemChanged="Item_Selected">
-        <TreeViewItem Header="Scenes" x:Name="x_scenes_holder" ItemsSource="{Binding Scenes}"  DisplayMemberPath="Name">
+        <TreeViewItem Selected="x_scenes_holder_Selected" Header="Scenes" x:Name="x_scenes_holder" ItemsSource="{Binding Scenes}"  DisplayMemberPath="Name">
           <TreeViewItem.ContextMenu>
             <ContextMenu>
-              <MenuItem Header="Add scene" Click="AddScene_Click"/>
+              <MenuItem Header="New scene" Click="AddScene_Click"/>
             </ContextMenu>
           </TreeViewItem.ContextMenu>
         </TreeViewItem>

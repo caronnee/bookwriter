@@ -220,5 +220,11 @@ namespace MyBook
       }
       PreviewFolder();
     }
+
+    private void x_scenes_holder_Selected(object sender, RoutedEventArgs e)
+    {
+      PreviewFolder();
+      e.Handled = true;
+    }
   }
 }
