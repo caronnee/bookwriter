@@ -37,6 +37,7 @@ namespace MyBook.BookContent
     public const String Episodes = "Episodes";
     public const String Episode = "Episode";
     public const String EpisodeContent = "EpisodeContent";
+    public const String Summary = "Summary";
     public const String Father = "Father";
     public const String Mother = "Mother";
     public const String Gender = "Gender";
@@ -167,6 +168,7 @@ namespace MyBook.BookContent
     {
       // name of the scene
       public String Name { get; set; }
+      public String Summary { get; set; }
 
       // content of the book for writing
       public List<IRiddleHandler> Pages { get; set; }
@@ -175,6 +177,21 @@ namespace MyBook.BookContent
       public SceneDescription()
       {
         Pages = new List<IRiddleHandler>();
+      }
+      public SceneSerializeData ToSerialize()
+      {
+        SceneSerializeData d = new SceneSerializeData();
+        d.pages = new PageSerializeData[Pages.Count];
+        d.name = Name;
+        for (int i = 0; i < Pages.Count; i++)
+        {
+          PageSerializeData pd = new PageSerializeData();
+          pd.type = Pages[i].Name;
+          pd.order = i;
+          pd.handler = Pages[i];
+          d.pages[i] = pd;
+        }
+        return d;
       }
     }
 
@@ -190,8 +207,9 @@ namespace MyBook.BookContent
       // unique identificator of the character
       public int Id { get; set; }
 
-      // name of the scene
+      // name of the character
       public String Name { get; set; }
+      public String Summary { get; set; }
 
       // current status of the character
       public CharacterStatus Status { get; set; }
@@ -214,6 +232,7 @@ namespace MyBook.BookContent
       {
         Name = d.name;
         Id = d.id;
+        Summary = d.summary;
         Gender = (CharacterGender)d.gender;
         Status = (CharacterStatus)d.status;
         // todo 
@@ -232,6 +251,7 @@ namespace MyBook.BookContent
         CharacterSerializeData d = new CharacterSerializeData();
         d.name = Name;
         d.id = Id;
+        d.summary = Summary;
         d.gender = ((int)Gender);
         d.status = ((int)Status);
         d.episodes = new EpisodesSerialization[this.Info.Count];
@@ -420,6 +440,7 @@ namespace MyBook.BookContent
     }
     public struct CharacterSerializeData
     {
+      public String summary;
       public String name;
       public int id;
       public int father;
@@ -498,6 +519,7 @@ namespace MyBook.BookContent
         ref CharacterSerializeData a1 = ref characters.characters[iCharacters];
         s.SerializeString(XmlNodeNames.Character, ref a1.name);
         s.SerializeInt(XmlNodeNames.Father, ref a1.father);
+        s.SerializeString(XmlNodeNames.Summary, ref a1.summary);
         int iEpisode = 0;
         while (hasNextEpisodeSection(s, iEpisode, ref a1))
         {
@@ -543,13 +565,13 @@ namespace MyBook.BookContent
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////  Scenes  ////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    struct PageSerializeData
+    public struct PageSerializeData
     {
       public String type;
       public int order;
       public IRiddleHandler handler;
     }
-    struct SceneSerializeData
+    public struct SceneSerializeData
     {
       public String name;
       public PageSerializeData[] pages;
@@ -624,19 +646,7 @@ namespace MyBook.BookContent
       data.scenes = new SceneSerializeData[Scenes.Count];
       for (int iScene = 0; iScene < Scenes.Count; iScene++)
       {
-        SceneDescription sd = Scenes[iScene];
-        SceneSerializeData d = new SceneSerializeData();
-        d.pages = new PageSerializeData[sd.Pages.Count];
-        d.name = sd.Name;
-        for (int i = 0; i < sd.Pages.Count; i++)
-        {
-          PageSerializeData pd = new PageSerializeData();
-          pd.type = sd.Pages[i].Name;
-          pd.order = i;
-          pd.handler = sd.Pages[i];
-          d.pages[i] = pd;
-        }
-        data.scenes[iScene] = d;
+        data.scenes[iScene] = Scenes[iScene].ToSerialize();
       }
       SerializeScenes(s, ref data);
     }

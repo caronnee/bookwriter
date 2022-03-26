@@ -3,9 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:MyBook.Write"
+             xmlns:local="clr-namespace:MyBook.Write.GroupHandler"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-  <UniformGrid x:Name="x_groupHandler">
-  </UniformGrid>
+  <ScrollViewer>
+    <WrapPanel x:Name="x_groupHandler">
+    </WrapPanel>
+  </ScrollViewer>
 </UserControl>

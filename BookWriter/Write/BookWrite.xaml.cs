@@ -28,7 +28,7 @@ namespace MyBook
     private void SceneSaved()
     {
       SelectionPickup();
-      x_scenes_holder.Items.Refresh();
+      x_scenes.Items.Refresh();
       ShowProgress("Scene saved");
     }
 
@@ -189,7 +189,19 @@ namespace MyBook
     {
       Done();
     }
-
+    
+    private void PreviewCharacters()
+    {
+      GroupHandlerItem h = new GroupHandlerItem();
+      for (int i = 0; i < Cache.Characters.Count; i++)
+      {
+        PreviewFolder pf = new PreviewFolder();
+        pf.x_name.Text = Cache.Characters[i].Name;
+        pf.x_summary.Text = Cache.Characters[i].Summary;
+        h.x_groupHandler.Children.Add(pf);
+      }
+      x_working_page.Content = h;
+    }
     private void PreviewFolder()
     {
       GroupHandlerItem h = new GroupHandlerItem();
@@ -202,7 +214,7 @@ namespace MyBook
       x_working_page.Content = h;
     }
 
-    private void Item_Selected(object sender, RoutedEventArgs e)
+    private void Item_Selected(object sender, RoutedPropertyChangedEventArgs<object> e)
     {
       TreeView it = sender as TreeView;
       BookSource.SceneDescription i = it.SelectedItem as BookSource.SceneDescription;
@@ -218,13 +230,12 @@ namespace MyBook
         x_working_page.Content = _characterHolder;
         return;
       }
-      PreviewFolder();
-    }
-
-    private void x_scenes_holder_Selected(object sender, RoutedEventArgs e)
-    {
-      PreviewFolder();
-      e.Handled = true;
+      TreeViewItem parent = it.SelectedItem as TreeViewItem;
+      System.Diagnostics.Debug.Assert(parent!=null);
+      if (parent == x_characters)
+        PreviewCharacters();
+      if (parent == x_scenes)
+        PreviewFolder();
     }
   }
 }
