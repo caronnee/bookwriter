@@ -1,7 +1,6 @@
 using MyBook.BookContent;
 using MyBook.Meta;
 using MyBook.Write;
-using MyBook.Write.Bookmark;
 using MyBook.Write.Character;
 using MyBook.Write.GroupHandler;
 using System;
@@ -19,8 +18,6 @@ namespace MyBook
   {
     // loaded data
     private BookSource Cache;
-
-    public List<BookmarksHeader> Bookmarks;
 
     private SceneHolder _sceneHolder;
     private CharacterHolder _characterHolder;
@@ -167,10 +164,11 @@ namespace MyBook
       //CurrentContent = _characterHolder;
       //_characterHolder.Load(x_characters.SelectedValue as CharacterContent);
     }
-        
+
     private void AddScene_Click(object sender, RoutedEventArgs e)
     {
       Cache.CreateScene();
+      x_scenes.Items.Refresh();
     }
     private void AddCharacter_Click(object sender, RoutedEventArgs e)
     {

@@ -9,9 +9,9 @@ namespace MyBook.Write.Character
   /// </summary>
   public partial class EExpander : UserControl, INotifyPropertyChanged
   {
-    public EExpander(CharacterEpisodes ep)
+    public EExpander()
     {
-      Episode = ep;
+      Episode = new CharacterEpisodes();
       InitializeComponent();
     }
 

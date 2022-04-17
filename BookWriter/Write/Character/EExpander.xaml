@@ -6,15 +6,19 @@
              xmlns:local="clr-namespace:MyBook.Write.Character"
              mc:Ignorable="d" x:Name="x_expander">
     <Expander>
-        <Expander.ContextMenu>
-            <ContextMenu>
-                <MenuItem Header="Remove" Click="Remove_Click" />
-                <MenuItem Header="Add before" Click="AddBefore_Click"/>
-                <MenuItem Header="Add after" Click="AddAfter_Click"/>
-            </ContextMenu>
-        </Expander.ContextMenu>
         <Expander.Header>
-            <TextBox Background="Transparent" Text="{Binding Episode.Title, ElementName=x_expander}"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBox Background="Transparent" Width="350" TextWrapping="NoWrap" MaxLength="50">Write the header</TextBox>
+                <Button Width="15">^</Button>
+                <Button Width="15">v</Button>
+                <Button Width="15">+</Button>
+                <Button Width="15">-</Button>
+            </StackPanel>
         </Expander.Header>
+        <DockPanel>
+            <TextBox DockPanel.Dock="Top" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
+            <Button DockPanel.Dock="Right">+</Button>
+        <Button DockPanel.Dock="Right">-</Button>
+        </DockPanel>
     </Expander>
 </UserControl>

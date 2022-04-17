@@ -1,4 +1,3 @@
-using MyBook.Write.Bookmark;
 using RiddleInterface;
 using System;
 using System.Collections.Generic;
@@ -111,17 +110,6 @@ namespace MyBook.BookContent
     {
       get;
       set;
-    }
-
-    private List<BookmarksHeader> _bookmarks;
-    public List<BookmarksHeader> Bookmarks
-    {
-      get { return _bookmarks; }
-      set
-      {
-        _bookmarks = value;
-        NotifyPropertyChanged("Bookmarks");
-      }
     }
 
     public void SetPage(int s, int p)

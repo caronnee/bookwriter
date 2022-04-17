@@ -27,7 +27,7 @@
       </Setter>
       <Style.Triggers>
         <Trigger Property="IsMouseOver" Value="True">
-          <Setter Property="Background" Value="{Binding Background}"/>
+          <Setter Property="Background" Value="Green"/>
         </Trigger>
       </Style.Triggers>
     </Style>
@@ -79,6 +79,7 @@
           </TreeViewItem.ContextMenu>
         </TreeViewItem>
       </TreeView>
+      <!--<Button Style="{StaticResource ResourceKey=AddButtonImageStyle}">akfj</Button> -->
       <ScrollViewer Grid.Column="2" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" x:Name="x_working_page">
         </ScrollViewer>
     </Grid>

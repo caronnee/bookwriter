@@ -61,7 +61,8 @@ namespace MyBook.Write.Character
 
     private EExpander CreateExpander (CharacterEpisodes ep)
     {
-      EExpander e = new EExpander(ep);
+      EExpander e = new EExpander();
+      e.DataContext = ep;
       e.OnAddBefore += AddBefore;
       e.OnRemove += Remove;
       e.OnAddAfter += OnAddAfter;
