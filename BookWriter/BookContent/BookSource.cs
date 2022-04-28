@@ -152,109 +152,7 @@ namespace MyBook.BookContent
     //  Bookmarks.Add(new BookmarksHeader { Name = "Timeline", Content = "Something else" });
     //}
 
-    public class SceneDescription
-    {
-      // name of the scene
-      public String Name { get; set; }
-      public String Summary { get; set; }
-
-      // content of the book for writing
-      public List<IRiddleHandler> Pages { get; set; }
-
-      // constructor
-      public SceneDescription()
-      {
-        Pages = new List<IRiddleHandler>();
-      }
-      public SceneSerializeData ToSerialize()
-      {
-        SceneSerializeData d = new SceneSerializeData();
-        d.pages = new PageSerializeData[Pages.Count];
-        d.name = Name;
-        for (int i = 0; i < Pages.Count; i++)
-        {
-          PageSerializeData pd = new PageSerializeData();
-          pd.type = Pages[i].Name;
-          pd.order = i;
-          pd.handler = Pages[i];
-          d.pages[i] = pd;
-        }
-        return d;
-      }
-    }
-
-    public class CharacterEpisodes
-    {
-      public String Title { get; set; }
-      public String Content { get; set; }
-    }
-
-    // whole info about character
-    public class CharacterContent
-    {
-      // unique identificator of the character
-      public int Id { get; set; }
-
-      // name of the character
-      public String Name { get; set; }
-      public String Summary { get; set; }
-
-      // current status of the character
-      public CharacterStatus Status { get; set; }
-
-      // Gender. Male / female ;)
-      public CharacterGender Gender { get; set; }
-
-      // details
-      public List<CharacterEpisodes> Info { get; set; }
-
-      /// <summary>
-      /// Functions
-      /// </summary>
-      public CharacterContent()
-      {
-        Info = new List<CharacterEpisodes>();
-      }
-
-      public void FromSerialize(CharacterSerializeData d)
-      {
-        Name = d.name;
-        Id = d.id;
-        Summary = d.summary;
-        Gender = (CharacterGender)d.gender;
-        Status = (CharacterStatus)d.status;
-        // todo 
-        //Mother. father, sppuse
-        Info = new List<CharacterEpisodes>();
-        foreach (EpisodesSerialization s in d.episodes)
-        {
-          CharacterEpisodes ep = new CharacterEpisodes();
-          ep.Content = s.content;
-          ep.Title = s.episodeName;
-          Info.Add(ep);
-        }
-      }
-      public CharacterSerializeData ToSerialize()
-      {
-        CharacterSerializeData d = new CharacterSerializeData();
-        d.name = Name;
-        d.id = Id;
-        d.summary = Summary;
-        d.gender = ((int)Gender);
-        d.status = ((int)Status);
-        d.episodes = new EpisodesSerialization[this.Info.Count];
-        for (int i = 0; i < Info.Count; i++)
-        {
-          EpisodesSerialization es = new EpisodesSerialization();
-          es.episodeName = Info[i].Content;
-          es.content = Info[i].Content;
-          d.episodes[i] = es;
-        }
-        return d;
-      }
-    }
-
-    public CharacterContent Get(string name)
+    public CharacterDescription Get(string name)
     {
       return Characters.Find(x => x.Name == name);
     }
@@ -335,19 +233,14 @@ namespace MyBook.BookContent
       }
     }
 
-    public CharacterContent DummyCharacter { get; set; }
-
-    public List<CharacterContent> Characters { get; set; }
+    public List<CharacterDescription> Characters { get; set; }
 
     public void Init()
     {
-      DummyCharacter = new CharacterContent();
-      DummyCharacter.Id = -1;
-      DummyCharacter.Name = "Unknown";
       HandlersMap = new List<AssemblyMap>();
       InitPlugins();
       _scenes = new List<SceneDescription>();
-      Characters = new List<CharacterContent>();
+      Characters = new List<CharacterDescription>();
       CreateScene();
       // create first person
       CreateCharacter();
@@ -355,9 +248,9 @@ namespace MyBook.BookContent
 
     int LastOne = 0;
 
-    public CharacterContent CreateCharacter()
+    public CharacterDescription CreateCharacter()
     {
-      CharacterContent c = new CharacterContent();
+      CharacterDescription c = new CharacterDescription();
       c.Id = LastOne;
       c.Name = "Anonymous";
       CharacterEpisodes ep = new CharacterEpisodes();
@@ -422,29 +315,7 @@ namespace MyBook.BookContent
     ////////////////////////////////////////////////////////////////////
     //////////////////////////////Serialization/////////////////////////
     ////////////////////////////////////////////////////////////////////
-    public struct EpisodesSerialization
-    {
-      public string episodeName;
-      public string content;
-    }
-    public struct CharacterSerializeData
-    {
-      public String summary;
-      public String name;
-      public int id;
-      public int father;
-      public int mother;
-      public int spouse;
-      public int gender;
-      public int status;
-      public EpisodesSerialization[] episodes;
-    }
-
-    public struct CharactersSerializeData
-    {
-      public CharacterSerializeData[] characters;
-    }
-
+    
     private delegate bool HasNextCharacterSection(Serializer.BaseSerializer a, int order, ref CharactersSerializeData characters);
     private HasNextCharacterSection hasNextCharacterSection;
     private bool HasNextCharacterSectionLoad(Serializer.BaseSerializer a, int order, ref CharactersSerializeData characters)
@@ -532,7 +403,7 @@ namespace MyBook.BookContent
       SerializeCharacters(s, ref data);
       foreach (CharacterSerializeData d in data.characters)
       {
-        CharacterContent c = new CharacterContent();
+        CharacterDescription c = new CharacterDescription();
         c.FromSerialize(d);
         Characters.Add(c);
       }
@@ -554,22 +425,7 @@ namespace MyBook.BookContent
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////  Scenes  ////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    public struct PageSerializeData
-    {
-      public String type;
-      public int order;
-      public IRiddleHandler handler;
-    }
-    public struct SceneSerializeData
-    {
-      public String name;
-      public PageSerializeData[] pages;
-    }
-    struct ScenesSerializeData
-    {
-      public SceneSerializeData[] scenes;
-    }
-
+    
     private delegate bool HasNextScene(Serializer.BaseSerializer s, int order, ref ScenesSerializeData scenes);
     private HasNextScene hasNextScene;
     bool HasNextSceneLoad(Serializer.BaseSerializer s, int order, ref ScenesSerializeData scenes)

@@ -75,7 +75,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BookContent\CharacterDescription.cs" />
     <Compile Include="BookContent\Constants.cs" />
+    <Compile Include="BookContent\SceneDescription.cs" />
     <Compile Include="Intro\BookItem.xaml.cs">
       <DependentUpon>BookItem.xaml</DependentUpon>
     </Compile>

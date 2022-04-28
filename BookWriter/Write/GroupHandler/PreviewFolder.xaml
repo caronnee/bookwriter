@@ -7,7 +7,7 @@
              mc:Ignorable="d" Height="170" Width="230"
              d:DesignHeight="450" d:DesignWidth="800" Margin="30">
     <DockPanel LastChildFill="True">
-    <Button DockPanel.Dock="Bottom" Content="Go"/>
+    <Button x:Name="x_go"  DockPanel.Dock="Bottom" Content="Go"/>
     <TextBox x:Name="x_name" DockPanel.Dock="Top" MaxLines="1" Text="{Binding Name}"></TextBox>
     <TextBox x:Name="x_summary" Text="{Binding Summary}"></TextBox>
   </DockPanel>

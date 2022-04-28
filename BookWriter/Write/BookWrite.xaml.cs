@@ -205,7 +205,7 @@ namespace MyBook
         if (value == null)
           return null;
         List<PreviewFolder> fldr = new List<PreviewFolder>();
-        List<BookSource.CharacterContent> sc = value as List<BookSource.CharacterContent>;
+        List<CharacterDescription> sc = value as List<CharacterDescription>;
         if (sc == null)
           return null;
         for (int i = 0; i < sc.Count; i++)
@@ -240,7 +240,7 @@ namespace MyBook
         if (value == null)
           return null;
         List<PreviewFolder> fldr = new List<PreviewFolder>();
-        List<BookSource.SceneDescription> sc = value as List<BookSource.SceneDescription>;
+        List<SceneDescription> sc = value as List<SceneDescription>;
         for (int i =0; i < sc.Count; i++)
         {
           PreviewFolder f = new PreviewFolder();
@@ -270,14 +270,14 @@ namespace MyBook
     private void Item_Selected(object sender, RoutedPropertyChangedEventArgs<object> e)
     {
       TreeView it = sender as TreeView;
-      BookSource.SceneDescription i = it.SelectedItem as BookSource.SceneDescription;
+      SceneDescription i = it.SelectedItem as SceneDescription;
       if ( i!=null)
       {
         Cache.SetScene(i);
         x_working_page.Content = _sceneHolder;
         return;
       }
-      BookSource.CharacterContent c = it.SelectedItem as BookSource.CharacterContent;
+      CharacterDescription c = it.SelectedItem as CharacterDescription;
       if ( c!= null )
       {
         x_working_page.Content = _characterHolder;

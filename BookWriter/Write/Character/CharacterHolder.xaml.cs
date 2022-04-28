@@ -19,9 +19,9 @@ namespace MyBook.Write.Character
       InitializeComponent();
     }
 
-    public List<CharacterContent> Females { get; set; }
-    public List<CharacterContent> Males { get; set; }
-    public CharacterContent Character { get; set; }
+    public List<CharacterDescription> Females { get; set; }
+    public List<CharacterDescription> Males { get; set; }
+    public CharacterDescription Character { get; set; }
     
     public event PropertyChangedEventHandler PropertyChanged;
     void NotifyPropertyChanged(string property)
@@ -30,14 +30,14 @@ namespace MyBook.Write.Character
         PropertyChanged(this, new PropertyChangedEventArgs(property));
     }
 
-    public void Load( CharacterContent input)
+    public void Load( CharacterDescription input)
     {
-      Females = new List<CharacterContent>();
-      Males = new List<CharacterContent>();
+      Females = new List<CharacterDescription>();
+      Males = new List<CharacterDescription>();
       Character = input;
       // find possible mothers and fathers
       BookSource s = DataContext as BookSource;
-      foreach ( CharacterContent c in s.Characters)
+      foreach (CharacterDescription c in s.Characters)
       {
         if (c == input)
           continue;
@@ -46,8 +46,6 @@ namespace MyBook.Write.Character
         else
           Females.Add(c);
       }
-      Males.Add(s.DummyCharacter);
-      Females.Add(s.DummyCharacter);
       x_episodesHolder.Children.Clear();
       foreach (CharacterEpisodes ep in Character.Info)
       {

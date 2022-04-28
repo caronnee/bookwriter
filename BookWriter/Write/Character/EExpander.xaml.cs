@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using MyBook.BookContent;
+using System.ComponentModel;
 using System.Windows.Controls;
 using static MyBook.BookContent.BookSource;
 
