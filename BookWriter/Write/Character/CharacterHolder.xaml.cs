@@ -18,43 +18,12 @@ namespace MyBook.Write.Character
     {
       InitializeComponent();
     }
-
-    public List<CharacterDescription> Females { get; set; }
-    public List<CharacterDescription> Males { get; set; }
-    public CharacterDescription Character { get; set; }
     
     public event PropertyChangedEventHandler PropertyChanged;
     void NotifyPropertyChanged(string property)
     {
       if (PropertyChanged != null)
         PropertyChanged(this, new PropertyChangedEventArgs(property));
-    }
-
-    public void Load( CharacterDescription input)
-    {
-      Females = new List<CharacterDescription>();
-      Males = new List<CharacterDescription>();
-      Character = input;
-      // find possible mothers and fathers
-      BookSource s = DataContext as BookSource;
-      foreach (CharacterDescription c in s.Characters)
-      {
-        if (c == input)
-          continue;
-        if (c.Gender == CharacterGender.Male)
-          Males.Add(c);
-        else
-          Females.Add(c);
-      }
-      x_episodesHolder.Children.Clear();
-      foreach (CharacterEpisodes ep in Character.Info)
-      {
-        x_episodesHolder.Children.Add(CreateExpander(ep));
-      }
-      // notify all
-      NotifyPropertyChanged("Males");
-      NotifyPropertyChanged("Females");
-      NotifyPropertyChanged("Character");
     }
 
     private EExpander CreateExpander (CharacterEpisodes ep)
@@ -68,25 +37,28 @@ namespace MyBook.Write.Character
     }
     private void OnAddAfter(EExpander ex)
     {
+      CharacterDescription character = DataContext as CharacterDescription;
       CharacterEpisodes nep = new CharacterEpisodes();
       nep.Title = "Episode";
-      int index = Character.Info.IndexOf(ex.Episode);
-      Character.Info.Insert(index+1, nep);
+      int index = character.Info.IndexOf(ex.Episode);
+      character.Info.Insert(index+1, nep);
       x_episodesHolder.Children.Insert(index+1, CreateExpander(nep));
     }
 
     private void Remove(EExpander ee)
     {
-      Character.Info.Remove(ee.Episode);
+      CharacterDescription character = DataContext as CharacterDescription;
+      character.Info.Remove(ee.Episode);
       x_episodesHolder.Children.Remove(ee);
     }
 
     private void AddBefore(EExpander ee)
     {
+      CharacterDescription character = DataContext as CharacterDescription;
       CharacterEpisodes nep = new CharacterEpisodes();
       nep.Title = "Episode";
-      int index = Character.Info.IndexOf(ee.Episode);
-      Character.Info.Insert(index, nep);
+      int index = character.Info.IndexOf(ee.Episode);
+      character.Info.Insert(index, nep);
       x_episodesHolder.Children.Insert(index,CreateExpander(nep));
     }
 

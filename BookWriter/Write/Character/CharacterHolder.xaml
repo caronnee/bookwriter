@@ -33,7 +33,7 @@
         <DockPanel Grid.Column="0">
             <DockPanel DockPanel.Dock="Top">
                 <Label>Name</Label>
-                <TextBox x:Name="x_c_name" Text="{Binding Character.Name, ElementName=x_c_holder}" ></TextBox>
+                <TextBox x:Name="x_c_name" Text="{Binding Name}" ></TextBox>
             </DockPanel>
             <ScrollViewer>
                 <StackPanel x:Name="x_episodesHolder">
@@ -56,25 +56,17 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Image x:Name="x_characterImage" Source="c:\Users\cara\Pictures\bg.png" Grid.ColumnSpan="2">
-                    <Image.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="Change picture" Click="ChangeImageClick" />
-                        </ContextMenu>
-                    </Image.ContextMenu>
-                </Image>
-                <Label Grid.Column="0" Grid.Row="1">Mother</Label>
-                <ComboBox Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Females, ElementName=x_c_holder}" SelectedValue="{Binding Character.Mother, ElementName=x_c_holder}" DisplayMemberPath="Name"/>
-                <Label Grid.Column="0" Grid.Row="2">Father</Label>
-                <ComboBox Grid.Column="1" Grid.Row="2" ItemsSource="{Binding Males, ElementName=x_c_holder}" SelectedValue="{Binding Character.Father, ElementName=x_c_holder}" DisplayMemberPath="Name"/>
-                <Label Grid.Column="0" Grid.Row="3">Gender</Label>
-                <ComboBox Grid.Column="1" Grid.Row="3" ItemsSource="{Binding Source={StaticResource Gender}}" SelectedValue="{Binding Character.Gender, ElementName=x_c_holder}"/>
+        <Image x:Name="x_characterImage" Source="c:\Users\cara\Pictures\bg.png" Grid.ColumnSpan="2">
+          <Image.ContextMenu>
+            <ContextMenu>
+              <MenuItem Header="Change picture" Click="ChangeImageClick" />
+            </ContextMenu>
+          </Image.ContextMenu>
+        </Image>
+        <Label Grid.Column="0" Grid.Row="3">Gender</Label>
+                <ComboBox Grid.Column="1" Grid.Row="3" ItemsSource="{Binding Source={StaticResource Gender}}" SelectedValue="{Binding Gender}"/>
                 <Label Grid.Column="0" Grid.Row="4">Status</Label>
-                <ComboBox Grid.Column="1" Grid.Row="4" ItemsSource="{Binding Source={StaticResource CharacterStatus}}" SelectedValue="{Binding Character.Status, ElementName=x_c_holder}" />
-                <Label Grid.Column="0" Grid.Row="5">Spouse(s)</Label>
-                <ComboBox Grid.Column="1" Grid.Row="5" SelectedIndex="0">
-                    <ComboBoxItem>None</ComboBoxItem>
-                </ComboBox>
+                <ComboBox Grid.Column="1" Grid.Row="4" ItemsSource="{Binding Source={StaticResource CharacterStatus}}" SelectedValue="{Binding Status}" />
             </Grid>
         </StackPanel>
     </Grid>

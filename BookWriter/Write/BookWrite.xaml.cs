@@ -180,7 +180,7 @@ namespace MyBook
     }
     private void AddCharacter_Click(object sender, RoutedEventArgs e)
     {
-      _characterHolder.Load(Cache.CreateCharacter());
+      CharacterDescription d= Cache.CreateCharacter();
       x_characters.Items.Refresh();
       FolderHandler.x_test.DataContext = null;
       FolderHandler.x_test.DataContext = Cache.Characters;
@@ -280,6 +280,7 @@ namespace MyBook
       CharacterDescription c = it.SelectedItem as CharacterDescription;
       if ( c!= null )
       {
+        _characterHolder.DataContext = c;
         x_working_page.Content = _characterHolder;
         return;
       }
