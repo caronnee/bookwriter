@@ -109,6 +109,7 @@
     <Compile Include="AboutBox.xaml.cs">
       <DependentUpon>AboutBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Write\TextConvert.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Write\BookWrite.xaml.cs">

@@ -407,6 +407,7 @@ namespace MyBook.BookContent
       NotifyPropertyChanged("Position");
       NotifyPropertyChanged("CanGoBack");
       NotifyPropertyChanged("CanGoFurther");
+      NotifyPropertyChanged("Scenes");
     }
 
     public void SetScene(SceneDescription sceneDescription)

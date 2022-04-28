@@ -4,11 +4,12 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:misc="clr-namespace:MyBook.BookContent"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="MyBook.BookWrite" 
+      xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:local="clr-namespace:MyBook.Write" x:Class="MyBook.BookWrite" 
       mc:Ignorable="d" x:Name="x_bookViewer" 
     Unloaded="x_bookViewer_Unloaded"
     >
   <UserControl.Resources>
+    <local:TextConvert x:Key="valueconverter"></local:TextConvert>
     <ImageBrush x:Key="tripplearrowleft" ImageSource="/resources/start.png" Stretch="UniformToFill"/>
     <ImageBrush x:Key="doublearrowleft" ImageSource="/resources/prevchapter.png" Stretch="UniformToFill"/>
     <ImageBrush x:Key="arrowleft" ImageSource="/resources/prev.png" Stretch="UniformToFill"/>

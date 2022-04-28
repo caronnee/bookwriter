@@ -6,8 +6,10 @@ using MyBook.Write.GroupHandler;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace MyBook
 {
@@ -38,9 +40,12 @@ namespace MyBook
       if(name.Length > 0)
         Cache.Load(name);
       _characterHolder = new CharacterHolder();
+      _characterHolder.DataContext = Cache;
       _sceneHolder = new SceneHolder();
       _sceneHolder.OnSceneSaved += SceneSaved;
       _sceneHolder.OnReport += ShowProgress;
+      FolderHandler = new GroupHandlerItem();
+
       // initialize UI
       InitializeComponent();
       x_working_page.Content = _sceneHolder;
@@ -165,15 +170,20 @@ namespace MyBook
       //_characterHolder.Load(x_characters.SelectedValue as CharacterContent);
     }
 
+    private GroupHandlerItem FolderHandler;
     private void AddScene_Click(object sender, RoutedEventArgs e)
     {
       Cache.CreateScene();
       x_scenes.Items.Refresh();
+      FolderHandler.x_test.DataContext = null;
+      FolderHandler.x_test.DataContext = Cache.Scenes;
     }
     private void AddCharacter_Click(object sender, RoutedEventArgs e)
     {
       _characterHolder.Load(Cache.CreateCharacter());
       x_characters.Items.Refresh();
+      FolderHandler.x_test.DataContext = null;
+      FolderHandler.x_test.DataContext = Cache.Characters;
     }
     
     public void Done()
@@ -187,29 +197,74 @@ namespace MyBook
     {
       Done();
     }
-    
+
+    class CharacterConverter : IValueConverter
+    {
+      public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+      {
+        if (value == null)
+          return null;
+        List<PreviewFolder> fldr = new List<PreviewFolder>();
+        List<BookSource.CharacterContent> sc = value as List<BookSource.CharacterContent>;
+        if (sc == null)
+          return null;
+        for (int i = 0; i < sc.Count; i++)
+        {
+          PreviewFolder f = new PreviewFolder();
+          f.DataContext = sc[i];
+          fldr.Add(f);
+        }
+        return fldr;
+      }
+
+      public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+      {
+        throw new NotImplementedException();
+      }
+    }
     private void PreviewCharacters()
     {
-      GroupHandlerItem h = new GroupHandlerItem();
-      for (int i = 0; i < Cache.Characters.Count; i++)
+      Binding b = new Binding(".");
+      // source data context
+      //b.Source
+      b.Converter = new CharacterConverter();
+      FolderHandler = new GroupHandlerItem();
+      FolderHandler.DataContext = Cache.Characters;
+      x_working_page.Content = FolderHandler;
+      FolderHandler.x_test.SetBinding(ItemsControl.ItemsSourceProperty, b);
+    }
+    class SceneConverter : IValueConverter
+    {
+      public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
       {
-        PreviewFolder pf = new PreviewFolder();
-        pf.x_name.Text = Cache.Characters[i].Name;
-        pf.x_summary.Text = Cache.Characters[i].Summary;
-        h.x_groupHandler.Children.Add(pf);
+        if (value == null)
+          return null;
+        List<PreviewFolder> fldr = new List<PreviewFolder>();
+        List<BookSource.SceneDescription> sc = value as List<BookSource.SceneDescription>;
+        for (int i =0; i < sc.Count; i++)
+        {
+          PreviewFolder f = new PreviewFolder();
+          f.DataContext = sc[i];
+          fldr.Add(f);
+        }
+        return fldr;
       }
-      x_working_page.Content = h;
+
+      public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+      {
+        throw new NotImplementedException();
+      }
     }
     private void PreviewFolder()
     {
-      GroupHandlerItem h = new GroupHandlerItem();
-      for ( int i =0; i < Cache.Scenes.Count; i++)
-      {
-        PreviewFolder pf = new PreviewFolder();
-        pf.x_summary.Text = Cache.Scenes[i].Name;
-        h.x_groupHandler.Children.Add(pf);
-      }
-      x_working_page.Content = h;
+      Binding b = new Binding(".");
+      // source data context
+      //b.Source
+      b.Converter = new SceneConverter();
+      FolderHandler = new GroupHandlerItem();
+      FolderHandler.DataContext = Cache.Scenes;
+      x_working_page.Content = FolderHandler;
+      FolderHandler.x_test.SetBinding(ItemsControl.ItemsSourceProperty, b);
     }
 
     private void Item_Selected(object sender, RoutedPropertyChangedEventArgs<object> e)
