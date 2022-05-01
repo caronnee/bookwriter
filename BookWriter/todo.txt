@@ -1,9 +1,10 @@
 ﻿Writer:
-Add characters
+Add next episode for a character
 Go to the scene after the button
 
 ----------------------------
 Reader:
+Make listing for texts
 
 ----------------------------
 on click on bordered one, move cursor to the place outside

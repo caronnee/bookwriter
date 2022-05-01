@@ -52,14 +52,14 @@ namespace MyBook.BookContent
     public CharacterGender Gender { get; set; }
 
     // details
-    public List<CharacterEpisodes> Info { get; set; }
+    public List<CharacterEpisodes> Episodes { get; set; }
 
     /// <summary>
     /// Functions
     /// </summary>
     public CharacterDescription()
     {
-      Info = new List<CharacterEpisodes>();
+      Episodes = new List<CharacterEpisodes>();
     }
 
     public void FromSerialize(CharacterSerializeData d)
@@ -71,13 +71,13 @@ namespace MyBook.BookContent
       Status = (CharacterStatus)d.status;
       // todo 
       //Mother. father, sppuse
-      Info = new List<CharacterEpisodes>();
+      Episodes = new List<CharacterEpisodes>();
       foreach (EpisodesSerialization s in d.episodes)
       {
         CharacterEpisodes ep = new CharacterEpisodes();
         ep.Content = s.content;
         ep.Title = s.episodeName;
-        Info.Add(ep);
+        Episodes.Add(ep);
       }
     }
     public CharacterSerializeData ToSerialize()
@@ -88,12 +88,12 @@ namespace MyBook.BookContent
       d.summary = Summary;
       d.gender = ((int)Gender);
       d.status = ((int)Status);
-      d.episodes = new EpisodesSerialization[this.Info.Count];
-      for (int i = 0; i < Info.Count; i++)
+      d.episodes = new EpisodesSerialization[Episodes.Count];
+      for (int i = 0; i < Episodes.Count; i++)
       {
         EpisodesSerialization es = new EpisodesSerialization();
-        es.episodeName = Info[i].Content;
-        es.content = Info[i].Content;
+        es.episodeName = Episodes[i].Content;
+        es.content = Episodes[i].Content;
         d.episodes[i] = es;
       }
       return d;

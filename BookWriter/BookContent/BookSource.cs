@@ -256,7 +256,7 @@ namespace MyBook.BookContent
       CharacterEpisodes ep = new CharacterEpisodes();
       ep.Title = "Life";
       ep.Content = "";
-      c.Info.Add(ep);
+      c.Episodes.Add(ep);
       Characters.Add(c);
       LastOne++;
       return c;

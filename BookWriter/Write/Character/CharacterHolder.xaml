@@ -9,53 +9,63 @@
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" x:Name="x_c_holder">
-    <UserControl.Resources>
-        <ObjectDataProvider x:Key="CharacterStatus"
+  <UserControl.Resources>
+    <local:EpisodeConverter x:Key="episode_converter" />
+    <ObjectDataProvider x:Key="CharacterStatus"
                             MethodName="GetValues" 
                             ObjectType="{x:Type sys:Enum}">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="consts:CharacterStatus"/>
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
-        <ObjectDataProvider x:Key="Gender"
+      <ObjectDataProvider.MethodParameters>
+        <x:Type TypeName="consts:CharacterStatus"/>
+      </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+    <ObjectDataProvider x:Key="Gender"
                             MethodName="GetValues" 
                             ObjectType="{x:Type sys:Enum}">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="consts:CharacterGender"/>
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
-    </UserControl.Resources>
-    <Grid>
+      <ObjectDataProvider.MethodParameters>
+        <x:Type TypeName="consts:CharacterGender"/>
+      </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+  </UserControl.Resources>
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="auto" />
+    </Grid.ColumnDefinitions>
+    <DockPanel Grid.Column="0">
+      <DockPanel DockPanel.Dock="Top">
+        <Label>Name</Label>
+        <TextBox x:Name="x_c_name" Text="{Binding Name}" ></TextBox>
+      </DockPanel>
+      <StackPanel>
+        <Button x:Name="x_add_episode" Click="x_add_episode_Click">Add Episode</Button>
+        <Button>Remove Episode</Button>
+        <Button>Rearrange</Button>
+      </StackPanel>
+      <ScrollViewer>
+        <ItemsControl ItemsSource="{Binding Episodes, Converter={StaticResource ResourceKey=episode_converter}}">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <StackPanel IsItemsHost="True"></StackPanel>
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+        </ItemsControl>
+      </ScrollViewer>
+    </DockPanel>
+    <StackPanel Grid.Column="1">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="*" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="auto" />
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <DockPanel Grid.Column="0">
-            <DockPanel DockPanel.Dock="Top">
-                <Label>Name</Label>
-                <TextBox x:Name="x_c_name" Text="{Binding Name}" ></TextBox>
-            </DockPanel>
-            <ScrollViewer>
-                <StackPanel x:Name="x_episodesHolder">
-                    <local:EExpander/>
-                </StackPanel>
-            </ScrollViewer>            
-        </DockPanel>
-        <StackPanel Grid.Column="1">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
         <Image x:Name="x_characterImage" Source="c:\Users\cara\Pictures\bg.png" Grid.ColumnSpan="2">
           <Image.ContextMenu>
             <ContextMenu>
@@ -64,10 +74,10 @@
           </Image.ContextMenu>
         </Image>
         <Label Grid.Column="0" Grid.Row="3">Gender</Label>
-                <ComboBox Grid.Column="1" Grid.Row="3" ItemsSource="{Binding Source={StaticResource Gender}}" SelectedValue="{Binding Gender}"/>
-                <Label Grid.Column="0" Grid.Row="4">Status</Label>
-                <ComboBox Grid.Column="1" Grid.Row="4" ItemsSource="{Binding Source={StaticResource CharacterStatus}}" SelectedValue="{Binding Status}" />
-            </Grid>
-        </StackPanel>
-    </Grid>
+        <ComboBox Grid.Column="1" Grid.Row="3" ItemsSource="{Binding Source={StaticResource Gender}}" SelectedValue="{Binding Gender}"/>
+        <Label Grid.Column="0" Grid.Row="4">Status</Label>
+        <ComboBox Grid.Column="1" Grid.Row="4" ItemsSource="{Binding Source={StaticResource CharacterStatus}}" SelectedValue="{Binding Status}" />
+      </Grid>
+    </StackPanel>
+  </Grid>
 </UserControl>
