@@ -92,7 +92,7 @@ namespace MyBook.BookContent
       for (int i = 0; i < Episodes.Count; i++)
       {
         EpisodesSerialization es = new EpisodesSerialization();
-        es.episodeName = Episodes[i].Content;
+        es.episodeName = Episodes[i].Title;
         es.content = Episodes[i].Content;
         d.episodes[i] = es;
       }
