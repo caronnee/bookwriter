@@ -222,6 +222,16 @@ namespace MyBook
         throw new NotImplementedException();
       }
     }
+    private void PreviewCharacterClick(object sender, RoutedEventArgs args)
+    {
+      CharacterDescription f = (sender as Button).DataContext as CharacterDescription;
+      PreviewCharacter(f);
+    }
+    private void PreviewSceneClick(object sender, RoutedEventArgs args)
+    {
+      SceneDescription f = (sender as Button).DataContext as SceneDescription;
+      PreviewScene(f);
+    }
     private void PreviewCharacters()
     {
       Binding b = new Binding(".");
@@ -232,6 +242,10 @@ namespace MyBook
       FolderHandler.DataContext = Cache.Characters;
       x_working_page.Content = FolderHandler;
       FolderHandler.x_test.SetBinding(ItemsControl.ItemsSourceProperty, b);
+      foreach ( PreviewFolder folder in FolderHandler.x_test.Items)
+      {
+        folder.x_go.Click += PreviewCharacterClick;
+      }
     }
     class SceneConverter : IValueConverter
     {
@@ -265,23 +279,35 @@ namespace MyBook
       FolderHandler.DataContext = Cache.Scenes;
       x_working_page.Content = FolderHandler;
       FolderHandler.x_test.SetBinding(ItemsControl.ItemsSourceProperty, b);
+      foreach (PreviewFolder folder in FolderHandler.x_test.Items)
+      {
+        folder.x_go.Click += PreviewSceneClick;
+      }
     }
 
+    private void PreviewCharacter(CharacterDescription c)
+    {
+      _characterHolder.DataContext = c;
+      x_working_page.Content = _characterHolder;
+    }
+    private void PreviewScene(SceneDescription i)
+    {
+      Cache.SetScene(i);
+      x_working_page.Content = _sceneHolder;
+    }
     private void Item_Selected(object sender, RoutedPropertyChangedEventArgs<object> e)
     {
       TreeView it = sender as TreeView;
       SceneDescription i = it.SelectedItem as SceneDescription;
       if ( i!=null)
       {
-        Cache.SetScene(i);
-        x_working_page.Content = _sceneHolder;
+        PreviewScene(i);
         return;
       }
       CharacterDescription c = it.SelectedItem as CharacterDescription;
       if ( c!= null )
       {
-        _characterHolder.DataContext = c;
-        x_working_page.Content = _characterHolder;
+        PreviewCharacter(c);
         return;
       }
       TreeViewItem parent = it.SelectedItem as TreeViewItem;

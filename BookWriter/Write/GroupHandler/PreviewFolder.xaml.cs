@@ -11,5 +11,11 @@ namespace MyBook.Write.GroupHandler
     {
       InitializeComponent();
     }
+
+    private void x_go_Click(object sender, System.Windows.RoutedEventArgs e)
+    {
+      // pass parent its datacontext
+
+    }
   }
 }
