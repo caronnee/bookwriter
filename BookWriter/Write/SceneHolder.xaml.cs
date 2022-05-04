@@ -68,7 +68,7 @@ namespace MyBook.Write
 
     private void CreateContentClick(object sender, RoutedEventArgs e)
     {
-      BookSource s = DataContext as BookSource;
+      BookSource s = (sender as Button).DataContext as BookSource;
       AssemblyMap assembly = x_types.SelectedItem as AssemblyMap;
       s.CreatePage(assembly);
       OnReport("Page inserted");

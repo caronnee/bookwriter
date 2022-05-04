@@ -1,6 +1,7 @@
 ﻿Writer:
-Add next episode for a character
-Go to the scene after the button
+Start writing
+mother father setting
+hyperlinks
 
 ----------------------------
 Reader:
