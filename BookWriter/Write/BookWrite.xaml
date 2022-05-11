@@ -79,6 +79,10 @@
             </ContextMenu>
           </TreeViewItem.ContextMenu>
         </TreeViewItem>
+        <TreeViewItem Header="World" x:Name="x_world" ItemsSource="{Binding World}" DisplayMemberPath="Name">
+        </TreeViewItem>
+        <TreeViewItem Header="Misc">
+        </TreeViewItem>
       </TreeView>
       <!--<Button Style="{StaticResource ResourceKey=AddButtonImageStyle}">akfj</Button> -->
       <ScrollViewer Grid.Column="2" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" x:Name="x_working_page">

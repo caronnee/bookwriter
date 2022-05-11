@@ -3,6 +3,7 @@ using MyBook.Meta;
 using MyBook.Write;
 using MyBook.Write.Character;
 using MyBook.Write.GroupHandler;
+using MyBook.Write.World;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,6 +24,7 @@ namespace MyBook
 
     private SceneHolder _sceneHolder;
     private CharacterHolder _characterHolder;
+    private WorldHandler _worldHandler;
     
     private void SceneSaved()
     {
@@ -39,11 +41,12 @@ namespace MyBook
       // TODO continue form the last time
       if(name.Length > 0)
         Cache.Load(name);
+      _worldHandler = new WorldHandler();
+      _worldHandler.DataContext = Cache;
       _characterHolder = new CharacterHolder();
       _characterHolder.DataContext = Cache;
       _sceneHolder = new SceneHolder();
-      _sceneHolder.OnSceneSaved += SceneSaved;
-      _sceneHolder.OnReport += ShowProgress;
+      _sceneHolder.DataContext = Cache;
       FolderHandler = new GroupHandlerItem();
 
       // initialize UI
@@ -163,13 +166,6 @@ namespace MyBook
       w.Show();
     }
 
-    private void x_characters_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-    {
-      //CurrentContent.Save();
-      //CurrentContent = _characterHolder;
-      //_characterHolder.Load(x_characters.SelectedValue as CharacterContent);
-    }
-
     private GroupHandlerItem FolderHandler;
     private void AddScene_Click(object sender, RoutedEventArgs e)
     {
@@ -185,7 +181,13 @@ namespace MyBook
       FolderHandler.x_test.DataContext = null;
       FolderHandler.x_test.DataContext = Cache.Characters;
     }
-    
+
+    private void AddWorld_Click(object sender, RoutedEventArgs e)
+    {
+      x_world.Items.Refresh();
+      FolderHandler.x_test.DataContext = null;
+      FolderHandler.x_test.DataContext = Cache.Characters;
+    }
     public void Done()
     {
       BookSource s = DataContext as BookSource;
@@ -285,6 +287,11 @@ namespace MyBook
       }
     }
 
+    private void PreviewWorld(WorldDescription c)
+    {
+      _worldHandler.DataContext = c;
+      x_working_page.Content = _worldHandler;
+    }
     private void PreviewCharacter(CharacterDescription c)
     {
       _characterHolder.DataContext = c;
@@ -308,6 +315,12 @@ namespace MyBook
       if ( c!= null )
       {
         PreviewCharacter(c);
+        return;
+      }
+      WorldDescription w = it.SelectedItem as WorldDescription;
+      if (w != null)
+      {
+        PreviewWorld(w);
         return;
       }
       TreeViewItem parent = it.SelectedItem as TreeViewItem;

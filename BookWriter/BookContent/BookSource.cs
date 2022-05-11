@@ -234,13 +234,15 @@ namespace MyBook.BookContent
     }
 
     public List<CharacterDescription> Characters { get; set; }
-
+    public List<WorldDescription> World { get; set; }
     public void Init()
     {
       HandlersMap = new List<AssemblyMap>();
       InitPlugins();
       _scenes = new List<SceneDescription>();
       Characters = new List<CharacterDescription>();
+      World = new List<WorldDescription>();
+      CreateWorld();
       CreateScene();
       // create first person
       CreateCharacter();
@@ -290,7 +292,12 @@ namespace MyBook.BookContent
       Position.Clear();
       Init();
     }
-
+    public void CreateWorld()
+    {
+      WorldDescription world = new WorldDescription();
+      world.Name = "Test world";
+      World.Add(world);
+    }
     public void CreateScene()
     {
       Position.Scene = new SceneDescription();

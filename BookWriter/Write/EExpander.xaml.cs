@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Windows.Controls;
 using static MyBook.BookContent.BookSource;
 
-namespace MyBook.Write.Character
+namespace MyBook.Write
 {
   /// <summary>
   /// Interaction logic for EExpander.xaml
