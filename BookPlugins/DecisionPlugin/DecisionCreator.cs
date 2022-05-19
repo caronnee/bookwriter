@@ -7,16 +7,15 @@ namespace DecisionPlugin
 {
   public class DecisionCreator : IRiddleHandler
   {
-    public int Order { get; set; }
-    public string Name { get { return "Decision"; } }
+    private DecisionWriteBox _writer;
+    private DecisionBox _reader;
+    public override string Name => "Decision";
 
-    public Control Settings { get; set; }
+    public override Control Settings => null;
 
-    public Control Viewport { get; set; }
+    public override Control Viewport => _writer;
 
-    public Control DisplayPage { get; set; }
-
-    public string BaseFolder { get; set; }
+    public override Control DisplayPage => _reader;
 
     public DecisionData Data { get; set; }
     
@@ -26,35 +25,30 @@ namespace DecisionPlugin
     public DecisionCreator()
     {
       Data = new DecisionData();
-      Settings = null;
-      Viewport = null;
       ClearAnswer();
     }
 
-    public void Create()
+    public override void Create()
     {
-      DecisionWriteBox b = new DecisionWriteBox();
-      b.DataContext = this;
-      Viewport = b;
+      _writer = new DecisionWriteBox();
+      _writer.DataContext = Data;
     }
 
     public void Answered()
     {
-      DecisionBox b = DisplayPage as DecisionBox;
-      b.x_decisions.Visibility = System.Windows.Visibility.Collapsed;
-      b.x_description.Text += "\n" + Answer.Reaction;
+      _writer.x_decisions.Visibility = System.Windows.Visibility.Collapsed;
+      _writer.x_description.Text += "\n" + Answer.Reaction;
     }
 
-    public void ClearAnswer()
+    public override void ClearAnswer()
     {
       Answer = null;
     }
 
     public void CreateReadOnly()
     {
-      DecisionBox b = new DecisionBox();
-      DisplayPage = b;
-      b.x_description.Text = Data.Description;
+      _reader = new DecisionBox();
+      _reader.DataContext = Data;
       if ( Answer != null)
       {
         Answered();
@@ -71,7 +65,7 @@ namespace DecisionPlugin
           bt.Content = s.Action;
           bt.DataContext = s;
           bt.Click += Bt_Click;
-          b.x_decisions.Children.Add(bt);
+          _writer.x_decisions.Children.Add(bt);
         }
       }
     }
@@ -190,7 +184,7 @@ namespace DecisionPlugin
       return true;
     }
 
-    public void Serialize(BaseSerializer s)
+    public override void Serialize(BaseSerializer s)
     {
       if (s.IsLoading)
         Load(s);

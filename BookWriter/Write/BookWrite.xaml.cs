@@ -25,7 +25,7 @@ namespace MyBook
     private SceneHolder _sceneHolder;
     private CharacterHolder _characterHolder;
     private WorldHandler _worldHandler;
-    
+
     private void SceneSaved()
     {
       SelectionPickup();
@@ -39,7 +39,7 @@ namespace MyBook
       Cache = new BookSource();
       DataContext = Cache;
       // TODO continue form the last time
-      if(name.Length > 0)
+      if (name.Length > 0)
         Cache.Load(name);
       _worldHandler = new WorldHandler();
       _worldHandler.DataContext = Cache;
@@ -157,7 +157,7 @@ namespace MyBook
       //if (i != null)
       //  i.IsSelected = true;
       //CurrentContent = _sceneHolder;
-     // _sceneHolder.LoadScene();
+      // _sceneHolder.LoadScene();
     }
 
     private void showAboutClick(object sender, RoutedEventArgs e)
@@ -176,7 +176,7 @@ namespace MyBook
     }
     private void AddCharacter_Click(object sender, RoutedEventArgs e)
     {
-      CharacterDescription d= Cache.CreateCharacter();
+      CharacterDescription d = Cache.CreateCharacter();
       x_characters.Items.Refresh();
       FolderHandler.x_test.DataContext = null;
       FolderHandler.x_test.DataContext = Cache.Characters;
@@ -244,9 +244,21 @@ namespace MyBook
       FolderHandler.DataContext = Cache.Characters;
       x_working_page.Content = FolderHandler;
       FolderHandler.x_test.SetBinding(ItemsControl.ItemsSourceProperty, b);
-      foreach ( PreviewFolder folder in FolderHandler.x_test.Items)
+      foreach (PreviewFolder folder in FolderHandler.x_test.Items)
       {
         folder.x_go.Click += PreviewCharacterClick;
+      }
+    }
+    class testCon<T> : IValueConverter
+    {
+      public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+      {
+        throw new NotImplementedException();
+      }
+
+      public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+      {
+        throw new NotImplementedException();
       }
     }
     class SceneConverter : IValueConverter
@@ -270,6 +282,10 @@ namespace MyBook
       {
         throw new NotImplementedException();
       }
+    }
+    private void PreviewWorld()
+    {
+
     }
     private void PreviewFolder()
     {
@@ -329,6 +345,14 @@ namespace MyBook
         PreviewCharacters();
       if (parent == x_scenes)
         PreviewFolder();
+      if (parent == x_world)
+        PreviewWorld();
+    }
+
+    private void add_world_click(object sender, RoutedEventArgs e)
+    {
+      Cache.CreateWorld();
+      x_world.Items.Refresh();
     }
   }
 }

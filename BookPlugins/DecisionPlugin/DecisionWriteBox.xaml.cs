@@ -15,9 +15,8 @@ namespace DecisionPlugin
       DataContextChanged += DecisionWriteBox_DataContextChanged;
     }
 
-    private void InitCrossroad(SingleDecision sd, DecisionCreator dc, DecisionPossibilities p)
+    private void InitCrossroad(SingleDecision sd, DecisionData d, DecisionPossibilities p)
     {
-      DecisionData d = dc.Data;
       sd.DataContext = p;
       //sd.x_crossroad.ItemsSource = dc.Outcomes;
       sd.x_crossroad.DisplayMemberPath = "Name";
@@ -30,9 +29,8 @@ namespace DecisionPlugin
     private void DecisionWriteBox_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
     {
       // Buttons for decisions restorations
-      DecisionCreator dc = (DataContext as DecisionCreator);
-      DecisionData d = dc.Data;
-      InitCrossroad(x_first_decision, dc, d.Posibilities[0]);
+      DecisionData d = (DataContext as DecisionData);
+      InitCrossroad(x_first_decision, d, d.Posibilities[0]);
       for (int i = 1; i < d.Posibilities.Count; i++)
       {
         AddDecision(d.Posibilities[i]);
@@ -53,7 +51,7 @@ namespace DecisionPlugin
       SingleDecision d = new SingleDecision();
       x_decisions.Children.Insert(t,d);
       x_remove_decision.IsEnabled = true;
-      DecisionCreator dc = DataContext as DecisionCreator;
+      DecisionData dc = DataContext as DecisionData;
       InitCrossroad(d, dc, p);
     }
 

@@ -80,6 +80,11 @@
           </TreeViewItem.ContextMenu>
         </TreeViewItem>
         <TreeViewItem Header="World" x:Name="x_world" ItemsSource="{Binding World}" DisplayMemberPath="Name">
+          <TreeViewItem.ContextMenu>
+            <ContextMenu>
+              <MenuItem Header="Add worldPart" Click="add_world_click" />
+            </ContextMenu>
+          </TreeViewItem.ContextMenu>
         </TreeViewItem>
         <TreeViewItem Header="Misc">
         </TreeViewItem>

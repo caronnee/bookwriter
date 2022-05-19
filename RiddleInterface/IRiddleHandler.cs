@@ -6,29 +6,37 @@ using System.Windows.Data;
 
 namespace RiddleInterface
 {
-  public interface IRiddleHandler
+  public interface ISceneProvider
   {
-    // base folder for this plugin data
-    String BaseFolder { get; set; }
+    List<string> GetSceneNames();
+    int GetSceneId(string name);
+
+    void CreateScene(string name);
+  }
+  public abstract class IRiddleHandler
+  {
+    //! base folder for this plugin data
+    public String BaseFolder { get; set; }
 
     // name of the content handler
-    String Name { get; }
+    public abstract String Name { get; }
 
+    public ISceneProvider SceneProvider { get; set; }
     // setting assotiated with the content handler ( rotation etc )
-    Control Settings { get; set; }
+    public abstract Control Settings { get; }
 
     // showable content
-    Control Viewport { get; set; }
+    public abstract Control Viewport { get; }
 
     // final page for displaying to reader
-    Control DisplayPage { get; set; }
+    public abstract Control DisplayPage { get; }
 
     // sets the page as not answered yet
-    void ClearAnswer();
-    
-    void Serialize(Serializer.BaseSerializer s);
+    public abstract void ClearAnswer();
+
+    public abstract void Serialize(Serializer.BaseSerializer s);
 
     // creates write module
-    void Create();
+    public abstract void Create();
   }
 }

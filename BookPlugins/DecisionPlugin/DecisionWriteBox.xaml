@@ -11,7 +11,7 @@
             <RowDefinition Height="2*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <TextBox x:Name="x_description" Grid.Row="0" AcceptsReturn="True" TextWrapping="Wrap" Text="{Binding Data.Description}"/>
+        <TextBox x:Name="x_description" Grid.Row="0" AcceptsReturn="True" TextWrapping="Wrap" Text="{Binding Description}"/>
         <ScrollViewer Grid.Row="1">
             <StackPanel x:Name="x_decisions">
                 <local:SingleDecision x:Name="x_first_decision"></local:SingleDecision>

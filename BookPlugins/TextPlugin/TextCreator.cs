@@ -1,4 +1,5 @@
 ﻿using RiddleInterface;
+using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
 
@@ -6,45 +7,44 @@ namespace TextPlugin
 {
   public class TextCreator : IRiddleHandler
   {
-    public string Name => "Text";
+    private TextWriter _writer;
+    private TextReader _reader;
+    public override String Name => "Text";
 
-    //public List<Outcome> Outcomes { get; set; }
-    public Control Settings { get; set; }
-    public Control Viewport { get; set; }
-    public Control DisplayPage { get; set; }
+    public override Control Settings => null;
+    public override Control Viewport => _writer;
+    public override Control DisplayPage => _reader;
 
     public TextData Data { get; set; }
-    public string BaseFolder { get; set; }
 
-    public void ClearAnswer()
+    public override void ClearAnswer()
     {
-      // no answer here
+      // no answer here, no nned to clear
     }
 
     public TextCreator()
     {
       Data = new TextData();
-      Settings = null;
     }
 
-    public void Create()
+    public override void Create()
     {
-      Viewport = new TextWriter();
-      Viewport.DataContext = Data;
+      _writer = new TextWriter();
+      _writer.DataContext = Data;
       CreateReadOnly();
     }
 
     public void CreateReadOnly()
     {
-      DisplayPage = new TextReader();
-      DisplayPage.DataContext = Data;
+      _reader = new TextReader();
+      _reader.DataContext = Data;
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////// Serializer ////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    public void Serialize(Serializer.BaseSerializer s)
+    public override void Serialize(Serializer.BaseSerializer s)
     {
       string str = Data.Description;
       s.SerializeString(TextNodeNames.Desc, ref str);

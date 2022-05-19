@@ -10,8 +10,7 @@
     <StackPanel DockPanel.Dock="Right">
       <Image Source="c:\Users\caronnee\Downloads\theodoreHappy.jfif" Width="100">
         <Image.ContextMenu>
-          <ContextMenu>
-            <MenuItem>Load</MenuItem>
+          <ContextMenu>Load
           </ContextMenu>
         </Image.ContextMenu>
       </Image>

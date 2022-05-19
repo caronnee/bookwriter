@@ -8,39 +8,36 @@ namespace ImagePlugin
 {
   public class ImageCreator : IRiddleHandler
   {
+    private ImageWrite _writer;
+    private ImageBox _reader;
     public ImageData Data { get; set; }
     
-    public string Name => "Image";
+    public override string Name => "Image";
 
-    public Control Settings { get; set; }
-    public Control Viewport { get; set; }
-    public Control DisplayPage { get; set; }
+    public override Control Settings => null;
+    public override Control Viewport => _writer;
+    public override Control DisplayPage => _reader;
 
     public ImageCreator()
     {
-      Settings = null;
       ClearAnswer();
     }
 
-    // folder for data. Not used for password. Yet
-    public string BaseFolder { get; set; }
-    public int Order { get; set; }
-
-    public void ClearAnswer()
+    public override void ClearAnswer()
     {
       Data = new ImageData();
     }
 
-    public void Create()
+    public override void Create()
     {
-      Viewport = new ImageWrite();
-      Viewport.DataContext = this;
+      _writer = new ImageWrite();
+      _writer.DataContext = this;
     }
 
     public void CreateReadOnly()
     {
-      DisplayPage = new ImageBox();
-      DisplayPage.DataContext = this;
+      _reader = new ImageBox();
+      _reader.DataContext = this;
     }
 
     #region Serialization
@@ -82,7 +79,7 @@ namespace ImagePlugin
       Serialize(s, ref d);
     }
 
-    public void Serialize(Serializer.BaseSerializer s)
+    public override void Serialize(Serializer.BaseSerializer s)
     {
       if (s.IsLoading)
         Load(s);

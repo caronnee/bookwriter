@@ -11,9 +11,12 @@ namespace PasswordPlugin
   {
     #region Provided by interface
 
-    public string Name { get { return "Password"; } }
-    public Control Settings { get; set; }
-    public Control Viewport { get; set; }
+    PasswordWriteBox _writer;
+    PasswordBox _reader;
+    public override string Name => "Password";
+
+    public override Control Settings => null;
+    public override Control Viewport => _writer;
 
     #endregion
 
@@ -45,11 +48,8 @@ namespace PasswordPlugin
 
     public void CreateReadOnly()
     {
-      PasswordBox b = new PasswordBox();
-      DisplayPage = b;
-      PasswordWriteBox p = Viewport as PasswordWriteBox;
-      b.x_description.Text = p.x_description.Text;
-      
+      _reader = new PasswordBox();
+      _reader.DataContext = Data;      
       // answer was done
       if ( Data.Answer.Id >=0 )
       {
@@ -57,16 +57,16 @@ namespace PasswordPlugin
       }
       else
       {
-        b.x_send_answer.Click += X_send_answer_Click;
+        _reader.x_send_answer.Click += x_send_answer_Click;
       }
     }
 
-    public void ClearAnswer()
+    public override void ClearAnswer()
     {
       Data.Answer = new AnswerData();
     }
 
-    private void X_send_answer_Click(object sender, RoutedEventArgs e)
+    private void x_send_answer_Click(object sender, RoutedEventArgs e)
     {
       //
       PasswordBox b = DisplayPage as PasswordBox;
@@ -99,34 +99,23 @@ namespace PasswordPlugin
     }
 
     // 
-    public Control DisplayPage { get; set; }
-    // folder for data. Not used for password. Yet
-    public string BaseFolder { get; set; }
-    public int Order { get; set; }
-
+    public override Control DisplayPage => _reader;
     private void CreateWrite()
     {
-      PasswordWriteBox b = new PasswordWriteBox();
-      Viewport = b;
-      Viewport.DataContext = this;
-      //if (Outcomes.Count > 0)
-      //{
-      //  b.x_fail.SelectedItem = Outcomes[Data.Definition.FailureId];
-      //  b.x_success.SelectedItem = Outcomes[Data.Definition.SuccessId];
-      //}
+      _writer = new PasswordWriteBox();
+      _writer.DataContext = this;
+      
       int index = Data.Definition.NAllowedFailures;
       if (index < 0)
-        index = b.x_countdown.Items.Count - 1;
-      b.x_countdown.SelectionChanged += b.x_countdown_SelectionChanged;
-      b.x_countdown.SelectedIndex = index;
+        index = _writer.x_countdown.Items.Count - 1;
+      _writer.x_countdown.SelectionChanged += _writer.x_countdown_SelectionChanged;
+      _writer.x_countdown.SelectedIndex = index;
     }
 
-    public void Create()
+    public override void Create()
     {
       // setting are the same for the book
-      Settings = new PasswordSetting();
-      CreateWrite();      
-      CreateReadOnly();
+      CreateWrite();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -247,7 +236,7 @@ namespace PasswordPlugin
         serializer.PopSection();
       }
     }
-    public void Serialize(BaseSerializer s)
+    public override void Serialize(BaseSerializer s)
     {
       if (s.IsLoading)
       {

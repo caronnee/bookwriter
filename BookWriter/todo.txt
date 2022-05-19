@@ -1,4 +1,5 @@
 ﻿Writer:
+Decision - link scenes
 Start writing
 mother father setting
 hyperlinks
