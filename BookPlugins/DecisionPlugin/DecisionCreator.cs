@@ -31,7 +31,11 @@ namespace DecisionPlugin
     public override void Create()
     {
       _writer = new DecisionWriteBox();
-      _writer.DataContext = Data;
+      _writer.DataContext = this;
+      for ( int i =0; i < Data.Posibilities.Count; i++)
+      {
+        _writer.AddDecision(Data.Posibilities[i]);
+      }
     }
 
     public void Answered()
@@ -91,7 +95,7 @@ namespace DecisionPlugin
 
     struct PossibilitySerialize
     {
-      public int id;
+      public string id;
       public string action;
       public string reaction;
       public string item;
@@ -153,7 +157,7 @@ namespace DecisionPlugin
         r.SerializeString(DecisionNodeNames.ActionString, ref ps.action);
         r.SerializeString(DecisionNodeNames.ReactionString, ref ps.reaction);
         r.SerializeString(DecisionNodeNames.ItemString, ref ps.item);
-        r.SerializeInt(DecisionNodeNames.IdString, ref ps.id);
+        r.SerializeString(DecisionNodeNames.IdString, ref ps.id);
         r.PopSection();
         order++;
       }

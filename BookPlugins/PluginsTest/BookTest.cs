@@ -12,6 +12,30 @@ namespace PluginsTest
 {
   public class BookTest
   {
+    class TestScene : ISceneProvider
+    {
+      List<string> s = new List<string>() { "aselfjk", "dva", "tri" };
+
+      public void CreateScene(string name)
+      {
+        s.Add(name);
+      }
+
+      public int GetSceneId(string name)
+      {
+        for ( int i =0; i < s.Count; i++)
+        {
+          if (s[i] == name)
+            return i;
+        }
+        return -1;
+      }
+
+      public List<string> GetSceneNames()
+      {
+        return s;
+      }
+    }
     public List<IRiddleHandler> Handlers { get; set; }
 
     private List<IRiddleHandler> InitPlugins()
@@ -34,7 +58,7 @@ namespace PluginsTest
       }
 
       Type rh = typeof(IRiddleHandler);
-
+      TestScene mySceneProvider = new TestScene();
       foreach (Assembly a in assemblies)
       {
         Type[] types = a.GetTypes();
@@ -47,6 +71,7 @@ namespace PluginsTest
           IRiddleHandler riddle = iRiddle as IRiddleHandler;
           //riddle.Outcomes = Locations;
           riddle.BaseFolder = s;
+          riddle.SceneProvider = mySceneProvider;
           if (riddle != null)
           {
             riddles.Add(riddle);

@@ -11,7 +11,7 @@ namespace PasswordPlugin
     public static string IdString = "ID";
     public static string DescString = "Description";
     public static string AnswerString = "Answer";
-    public static string FailureString = "Failures";
+    public static string FailureString = "Failure";
     public static string FailureReactionString = "FailureReaction";
     public static string FailuresString = "MaxFailures";
     public static string SuccessString = "Success";

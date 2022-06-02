@@ -23,7 +23,7 @@ namespace DecisionPlugin
   public class DecisionPossibilities
   {
     // id of the outcome
-    public int Id { get; set; }
+    public String Id { get; set; }
 
     // reaction
     public String Reaction { get; set; }
@@ -54,7 +54,6 @@ namespace DecisionPlugin
     public DecisionData()
     {
       Posibilities = new List<DecisionPossibilities>();
-      Posibilities.Add(new DecisionPossibilities());
       Description = "Here comes the text";
     }
 

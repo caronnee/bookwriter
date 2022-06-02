@@ -38,7 +38,7 @@ namespace PasswordPlugin
         b.x_final_answer.Text += s + Environment.NewLine;
       }
 
-      if ( Data.Answer.Id >=0 )
+      if ( Data.Answer.Id.Length >0 )
       {
         // complete answer was done
         // hide "send" button
@@ -51,7 +51,7 @@ namespace PasswordPlugin
       _reader = new PasswordBox();
       _reader.DataContext = Data;      
       // answer was done
-      if ( Data.Answer.Id >=0 )
+      if ( Data.Answer.Id.Length >0 )
       {
         Answered();        
       }
@@ -72,7 +72,7 @@ namespace PasswordPlugin
       PasswordBox b = DisplayPage as PasswordBox;
       if (Data.Definition.AcceptableAnswer == b.x_answer.Text)
       {
-        int id = Data.Definition.SuccessId;
+        string id = Data.Definition.SuccessId;
         Data.Answer.Reactions.Add(Data.Definition.SuccessReaction);
         Data.Answer.Id = id;
         Answered();
@@ -81,7 +81,7 @@ namespace PasswordPlugin
       {
         if (Data.Answer.Failures == Data.Definition.NAllowedFailures)
         {
-          int id = Data.Definition.FailureId;
+          string id = Data.Definition.FailureId;
           Data.Answer.Id = id;
           Data.Answer.Reactions.Add(Data.Definition.FailureReaction);
         }
@@ -133,10 +133,10 @@ namespace PasswordPlugin
     {
       public string description;
       public string acceptableAnswer;
-      public int failureId;
+      public string failureId;
       public string failureReaction;
       public int maxFailures;
-      public int successId;
+      public string successId;
       public string successReaction;
       public HintSerializeData[] hints;
     }
@@ -218,10 +218,10 @@ namespace PasswordPlugin
     {
       serializer.SerializeString(PasswordNodeNames.DescString, ref data.description);
       serializer.SerializeString(PasswordNodeNames.AnswerString, ref data.acceptableAnswer);
-      serializer.SerializeInt(PasswordNodeNames.FailureString, ref data.failureId);
+      serializer.SerializeString(PasswordNodeNames.FailureString, ref data.failureId);
       serializer.SerializeString(PasswordNodeNames.FailureReactionString, ref data.failureReaction);
       serializer.SerializeInt(PasswordNodeNames.FailuresString, ref data.maxFailures);
-      serializer.SerializeInt(PasswordNodeNames.SuccessString, ref data.successId);
+      serializer.SerializeString(PasswordNodeNames.SuccessString, ref data.successId);
       serializer.SerializeString(PasswordNodeNames.SuccessReactionString, ref data.successReaction);
      
       if(hasHints(serializer,0,ref data))

@@ -54,9 +54,11 @@ namespace PasswordPlugin
     {
       // Buttons for decisions restorations
       PasswordMaker dc = (DataContext as PasswordMaker);
-      //x_fail.ItemsSource = dc.Outcomes;
-      x_fail.DisplayMemberPath = "Name";
-      x_fail.SelectedIndex = 0;
+      List<string> ret = dc.SceneProvider.GetSceneNames();
+      x_fail.DataContext = dc;
+      x_fail.ItemsSource = ret;
+      x_success.DataContext = dc;
+      x_success.ItemsSource = ret;
     }
   }
 }
