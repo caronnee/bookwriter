@@ -47,6 +47,7 @@ namespace MyBook
       _characterHolder.DataContext = Cache;
       _sceneHolder = new SceneHolder();
       _sceneHolder.DataContext = Cache;
+      _sceneHolder.OnReport += ShowProgress;
       FolderHandler = new GroupHandlerItem();
 
       // initialize UI
@@ -312,11 +313,13 @@ namespace MyBook
     {
       _characterHolder.DataContext = c;
       x_working_page.Content = _characterHolder;
+      Cache.RefreshContent();
     }
     private void PreviewScene(SceneDescription i)
     {
       Cache.SetScene(i);
       x_working_page.Content = _sceneHolder;
+      Cache.RefreshContent();
     }
     private void Item_Selected(object sender, RoutedPropertyChangedEventArgs<object> e)
     {

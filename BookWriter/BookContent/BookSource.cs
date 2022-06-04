@@ -50,7 +50,7 @@ namespace MyBook.BookContent
     public Type Type { get; set; }
   }
 
-  public class BookSource : INotifyPropertyChanged
+  public class BookSource : INotifyPropertyChanged, ISceneProvider
   {
     //
     public List<AssemblyMap> HandlersMap { get; set; }
@@ -191,21 +191,29 @@ namespace MyBook.BookContent
         break;
       }
       h.BaseFolder = Settings.BooksFolder;
+      h.SceneProvider = this;
       h.Create();
-      if (Position.ParagraphId < 0)
+      if (Position.ParagraphId <= Position.Scene.Pages.Count)
       {
         Position.Scene.Pages.Add(h);
+        RefreshContent();
       }
       else
       {
-        Position.Scene.Pages.Insert(Position.ParagraphId + 1, h);
+        Position.Scene.Pages.Insert(Position.ParagraphId+1, h);
+        MoveForward();
       }
-      MoveForward();
     }
-
-    private void RefreshContent()
+    public void RefreshContent()
     {
-      CurrentPage = Position.Scene.Pages[Position.ParagraphId];
+      if (Position.ParagraphId >= Position.Scene.Pages.Count)
+      {
+        CurrentPage = null;
+      }
+      else
+      {
+        CurrentPage = Position.Scene.Pages[Position.ParagraphId];
+      }
       NotifyPropertyChanged("Position");
       NotifyPropertyChanged("CanGoBack");
       NotifyPropertyChanged("CanGoFurther");
@@ -298,16 +306,14 @@ namespace MyBook.BookContent
       world.Name = "Test world";
       World.Add(world);
     }
-    public void CreateScene()
+    public SceneDescription CreateScene()
     {
       Position.Scene = new SceneDescription();
       Scenes.Add(Position.Scene);
       Position.Scene.Name = $"Scene #{Scenes.Count}";
       Position.Clear();
-      NotifyPropertyChanged("Position");
-      NotifyPropertyChanged("CanGoBack");
-      NotifyPropertyChanged("CanGoFurther");
-      NotifyPropertyChanged("Scenes");
+      RefreshContent();
+      return Position.Scene;
     }
 
     public void SetScene(SceneDescription sceneDescription)
@@ -570,6 +576,27 @@ namespace MyBook.BookContent
       LoadCharacters(s);
       LoadScenes(s);
       s.PopSection();
+    }
+
+    public List<string> GetSceneNames()
+    {
+      List<string> ret = new List<string>();
+      for (int i =0; i < Scenes.Count; i++)
+      {
+        ret.Add(Scenes[i].Name);
+      }
+      return ret;
+    }
+
+    public int GetSceneId(string name)
+    {
+      throw new NotImplementedException();
+    }
+
+    public void CreateScene(string name)
+    {
+      SceneDescription d = CreateScene();
+      d.Name = name;
     }
   }
 }

@@ -17,30 +17,10 @@ namespace MyBook.BookContent
       set;
     }
 
-    // position in book
-    public int ContentPos
-    {
-      get;
-      set;
-    }
-
-    // size that this can occupy
-    public int Lenght
-    {
-      get;
-      set;
-    }
-
     public void Clear()
     {
-      Lenght = 0;
-      ParagraphId = -1;
-      ContentPos = 0;
+      ParagraphId = 0;
     }
 
-    bool IsInvalid()
-    {
-      return Lenght < 0;
-    }
   }
 }

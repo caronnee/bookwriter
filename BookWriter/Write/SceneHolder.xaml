@@ -17,15 +17,14 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="30px" />
         </Grid.ColumnDefinitions>
-        <TextBox x:Name="x_sceneName" Text="{Binding Name}" Grid.Row="0" Grid.Column="1" HorizontalContentAlignment="Center"/>
-        <ContentControl x:Name="x_sceneContent" Content="{Binding Viewport}" Grid.Row="1" Grid.Column="1"/>
+        <TextBox x:Name="x_sceneName" Text="{Binding Position.Scene.Name}" Grid.Row="0" Grid.Column="1" HorizontalContentAlignment="Center"/>
+    <ContentControl x:Name="x_sceneContent" Content="{Binding CurrentPage.Viewport}" Grid.Row="1" Grid.Column="1"/>
         <Button Content="-" IsEnabled="{Binding CanGoBack}" Grid.Row="1" Grid.Column="0" Click="MoveBackClick" />
         <Button Content="+" IsEnabled="{Binding CanGoFurther}" Grid.Row="1" Grid.Column="2" Click="MoveForwardClick"/>
-        <UniformGrid x:Name="x_settings" Rows="1" Grid.Row="2" Grid.Column="1" >
-            <ComboBox x:Name="x_types" ItemsSource="{Binding HandlersMap}" DisplayMemberPath="Name" SelectedIndex="0"></ComboBox>
-            <Button Content="Insert" Click="CreateContentClick"/>
-            <Button Content="Remove" IsEnabled="False"/>
-        </UniformGrid>
-        
-    </Grid>
+    <UniformGrid x:Name="x_settings" Rows="1" Grid.Row="2" Grid.Column="1" >
+      <ComboBox x:Name="x_types" ItemsSource="{Binding HandlersMap}" DisplayMemberPath="Name" SelectedIndex="0"></ComboBox>
+      <Button Content="Insert" Click="CreateContentClick"/>
+      <Button Content="Remove" IsEnabled="False"/>
+    </UniformGrid>
+  </Grid>
 </UserControl>
