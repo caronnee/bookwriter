@@ -104,21 +104,11 @@ namespace MyBook.BookContent
         PropertyChanged(this, new PropertyChangedEventArgs(property));
     }
 
-    public IRiddleHandler CurrentPage { get; set; }
-
-    public PositionDesc Position
-    {
-      get;
-      set;
-    }
-
+    public SceneDescription CurrentScene { get; set; }
     public void SetPage(int s, int p)
     {
-      Position = new PositionDesc();
-      Position.Scene = Scenes[s];
-      Position.Clear();
-      Position.ParagraphId = p;
-      CurrentPage = Scenes[s].Pages[p];
+      CurrentScene = Scenes[s];
+      CurrentScene.SetPage(p);
     }
 
     //public void InitB()
@@ -159,7 +149,7 @@ namespace MyBook.BookContent
 
     public void RemovePage()
     {
-      Position.Scene.Pages.RemoveAt(Position.ParagraphId);
+      CurrentScene.Pages.RemoveAt(CurrentScene.CurrentPosition);
       MoveBack();
     }
 
@@ -172,9 +162,8 @@ namespace MyBook.BookContent
 
     public void MoveBack()
     {
-      Position.ParagraphId--;
-      if (Position.ParagraphId < 0)
-        Position.ParagraphId = 0;
+      if (CurrentScene.CurrentPosition > 0)
+        CurrentScene.SetPage(CurrentScene.CurrentPosition-1);
       RefreshContent();
     }
 
@@ -193,38 +182,27 @@ namespace MyBook.BookContent
       h.BaseFolder = Settings.BooksFolder;
       h.SceneProvider = this;
       h.Create();
-      if (Position.ParagraphId <= Position.Scene.Pages.Count)
+      if (CurrentScene.CurrentPosition <= CurrentScene.Pages.Count)
       {
-        Position.Scene.Pages.Add(h);
-        RefreshContent();
+        CurrentScene.Pages.Add(h);
       }
       else
       {
-        Position.Scene.Pages.Insert(Position.ParagraphId+1, h);
+        CurrentScene.Pages.Insert(CurrentScene.CurrentPosition +1, h);
         MoveForward();
       }
+      RefreshContent();
     }
     public void RefreshContent()
     {
-      if (Position.ParagraphId >= Position.Scene.Pages.Count)
-      {
-        CurrentPage = null;
-      }
-      else
-      {
-        CurrentPage = Position.Scene.Pages[Position.ParagraphId];
-      }
-      NotifyPropertyChanged("Position");
       NotifyPropertyChanged("CanGoBack");
       NotifyPropertyChanged("CanGoFurther");
-      NotifyPropertyChanged("CurrentPage");
+      NotifyPropertyChanged("CurrentScene");
     }
 
     public void MoveForward()
     {
-      if (Position.ParagraphId == Position.Scene.Pages.Count - 1)
-        return;
-      Position.ParagraphId++;
+      CurrentScene.SetPage(CurrentScene.CurrentPosition + 1);
       RefreshContent();
     }
 
@@ -274,30 +252,21 @@ namespace MyBook.BookContent
 
     public bool CanGoBack
     {
-      get { return Position.ParagraphId > 0; }
+      get { return CurrentScene.CurrentPosition > 0; }
     }
 
     public bool CanGoFurther
     {
       get
       {
-        return (Position.Scene.Pages.Count > 0)
-      && (Position.ParagraphId < Position.Scene.Pages.Count - 1);
+        return ( CurrentScene.CurrentPage!=null && (CurrentScene.CurrentPosition < CurrentScene.Pages.Count - 1));
       }
-    }
-
-    public IRiddleHandler GetContent()
-    {
-      //Position.Scene = Scenes.Find(new Predicate<SceneDescription>(x => x.Name == Position.SceneName));
-      return Position.Scene.Pages[Position.ParagraphId];
     }
 
     public BookSource()
     {
       // init
       Name = null;
-      Position = new PositionDesc();
-      Position.Clear();
       Init();
     }
     public void CreateWorld()
@@ -308,19 +277,15 @@ namespace MyBook.BookContent
     }
     public SceneDescription CreateScene()
     {
-      Position.Scene = new SceneDescription();
-      Scenes.Add(Position.Scene);
-      Position.Scene.Name = $"Scene #{Scenes.Count}";
-      Position.Clear();
-      RefreshContent();
-      return Position.Scene;
+      SceneDescription d = new SceneDescription();
+      Scenes.Add(d); ;
+      d.Name = $"Scene #{Scenes.Count}";
+      return d;
     }
 
     public void SetScene(SceneDescription sceneDescription)
     {
-      Position.Clear();
-      Position.Scene = sceneDescription;
-      NotifyPropertyChanged("Position");
+      CurrentScene = sceneDescription;
       NotifyPropertyChanged("CanGoFurther");
       NotifyPropertyChanged("CanGoBack");
     }

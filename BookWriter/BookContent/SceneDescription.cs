@@ -1,9 +1,6 @@
 ﻿using RiddleInterface;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyBook.BookContent
 {
@@ -29,13 +26,27 @@ namespace MyBook.BookContent
     public String Summary { get; set; }
 
     // content of the book for writing
-    public List<IRiddleHandler> Pages { get; set; }
+    public List<IRiddleHandler> Pages { get => _pages; }
 
+    public IRiddleHandler CurrentPage { get => _currentPage; }
+    public int CurrentPosition { get => _position; }
     // constructor
+    private int _position;
+    private IRiddleHandler _currentPage;
+    
+    private List<IRiddleHandler> _pages;
     public SceneDescription()
     {
-      Pages = new List<IRiddleHandler>();
+      _pages = new List<IRiddleHandler>();
+      _currentPage = null;
+      _position = -1;
     }
+    public void SetPage(int i)
+    {
+      _position = i;
+      _currentPage = Pages[i];
+    }
+
     public SceneSerializeData ToSerialize()
     {
       SceneSerializeData d = new SceneSerializeData();
