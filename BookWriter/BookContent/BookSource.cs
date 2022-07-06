@@ -105,11 +105,7 @@ namespace MyBook.BookContent
     }
 
     public SceneDescription CurrentScene { get; set; }
-    public void SetPage(int s, int p)
-    {
-      CurrentScene = Scenes[s];
-      CurrentScene.SetPage(p);
-    }
+    
 
     //public void InitB()
     //{
@@ -185,6 +181,7 @@ namespace MyBook.BookContent
       if (CurrentScene.CurrentPosition <= CurrentScene.Pages.Count)
       {
         CurrentScene.Pages.Add(h);
+        CurrentScene.SetPage(0);
       }
       else
       {
@@ -229,7 +226,8 @@ namespace MyBook.BookContent
       Characters = new List<CharacterDescription>();
       World = new List<WorldDescription>();
       CreateWorld();
-      CreateScene();
+      SceneDescription d = CreateScene();
+      SetScene(d);
       // create first person
       CreateCharacter();
     }
@@ -252,14 +250,20 @@ namespace MyBook.BookContent
 
     public bool CanGoBack
     {
-      get { return CurrentScene.CurrentPosition > 0; }
+      get { 
+        return CurrentScene!=null && CurrentScene.CurrentPosition > 0; 
+      }
     }
 
     public bool CanGoFurther
     {
       get
       {
-        return ( CurrentScene.CurrentPage!=null && (CurrentScene.CurrentPosition < CurrentScene.Pages.Count - 1));
+        if (CurrentScene == null)
+          return false;
+        if (CurrentScene.CurrentPage == null)
+          return false;
+        return ( CurrentScene.CurrentPosition < CurrentScene.Pages.Count - 1 );
       }
     }
 
@@ -278,7 +282,7 @@ namespace MyBook.BookContent
     public SceneDescription CreateScene()
     {
       SceneDescription d = new SceneDescription();
-      Scenes.Add(d); ;
+      Scenes.Add(d);
       d.Name = $"Scene #{Scenes.Count}";
       return d;
     }

@@ -5,15 +5,20 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PluginsTest"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="Green">
+             d:DesignHeight="450" d:DesignWidth="800" x:Name="x_tab">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="20"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <ContentControl x:Name="x_maker" Grid.Column="0" Content="{Binding Viewport}"/>
-        <Button Background="Yellow" Grid.Column="1" Content=">>>" Click="x_make_preview" />
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <TextBox Grid.ColumnSpan="2" Text="{Binding Handler.Name, ElementName=x_tab}"></TextBox>
+        <ContentControl x:Name="x_maker" Grid.Column="0" Grid.Row="1" Content="{Binding Handler.page.Viewport, ElementName=x_tab}"/>
+        <Button Grid.Column="1" Content=">>>" Click="x_make_preview" />
         <ContentControl x:Name="x_show" Grid.Column="2" />
     </Grid>
 </TabItem>

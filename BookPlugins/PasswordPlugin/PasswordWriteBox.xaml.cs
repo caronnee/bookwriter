@@ -17,23 +17,23 @@ namespace PasswordPlugin
     {
       InitializeComponent();
     }  
-
+    public PasswordMaker Owner { get; set; }
     public void x_countdown_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-      int index = x_countdown.SelectedIndex;
-      if (index == x_countdown.Items.Count - 1)
-        index = -1;
-      PasswordMaker m = (DataContext as PasswordMaker);
-      m.Data.Definition.NAllowedFailures = index;
-      if (index <= 0 )
-      {
-        x_hints_holder.Visibility = Visibility.Collapsed;
-      }
-      else
-      {
-        x_hints_holder.Visibility = Visibility.Visible;
-        RefillHints();
-      }
+      //int index = x_countdown.SelectedIndex;
+      //if (index == x_countdown.Items.Count - 1)
+      //  index = -1;
+      //PasswordMaker m = (DataContext as PasswordMaker);
+      //m.Data.Definition.NAllowedFailures = index;
+      //if (index <= 0 )
+      //{
+      //  x_hints_holder.Visibility = Visibility.Collapsed;
+      //}
+      //else
+      //{
+      //  x_hints_holder.Visibility = Visibility.Visible;
+      //  RefillHints();
+      //}
     }
 
     public void RefillHints()
@@ -48,17 +48,6 @@ namespace PasswordPlugin
         b.DataContext = it;
         b.SetBinding(TextBox.TextProperty, "Hint");
       }
-    }
-
-    private void pwd_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-    {
-      // Buttons for decisions restorations
-      PasswordMaker dc = (DataContext as PasswordMaker);
-      List<string> ret = dc.SceneProvider.GetSceneNames();
-      x_fail.DataContext = dc;
-      x_fail.ItemsSource = ret;
-      x_success.DataContext = dc;
-      x_success.ItemsSource = ret;
     }
   }
 }

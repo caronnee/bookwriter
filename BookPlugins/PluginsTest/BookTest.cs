@@ -9,34 +9,16 @@ using System.Threading.Tasks;
 using System.Xml;
 
 namespace PluginsTest
-{
+{ 
+  public class SceneTest
+  {
+    public string Name { get; set; }
+    public int Id { get; set; }
+    public IRiddleHandler page { get; set; }
+  }
   public class BookTest
   {
-    class TestScene : ISceneProvider
-    {
-      List<string> s = new List<string>() { "aselfjk", "dva", "tri" };
-
-      public void CreateScene(string name)
-      {
-        s.Add(name);
-      }
-
-      public int GetSceneId(string name)
-      {
-        for ( int i =0; i < s.Count; i++)
-        {
-          if (s[i] == name)
-            return i;
-        }
-        return -1;
-      }
-
-      public List<string> GetSceneNames()
-      {
-        return s;
-      }
-    }
-    public List<IRiddleHandler> Handlers { get; set; }
+    public List<SceneTest> Scenes { get; set; }
 
     private List<IRiddleHandler> InitPlugins()
     {
@@ -58,7 +40,6 @@ namespace PluginsTest
       }
 
       Type rh = typeof(IRiddleHandler);
-      TestScene mySceneProvider = new TestScene();
       foreach (Assembly a in assemblies)
       {
         Type[] types = a.GetTypes();
@@ -71,7 +52,6 @@ namespace PluginsTest
           IRiddleHandler riddle = iRiddle as IRiddleHandler;
           //riddle.Outcomes = Locations;
           riddle.BaseFolder = s;
-          riddle.SceneProvider = mySceneProvider;
           if (riddle != null)
           {
             riddles.Add(riddle);
@@ -84,7 +64,15 @@ namespace PluginsTest
 
     public BookTest()
     {
-      Handlers = InitPlugins();
+      List<IRiddleHandler> handlers = InitPlugins();
+      Scenes = new List<SceneTest>();
+      for ( int i =0; i < handlers.Count; i++)
+      {
+        SceneTest t = new SceneTest();
+        t.page = handlers[i];
+        t.Name = $"Scene #{i}";
+        Scenes.Add(t);
+      }
     }
 
     public delegate IRiddleHandler HasNextSession(Serializer.BaseSerializer s, int order);
@@ -96,17 +84,17 @@ namespace PluginsTest
         return null;
       string name = "";
       s.SerializeAttribute("Plugin", ref name);
-      return Handlers.Find(new Predicate<IRiddleHandler>(x => x.Name == name));
+      return Scenes.Find(new Predicate<SceneTest>(x => x.page.Name == name)).page;
     }
     IRiddleHandler HasNextSessionSave(Serializer.BaseSerializer s, int order)
     {
-      if (order < Handlers.Count)
+      if (order < Scenes.Count)
       {
-        IRiddleHandler irh = Handlers[order];
+        IRiddleHandler irh = Scenes[order].page;
         s.PushSection("Riddle", order);
         string name = irh.Name;
         s.SerializeAttribute("Plugin", ref name);
-        return Handlers[order];
+        return irh;
       }
       return null;
     }
@@ -138,10 +126,12 @@ namespace PluginsTest
       Serializer.XmlBookLoad loader = new Serializer.XmlBookLoad(filename);
       hasNextSession = HasNextSessionLoad;
       Serialize(loader);
-      foreach(IRiddleHandler h in Handlers)
-      {
-        h.Create();
-      }
+      // TODO eva load
+      //Scenes.Clear();
+      //foreach(IRiddleHandler h in Scenes)
+      //{
+      //  h.Create();
+      //}
     }
   }
 }

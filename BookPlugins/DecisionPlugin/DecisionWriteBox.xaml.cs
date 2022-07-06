@@ -2,6 +2,7 @@ using RiddleInterface;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace DecisionPlugin
 {
@@ -10,20 +11,16 @@ namespace DecisionPlugin
   /// </summary>
   public partial class DecisionWriteBox : UserControl
   {
+    public DecisionCreator Owner { get;set; }
+
     public DecisionWriteBox()
     {
       InitializeComponent();
     }
-
-    private void InitCrossroad(SingleDecision sd, DecisionCreator d, DecisionPossibilities p)
-    {
-      sd.x_crossroad.ItemsSource = d.SceneProvider.GetSceneNames();
-      sd.DataContext = p;
-    }
-
+    
     private void x_add_decision_Click(object sender, RoutedEventArgs e)
     {
-      DecisionData d = (DataContext as DecisionCreator).Data;
+      DecisionData d = Owner.Data;
       DecisionPossibilities p = new DecisionPossibilities();
       d.Posibilities.Add(p);
       AddDecision(p);
@@ -32,10 +29,9 @@ namespace DecisionPlugin
     {
       int t = x_decisions.Children.Count-1;
       SingleDecision d = new SingleDecision();
+      d.Decision = p;
       x_decisions.Children.Insert(t,d);
       x_remove_decision.IsEnabled = true;
-      DecisionCreator dc = DataContext as DecisionCreator;
-      InitCrossroad(d, dc, p);
     }
 
     private void x_remove_decision_Click(object sender, RoutedEventArgs e)

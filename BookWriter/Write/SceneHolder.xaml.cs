@@ -38,7 +38,8 @@ namespace MyBook.Write
     private void startPage_Click(object sender, RoutedEventArgs e)
     {
       BookSource c = DataContext as BookSource;
-      c.SetPage(0,0);
+      c.SetScene(c.Scenes[0]);
+      c.CurrentScene.SetPage(0);
     }
     
     private void MoveBackClick(object sender, RoutedEventArgs e)
@@ -72,6 +73,13 @@ namespace MyBook.Write
       AssemblyMap assembly = x_types.SelectedItem as AssemblyMap;
       s.CreatePage(assembly);
       OnReport("Page inserted");
+    }
+
+    private void x_sceneName_TextChanged(object sender, TextChangedEventArgs e)
+    {
+      BookSource s = DataContext as BookSource;
+      if (s.CurrentScene!=null && s.CurrentScene.CurrentPage!=null)
+        s.CurrentScene.CurrentPage.RefreshExternalData();
     }
   }
 }

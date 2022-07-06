@@ -31,7 +31,7 @@ namespace DecisionPlugin
     public override void Create()
     {
       _writer = new DecisionWriteBox();
-      _writer.DataContext = this;
+      _writer.Owner = this;
       for ( int i =0; i < Data.Posibilities.Count; i++)
       {
         _writer.AddDecision(Data.Posibilities[i]);

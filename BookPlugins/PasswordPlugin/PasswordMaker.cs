@@ -103,7 +103,7 @@ namespace PasswordPlugin
     private void CreateWrite()
     {
       _writer = new PasswordWriteBox();
-      _writer.DataContext = this;
+      _writer.Owner = this;
       
       int index = Data.Definition.NAllowedFailures;
       if (index < 0)

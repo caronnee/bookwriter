@@ -7,6 +7,7 @@ namespace DecisionPlugin
   /// </summary>
   public partial class SingleDecision : UserControl
   {
+    public DecisionPossibilities Decision { get; set; }
     public SingleDecision()
     {
       InitializeComponent();

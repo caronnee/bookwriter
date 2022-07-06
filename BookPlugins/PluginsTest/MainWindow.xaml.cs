@@ -37,11 +37,12 @@ namespace PluginsTest
     private void RefreshAll()
     {
       x_test.Items.Clear();
-      for (int i = 0; i < _book.Handlers.Count; i++)
+      for (int i = 0; i < _book.Scenes.Count; i++)
       {
-        Tabcontainer cont = new Tabcontainer(_book.Handlers[i]);
+        Tabcontainer cont = new Tabcontainer(_book.Scenes[i]);
         //Handlers[i].onAnswer += ProcessAnswer;
         x_test.Items.Add(cont);
+        cont.DataContext = _book;
       }
       x_test.SelectedIndex = 0;
     }

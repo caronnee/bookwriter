@@ -9,18 +9,18 @@ namespace PluginsTest
   /// </summary>
   public partial class Tabcontainer : TabItem
   {
-    public Tabcontainer(IRiddleHandler handler)
+    public SceneTest Handler { get; set; }
+    public Tabcontainer(SceneTest handler)
     {
-      DataContext = handler;
+      Handler = handler;
       InitializeComponent();
-      Header = handler.Name;
+      Header = handler.page.Name;
       Preview();
     }
 
     private void Preview()
     {
-      IRiddleHandler h = DataContext as IRiddleHandler;
-      x_show.Content = h.DisplayPage;
+      x_show.Content = Handler.page.DisplayPage;
     }
 
     private void x_make_preview(object sender, RoutedEventArgs e)

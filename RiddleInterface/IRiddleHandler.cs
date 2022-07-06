@@ -21,7 +21,6 @@ namespace RiddleInterface
     // name of the content handler
     public abstract String Name { get; }
 
-    public ISceneProvider SceneProvider { get; set; }
     // setting assotiated with the content handler ( rotation etc )
     public abstract Control Settings { get; }
 

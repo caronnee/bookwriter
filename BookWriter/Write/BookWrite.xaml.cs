@@ -59,12 +59,7 @@ namespace MyBook
 
     private void ShowProgress(String desc)
     {
-      BookSource c = DataContext as BookSource;
-      String str = String.Format("{0} ( Page {1}/{2} )",
-        desc,
-        c.CurrentScene.CurrentPosition + 1,
-        c.CurrentScene.Pages.Count);
-      x_progressText.Text = str;
+      x_progressText.Text = desc;
     }
     // back to main menu
     public delegate void BackHandler();
