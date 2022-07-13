@@ -13,8 +13,9 @@ namespace DecisionPlugin
   {
     public DecisionCreator Owner { get;set; }
 
-    public DecisionWriteBox()
+    public DecisionWriteBox( DecisionCreator c)
     {
+      Owner = c;
       InitializeComponent();
     }
     
@@ -28,8 +29,7 @@ namespace DecisionPlugin
     public void AddDecision(DecisionPossibilities p)
     {
       int t = x_decisions.Children.Count-1;
-      SingleDecision d = new SingleDecision();
-      d.Decision = p;
+      SingleDecision d = new SingleDecision(p);
       x_decisions.Children.Insert(t,d);
       x_remove_decision.IsEnabled = true;
     }

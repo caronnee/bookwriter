@@ -18,7 +18,7 @@ namespace DecisionPlugin
     public override Control DisplayPage => _reader;
 
     public DecisionData Data { get; set; }
-    
+
     // detail about user input
     public PostAnswerData Answer { get; set; }
 
@@ -30,9 +30,8 @@ namespace DecisionPlugin
 
     public override void Create()
     {
-      _writer = new DecisionWriteBox();
-      _writer.Owner = this;
-      for ( int i =0; i < Data.Posibilities.Count; i++)
+      _writer = new DecisionWriteBox(this);
+      for (int i = 0; i < Data.Posibilities.Count; i++)
       {
         _writer.AddDecision(Data.Posibilities[i]);
       }
@@ -53,7 +52,7 @@ namespace DecisionPlugin
     {
       _reader = new DecisionBox();
       _reader.DataContext = Data;
-      if ( Answer != null)
+      if (Answer != null)
       {
         Answered();
       }
@@ -63,9 +62,6 @@ namespace DecisionPlugin
         {
           DecisionPossibilities s = Data.Posibilities[i];
           Button bt = new Button();
-          //Outcome o = Outcomes.Find(x => x.Id == s.Id);
-          // this must be valid. Solved while loading
-          //System.Diagnostics.Debug.Assert(o != null);
           bt.Content = s.Action;
           bt.DataContext = s;
           bt.Click += Bt_Click;
@@ -95,7 +91,7 @@ namespace DecisionPlugin
 
     struct PossibilitySerialize
     {
-      public string id;
+      public int id;
       public string action;
       public string reaction;
       public string item;
@@ -112,11 +108,11 @@ namespace DecisionPlugin
       DecisionSerialize ds = new DecisionSerialize();
       ds.description = Data.Description;
       ds.possibilities = new PossibilitySerialize[Data.Posibilities.Count];
-      for (int i =0; i < Data.Posibilities.Count; i++)
+      for (int i = 0; i < Data.Posibilities.Count; i++)
       {
         DecisionPossibilities dp = Data.Posibilities[i];
         PossibilitySerialize ps = new PossibilitySerialize();
-        ps.id = dp.Id;
+        ps.id = r.toId(dp.Id);
         ps.action = dp.Action;
         ps.reaction = dp.Reaction;
         ps.item = dp.Item;
@@ -131,10 +127,10 @@ namespace DecisionPlugin
     {
       if (!s.PushSection(DecisionNodeNames.PossibilityString, order))
         return false;
-      PossibilitySerialize[] ps = new PossibilitySerialize[order+1];
-      if (order >0)
+      PossibilitySerialize[] ps = new PossibilitySerialize[order + 1];
+      if (order > 0)
         d.possibilities.CopyTo(ps, 0);
-      
+
       d.possibilities = ps;
       return true;
     }
@@ -157,13 +153,16 @@ namespace DecisionPlugin
         r.SerializeString(DecisionNodeNames.ActionString, ref ps.action);
         r.SerializeString(DecisionNodeNames.ReactionString, ref ps.reaction);
         r.SerializeString(DecisionNodeNames.ItemString, ref ps.item);
-        r.SerializeString(DecisionNodeNames.IdString, ref ps.id);
+        r.SerializeInt(DecisionNodeNames.IdString, ref ps.id);
         r.PopSection();
         order++;
       }
       r.PopSection();
     }
-
+    private class TempId
+    {
+      public int Id { get; set; }
+    }
     public bool Load(Serializer.BaseSerializer r)
     {
       hasNextDecision = NextDecisionLoad;
@@ -177,17 +176,26 @@ namespace DecisionPlugin
       {
         PossibilitySerialize ps = ds.possibilities[i];
         DecisionPossibilities dp = new DecisionPossibilities();
-        dp.Id = ps.id;
+        dp.Id = new TempId() { Id = ps.id };
         dp.Action = ps.action;
         dp.Reaction = ps.reaction;
         dp.Item = ps.item;
         Data.Posibilities.Add(dp);
       }
       
-      Create();
       return true;
     }
-
+    public override void Finish( BaseSerializer s)
+    {
+      if (!s.IsLoading)
+        return;
+      for ( int i =0; i < Data.Posibilities.Count; i++ )
+      {
+        TempId l = Data.Posibilities[i].Id as TempId;
+        Data.Posibilities[i].Id = s.fromId(l.Id);
+      }
+      Create();
+    }
     public override void Serialize(BaseSerializer s)
     {
       if (s.IsLoading)

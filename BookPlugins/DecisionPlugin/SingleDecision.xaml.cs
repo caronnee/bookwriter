@@ -8,8 +8,9 @@ namespace DecisionPlugin
   public partial class SingleDecision : UserControl
   {
     public DecisionPossibilities Decision { get; set; }
-    public SingleDecision()
+    public SingleDecision( DecisionPossibilities p)
     {
+      Decision = p;
       InitializeComponent();
     }
   }

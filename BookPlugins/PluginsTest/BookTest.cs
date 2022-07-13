@@ -1,4 +1,4 @@
-﻿using RiddleInterface;
+using RiddleInterface;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -61,7 +61,7 @@ namespace PluginsTest
       }
       return riddles;
     }
-
+    
     public BookTest()
     {
       List<IRiddleHandler> handlers = InitPlugins();
@@ -71,6 +71,7 @@ namespace PluginsTest
         SceneTest t = new SceneTest();
         t.page = handlers[i];
         t.Name = $"Scene #{i}";
+        t.Id = i;
         Scenes.Add(t);
       }
     }
@@ -106,7 +107,6 @@ namespace PluginsTest
       IRiddleHandler correct;
       while ((correct = hasNextSession(s, order))!=null)
       {
-        //Handlers.Find(new Predicate<IRiddleHandler>(x => x.Name == name));
         correct.Serialize(s);
         s.PopSection();
         order++;
@@ -114,24 +114,38 @@ namespace PluginsTest
       s.PopSection();
     }
 
+    public int toId(object o)
+    {
+      SceneTest t = o as SceneTest;
+      return t.Id;
+    }
     public void Save( string filename)
     {
       Serializer.XmlBookSave saver = new Serializer.XmlBookSave(filename);
+      saver.toId = toId; 
       hasNextSession = HasNextSessionSave;
       Serialize(saver);
       saver.Finish();
     }
+    public object fromId(int id)
+    {
+      for ( int i = 0; i < Scenes.Count; i++ )
+      {
+        if (Scenes[i].Id == id)
+          return Scenes[i];
+      }
+      return null;
+    }
     public void Load( string filename)
     {
       Serializer.XmlBookLoad loader = new Serializer.XmlBookLoad(filename);
+      loader.fromId = fromId;
       hasNextSession = HasNextSessionLoad;
       Serialize(loader);
-      // TODO eva load
-      //Scenes.Clear();
-      //foreach(IRiddleHandler h in Scenes)
-      //{
-      //  h.Create();
-      //}
+      foreach (SceneTest h in Scenes)
+      {
+        h.page.Finish(loader);
+      }
     }
   }
 }

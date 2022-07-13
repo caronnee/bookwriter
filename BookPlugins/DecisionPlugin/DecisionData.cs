@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace DecisionPlugin
 {
-  [Serializable]
   public class PostAnswerData
   {
     // what was answered
@@ -19,11 +18,11 @@ namespace DecisionPlugin
     public int id;
   }
 
-  [Serializable]
+
   public class DecisionPossibilities
   {
     // id of the outcome
-    public String Id { get; set; }
+    public object Id { get; set; }
 
     // reaction
     public String Reaction { get; set; }
@@ -42,7 +41,6 @@ namespace DecisionPlugin
     }
   }
 
-  [Serializable]
   public class DecisionData
   {
     // description of the problem

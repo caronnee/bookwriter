@@ -1,18 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Windows.Controls;
-using System.Windows.Data;
 
 namespace RiddleInterface
 {
-  public interface ISceneProvider
-  {
-    List<string> GetSceneNames();
-    int GetSceneId(string name);
-
-    void CreateScene(string name);
-  }
   public abstract class IRiddleHandler
   {
     //! base folder for this plugin data
@@ -37,5 +27,7 @@ namespace RiddleInterface
 
     // creates write module
     public abstract void Create();
+    // Afterparty after load / save. fluashing handles,, initializing crossreferences etc.
+    public abstract void Finish(Serializer.BaseSerializer s);
   }
 }

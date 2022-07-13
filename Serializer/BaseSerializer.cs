@@ -8,6 +8,10 @@ namespace Serializer
 {
     public abstract class BaseSerializer
     {
+    public delegate int ToId (object obj);
+    public ToId toId { get;set; }
+    public delegate object FromId(int obj);
+    public  FromId fromId { get; set; }
     public abstract bool SerializeString(String name, ref String value);
     public abstract bool SerializeInt(String name, ref int value);
     public abstract bool SerializeDouble(String name, ref double value);
