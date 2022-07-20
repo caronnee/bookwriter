@@ -41,7 +41,7 @@ namespace PasswordPlugin
     public List<String> Reactions { get; set; }
 
     // id of where to jump
-    public string Id { get; set; }
+    public object Id { get; set; }
 
     // How many failures can be yet done
     public int Failures { get; set; }
@@ -72,7 +72,7 @@ namespace PasswordPlugin
     public String AcceptableAnswer { get; set; }
 
     // what happens when succeeded
-    public string SuccessId { get; set; }
+    public object SuccessId { get; set; }
 
     // 
     public String FailureReaction { get; set; }
@@ -81,7 +81,7 @@ namespace PasswordPlugin
     public String SuccessReaction { get; set; }
 
     // where to go when failed
-    public string FailureId { get; set; }
+    public object FailureId { get; set; }
 
     // Count of hints is number of allowed failures
     public HintItem[] Hints { get; set; }

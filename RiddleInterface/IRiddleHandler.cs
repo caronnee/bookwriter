@@ -28,6 +28,9 @@ namespace RiddleInterface
     // creates write module
     public abstract void Create();
     // Afterparty after load / save. fluashing handles,, initializing crossreferences etc.
-    public abstract void Finish(Serializer.BaseSerializer s);
+    public virtual void Finish(Serializer.BaseSerializer s)
+    {
+
+    }
   }
 }

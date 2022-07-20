@@ -13,8 +13,9 @@ namespace PasswordPlugin
   public partial class PasswordWriteBox : UserControl
   {
     // Constructor
-    public PasswordWriteBox()
+    public PasswordWriteBox(PasswordMaker o)
     {
+      Owner = o;
       InitializeComponent();
     }  
     public PasswordMaker Owner { get; set; }
