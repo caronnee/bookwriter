@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace TextPlugin
 {
-  [Serializable]
   public class TextData
   {
     public String Description { get; set; }

@@ -30,7 +30,7 @@ namespace RiddleInterface
     // Afterparty after load / save. fluashing handles,, initializing crossreferences etc.
     public virtual void Finish(Serializer.BaseSerializer s)
     {
-
+      Create();
     }
   }
 }

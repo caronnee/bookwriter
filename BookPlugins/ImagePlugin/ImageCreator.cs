@@ -70,7 +70,7 @@ namespace ImagePlugin
     private void Save(Serializer.BaseSerializer s)
     {
       ImageSerializationData d = new ImageSerializationData();
-      if ( Data.ImagePath.Length!=0)
+      if (Data.ImagePath.Length > BaseFolder.Length)
       {
         d.filename = Data.ImagePath.Substring(BaseFolder.Length);
       }

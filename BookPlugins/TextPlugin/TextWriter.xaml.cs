@@ -20,8 +20,10 @@ namespace TextPlugin
   /// </summary>
   public partial class TextWriter : UserControl
   {
-    public TextWriter()
+    public TextCreator Owner { get; set; }
+    public TextWriter(TextCreator owner)
     {
+      Owner = owner;
       InitializeComponent();
     }
   }

@@ -29,8 +29,7 @@ namespace TextPlugin
 
     public override void Create()
     {
-      _writer = new TextWriter();
-      _writer.DataContext = Data;
+      _writer = new TextWriter(this);
       CreateReadOnly();
     }
 

@@ -6,19 +6,18 @@
              xmlns:local="clr-namespace:PluginsTest"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" x:Name="x_tab">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="20"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="auto" />
-      <RowDefinition Height="*" />
-    </Grid.RowDefinitions>
-    <TextBox Grid.ColumnSpan="2" Text="{Binding Handler.Name, ElementName=x_tab}"></TextBox>
-        <ContentControl x:Name="x_maker" Grid.Column="0" Grid.Row="1" Content="{Binding Handler.page.Viewport, ElementName=x_tab}"/>
-        <Button Grid.Column="1" Content=">>>" Click="x_make_preview" />
-        <ContentControl x:Name="x_show" Grid.Column="2" />
-    </Grid>
+  <DockPanel>
+    <TextBox Text="{Binding Handler.Name, ElementName=x_tab}" DockPanel.Dock="Top"></TextBox>
+    <Grid DockPanel.Dock="Bottom">
+      <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="20px"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+    
+    <ContentControl x:Name="x_maker" Grid.Column="0" Grid.Row="1" Content="{Binding Handler.page.Viewport, ElementName=x_tab}"/>
+    <Button Grid.Column="1" Content=">>>" Click="x_make_preview" />
+    <ContentControl x:Name="x_show" Grid.Column="2" />
+  </Grid>
+  </DockPanel>
 </TabItem>
