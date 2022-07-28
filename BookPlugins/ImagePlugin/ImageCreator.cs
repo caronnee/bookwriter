@@ -86,6 +86,7 @@ namespace ImagePlugin
       else
         Save(s);
     }
+
     #endregion
   }
 }

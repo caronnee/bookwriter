@@ -12,6 +12,7 @@ namespace MyBook.BookContent
   }
   public struct SceneSerializeData
   {
+    public String id;
     public String name;
     public PageSerializeData[] pages;
   }
@@ -21,6 +22,7 @@ namespace MyBook.BookContent
   }
   public class SceneDescription
   {
+    public int Id { get;set; }
     // name of the scene
     public String Name { get; set; }
     public String Summary { get; set; }
@@ -51,6 +53,7 @@ namespace MyBook.BookContent
     {
       SceneSerializeData d = new SceneSerializeData();
       d.pages = new PageSerializeData[Pages.Count];
+      d.id = Id.ToString();
       d.name = Name;
       for (int i = 0; i < Pages.Count; i++)
       {

@@ -21,8 +21,15 @@ namespace DecisionPlugin
 
   public class DecisionPossibilities
   {
+    private object _myid;
     // id of the outcome
-    public object Id { get; set; }
+    public object Id { get => _myid; 
+      set
+      {
+        if ( value != null )
+          _myid = value;
+      }
+    }
 
     // reaction
     public String Reaction { get; set; }

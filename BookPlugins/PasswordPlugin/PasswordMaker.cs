@@ -45,7 +45,6 @@ namespace PasswordPlugin
         b.x_answer_container.Visibility = Visibility.Collapsed;
       }
     }
-
     public void CreateReadOnly()
     {
       _reader = new PasswordBox();

@@ -145,6 +145,7 @@ namespace PluginsTest
       foreach (SceneTest h in Scenes)
       {
         h.page.Finish(loader);
+        h.page.Create();
       }
     }
   }

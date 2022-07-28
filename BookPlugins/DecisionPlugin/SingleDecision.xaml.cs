@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace DecisionPlugin
 {
@@ -12,6 +13,11 @@ namespace DecisionPlugin
     {
       Decision = p;
       InitializeComponent();
+    }
+
+    private void x_crossroad_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+    {
+      //MessageBox.Show("changed");
     }
   }
 }

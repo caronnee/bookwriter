@@ -74,12 +74,5 @@ namespace MyBook.Write
       s.CreatePage(assembly);
       OnReport("Page inserted");
     }
-
-    private void x_sceneName_TextChanged(object sender, TextChangedEventArgs e)
-    {
-      BookSource s = DataContext as BookSource;
-      if (s.CurrentScene!=null && s.CurrentScene.CurrentPage!=null)
-        s.CurrentScene.CurrentPage.RefreshExternalData();
-    }
   }
 }

@@ -19,6 +19,7 @@ namespace MyBook.BookContent
     /// </summary>
     public const String Scenes = "Scenes";
     public const String Scene = "Scene";
+    public const String Id = "Id";
     public const String Page = "Page";
     public const String Plugin = "Plugin";
 
@@ -50,7 +51,7 @@ namespace MyBook.BookContent
     public Type Type { get; set; }
   }
 
-  public class BookSource : INotifyPropertyChanged, ISceneProvider
+  public class BookSource : INotifyPropertyChanged
   {
     //
     public List<AssemblyMap> HandlersMap { get; set; }
@@ -176,7 +177,6 @@ namespace MyBook.BookContent
         break;
       }
       h.BaseFolder = Settings.BooksFolder;
-      h.SceneProvider = this;
       h.Create();
       if (CurrentScene.CurrentPosition <= CurrentScene.Pages.Count)
       {
@@ -195,6 +195,7 @@ namespace MyBook.BookContent
       NotifyPropertyChanged("CanGoBack");
       NotifyPropertyChanged("CanGoFurther");
       NotifyPropertyChanged("CurrentScene");
+      NotifyPropertyChanged("Scenes");
     }
 
     public void MoveForward()
@@ -282,6 +283,7 @@ namespace MyBook.BookContent
     public SceneDescription CreateScene()
     {
       SceneDescription d = new SceneDescription();
+      d.Id = CreateId();
       Scenes.Add(d);
       d.Name = $"Scene #{Scenes.Count}";
       return d;
@@ -289,9 +291,13 @@ namespace MyBook.BookContent
 
     public void SetScene(SceneDescription sceneDescription)
     {
+      if (sceneDescription != null)
+      {
+        if (sceneDescription.CurrentPage != null)
+          sceneDescription.CurrentPage.Create();
+      }
       CurrentScene = sceneDescription;
-      NotifyPropertyChanged("CanGoFurther");
-      NotifyPropertyChanged("CanGoBack");
+      RefreshContent();
     }
 
     ////////////////////////////////////////////////////////////////////
@@ -311,6 +317,24 @@ namespace MyBook.BookContent
       }
       characters.characters = chrs;
       return true;
+    }
+    private int ToId(object o)
+    {
+      SceneDescription d = o as SceneDescription;
+      if (d == null)
+        return -1;
+      if (_id < d.Id)
+        _id = d.Id;
+      return d.Id;
+    }
+    private object FromId(int o)
+    {
+      for (int i =0; i < Scenes.Count; i++)
+      {
+        if (Scenes[i].Id == o)
+          return Scenes[i];
+      }
+      return null;
     }
 
     private bool HasNextCharacterSectionSave(Serializer.BaseSerializer a, int order, ref CharactersSerializeData characters)
@@ -491,6 +515,7 @@ namespace MyBook.BookContent
         SceneDescription sd = new SceneDescription();
         ref SceneSerializeData d = ref data.scenes[iScene];
         sd.Name = d.name;
+        sd.Id = Int32.Parse(d.id);
         for (int iPage = 0; iPage < d.pages.Length; iPage++)
         {
           ref PageSerializeData pd = ref d.pages[iPage];
@@ -508,6 +533,7 @@ namespace MyBook.BookContent
       {
         ref SceneSerializeData d = ref data.scenes[iScene];
         s.SerializeString(XmlNodeNames.Scene, ref d.name);
+        s.SerializeAttribute(XmlNodeNames.Id, ref d.id);
         int iPage = 0;
         while (hasNextPage(s, iPage, ref d))
         {
@@ -531,6 +557,8 @@ namespace MyBook.BookContent
     public void Save()
     {
       Serializer.XmlBookSave s = new Serializer.XmlBookSave(FullPath);
+      s.toId = ToId;
+      s.fromId = FromId;
       s.PushSection(XmlNodeNames.BookRoot, 0);
       SaveCharacters(s);
       SaveScenes(s);
@@ -541,6 +569,8 @@ namespace MyBook.BookContent
     {
       Name = name;
       Serializer.XmlBookLoad s = new Serializer.XmlBookLoad(FullPath);
+      s.toId = ToId;
+      s.fromId = FromId;
       s.PushSection(XmlNodeNames.BookRoot, 0);
       LoadCharacters(s);
       LoadScenes(s);
@@ -561,10 +591,16 @@ namespace MyBook.BookContent
     {
       throw new NotImplementedException();
     }
-
+    int _id = 0;
+    private int CreateId()
+    {
+      _id++;
+      return _id;
+    }
     public void CreateScene(string name)
     {
       SceneDescription d = CreateScene();
+      d.Id = CreateId();
       d.Name = name;
     }
   }

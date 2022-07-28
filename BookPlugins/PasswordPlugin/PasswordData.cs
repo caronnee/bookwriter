@@ -7,28 +7,6 @@ using System.Windows.Data;
 
 namespace PasswordPlugin
 {
-  [Serializable]
-  public class LamerData : IValueConverter
-  {
-    // from data to combobox
-    public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-    {
-      int t = (int) value;
-      if (t < 0)
-        return (int)parameter;
-      return t;
-    }
-
-    // from combobox to data
-    public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-    {
-      int max = Int32.Parse(parameter as String);
-      int current = (int)value;
-      if (current == max)
-        return -1;
-      return current;
-    }
-  }
 
   [Serializable]
   // What user tries
@@ -40,9 +18,9 @@ namespace PasswordPlugin
     // reaction t what user inserted
     public List<String> Reactions { get; set; }
 
-    // id of where to jump
+    // id of the outcome
     public object Id { get; set; }
-
+    
     // How many failures can be yet done
     public int Failures { get; set; }
 
@@ -50,7 +28,7 @@ namespace PasswordPlugin
     {
       Answers = new List<string>();
       Reactions = new List<string>();
-      Id = "";
+      Id = null;
       Failures = 0;
     }
   }
@@ -72,7 +50,17 @@ namespace PasswordPlugin
     public String AcceptableAnswer { get; set; }
 
     // what happens when succeeded
-    public object SuccessId { get; set; }
+    private object _successId;
+    // id of the outcome
+    public object SuccessId
+    {
+      get => _successId;
+      set
+      {
+        if (value != null)
+          _successId = value;
+      }
+    }
 
     // 
     public String FailureReaction { get; set; }
@@ -81,7 +69,17 @@ namespace PasswordPlugin
     public String SuccessReaction { get; set; }
 
     // where to go when failed
-    public object FailureId { get; set; }
+    private object _failureid;
+    // id of the outcome
+    public object FailureId
+    {
+      get => _failureid;
+      set
+      {
+        if (value != null)
+          _failureid = value;
+      }
+    }
 
     // Count of hints is number of allowed failures
     public HintItem[] Hints { get; set; }

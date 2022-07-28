@@ -27,7 +27,6 @@ namespace DecisionPlugin
       Data = new DecisionData();
       ClearAnswer();
     }
-
     public override void Create()
     {
       _writer = new DecisionWriteBox(this);
@@ -64,26 +63,10 @@ namespace DecisionPlugin
           Button bt = new Button();
           bt.Content = s.Action;
           bt.DataContext = s;
-          bt.Click += Bt_Click;
           _writer.x_decisions.Children.Add(bt);
         }
       }
     }
-
-    private void Bt_Click(object sender, System.Windows.RoutedEventArgs e)
-    {
-      //Button b = sender as Button;
-      //if (false)
-      //{
-      //  DecisionPossibilities a = b.DataContext as DecisionPossibilities;
-      //  Answer = new PostAnswerData();
-      //  Answer.id = a.Id;
-      //  Answer.Reaction = a.Reaction;
-      //  Answer.ActionTaken = a.Action;
-      //}
-      Answered();
-    }
-
 
     /////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////// Serialization //////////////////////////////////////
