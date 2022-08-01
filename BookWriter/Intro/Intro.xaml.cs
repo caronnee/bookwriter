@@ -15,8 +15,7 @@ namespace MyBook.Intro
     {
       String ext = fullpath;
       int start = ext.LastIndexOf('\\')+1;
-      int end = ext.LastIndexOf('.');
-      return ext.Substring(start, end - start);
+      return ext.Substring(start, ext.Length - start);
     }
 
     private Control CreateBookControl(string name)
@@ -50,7 +49,7 @@ namespace MyBook.Intro
       String folder = Settings.BooksFolder;
       try
       {
-        string[] strings = Directory.GetDirectories(folder, Constants.SearchExt);
+        string[] strings = Directory.GetDirectories(folder);
         foreach (string name in strings)
         {
           Control b = CreateBookControl(name);

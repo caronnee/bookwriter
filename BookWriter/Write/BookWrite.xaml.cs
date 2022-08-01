@@ -186,9 +186,9 @@ namespace MyBook
     }
     public void Done()
     {
-      BookSource s = DataContext as BookSource;
+      //BookSource s = DataContext as BookSource;
       //CurrentContent.Save();
-      s.Save();
+      //s.Save();
     }
 
     private void x_bookViewer_Unloaded(object sender, RoutedEventArgs e)

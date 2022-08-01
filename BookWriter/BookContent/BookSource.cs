@@ -403,6 +403,7 @@ namespace MyBook.BookContent
 
     private void LoadCharacters(Serializer.BaseSerializer s)
     {
+      Characters.Clear();
       hasNextEpisodeSection = HasNextEpisodeSectionLoad;
       hasNextCharacterSection = HasNextCharacterSectionLoad;
       CharactersSerializeData data = new CharactersSerializeData();
@@ -504,12 +505,12 @@ namespace MyBook.BookContent
 
     private void LoadScenes(Serializer.BaseSerializer s)
     {
+      Scenes.Clear();
       hasNextScene = HasNextSceneLoad;
       hasNextPage = HasNextPageLoad;
       ScenesSerializeData data = new ScenesSerializeData();
       SerializeScenes(s, ref data);
       Scenes = new List<SceneDescription>();
-      data.scenes = new SceneSerializeData[Scenes.Count];
       for (int iScene = 0; iScene < data.scenes.Length; iScene++)
       {
         SceneDescription sd = new SceneDescription();
@@ -521,6 +522,15 @@ namespace MyBook.BookContent
           ref PageSerializeData pd = ref d.pages[iPage];
           pd.handler.BaseFolder = Settings.BooksFolder;
           sd.Pages.Add( pd.handler );
+        }
+        sd.SetPage(0);
+        Scenes.Add(sd);
+      }
+      foreach (SceneDescription sd in Scenes)
+      {
+        foreach(IRiddleHandler h in sd.Pages)
+        {
+          h.Finish(s);
         }
       }
     }
@@ -575,6 +585,7 @@ namespace MyBook.BookContent
       LoadCharacters(s);
       LoadScenes(s);
       s.PopSection();
+
     }
 
     public List<string> GetSceneNames()
