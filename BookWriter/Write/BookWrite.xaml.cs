@@ -2,6 +2,7 @@ using MyBook.BookContent;
 using MyBook.Meta;
 using MyBook.Write;
 using MyBook.Write.Character;
+using MyBook.Write.Documents;
 using MyBook.Write.GroupHandler;
 using MyBook.Write.World;
 using System;
@@ -25,7 +26,7 @@ namespace MyBook
     private SceneHolder _sceneHolder;
     private CharacterHolder _characterHolder;
     private WorldHandler _worldHandler;
-
+    private DocumentHandler _documentHandler;
     private void SceneSaved()
     {
       SelectionPickup();
@@ -41,12 +42,10 @@ namespace MyBook
       // TODO continue form the last time
       if (name.Length > 0)
         Cache.Load(name);
+      _documentHandler = new DocumentHandler();
       _worldHandler = new WorldHandler();
-      _worldHandler.DataContext = Cache;
       _characterHolder = new CharacterHolder();
-      _characterHolder.DataContext = Cache;
       _sceneHolder = new SceneHolder();
-      _sceneHolder.DataContext = Cache;
       _sceneHolder.OnReport += ShowProgress;
       FolderHandler = new GroupHandlerItem();
 
@@ -182,7 +181,7 @@ namespace MyBook
     {
       x_world.Items.Refresh();
       FolderHandler.x_test.DataContext = null;
-      FolderHandler.x_test.DataContext = Cache.Characters;
+      FolderHandler.x_test.DataContext = Cache.World;
     }
     public void Done()
     {
@@ -196,6 +195,30 @@ namespace MyBook
       Done();
     }
 
+    class DocumentConverter : IValueConverter
+    {
+      public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+      {
+        if (value == null)
+          return null;
+        List<PreviewFolder> fldr = new List<PreviewFolder>();
+        List<DocumentDescription> sc = value as List<DocumentDescription>;
+        if (sc == null)
+          return null;
+        for (int i = 0; i < sc.Count; i++)
+        {
+          PreviewFolder f = new PreviewFolder();
+          f.DataContext = sc[i];
+          fldr.Add(f);
+        }
+        return fldr;
+      }
+
+      public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+      {
+        throw new NotImplementedException();
+      }
+    }
     class CharacterConverter : IValueConverter
     {
       public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -225,6 +248,17 @@ namespace MyBook
       CharacterDescription f = (sender as Button).DataContext as CharacterDescription;
       PreviewCharacter(f);
     }
+
+    private void PreviewWorldClick(object sender, RoutedEventArgs args)
+    {
+      WorldDescription f = (sender as Button).DataContext as WorldDescription;
+      PreviewWorld(f);
+    }
+    private void PreviewDocumentsClick(object sender, RoutedEventArgs args)
+    {
+      DocumentDescription f = (sender as Button).DataContext as DocumentDescription;
+      PreviewDocument(f);
+    }
     private void PreviewSceneClick(object sender, RoutedEventArgs args)
     {
       SceneDescription f = (sender as Button).DataContext as SceneDescription;
@@ -245,18 +279,7 @@ namespace MyBook
         folder.x_go.Click += PreviewCharacterClick;
       }
     }
-    class testCon<T> : IValueConverter
-    {
-      public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-      {
-        throw new NotImplementedException();
-      }
 
-      public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-      {
-        throw new NotImplementedException();
-      }
-    }
     class SceneConverter : IValueConverter
     {
       public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -265,7 +288,7 @@ namespace MyBook
           return null;
         List<PreviewFolder> fldr = new List<PreviewFolder>();
         List<SceneDescription> sc = value as List<SceneDescription>;
-        for (int i =0; i < sc.Count; i++)
+        for (int i = 0; i < sc.Count; i++)
         {
           PreviewFolder f = new PreviewFolder();
           f.DataContext = sc[i];
@@ -279,9 +302,54 @@ namespace MyBook
         throw new NotImplementedException();
       }
     }
+
+    class WorldConverter : IValueConverter
+    {
+      public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+      {
+        if (value == null)
+          return null;
+        List<PreviewFolder> fldr = new List<PreviewFolder>();
+        List<WorldDescription> sc = value as List<WorldDescription>;
+        for (int i = 0; i < sc.Count; i++)
+        {
+          PreviewFolder f = new PreviewFolder();
+          f.DataContext = sc[i];
+          fldr.Add(f);
+        }
+        return fldr;
+      }
+
+      public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+      {
+        throw new NotImplementedException();
+      }
+    }
+    private void PreviewDocuments()
+    {
+      Binding b = new Binding(".");
+      b.Converter = new DocumentConverter();
+      FolderHandler = new GroupHandlerItem();
+      FolderHandler.DataContext = Cache.Documents;
+      x_working_page.Content = FolderHandler;
+      FolderHandler.x_test.SetBinding(ItemsControl.ItemsSourceProperty, b);
+      foreach (PreviewFolder folder in FolderHandler.x_test.Items)
+      {
+        folder.x_go.Click += PreviewDocumentsClick;
+      }
+    }
     private void PreviewWorld()
     {
-
+      Binding b = new Binding(".");
+      b.Converter = new WorldConverter();
+      FolderHandler = new GroupHandlerItem();
+      FolderHandler.DataContext = Cache.World;
+      x_working_page.Content = FolderHandler;
+      FolderHandler.x_test.SetBinding(ItemsControl.ItemsSourceProperty, b);
+      foreach (PreviewFolder folder in FolderHandler.x_test.Items)
+      {
+        folder.x_go.Click += PreviewWorldClick;
+      }
     }
     private void PreviewFolder()
     {
@@ -298,11 +366,21 @@ namespace MyBook
         folder.x_go.Click += PreviewSceneClick;
       }
     }
+    private void PreviewDocument(DocumentDescription c)
+    {
+      _documentHandler.DataContext = c;
+      x_working_page.Content = _documentHandler;
+    }
 
+    
     private void PreviewWorld(WorldDescription c)
     {
       _worldHandler.DataContext = c;
       x_working_page.Content = _worldHandler;
+    }
+    private void PreviewWorkd(CharacterDescription c)
+    {
+
     }
     private void PreviewCharacter(CharacterDescription c)
     {
@@ -336,6 +414,12 @@ namespace MyBook
         PreviewWorld(w);
         return;
       }
+      DocumentDescription d = it.SelectedItem as DocumentDescription;
+      if ( d!=null)
+      {
+        PreviewDocument(d);
+        return;
+      }
       TreeViewItem parent = it.SelectedItem as TreeViewItem;
       System.Diagnostics.Debug.Assert(parent!=null);
       if (parent == x_characters)
@@ -344,12 +428,23 @@ namespace MyBook
         PreviewFolder();
       if (parent == x_world)
         PreviewWorld();
+      if (parent == x_documents)
+        PreviewDocuments();
     }
 
+    private void add_document_click(object sender, RoutedEventArgs e)
+    {
+      Cache.CreateDocument();
+      x_documents.Items.Refresh();
+      FolderHandler.x_test.DataContext = null;
+      FolderHandler.x_test.DataContext = Cache.Documents;
+    }
     private void add_world_click(object sender, RoutedEventArgs e)
     {
       Cache.CreateWorld();
       x_world.Items.Refresh();
+      FolderHandler.x_test.DataContext = null;
+      FolderHandler.x_test.DataContext = Cache.World;
     }
   }
 }

@@ -77,6 +77,8 @@
     </Compile>
     <Compile Include="BookContent\CharacterDescription.cs" />
     <Compile Include="BookContent\Constants.cs" />
+    <Compile Include="BookContent\DocumentDescription.cs" />
+    <Compile Include="BookContent\IDescription.cs" />
     <Compile Include="BookContent\SceneDescription.cs" />
     <Compile Include="BookContent\WorldDescription.cs" />
     <Compile Include="Intro\BookItem.xaml.cs">
@@ -84,6 +86,9 @@
     </Compile>
     <Compile Include="Write\Character\CharacterHolder.xaml.cs">
       <DependentUpon>CharacterHolder.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Write\Documents\DocumentHandler.xaml.cs">
+      <DependentUpon>DocumentHandler.xaml</DependentUpon>
     </Compile>
     <Compile Include="Write\EExpander.xaml.cs">
       <DependentUpon>EExpander.xaml</DependentUpon>
@@ -192,6 +197,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Write\Character\CharacterHolder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Write\Documents\DocumentHandler.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

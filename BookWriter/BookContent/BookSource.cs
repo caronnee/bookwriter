@@ -15,29 +15,43 @@ namespace MyBook.BookContent
     public const String CoverName = "Cover";
 
     /// <summary>
+    /// Common nodes
+    /// </summary>
+    public const String Id = "Id";
+    public const String Name = "Name";
+    public const String Summary = "Summary";
+    public const String Content = "Content";
+
+    /// <summary>
+    /// Documents
+    /// </summary>
+    public const String Documents = "Documents";
+    public const String Document = "Document";
+    public const String Misc = "Additional";
+
+    /// <summary>
+    /// World
+    /// </summary>
+    public const String Locations = "Locations";
+    public const String Location = "Location";
+    public const String MapSource = "MapImage"; 
+    public const String Info = "Details"; 
+
+    /// <summary>
     /// Scenes
     /// </summary>
     public const String Scenes = "Scenes";
     public const String Scene = "Scene";
-    public const String Id = "Id";
     public const String Page = "Page";
     public const String Plugin = "Plugin";
-
-    // content types
-    public const String ParagraphName = "Text";
-    public const String ImageName = "Image";
-    public const String RiddleName = "Riddle";
 
     /// <summary>
     /// Character
     /// </summary>
     public const String Characters = "Characters";
     public const String Character = "Character";
-    public const String Name = "Name";
     public const String Episodes = "Episodes";
     public const String Episode = "Episode";
-    public const String EpisodeContent = "EpisodeContent";
-    public const String Summary = "Summary";
     public const String Father = "Father";
     public const String Mother = "Mother";
     public const String Gender = "Gender";
@@ -107,37 +121,6 @@ namespace MyBook.BookContent
 
     public SceneDescription CurrentScene { get; set; }
     
-
-    //public void InitB()
-    //{
-    //  Bookmarks = new List<BookmarksHeader>();
-    //  Bookmarks.Add(new BookmarksHeader { Name = "Locations", Content = "Something else" });
-    //  Bookmarks.Add(new BookmarksHeader
-    //  {
-    //    Name = "Characters",
-    //    Content = "Something else",
-    //    Bookmarks = new List<BookmarksHeader>() {
-    //      new BookmarksHeader { Name = "Relicts2", Content = "Something else" },
-    //      new BookmarksHeader { Name = "Relicts2", Content = "Something else" },
-    //      new BookmarksHeader { Name = "Relicts2", Content = "Something else" },
-    //      new BookmarksHeader { Name = "Relicts2", Content = "Something else" }
-    //    }
-    //  });
-    //  Bookmarks.Add(new BookmarksHeader
-    //  {
-    //    Name = "Relicts",
-    //    Content = "Something else",
-    //    Bookmarks = new List<BookmarksHeader>() {
-    //      new BookmarksHeader { Name = "Relicts2", Content = "Something else" },
-    //      new BookmarksHeader { Name = "Relicts2", Content = "Something else" },
-    //      new BookmarksHeader { Name = "Relicts2", Content = "Something else" },
-    //      new BookmarksHeader { Name = "Relicts2", Content = "Something else" }
-    //    }
-    //  });
-
-    //  Bookmarks.Add(new BookmarksHeader { Name = "History", Content = "Something else" });
-    //  Bookmarks.Add(new BookmarksHeader { Name = "Timeline", Content = "Something else" });
-    //}
 
     public CharacterDescription Get(string name)
     {
@@ -219,6 +202,8 @@ namespace MyBook.BookContent
 
     public List<CharacterDescription> Characters { get; set; }
     public List<WorldDescription> World { get; set; }
+    public List<DocumentDescription> Documents { get; set; }
+    
     public void Init()
     {
       HandlersMap = new List<AssemblyMap>();
@@ -226,7 +211,9 @@ namespace MyBook.BookContent
       _scenes = new List<SceneDescription>();
       Characters = new List<CharacterDescription>();
       World = new List<WorldDescription>();
+      Documents = new List<DocumentDescription>();
       CreateWorld();
+      CreateDocument();
       SceneDescription d = CreateScene();
       SetScene(d);
       // create first person
@@ -277,8 +264,14 @@ namespace MyBook.BookContent
     public void CreateWorld()
     {
       WorldDescription world = new WorldDescription();
-      world.Name = "Test world";
+      world.Name = "New world";
       World.Add(world);
+    }
+    public void CreateDocument()
+    {
+      DocumentDescription document = new DocumentDescription();
+      document.Name = "new document";
+      Documents.Add(document);
     }
     public SceneDescription CreateScene()
     {
@@ -303,7 +296,215 @@ namespace MyBook.BookContent
     ////////////////////////////////////////////////////////////////////
     //////////////////////////////Serialization/////////////////////////
     ////////////////////////////////////////////////////////////////////
-    
+
+    ////////////////////////////////////////////////////////////////////
+    ////////////////////Documents Serialization/////////////////////////
+    ////////////////////////////////////////////////////////////////////
+    private delegate bool HasNextDocumentSection(Serializer.BaseSerializer a, int order, ref DocumentsSerializeData doc);
+    private HasNextDocumentSection hasNextDocumentSection;
+    private bool HasNextDocumentSectionLoad(Serializer.BaseSerializer a, int order, ref DocumentsSerializeData doc)
+    {
+      if (!a.PushSection(XmlNodeNames.Document, order))
+        return false;
+
+      if (order == 0)
+      {
+        doc.documents = new DocumentSerializeData[1];
+        doc.documents[0] = new DocumentSerializeData();
+        return true;
+      }
+      DocumentSerializeData[] temp = doc.documents;
+      doc.documents = new DocumentSerializeData[temp.Length + 1];
+      temp.CopyTo(doc.documents, 0);
+      return true;
+    }
+    private bool HasNextDocumentSectionSave(Serializer.BaseSerializer a, int order, ref DocumentsSerializeData documents)
+    {
+      if (order >= documents.documents.Length)
+        return false;
+      return a.PushSection(XmlNodeNames.Document, order);
+    }
+    private void LoadDocuments(Serializer.XmlBookLoad s)
+    {
+      Documents.Clear();
+      hasNextDocumentSection = HasNextDocumentSectionLoad;
+      DocumentsSerializeData serializeData = new DocumentsSerializeData();
+      SerializeDocuments(s, serializeData);
+      if (serializeData.documents == null)
+        return;
+      for (int i =0; i <serializeData.documents.Length;i++)
+      {
+        DocumentDescription d = new DocumentDescription();
+        d.FromSerialize(serializeData.documents[i]);
+        Documents.Add(d);
+      }
+    }
+    private void SaveDocuments(Serializer.XmlBookSave s)
+    {
+      hasNextDocumentSection = HasNextDocumentSectionSave;
+      DocumentsSerializeData serializeData = new DocumentsSerializeData();
+      serializeData.documents = new DocumentSerializeData[Documents.Count];
+      for( int i =0; i < Documents.Count; i++)
+      {
+        serializeData.documents[i] = Documents[i].ToSerialize();
+      }
+      SerializeDocuments(s, serializeData);
+    }
+    public void SerializeDocuments(Serializer.BaseSerializer s, DocumentsSerializeData sd)
+    {
+      if (!s.PushSection(XmlNodeNames.Documents, 0))
+        return;
+      int order = 0;
+      while (hasNextDocumentSection(s, order, ref sd))
+      {
+        ref DocumentSerializeData dd = ref sd.documents[order];
+        s.SerializeString(XmlNodeNames.Summary, ref dd.summary);
+        s.SerializeString(XmlNodeNames.Name, ref dd.name);
+        s.SerializeString(XmlNodeNames.Content, ref dd.content);
+        s.SerializeString(XmlNodeNames.Misc, ref dd.misc);
+        order++;
+        s.PopSection();
+      }
+      s.PopSection();
+    }
+    ////////////////////////////////////////////////////////////////////
+    ///////////////////////////////World Serialization//////////////////
+    ////////////////////////////////////////////////////////////////////
+    private delegate bool HasNextLocationSection(Serializer.BaseSerializer a, int order, ref LocationsSerializeData location);
+    private HasNextLocationSection hasNextLocationSection;
+
+    private bool HasNextLocationSectionSave(Serializer.BaseSerializer a, int order, ref LocationsSerializeData locations)
+    {
+      if (order >= locations.locatios.Length)
+        return false;
+      return a.PushSection(XmlNodeNames.Location, order);
+    }
+    private bool HasNextLocationSectionLoad(Serializer.BaseSerializer a, int order, ref LocationsSerializeData location)
+    {
+      if (!a.PushSection(XmlNodeNames.Location,order))
+        return false;
+      if ( order == 0)
+      {
+        location.locatios = new LocationSerializeData[order + 1];
+        location.locatios[0] = new LocationSerializeData();
+        return true;
+      }
+      LocationSerializeData[] d = location.locatios; 
+      location.locatios = new LocationSerializeData[order + 1];
+      d.CopyTo(location.locatios, 0);
+      location.locatios[order] = new LocationSerializeData();
+      return true;
+    }
+
+    private delegate bool HasNextInfoSection(Serializer.BaseSerializer a, int order, ref LocationSerializeData location);
+    private HasNextInfoSection hasNextInfoSection;
+
+    private bool HasNextInfoSectionSave(Serializer.BaseSerializer a, int order, ref LocationSerializeData place)
+    {
+      if (order >= place.details.Length)
+        return false;
+      return a.PushSection(XmlNodeNames.Info, order);
+    }
+    private bool HasNextInfoSectionLoad(Serializer.BaseSerializer a, int order, ref LocationSerializeData place)
+    {
+      if (!a.PushSection(XmlNodeNames.Info, order))
+        return false;
+      MapSerializeData[] data = place.details;
+      place.details = new MapSerializeData[order + 1];
+      data.CopyTo(place.details, 0);
+      place.details[order] = new MapSerializeData();
+      return true;
+    }
+
+    private delegate bool HasNextMapSection(Serializer.BaseSerializer a, int order, ref LocationSerializeData location);
+    private HasNextMapSection hasNextMapSection;
+
+    private bool HasNextMapSectionSave(Serializer.BaseSerializer a, int order, ref LocationSerializeData place)
+    {
+      if (order >= place.maps.Length)
+        return false;
+      return a.PushSection(XmlNodeNames.MapSource, order);
+    }
+    private bool HasNextMapSectionLoad(Serializer.BaseSerializer a, int order, ref LocationSerializeData place)
+    {
+      if (!a.PushSection(XmlNodeNames.MapSource, order))
+        return false;
+      MapSerializeData[] data = place.maps;
+      place.details = new MapSerializeData[order + 1];
+      data.CopyTo(place.maps, 0);
+      place.details[order] = new MapSerializeData();
+      return true;
+    }
+    private void LoadWorld(Serializer.BaseSerializer s)
+    {
+      World.Clear();
+      hasNextLocationSection = HasNextLocationSectionLoad;
+      hasNextInfoSection = HasNextInfoSectionLoad;
+      hasNextMapSection = HasNextMapSectionLoad;
+
+      LocationsSerializeData data = new LocationsSerializeData();
+      SerializeWorld(s, ref data);
+      // load indie World
+      if (data.locatios == null)
+        return;
+      for ( int i =0; i < data.locatios.Length; i++)
+      {
+        WorldDescription d = new WorldDescription();
+        d.FromSerialize(data.locatios[i]);
+        World.Add(d);
+      }
+    }
+    private void SaveWorld(Serializer.BaseSerializer s)
+    {
+      hasNextLocationSection = HasNextLocationSectionSave;
+      hasNextInfoSection = HasNextInfoSectionSave;
+      hasNextMapSection = HasNextMapSectionSave;
+
+      LocationsSerializeData data = new LocationsSerializeData();
+      data.locatios = new LocationSerializeData[World.Count];
+      for (int i = 0; i < World.Count; i++)
+      {
+        data.locatios[i] = World[i].ToSerialize();
+      }
+      SerializeWorld(s, ref data);
+    } 
+    private void SerializeWorld(Serializer.BaseSerializer s, ref LocationsSerializeData d)
+    {
+      if (!s.PushSection(XmlNodeNames.Locations, 0))
+        return;
+      int order = 0;
+      while (hasNextLocationSection(s,order, ref d))
+      {
+        ref LocationSerializeData sd = ref d.locatios[order];
+        s.SerializeAttribute(XmlNodeNames.Name, ref sd.name);
+        int mapOrder = 0;
+        while (hasNextMapSection(s,mapOrder,ref sd))
+        {
+          ref MapSerializeData mp = ref sd.maps[mapOrder];
+          s.PushSection(XmlNodeNames.MapSource,0);
+          s.SerializeAttribute(XmlNodeNames.Name, ref mp.name);
+          s.SerializeString(ref mp.content);
+          s.PopSection();
+          mapOrder++;
+        }
+        mapOrder = 0;
+        while (hasNextInfoSection(s, mapOrder, ref sd))
+        {
+          ref MapSerializeData mp = ref sd.details[mapOrder];
+          s.PushSection(XmlNodeNames.Info,0);
+          s.SerializeAttribute(XmlNodeNames.Name, ref mp.name);
+          s.SerializeString(ref mp.content);
+          s.PopSection();
+          mapOrder++;
+        }
+        order++;
+        s.PopSection();
+      }
+      s.PopSection();
+    }
+    ////////////////////////////////////////////////////////////////////
+    ///////////////////////////Character Serialization//////////////////
+    ////////////////////////////////////////////////////////////////////
     private delegate bool HasNextCharacterSection(Serializer.BaseSerializer a, int order, ref CharactersSerializeData characters);
     private HasNextCharacterSection hasNextCharacterSection;
     private bool HasNextCharacterSectionLoad(Serializer.BaseSerializer a, int order, ref CharactersSerializeData characters)
@@ -456,7 +657,7 @@ namespace MyBook.BookContent
         return false;
       return true;
     }
-
+    
     private delegate bool HasNextPage(Serializer.BaseSerializer s, int order, ref SceneSerializeData d);
     private HasNextPage hasNextPage;
 
@@ -572,9 +773,12 @@ namespace MyBook.BookContent
       s.PushSection(XmlNodeNames.BookRoot, 0);
       SaveCharacters(s);
       SaveScenes(s);
+      SaveWorld(s);
+      SaveDocuments(s);
       s.PopSection();
       s.Finish();
     }
+   
     public void Load(string name)
     {
       Name = name;
@@ -584,8 +788,9 @@ namespace MyBook.BookContent
       s.PushSection(XmlNodeNames.BookRoot, 0);
       LoadCharacters(s);
       LoadScenes(s);
+      LoadWorld(s);
+      LoadDocuments(s);
       s.PopSection();
-
     }
 
     public List<string> GetSceneNames()

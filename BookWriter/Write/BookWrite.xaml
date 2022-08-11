@@ -81,8 +81,15 @@
             </ContextMenu>
           </TreeViewItem.ContextMenu>
         </TreeViewItem>
-        <TreeViewItem Header="Misc">
+        <TreeViewItem Header="Documents" x:Name="x_documents" ItemsSource="{Binding Documents}" DisplayMemberPath="Name">
+          <TreeViewItem.ContextMenu>
+            <ContextMenu>
+              <MenuItem Header="Add document" Click="add_document_click" />
+            </ContextMenu>
+          </TreeViewItem.ContextMenu>
         </TreeViewItem>
+        <TreeViewItem Header="Models" />
+        <TreeViewItem Header="Misc" />
       </TreeView>
       <!--<Button Style="{StaticResource ResourceKey=AddButtonImageStyle}">akfj</Button> -->
       <ScrollViewer Grid.Column="2" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" x:Name="x_working_page">

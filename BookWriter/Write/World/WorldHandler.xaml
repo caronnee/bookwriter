@@ -14,10 +14,9 @@
           </ContextMenu>
         </Image.ContextMenu>
       </Image>
-      <TextBox Text="{Binding MapName}"></TextBox>
       <Button>zoom levels</Button>
     </StackPanel>
-    <TextBox DockPanel.Dock="Top">name</TextBox>
+    <TextBox DockPanel.Dock="Top" Text="{Binding Name}"/>
     <Menu DockPanel.Dock="Top">
       <MenuItem Header="add image"/>
       <MenuItem Header="add part"/>

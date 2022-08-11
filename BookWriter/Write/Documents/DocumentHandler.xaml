@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="MyBook.Write.Documents.DocumentHandler"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MyBook.Write.Documents"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+  <StackPanel>
+    <TextBox x:Name="x_name" Text="{Binding Name}" />
+    <Expander Header="Document content">
+      <TextBox x:Name="x_content" AcceptsReturn="True" AcceptsTab="True" Text="{Binding Content}"></TextBox>
+    </Expander>
+    <Expander Header="Document details" >
+      <TextBox x:Name="x_details" AcceptsReturn="True" AcceptsTab="True" Text="{Binding Misc}"/>
+    </Expander>
+  </StackPanel>
+</UserControl>

@@ -1,5 +1,6 @@
 ﻿Writer:
-Decision - link scenes
+world settings
+Relics/paper/documents/links
 Start writing
 mother father setting
 hyperlinks
