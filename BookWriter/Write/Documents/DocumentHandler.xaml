@@ -6,25 +6,33 @@
              xmlns:local="clr-namespace:MyBook.Write.Documents"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-  <StackPanel>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
     <TextBox x:Name="x_name" Text="{Binding Name}" />
-    <Grid>
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="*" />
-      </Grid.ColumnDefinitions>
-      <StackPanel Grid.Column="0">
+    <UniformGrid Grid.Row="1" Columns="2">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="auto"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
         <Label>Document content</Label>
-        <ScrollViewer>
+      <ScrollViewer Grid.Row="1">
           <TextBox x:Name="x_content" AcceptsReturn="True" Text="{Binding Content}"></TextBox>
-        </ScrollViewer>
-      </StackPanel>
-      <DockPanel Grid.Column="1">
+      </ScrollViewer>
+      </Grid>
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="auto"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
         <Label>Document details</Label>
-        <ScrollViewer>
+        <ScrollViewer Grid.Row="1">
           <TextBox x:Name="x_details" AcceptsReturn="True" Text="{Binding Misc}"/>
         </ScrollViewer>
-      </DockPanel>
-    </Grid>
-  </StackPanel>
+      </Grid>
+    </UniformGrid>
+  </Grid>
 </UserControl>
