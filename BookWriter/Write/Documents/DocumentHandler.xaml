@@ -8,11 +8,23 @@
              d:DesignHeight="450" d:DesignWidth="800">
   <StackPanel>
     <TextBox x:Name="x_name" Text="{Binding Name}" />
-    <Expander Header="Document content">
-      <TextBox x:Name="x_content" AcceptsReturn="True" AcceptsTab="True" Text="{Binding Content}"></TextBox>
-    </Expander>
-    <Expander Header="Document details" >
-      <TextBox x:Name="x_details" AcceptsReturn="True" AcceptsTab="True" Text="{Binding Misc}"/>
-    </Expander>
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+      <StackPanel Grid.Column="0">
+        <Label>Document content</Label>
+        <ScrollViewer>
+          <TextBox x:Name="x_content" AcceptsReturn="True" Text="{Binding Content}"></TextBox>
+        </ScrollViewer>
+      </StackPanel>
+      <DockPanel Grid.Column="1">
+        <Label>Document details</Label>
+        <ScrollViewer>
+          <TextBox x:Name="x_details" AcceptsReturn="True" Text="{Binding Misc}"/>
+        </ScrollViewer>
+      </DockPanel>
+    </Grid>
   </StackPanel>
 </UserControl>

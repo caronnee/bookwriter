@@ -11,8 +11,10 @@
             <RowDefinition Height="2*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+    <ScrollViewer>
     <TextBox x:Name="x_description" Grid.Row="0" AcceptsReturn="True" TextWrapping="Wrap" Text="{Binding Owner.Data.Description, ElementName=x_decision_creator}"/>
-        <ScrollViewer Grid.Row="1">
+    </ScrollViewer>
+    <ScrollViewer Grid.Row="1">
             <StackPanel x:Name="x_decisions">
                 <UniformGrid Columns="4">
                     <Label></Label>

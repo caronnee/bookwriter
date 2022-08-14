@@ -718,13 +718,16 @@ namespace MyBook.BookContent
         ref SceneSerializeData d = ref data.scenes[iScene];
         sd.Name = d.name;
         sd.Id = Int32.Parse(d.id);
-        for (int iPage = 0; iPage < d.pages.Length; iPage++)
+        if (d.pages != null)
         {
-          ref PageSerializeData pd = ref d.pages[iPage];
-          pd.handler.BaseFolder = Settings.BooksFolder;
-          sd.Pages.Add( pd.handler );
+          for (int iPage = 0; iPage < d.pages.Length; iPage++)
+          {
+            ref PageSerializeData pd = ref d.pages[iPage];
+            pd.handler.BaseFolder = Settings.BooksFolder;
+            sd.Pages.Add(pd.handler);
+          }
+          sd.SetPage(0);
         }
-        sd.SetPage(0);
         Scenes.Add(sd);
       }
       foreach (SceneDescription sd in Scenes)

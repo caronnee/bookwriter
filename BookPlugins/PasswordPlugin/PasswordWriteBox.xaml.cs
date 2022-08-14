@@ -21,26 +21,26 @@ namespace PasswordPlugin
     public PasswordMaker Owner { get; set; }
     public void x_countdown_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-      //int index = x_countdown.SelectedIndex;
-      //if (index == x_countdown.Items.Count - 1)
-      //  index = -1;
-      //PasswordMaker m = (DataContext as PasswordMaker);
-      //m.Data.Definition.NAllowedFailures = index;
-      //if (index <= 0 )
-      //{
-      //  x_hints_holder.Visibility = Visibility.Collapsed;
-      //}
-      //else
-      //{
-      //  x_hints_holder.Visibility = Visibility.Visible;
-      //  RefillHints();
-      //}
+      int index = x_countdown.SelectedIndex;
+      if (index == x_countdown.Items.Count - 1)
+        index = -1;
+      PasswordMaker m = (Owner as PasswordMaker);
+      m.Data.Definition.NAllowedFailures = index;
+      if (index <= 0)
+      {
+        x_hints_holder1.Visibility = Visibility.Collapsed;
+      }
+      else
+      {
+        x_hints_holder1.Visibility = Visibility.Visible;
+        RefillHints();
+      }
     }
 
     public void RefillHints()
     {
       x_hints.Children.Clear();
-      PasswordData d = (DataContext as PasswordMaker).Data;
+      PasswordData d = (Owner as PasswordMaker).Data;
       for ( int i =0; i < d.Definition.NAllowedFailures; i++)
       {
         TextBox b = new TextBox();

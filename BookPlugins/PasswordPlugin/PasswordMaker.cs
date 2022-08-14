@@ -106,7 +106,6 @@ namespace PasswordPlugin
       int index = Data.Definition.NAllowedFailures;
       if (index < 0)
         index = _writer.x_countdown.Items.Count - 1;
-      _writer.x_countdown.SelectionChanged += _writer.x_countdown_SelectionChanged;
       _writer.x_countdown.SelectedIndex = index;
     }
 

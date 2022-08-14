@@ -9,10 +9,8 @@
              x:Name="x_text"
              >
   <Grid>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="*" />
-      <RowDefinition Height="auto" />
-    </Grid.RowDefinitions>
-    <TextBox x:Name="x_description" DockPanel.Dock="Top" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding Owner.Data.Description, ElementName=x_text}"/>
+    <ScrollViewer>
+      <TextBox x:Name="x_description" DockPanel.Dock="Top" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding Owner.Data.Description, ElementName=x_text}"/>
+    </ScrollViewer>
   </Grid>
 </UserControl>

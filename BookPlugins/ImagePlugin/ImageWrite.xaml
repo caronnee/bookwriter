@@ -7,15 +7,17 @@
              xmlns:local="clr-namespace:ImagePlugin"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <UniformGrid Columns="2" Height="auto">
-        <Label>Header</Label>
-        <TextBox Text="{Binding Data.Header}" />
-        <Label>Footer</Label>
-        <TextBox Text="{Binding Data.Footer}" />
-        <Label>Image</Label>
-        <DockPanel >
-            <Button Click="click_load_image" DockPanel.Dock="Right" Width="30px">...</Button>
-            <TextBox x:Name="x_image_path" DockPanel.Dock="Right" Text="{Binding Path=Data.ImagePath}"/>
-        </DockPanel>
-    </UniformGrid>
+  <StackPanel>
+  <UniformGrid Columns="2" Height="auto">
+    <Label>Header</Label>
+    <TextBox Text="{Binding Data.Header}" />
+    <Label>Footer</Label>
+    <TextBox Text="{Binding Data.Footer}" />
+    <Label>Image</Label>
+    <DockPanel>
+      <Button Click="click_load_image" DockPanel.Dock="Right" Width="30px">...</Button>
+      <TextBox x:Name="x_image_path" DockPanel.Dock="Right" Text="{Binding Path=Data.ImagePath}"/>
+    </DockPanel>
+  </UniformGrid>
+  </StackPanel>
 </UserControl>
