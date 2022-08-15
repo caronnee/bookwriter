@@ -4,6 +4,7 @@ using MyBook.Write;
 using MyBook.Write.Character;
 using MyBook.Write.Documents;
 using MyBook.Write.GroupHandler;
+using MyBook.Write.Model;
 using MyBook.Write.World;
 using System;
 using System.Collections.Generic;
@@ -27,13 +28,8 @@ namespace MyBook
     private CharacterHolder _characterHolder;
     private WorldHandler _worldHandler;
     private DocumentHandler _documentHandler;
-    private void SceneSaved()
-    {
-      SelectionPickup();
-      x_scenes.Items.Refresh();
-      ShowProgress("Scene saved");
-    }
-
+    private ModelHandler _modelHandler;
+    
     public BookWrite(String name)
     {
       // empty booksource
@@ -43,6 +39,7 @@ namespace MyBook
       if (name.Length > 0)
         Cache.Load(name);
       _documentHandler = new DocumentHandler();
+      _modelHandler = new ModelHandler();
       _worldHandler = new WorldHandler();
       _characterHolder = new CharacterHolder();
       _sceneHolder = new SceneHolder();
@@ -249,6 +246,11 @@ namespace MyBook
       PreviewCharacter(f);
     }
 
+    private void PreviewModelClick(object sender, RoutedEventArgs args)
+    {
+      ModelDescription m = (sender as Button).DataContext as ModelDescription;
+      PreviewModel(m);
+    }
     private void PreviewWorldClick(object sender, RoutedEventArgs args)
     {
       WorldDescription f = (sender as Button).DataContext as WorldDescription;
@@ -366,6 +368,11 @@ namespace MyBook
         folder.x_go.Click += PreviewSceneClick;
       }
     }
+    private void PreviewModel(ModelDescription md)
+    {
+      _modelHandler.DataContext = md;
+      x_working_page.Content = _modelHandler;
+    }
     private void PreviewDocument(DocumentDescription c)
     {
       _documentHandler.DataContext = c;
@@ -415,9 +422,15 @@ namespace MyBook
         return;
       }
       DocumentDescription d = it.SelectedItem as DocumentDescription;
-      if ( d!=null)
+      if (d != null)
       {
         PreviewDocument(d);
+        return;
+      }
+      ModelDescription m = it.SelectedItem as ModelDescription;
+      if ( m != null)
+      {
+        PreviewModel(m);
         return;
       }
       TreeViewItem parent = it.SelectedItem as TreeViewItem;
@@ -431,7 +444,13 @@ namespace MyBook
       if (parent == x_documents)
         PreviewDocuments();
     }
-
+    private void add_model_click(object sender, RoutedEventArgs e)
+    {
+      Cache.CreateModel();
+      x_models.Items.Refresh();
+      FolderHandler.x_test.DataContext = null;
+      FolderHandler.x_test.DataContext = Cache.Documents;
+    }
     private void add_document_click(object sender, RoutedEventArgs e)
     {
       Cache.CreateDocument();

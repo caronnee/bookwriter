@@ -203,6 +203,7 @@ namespace MyBook.BookContent
     public List<CharacterDescription> Characters { get; set; }
     public List<WorldDescription> World { get; set; }
     public List<DocumentDescription> Documents { get; set; }
+    public List<ModelDescription> Models { get; set; }
     
     public void Init()
     {
@@ -212,6 +213,7 @@ namespace MyBook.BookContent
       Characters = new List<CharacterDescription>();
       World = new List<WorldDescription>();
       Documents = new List<DocumentDescription>();
+      Models = new List<ModelDescription>();
       CreateWorld();
       CreateDocument();
       SceneDescription d = CreateScene();
@@ -266,6 +268,12 @@ namespace MyBook.BookContent
       WorldDescription world = new WorldDescription();
       world.Name = "New world";
       World.Add(world);
+    }
+    public void CreateModel()
+    {
+      ModelDescription model = new ModelDescription();
+      model.Name = "Tes model";
+      Models.Add(model);
     }
     public void CreateDocument()
     {
@@ -329,7 +337,7 @@ namespace MyBook.BookContent
       Documents.Clear();
       hasNextDocumentSection = HasNextDocumentSectionLoad;
       DocumentsSerializeData serializeData = new DocumentsSerializeData();
-      SerializeDocuments(s, serializeData);
+      SerializeDocuments(s, ref serializeData);
       if (serializeData.documents == null)
         return;
       for (int i =0; i <serializeData.documents.Length;i++)
@@ -348,9 +356,9 @@ namespace MyBook.BookContent
       {
         serializeData.documents[i] = Documents[i].ToSerialize();
       }
-      SerializeDocuments(s, serializeData);
+      SerializeDocuments(s, ref serializeData);
     }
-    public void SerializeDocuments(Serializer.BaseSerializer s, DocumentsSerializeData sd)
+    public void SerializeDocuments(Serializer.BaseSerializer s, ref DocumentsSerializeData sd)
     {
       if (!s.PushSection(XmlNodeNames.Documents, 0))
         return;

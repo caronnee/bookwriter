@@ -79,6 +79,7 @@
     <Compile Include="BookContent\Constants.cs" />
     <Compile Include="BookContent\DocumentDescription.cs" />
     <Compile Include="BookContent\IDescription.cs" />
+    <Compile Include="BookContent\ModelDescription.cs" />
     <Compile Include="BookContent\SceneDescription.cs" />
     <Compile Include="BookContent\WorldDescription.cs" />
     <Compile Include="Intro\BookItem.xaml.cs">
@@ -102,7 +103,10 @@
     <Compile Include="Write\MetaData\SetBookName.xaml.cs">
       <DependentUpon>SetBookName.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Write\SceneHolder.xaml.cs">
+    <Compile Include="Write\Model\ModelHandler.xaml.cs">
+      <DependentUpon>ModelHandler.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Write\Scene\SceneHolder.xaml.cs">
       <DependentUpon>SceneHolder.xaml</DependentUpon>
     </Compile>
     <Compile Include="BookContent\PositionDesc.cs" />
@@ -236,7 +240,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Write\SceneHolder.xaml">
+    <Page Include="Write\Model\ModelHandler.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Write\Scene\SceneHolder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

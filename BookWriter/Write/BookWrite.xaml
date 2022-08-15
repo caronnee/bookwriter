@@ -88,7 +88,13 @@
             </ContextMenu>
           </TreeViewItem.ContextMenu>
         </TreeViewItem>
-        <TreeViewItem Header="Models" />
+        <TreeViewItem x:Name="x_models" Header="Models" ItemsSource="{Binding Models}" DisplayMemberPath="Name">
+          <TreeViewItem.ContextMenu>
+            <ContextMenu>
+              <MenuItem Header="Add model" Click="add_model_click" />
+            </ContextMenu>
+          </TreeViewItem.ContextMenu>
+        </TreeViewItem>
         <TreeViewItem Header="Misc" />
       </TreeView>
       <!--<Button Style="{StaticResource ResourceKey=AddButtonImageStyle}">akfj</Button> -->
