@@ -18,7 +18,7 @@
         <ColumnDefinition Width="auto"/>
       </Grid.ColumnDefinitions>
       <TextBox Grid.Column="0" x:Name="x_name" Text="{Binding Name}"/>
-      <Label Grid.Column="1" x:Name="x_path" Content="{Binding Path}"/>
+      <Label Grid.Column="1" x:Name="x_path" Content="{Binding File}"/>
       <Button Grid.Column="2">...</Button>
     </Grid>
   <Grid Grid.Row="1">

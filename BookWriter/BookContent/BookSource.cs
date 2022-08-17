@@ -358,7 +358,7 @@ namespace MyBook.BookContent
     {
       if (Models.Count == 0)
         return;
-      hasNextModelSection = HasNextModelSectionLoad;
+      hasNextModelSection = HasNextModelSectionSave;
       ModelsSerializeData models = new ModelsSerializeData();
       models.models = new ModelSerializeData[Models.Count];
       for( int i =0; i < Models.Count; i++)
@@ -377,7 +377,7 @@ namespace MyBook.BookContent
         ref ModelSerializeData md = ref data.models[order];
         serializer.SerializeAttribute(XmlNodeNames.Name, ref md.name);
         serializer.SerializeString(XmlNodeNames.Path, ref md.file);
-        serializer.SerializeString(ref md.description);
+        serializer.SerializeString(XmlNodeNames.Info, ref md.description);
         serializer.PopSection();
         order++;
       }
