@@ -192,6 +192,31 @@ namespace MyBook
       Done();
     }
 
+    class ModelConverter : IValueConverter
+    {
+      public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+      {
+        if (value == null)
+          return null;
+        List<PreviewFolder> fldr = new List<PreviewFolder>();
+        List<ModelDescription> sc = value as List<ModelDescription>;
+        if (sc == null)
+          return null;
+        for (int i = 0; i < sc.Count; i++)
+        {
+          PreviewFolder f = new PreviewFolder();
+          f.DataContext = sc[i];
+          fldr.Add(f);
+        }
+        return fldr;
+      }
+
+      public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+      {
+        throw new NotImplementedException();
+      }
+    }
+
     class DocumentConverter : IValueConverter
     {
       public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -265,6 +290,21 @@ namespace MyBook
     {
       SceneDescription f = (sender as Button).DataContext as SceneDescription;
       PreviewScene(f);
+    }
+    private void PreviewModels()
+    {
+      Binding b = new Binding(".");
+      // source data context
+      //b.Source
+      b.Converter = new ModelConverter();
+      FolderHandler = new GroupHandlerItem();
+      FolderHandler.DataContext = Cache.Models;
+      x_working_page.Content = FolderHandler;
+      FolderHandler.x_test.SetBinding(ItemsControl.ItemsSourceProperty, b);
+      foreach (PreviewFolder folder in FolderHandler.x_test.Items)
+      {
+        folder.x_go.Click += PreviewModelClick;
+      }
     }
     private void PreviewCharacters()
     {
@@ -435,6 +475,8 @@ namespace MyBook
       }
       TreeViewItem parent = it.SelectedItem as TreeViewItem;
       System.Diagnostics.Debug.Assert(parent!=null);
+      if (parent == x_models)
+        PreviewModels();
       if (parent == x_characters)
         PreviewCharacters();
       if (parent == x_scenes)
