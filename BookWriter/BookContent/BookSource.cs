@@ -27,11 +27,7 @@ namespace MyBook.BookContent
     /// </summary>
     public const String Models = "Models";
     public const String Model = "Model";
-    public const String Vertices = "Vertices";
-    public const String Vertex = "Vertex";
-    public const String X = "X";
-    public const String Y = "Y";
-    public const String Z = "Z";
+    public const String Path = "Path";
 
     /// <summary>
     /// Documents
@@ -345,36 +341,12 @@ namespace MyBook.BookContent
       return a.PushSection(XmlNodeNames.Model, order);
     }
 
-    private delegate bool HasNextVertexSection(Serializer.BaseSerializer a, int order, ref ModelSerializeData doc);
-    private HasNextVertexSection hasNextVertexSection;
-
-    private bool HasNextVertexSectionLoad(Serializer.BaseSerializer a, int order, ref ModelSerializeData doc)
-    {
-      if (!a.PushSection(XmlNodeNames.Vertex, order))
-        return false;
-
-      if (order == 0)
-      {
-        doc.vertices = new double[1];
-        return true;
-      }
-      double[] temp = doc.vertices;
-      doc.vertices = new double[temp.Length + 1];
-      temp.CopyTo(doc.vertices, 0);
-      return true;
-    }
-    private bool HasNextVertexSectionSave(Serializer.BaseSerializer a, int order, ref ModelSerializeData model)
-    {
-      if (order >= model.vertices.Length)
-        return false;
-      return a.PushSection(XmlNodeNames.Vertex, order);
-    }
     private void LoadModels(Serializer.XmlBookLoad s)
     {
       hasNextModelSection = HasNextModelSectionLoad;
-      hasNextVertexSection = HasNextVertexSectionLoad;
       ModelsSerializeData ms = new ModelsSerializeData();
       SerializeModels(ref ms,s);
+      if (ms.models!=null)
       for ( int i =0;i < ms.models.Length; i++)
       {
         ModelDescription md = new ModelDescription();
@@ -384,8 +356,9 @@ namespace MyBook.BookContent
     }
     private void SaveModels(Serializer.XmlBookSave s)
     {
+      if (Models.Count == 0)
+        return;
       hasNextModelSection = HasNextModelSectionLoad;
-      hasNextVertexSection = HasNextVertexSectionSave;
       ModelsSerializeData models = new ModelsSerializeData();
       models.models = new ModelSerializeData[Models.Count];
       for( int i =0; i < Models.Count; i++)
@@ -402,15 +375,9 @@ namespace MyBook.BookContent
       while(hasNextModelSection(serializer,order,ref data))
       {
         ref ModelSerializeData md = ref data.models[order];
-        serializer.SerializeString(XmlNodeNames.Name, ref md.name);
-        serializer.SerializeString(XmlNodeNames.Content, ref md.description);
-        int vOrder = 0;
-        while(hasNextVertexSection(serializer,vOrder,ref md))
-        {
-          serializer.SerializeAttribute(XmlNodeNames.X, ref md.vertices[vOrder]);
-          serializer.PopSection();
-          vOrder++;
-        }
+        serializer.SerializeAttribute(XmlNodeNames.Name, ref md.name);
+        serializer.SerializeString(XmlNodeNames.Path, ref md.file);
+        serializer.SerializeString(ref md.description);
         serializer.PopSection();
         order++;
       }
