@@ -74,5 +74,11 @@ namespace Serializer
       _current.AppendChild(el);
       return true;
     }
+
+    public override bool SerializeAttribute(string name, ref double val)
+    {
+      string s = val.ToString();
+      return SerializeAttribute(name, ref s);
+    }
   }
 }

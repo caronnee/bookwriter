@@ -103,5 +103,13 @@ namespace Serializer
       }
       return false;
     }
+
+    public override bool SerializeAttribute(string name, ref double val)
+    {
+      string s = "";
+      SerializeAttribute(name, ref s);
+      val = Double.Parse(s);
+      return true;
+    }
   }
 }

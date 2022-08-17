@@ -17,6 +17,7 @@ namespace Serializer
     public abstract bool SerializeDouble(String name, ref double value);
     public abstract bool PushSection(string name, int order);
     public abstract bool SerializeAttribute(string name, ref string val);
+    public abstract bool SerializeAttribute(string name, ref double val);
     public abstract void PopSection();
     public abstract void SerializeString(ref string s);
     public bool IsLoading { get; set; }

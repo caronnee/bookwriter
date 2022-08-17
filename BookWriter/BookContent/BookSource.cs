@@ -23,6 +23,17 @@ namespace MyBook.BookContent
     public const String Content = "Content";
 
     /// <summary>
+    /// Models
+    /// </summary>
+    public const String Models = "Models";
+    public const String Model = "Model";
+    public const String Vertices = "Vertices";
+    public const String Vertex = "Vertex";
+    public const String X = "X";
+    public const String Y = "Y";
+    public const String Z = "Z";
+
+    /// <summary>
     /// Documents
     /// </summary>
     public const String Documents = "Documents";
@@ -302,9 +313,109 @@ namespace MyBook.BookContent
     }
 
     ////////////////////////////////////////////////////////////////////
-    //////////////////////////////Serialization/////////////////////////
+    ////////////////////////Serialization///////////////////////////////
     ////////////////////////////////////////////////////////////////////
 
+    ////////////////////////////////////////////////////////////////////
+    ////////////////////// Models Serialization/////////////////////////
+    ////////////////////////////////////////////////////////////////////
+    private delegate bool HasNextModelSection(Serializer.BaseSerializer a, int order, ref ModelsSerializeData doc);
+    private HasNextModelSection hasNextModelSection;
+
+    private bool HasNextModelSectionLoad(Serializer.BaseSerializer a, int order, ref ModelsSerializeData doc)
+    {
+      if (!a.PushSection(XmlNodeNames.Model, order))
+        return false;
+
+      if (order == 0)
+      {
+        doc.models = new ModelSerializeData[1];
+        doc.models[0] = new ModelSerializeData();
+        return true;
+      }
+      ModelSerializeData[] temp = doc.models;
+      doc.models = new ModelSerializeData[temp.Length + 1];
+      temp.CopyTo(doc.models, 0);
+      return true;
+    }
+    private bool HasNextModelSectionSave(Serializer.BaseSerializer a, int order, ref ModelsSerializeData models)
+    {
+      if (order >= models.models.Length)
+        return false;
+      return a.PushSection(XmlNodeNames.Model, order);
+    }
+
+    private delegate bool HasNextVertexSection(Serializer.BaseSerializer a, int order, ref ModelSerializeData doc);
+    private HasNextVertexSection hasNextVertexSection;
+
+    private bool HasNextVertexSectionLoad(Serializer.BaseSerializer a, int order, ref ModelSerializeData doc)
+    {
+      if (!a.PushSection(XmlNodeNames.Vertex, order))
+        return false;
+
+      if (order == 0)
+      {
+        doc.vertices = new double[1];
+        return true;
+      }
+      double[] temp = doc.vertices;
+      doc.vertices = new double[temp.Length + 1];
+      temp.CopyTo(doc.vertices, 0);
+      return true;
+    }
+    private bool HasNextVertexSectionSave(Serializer.BaseSerializer a, int order, ref ModelSerializeData model)
+    {
+      if (order >= model.vertices.Length)
+        return false;
+      return a.PushSection(XmlNodeNames.Vertex, order);
+    }
+    private void LoadModels(Serializer.XmlBookLoad s)
+    {
+      hasNextModelSection = HasNextModelSectionLoad;
+      hasNextVertexSection = HasNextVertexSectionLoad;
+      ModelsSerializeData ms = new ModelsSerializeData();
+      SerializeModels(ref ms,s);
+      for ( int i =0;i < ms.models.Length; i++)
+      {
+        ModelDescription md = new ModelDescription();
+        md.FromSerialize(ms.models[i]);
+        Models.Add(md);
+      }
+    }
+    private void SaveModels(Serializer.XmlBookSave s)
+    {
+      hasNextModelSection = HasNextModelSectionLoad;
+      hasNextVertexSection = HasNextVertexSectionSave;
+      ModelsSerializeData models = new ModelsSerializeData();
+      models.models = new ModelSerializeData[Models.Count];
+      for( int i =0; i < Models.Count; i++)
+      {
+        models.models[i] = Models[i].ToSerialize();
+      }
+      SerializeModels(ref models, s);
+    }
+    private void SerializeModels(ref ModelsSerializeData data, Serializer.BaseSerializer serializer)
+    {
+      if (!serializer.PushSection(XmlNodeNames.Models,0))
+        return;
+      int order = 0;
+      while(hasNextModelSection(serializer,order,ref data))
+      {
+        ref ModelSerializeData md = ref data.models[order];
+        serializer.SerializeString(XmlNodeNames.Name, ref md.name);
+        serializer.SerializeString(XmlNodeNames.Content, ref md.description);
+        int vOrder = 0;
+        while(hasNextVertexSection(serializer,vOrder,ref md))
+        {
+          serializer.SerializeAttribute(XmlNodeNames.X, ref md.vertices[vOrder]);
+          serializer.PopSection();
+          vOrder++;
+        }
+        serializer.PopSection();
+        order++;
+      }
+      serializer.PopSection();
+    }
     ////////////////////////////////////////////////////////////////////
     ////////////////////Documents Serialization/////////////////////////
     ////////////////////////////////////////////////////////////////////
@@ -786,6 +897,7 @@ namespace MyBook.BookContent
       SaveScenes(s);
       SaveWorld(s);
       SaveDocuments(s);
+      SaveModels(s);
       s.PopSection();
       s.Finish();
     }
@@ -801,6 +913,7 @@ namespace MyBook.BookContent
       LoadScenes(s);
       LoadWorld(s);
       LoadDocuments(s);
+      LoadModels(s);
       s.PopSection();
     }
 
