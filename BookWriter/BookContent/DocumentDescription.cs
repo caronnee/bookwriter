@@ -18,10 +18,8 @@ namespace MyBook.BookContent
     public DocumentSerializeData[] documents;
   }
 
-  public class DocumentDescription
+  public class DocumentDescription : IDescription
   {
-    public String Name { get; set; }
-    public String Summary { get; set; }
     public string Content { get; set; }
     //public String Date { get; set; }
     //public String Author { get; set; }

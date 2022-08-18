@@ -11,14 +11,14 @@ namespace MyBook.BookContent
     public string name;
     public string description;
     public string file;
+    public string summary;
   }
   public struct ModelsSerializeData
   {
     public ModelSerializeData[] models;
   }
-  public class ModelDescription
+  public class ModelDescription :IDescription
   {
-    public String Name { get; set; }
     public String Desc { get; set; }
     public String File { get; set; }
     
@@ -27,10 +27,12 @@ namespace MyBook.BookContent
       Name = data.name;
       Desc = data.description;
       File = data.file;
+      Summary = data.summary;
     }
     public ModelSerializeData ToSerialize()
     {
       ModelSerializeData m = new ModelSerializeData();
+      m.summary = Summary;
       m.name = Name;
       m.description = Desc;
       m.file = File;

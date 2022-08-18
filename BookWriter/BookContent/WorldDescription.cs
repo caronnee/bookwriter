@@ -14,6 +14,7 @@ namespace MyBook.BookContent
   public struct LocationSerializeData
   {
     public string name;
+    public string summary;
     public MapSerializeData[] maps;
     public MapSerializeData[] details;
   }
@@ -31,9 +32,8 @@ namespace MyBook.BookContent
     public String Name { get; set; }
     public String MapSource { get; set; }
   }
-  public class WorldDescription
+  public class WorldDescription : IDescription
   {
-    public String Name { get; set; }
     public List<LocationPart> Info { get; set; }
     public List<MapPart> Maps { get; set; }
     public WorldDescription()
@@ -48,6 +48,7 @@ namespace MyBook.BookContent
       d.details = new MapSerializeData[Info.Count];
       d.maps = new MapSerializeData[Maps.Count];
       d.name = Name;
+      d.summary = Summary;
       for (int i = 0; i < Info.Count; i++)
       {
         MapSerializeData data = new MapSerializeData();
@@ -68,6 +69,7 @@ namespace MyBook.BookContent
     public void FromSerialize(LocationSerializeData s)
     {
       Name = s.name;
+      Summary = s.summary;
       Info = new List<LocationPart>();
       Maps = new List<MapPart>();
       if (s.details!=null)

@@ -376,6 +376,7 @@ namespace MyBook.BookContent
       {
         ref ModelSerializeData md = ref data.models[order];
         serializer.SerializeAttribute(XmlNodeNames.Name, ref md.name);
+        serializer.SerializeAttribute(XmlNodeNames.Summary, ref md.summary);
         serializer.SerializeString(XmlNodeNames.Path, ref md.file);
         serializer.SerializeString(XmlNodeNames.Info, ref md.description);
         serializer.PopSection();
