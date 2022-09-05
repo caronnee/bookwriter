@@ -10,6 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
@@ -23,6 +24,21 @@ namespace MyBook.Write.Model
     public ModelHandler()
     {
       InitializeComponent();
+    }
+
+    private void x_camera_KeyDown(object sender, KeyEventArgs e)
+    {
+      if ( e.Key == Key.A)
+      {
+        x_camera.Position = new System.Windows.Media.Media3D.Point3D(0,0,-8);
+      }
+    }
+
+    private void myViewport_MouseDown(object sender, MouseButtonEventArgs e)
+    {
+      Point3D point3D = x_camera.Position;
+      point3D.Offset(1,1,1);
+      x_camera.Position = point3D;
     }
   }
 }
