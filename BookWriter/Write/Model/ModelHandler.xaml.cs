@@ -34,11 +34,22 @@ namespace MyBook.Write.Model
       }
     }
 
-    private void myViewport_MouseDown(object sender, MouseButtonEventArgs e)
+    delegate void ActionHandler();
+    delegate void ActionObject();
+    delegate void ActionAxis();
+
+    Matrix3D transformationMatrix = Matrix3D.Identity;
+    private void viewport_mouse_down(object sender, MouseButtonEventArgs e)
     {
-      Point3D point3D = x_camera.Position;
-      point3D.Offset(1,1,1);
-      x_camera.Position = point3D;
+    }
+
+    private void Grid_MouseMove(object sender, MouseEventArgs e)
+    {
+    }
+
+    private void Grid_MouseUp(object sender, MouseButtonEventArgs e)
+    {
+
     }
   }
 }

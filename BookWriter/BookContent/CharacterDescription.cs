@@ -6,11 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyBook.BookContent
 {
-  public struct EpisodesSerialization
-  {
-    public string episodeName;
-    public string content;
-  }
+  
   public struct CharacterSerializeData
   {
     public String summary;
@@ -21,18 +17,12 @@ namespace MyBook.BookContent
     public int spouse;
     public int gender;
     public int status;
-    public EpisodesSerialization[] episodes;
+    public EpisodesSerializeData[] episodes;
   }
 
   public struct CharactersSerializeData
   {
     public CharacterSerializeData[] characters;
-  }
-
-  public class CharacterEpisodes
-  {
-    public String Title { get; set; }
-    public String Content { get; set; }
   }
 
   // whole info about character
@@ -52,14 +42,14 @@ namespace MyBook.BookContent
     public CharacterGender Gender { get; set; }
 
     // details
-    public List<CharacterEpisodes> Episodes { get; set; }
+    public List<EpisodeDetail> Episodes { get; set; }
 
     /// <summary>
     /// Functions
     /// </summary>
     public CharacterDescription()
     {
-      Episodes = new List<CharacterEpisodes>();
+      Episodes = new List<EpisodeDetail>();
     }
 
     public void FromSerialize(CharacterSerializeData d)
@@ -71,12 +61,11 @@ namespace MyBook.BookContent
       Status = (CharacterStatus)d.status;
       // todo 
       //Mother. father, sppuse
-      Episodes = new List<CharacterEpisodes>();
-      foreach (EpisodesSerialization s in d.episodes)
+      Episodes = new List<EpisodeDetail>();
+      foreach (EpisodesSerializeData s in d.episodes)
       {
-        CharacterEpisodes ep = new CharacterEpisodes();
-        ep.Content = s.content;
-        ep.Title = s.episodeName;
+        EpisodeDetail ep = new EpisodeDetail();
+        ep.FromSerialize(s);
         Episodes.Add(ep);
       }
     }
@@ -88,12 +77,10 @@ namespace MyBook.BookContent
       d.summary = Summary;
       d.gender = ((int)Gender);
       d.status = ((int)Status);
-      d.episodes = new EpisodesSerialization[Episodes.Count];
+      d.episodes = new EpisodesSerializeData[Episodes.Count];
       for (int i = 0; i < Episodes.Count; i++)
       {
-        EpisodesSerialization es = new EpisodesSerialization();
-        es.episodeName = Episodes[i].Title;
-        es.content = Episodes[i].Content;
+        EpisodesSerializeData es = Episodes[i].ToSerialize();
         d.episodes[i] = es;
       }
       return d;

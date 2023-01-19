@@ -7,7 +7,29 @@
     </Window.Resources>
     <StackPanel>
         <Label>Created by Eva Pešková</Label>
-        <TextBlock IsEnabled="false" TextWrapping="Wrap"><Run Text="As behind every program, there is a story behind it. Here it is starting mine. One starry night..."/></TextBlock>
-        <Image Source="{StaticResource ResourceKey=aboutImage}"></Image>
+    <TextBlock IsEnabled="false" TextWrapping="Wrap"><Run Text="As behind every program, there is a story behind it. Here it is starting mine. One starry night..."/></TextBlock>
+    <RichTextBox Name="RichTextBox1" IsDocumentEnabled="True" >
+      <RichTextBox.ContextMenu>
+        <ContextMenu>
+          <MenuItem Command="ApplicationCommands.Cut"/>
+          <MenuItem Command="ApplicationCommands.Copy"/>
+          <MenuItem Command="ApplicationCommands.Paste"/>
+          <MenuItem Header="MakeLink" Click="button1_Click"/>
+        </ContextMenu>
+      </RichTextBox.ContextMenu>
+      <FlowDocument x:Name="x_flow">
+        <Paragraph Background="AliceBlue">
+          I am a flow document. Would you like to edit me?
+          <Bold>Go ahead.</Bold>
+          sdjCH
+          <Hyperlink Click="Hyperlink_Click">click me</Hyperlink>
+          rest of something
+          <Hyperlink NavigateUri="hhh" >somthins</Hyperlink>
+          seconded
+        </Paragraph>
+        <Paragraph Foreground="Blue">I am blue I am blue I am blue.</Paragraph>
+      </FlowDocument>
+    </RichTextBox>
+    <Image Source="{StaticResource ResourceKey=aboutImage}"></Image>
     </StackPanel>
 </Window>

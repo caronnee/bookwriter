@@ -14,6 +14,7 @@ namespace MyBook
       InitializeComponent();
       ShowLibrary();
     }
+    
     public void ShowLibrary()
     {
       Initial intro = new Initial();

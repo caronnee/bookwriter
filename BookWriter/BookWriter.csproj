@@ -78,6 +78,7 @@
     <Compile Include="BookContent\CharacterDescription.cs" />
     <Compile Include="BookContent\Constants.cs" />
     <Compile Include="BookContent\DocumentDescription.cs" />
+    <Compile Include="BookContent\EpisodeDetail.cs" />
     <Compile Include="BookContent\IDescription.cs" />
     <Compile Include="BookContent\ModelDescription.cs" />
     <Compile Include="BookContent\SceneDescription.cs" />

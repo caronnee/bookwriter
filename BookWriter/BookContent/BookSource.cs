@@ -21,6 +21,10 @@ namespace MyBook.BookContent
     public const String Name = "Name";
     public const String Summary = "Summary";
     public const String Content = "Content";
+    public const String Type = "Type";
+    public const String Par = "Parameter";
+    public const String Paragraph = "Paragraph";
+    public const String Block = "Block";
 
     /// <summary>
     /// Models
@@ -236,9 +240,8 @@ namespace MyBook.BookContent
       CharacterDescription c = new CharacterDescription();
       c.Id = LastOne;
       c.Name = "Anonymous";
-      CharacterEpisodes ep = new CharacterEpisodes();
+      EpisodeDetail ep = new EpisodeDetail();
       ep.Title = "Life";
-      ep.Content = "";
       c.Episodes.Add(ep);
       Characters.Add(c);
       LastOne++;
@@ -640,7 +643,7 @@ namespace MyBook.BookContent
     {
       if (!a.PushSection(XmlNodeNames.Episode, order))
         return false;
-      EpisodesSerialization[] es = new EpisodesSerialization[order + 1];
+      EpisodesSerializeData[] es = new EpisodesSerializeData[order + 1];
       if (order > 0)
       {
         character.episodes.CopyTo(es, 0);
@@ -653,6 +656,53 @@ namespace MyBook.BookContent
       if (order >= character.episodes.Length)
         return false;
       if (!a.PushSection(XmlNodeNames.Episode, order))
+        return false;
+      return true;
+    }
+
+    private delegate bool HasNextParagraphSection(Serializer.BaseSerializer a, int order, ref BlockSerialization block);
+    private HasNextParagraphSection hasNextParagraphSection;
+    private bool HasNextParagraphSectionLoad(Serializer.BaseSerializer s, int order, ref BlockSerialization data)
+    {
+      if (!s.PushSection(XmlNodeNames.Paragraph, order))
+        return false;
+
+      ParagraphSerialization[] es = new ParagraphSerialization[order + 1];
+      if (order > 0)
+      {
+        data.paragraphs.CopyTo(es, 0);
+      }
+      data.paragraphs = es;
+      return true;
+    }
+    private bool HasNextParagraphSectionSave(Serializer.BaseSerializer s, int order, ref BlockSerialization data)
+    {
+      if ( order >= data.paragraphs.Length)
+        return false;
+      if (!s.PushSection(XmlNodeNames.Paragraph, order))
+        return false;
+      return true; 
+    }
+
+    private delegate bool HasNextBlockSection(Serializer.BaseSerializer a, int order, ref EpisodesSerializeData character);
+    private HasNextBlockSection hasNextBlockSection;
+    private bool HasNextBlockSectionLoad(Serializer.BaseSerializer a, int order, ref EpisodesSerializeData data)
+    {
+      if (!a.PushSection(XmlNodeNames.Block, order))
+        return false;
+      BlockSerialization[] es = new BlockSerialization[order + 1];
+      if (order > 0)
+      {
+        data.blocks.CopyTo(es, 0);
+      }
+      data.blocks = es;
+      return true;
+    }
+    private bool HasNextBlockSectionSave(Serializer.BaseSerializer a, int order, ref EpisodesSerializeData episode)
+    {
+      if (order >= episode.blocks.Length)
+        return false;
+      if (!a.PushSection(XmlNodeNames.Block, order))
         return false;
       return true;
     }
@@ -677,9 +727,25 @@ namespace MyBook.BookContent
         int iEpisode = 0;
         while (hasNextEpisodeSection(s, iEpisode, ref a1))
         {
-          ref EpisodesSerialization es = ref a1.episodes[iEpisode];
+          ref EpisodesSerializeData es = ref a1.episodes[iEpisode];
           s.SerializeAttribute(XmlNodeNames.Name, ref es.episodeName);
-          s.SerializeString(ref es.content);
+          int iBlock = 0;
+          while(hasNextBlockSection(s,iBlock,ref es))
+          {
+            ref BlockSerialization bs = ref es.blocks[iBlock];
+            int iParagraph = 0;
+            while (hasNextParagraphSection(s,iParagraph, ref bs))
+            {
+              ref ParagraphSerialization ps = ref bs.paragraphs[iParagraph];
+              s.SerializeInt(XmlNodeNames.Par, ref ps.parameter);
+              s.SerializeString(XmlNodeNames.Content, ref ps.text);
+              s.SerializeInt(XmlNodeNames.Type, ref ps.type);
+              s.PopSection();
+              iParagraph++;
+            }
+            s.PopSection();
+            iBlock++;
+          }
           s.PopSection();
           iEpisode++;
         }
@@ -692,8 +758,6 @@ namespace MyBook.BookContent
     private void LoadCharacters(Serializer.BaseSerializer s)
     {
       Characters.Clear();
-      hasNextEpisodeSection = HasNextEpisodeSectionLoad;
-      hasNextCharacterSection = HasNextCharacterSectionLoad;
       CharactersSerializeData data = new CharactersSerializeData();
       SerializeCharacters(s, ref data);
       foreach (CharacterSerializeData d in data.characters)
@@ -705,8 +769,6 @@ namespace MyBook.BookContent
     }
     private void SaveCharacters(Serializer.BaseSerializer s)
     {
-      hasNextEpisodeSection = HasNextEpisodeSectionSave;
-      hasNextCharacterSection = HasNextCharacterSectionSave;
       CharactersSerializeData data = new CharactersSerializeData();
       data.characters = new CharacterSerializeData[Characters.Count];
       for (int i = 0; i < Characters.Count; i++)
@@ -860,6 +922,11 @@ namespace MyBook.BookContent
       Serializer.XmlBookSave s = new Serializer.XmlBookSave(FullPath);
       s.toId = ToId;
       s.fromId = FromId;
+      hasNextBlockSection = HasNextBlockSectionSave;
+      hasNextParagraphSection = HasNextParagraphSectionSave;
+      hasNextEpisodeSection = HasNextEpisodeSectionSave;
+      hasNextCharacterSection = HasNextCharacterSectionSave;
+
       s.PushSection(XmlNodeNames.BookRoot, 0);
       SaveCharacters(s);
       SaveScenes(s);
@@ -876,6 +943,11 @@ namespace MyBook.BookContent
       Serializer.XmlBookLoad s = new Serializer.XmlBookLoad(FullPath);
       s.toId = ToId;
       s.fromId = FromId;
+      hasNextBlockSection = HasNextBlockSectionLoad;
+      hasNextParagraphSection = HasNextParagraphSectionLoad;
+      hasNextEpisodeSection = HasNextEpisodeSectionLoad;
+      hasNextCharacterSection = HasNextCharacterSectionLoad;
+
       s.PushSection(XmlNodeNames.BookRoot, 0);
       LoadCharacters(s);
       LoadScenes(s);

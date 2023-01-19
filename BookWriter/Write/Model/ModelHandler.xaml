@@ -6,14 +6,14 @@
              xmlns:local="clr-namespace:MyBook.Write.Model"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-  <Grid>
+  <Grid x:Name="x_complete_container">
     <Grid.RowDefinitions>
-      <RowDefinition Height="auto"/>
-      <RowDefinition Height="*"/>
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="*" />
     </Grid.RowDefinitions>
-    <Grid>
+    <Grid x:Name="x_name_and_loading" Grid.Row="0">
       <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="3*"/>
+        <ColumnDefinition Width="*"/>
         <ColumnDefinition Width="*"/>
         <ColumnDefinition Width="auto"/>
       </Grid.ColumnDefinitions>
@@ -21,114 +21,127 @@
       <Label Grid.Column="1" x:Name="x_path" Content="{Binding File}"/>
       <Button Grid.Column="2">...</Button>
     </Grid>
-    <Grid Grid.Row="1" >
+    <Grid Grid.Row="1" x:Name="x_viewport_container">
       <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="2*" />
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="3*" />
         <ColumnDefinition Width="*" />
       </Grid.ColumnDefinitions>
+      <ToolBarPanel>
+        <Expander Header="Model">
+          <StackPanel>
+            <UniformGrid Columns="2">
+              <Label>X</Label>
+              <Label Content="{Binding Value, ElementName=x_x}" />
+              <RadioButton GroupName="x_ax" Content="x"/>
+              <RadioButton GroupName="x_ax" Content="y"/>
+              <RadioButton GroupName="x_ax" Content="z"/>
+            </UniformGrid>
+            <Slider x:Name="x_x" Minimum="0" Maximum="359" Value="{Binding ElementName = x_rotate, Path=Angle}"></Slider>
+            <UniformGrid Columns="2">
+              <Label>Y</Label>
+              <Label Content="{Binding Value, ElementName=x_y}" />
+            </UniformGrid>
+            <Slider x:Name="x_y" Minimum="0" Maximum="359" Value="{Binding ElementName = y_rotate, Path=Angle}"></Slider>
+            <UniformGrid Columns="2">
+              <Label>Z</Label>
+              <Label Content="{Binding Value, ElementName=x_z}" />
+            </UniformGrid>
+            <Slider x:Name="x_z" Minimum="0" Maximum="359" Value="{Binding ElementName = z_rotate, Path=Angle}"></Slider>
+          </StackPanel>
+        </Expander>
+        <ToolBar>
+          <TextBox>sd,fjsd</TextBox>
+        </ToolBar>
+        <ToolBar>
+          <TextBox>sd,fjsd</TextBox>
+        </ToolBar>
+      </ToolBarPanel>
       <!-- Viewport3D is the rendering surface. -->
-      <Grid >
-        <Grid>
-          <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-          </Grid.RowDefinitions>
-          <UniformGrid Rows="1">
-            <RadioButton GroupName="x_what" Content="Model"/>
-            <RadioButton GroupName="x_what" Content="World"/>
-            <RadioButton GroupName="x_what" Content="Camera"/>
-
-            <RadioButton GroupName="x_type" Content="Rotate"/>
-            <RadioButton GroupName="x_type" Content="Position"/>
-            
-            <RadioButton GroupName="x_axis" Content="x"/>
-            <RadioButton GroupName="x_axis" Content="y"/>
-            <RadioButton GroupName="x_axis" Content="z"/>
-          </UniformGrid>
-          <Grid Grid.Row="1" Background="AntiqueWhite" MouseDown="myViewport_MouseDown" >
-            <Viewport3D Grid.Row="1" Name="myViewport" >
-              <!-- Add a camera. -->
-              <Viewport3D.Camera>
-                <PerspectiveCamera x:Name="x_camera" 
+      <Grid Background="AntiqueWhite" MouseDown="viewport_mouse_down" MouseMove="Grid_MouseMove" MouseUp="Grid_MouseUp" Grid.Column="1">
+        <Viewport3D Name="myViewport"  >
+          <!-- Add a camera. -->
+          <Viewport3D.Camera>
+            <PerspectiveCamera x:Name="x_camera" 
                         FarPlaneDistance="200" 
                         LookDirection="-1,-1,-1" 
-                        UpDirection="-0.5,-0.5,0.5" 
+                        UpDirection="-1,-1,1" 
                         NearPlaneDistance="1" 
                         Position="5,5,5" 
                         FieldOfView="30" />
-              </Viewport3D.Camera>
-              <!-- Add models. -->
-              <Viewport3D.Children>
-                <ModelVisual3D>
-                  <ModelVisual3D.Content>
-                    <Model3DGroup x:Name="x_scene">
-                      <Model3DGroup.Children>
-                        <!-- Lights, MeshGeometry3D and DiffuseMaterial objects are added to the ModelVisual3D. -->
-                        <DirectionalLight Color="#FFFFFFFF" Direction="-1,-1,-1">
-                        </DirectionalLight>
-                        <GeometryModel3D x:Name="x_model">
-                          <GeometryModel3D.Geometry>
-                            <MeshGeometry3D>
-                              <MeshGeometry3D.Positions>
-                                <Point3D X="0" Y="0" Z="0"></Point3D>
-                                <Point3D X="1" Y="0" Z="0"></Point3D>
-                                <Point3D X="0" Y="1" Z="0"></Point3D>
-                                <Point3D X="1" Y="1" Z="0"></Point3D>
-                                <Point3D X="0" Y="0" Z="1"></Point3D>
-                                <Point3D X="1" Y="0" Z="1"></Point3D>
-                                <Point3D X="0" Y="1" Z="1"></Point3D>
-                                <Point3D X="1" Y="1" Z="1"></Point3D>
+          </Viewport3D.Camera>
+          <!-- Add models. -->
+          <Viewport3D.Children>
+            <ModelVisual3D>
+              <ModelVisual3D.Content>
+                <Model3DGroup x:Name="x_scene">
+                  <Model3DGroup.Children>
+                    <!-- Lights, MeshGeometry3D and DiffuseMaterial objects are added to the ModelVisual3D. -->
+                    <DirectionalLight Color="#FFFFFFFF" Direction="-1,-1,-1"/>
+                    <GeometryModel3D x:Name="x_model">
+                      <GeometryModel3D.Geometry>
+                        <MeshGeometry3D>
+                          <MeshGeometry3D.Positions>
+                            <Point3D X="-0.5" Y="-0.5" Z="-0.5"></Point3D>
+                            <Point3D X="0.5" Y="-0.5" Z="-0.5"></Point3D>
+                            <Point3D X="-0.5" Y="0.5" Z="-0.5"></Point3D>
+                            <Point3D X="0.5" Y="0.5" Z="-0.5"></Point3D>
+                            <Point3D X="-0.5" Y="-0.5" Z="0.5"></Point3D>
+                            <Point3D X="0.5" Y="-0.5" Z="0.5"></Point3D>
+                            <Point3D X="-0.5" Y="0.5" Z="0.5"></Point3D>
+                            <Point3D X="0.5" Y="0.5" Z="0.5"></Point3D>
 
-                                <Point3D X="0" Y="0" Z="0"></Point3D>
-                                <Point3D X="1" Y="0" Z="0"></Point3D>
-                                <Point3D X="0" Y="1" Z="0"></Point3D>
-                                <Point3D X="1" Y="1" Z="0"></Point3D>
-                                <Point3D X="0" Y="0" Z="1"></Point3D>
-                                <Point3D X="1" Y="0" Z="1"></Point3D>
-                                <Point3D X="0" Y="1" Z="1"></Point3D>
-                                <Point3D X="1" Y="1" Z="1"></Point3D>
+                            <Point3D X="-0.5" Y="-0.5" Z="-0.5"></Point3D>
+                            <Point3D X="0.5" Y="-0.5" Z="-0.5"></Point3D>
+                            <Point3D X="-0.5" Y="0.5" Z="-0.5"></Point3D>
+                            <Point3D X="0.5" Y="0.5" Z="-0.5"></Point3D>
+                            <Point3D X="-0.5" Y="-0.5" Z="0.5"></Point3D>
+                            <Point3D X="0.5" Y="-0.5" Z="0.5"></Point3D>
+                            <Point3D X="-0.5" Y="0.5" Z="0.5"></Point3D>
+                            <Point3D X="0.5" Y="0.5" Z="0.5"></Point3D>
 
-                                <Point3D X="0" Y="0" Z="0"></Point3D>
-                                <Point3D X="1" Y="0" Z="0"></Point3D>
-                                <Point3D X="0" Y="1" Z="0"></Point3D>
-                                <Point3D X="1" Y="1" Z="0"></Point3D>
-                                <Point3D X="0" Y="0" Z="1"></Point3D>
-                                <Point3D X="1" Y="0" Z="1"></Point3D>
-                                <Point3D X="0" Y="1" Z="1"></Point3D>
-                                <Point3D X="1" Y="1" Z="1"></Point3D>
-                              </MeshGeometry3D.Positions>
-                              <MeshGeometry3D.TriangleIndices>
-                                0,1,2 2,1,3 
-                            8,12,9 9,12,13 
-                            16,18,20 20,18,22 
-                            7,5,6 6,5,4
-                            15,14,11 11,14,10
-                            23,19,21 21 19 17
-                              </MeshGeometry3D.TriangleIndices>
-                            </MeshGeometry3D>
-                          </GeometryModel3D.Geometry>
-                          <GeometryModel3D.Material>
-                            <DiffuseMaterial>
-                              <DiffuseMaterial.Brush>
-                                <SolidColorBrush 
+                            <Point3D X="-0.5" Y="-0.5" Z="-0.5"></Point3D>
+                            <Point3D X="0.5" Y="-0.5" Z="-0.5"></Point3D>
+                            <Point3D X="-0.5" Y="0.5" Z="-0.5"></Point3D>
+                            <Point3D X="0.5" Y="0.5" Z="-0.5"></Point3D>
+                            <Point3D X="-0.5" Y="-0.5" Z="0.5"></Point3D>
+                            <Point3D X="0.5" Y="-0.5" Z="0.5"></Point3D>
+                            <Point3D X="-0.5" Y="0.5" Z="0.5"></Point3D>
+                            <Point3D X="0.5" Y="0.5" Z="0.5"></Point3D>
+                          </MeshGeometry3D.Positions>
+                          <MeshGeometry3D.TriangleIndices>
+                            1,2,3 0,2,1 
+                            7,6,5 5,6,4
+                          </MeshGeometry3D.TriangleIndices>
+                        </MeshGeometry3D>
+                      </GeometryModel3D.Geometry>
+                      <GeometryModel3D.Transform>
+                        <RotateTransform3D>
+                          <RotateTransform3D.Rotation>
+                            <AxisAngleRotation3D x:Name = "x_rotate" Axis = "1 0 0" Angle="0"/>
+                          </RotateTransform3D.Rotation>
+                        </RotateTransform3D>
+                      </GeometryModel3D.Transform>
+                      <GeometryModel3D.Material>
+                        <DiffuseMaterial>
+                          <DiffuseMaterial.Brush>
+                            <SolidColorBrush 
                             Color="Red" 
                             Opacity="1.0"/>
-                              </DiffuseMaterial.Brush>
-                            </DiffuseMaterial>
-                          </GeometryModel3D.Material>
-                        </GeometryModel3D>
-                      </Model3DGroup.Children>
-                    </Model3DGroup>
-                  </ModelVisual3D.Content>
-                </ModelVisual3D>
-              </Viewport3D.Children>
-            </Viewport3D>
-          </Grid>
-        </Grid>
+                          </DiffuseMaterial.Brush>
+                        </DiffuseMaterial>
+                      </GeometryModel3D.Material>
+                    </GeometryModel3D>
+                  </Model3DGroup.Children>
+                </Model3DGroup>
+              </ModelVisual3D.Content>
+            </ModelVisual3D>
+          </Viewport3D.Children>
+        </Viewport3D>
       </Grid>
-      <ScrollViewer Grid.Column="1">
-        <TextBox x:Name="x_model_description" AcceptsReturn="True" Text="{Binding Desc}"/>
-      </ScrollViewer>
+      <ScrollViewer Grid.Column="2">
+      <TextBox x:Name="x_model_description" AcceptsReturn="True" Text="{Binding Desc}"/>
+    </ScrollViewer>
     </Grid>
   </Grid>
 </UserControl>

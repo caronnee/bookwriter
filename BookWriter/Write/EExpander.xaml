@@ -5,14 +5,30 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MyBook.Write.Character"
              mc:Ignorable="d" x:Name="x_expander">
-  <Expander>
+  <Expander Expanded="Expander_Expanded">
     <Expander.Header>
       <StackPanel Orientation="Horizontal">
         <TextBox Background="Transparent" Width="350" TextWrapping="NoWrap" MaxLength="50" Text="{Binding Title}"></TextBox>
       </StackPanel>
     </Expander.Header>
     <DockPanel>
-      <TextBox BorderBrush="Blue" BorderThickness="2" DockPanel.Dock="Top" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding Content}"></TextBox>
+      <RichTextBox DockPanel.Dock="Top" AcceptsReturn="True" TextChanged="RichTextBox_TextChanged" LostFocus="RichTextBox_LostFocus" x:Name="x_episode_textbox">
+        <RichTextBox.ContextMenu>
+          <ContextMenu>
+            <MenuItem Command="ApplicationCommands.Cut"/>
+            <MenuItem Command="ApplicationCommands.Copy"/>
+            <MenuItem Command="ApplicationCommands.Paste"/>
+            <MenuItem Header="MakeLink" Click="x_make_link"/>
+          </ContextMenu>
+        </RichTextBox.ContextMenu>
+        <FlowDocument x:Name="x_episode_content">
+          <Paragraph>kjkp
+            <Bold>hhh</Bold> lkj
+            <Hyperlink>jjj</Hyperlink>
+            end ladiddadida
+          </Paragraph>
+        </FlowDocument>
+      </RichTextBox>
     </DockPanel>
   </Expander>
 </UserControl>

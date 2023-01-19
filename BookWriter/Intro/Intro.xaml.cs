@@ -11,6 +11,11 @@ namespace MyBook.Intro
   /// </summary>
   public partial class Initial : UserControl
   {
+    private void showAboutClick(object sender, RoutedEventArgs e)
+    {
+      Window w = new AboutBox();
+      w.Show();
+    }
     private String GetTitle(String fullpath)
     {
       String ext = fullpath;

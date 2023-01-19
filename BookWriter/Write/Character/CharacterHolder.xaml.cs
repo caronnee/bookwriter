@@ -28,7 +28,7 @@ namespace MyBook.Write.Character
         PropertyChanged(this, new PropertyChangedEventArgs(property));
     }
 
-    private EExpander CreateExpander (CharacterEpisodes ep)
+    private EExpander CreateExpander (EpisodeDetail ep)
     {
       EExpander e = new EExpander();
       e.DataContext = ep;
@@ -58,7 +58,7 @@ namespace MyBook.Write.Character
     private void x_add_episode_Click(object sender, RoutedEventArgs e)
     {
       CharacterDescription s = DataContext as CharacterDescription;
-      s.Episodes.Add(new CharacterEpisodes());
+      s.Episodes.Add(new EpisodeDetail());
       // refresh
       DataContext = null;
       DataContext = s;
@@ -68,7 +68,7 @@ namespace MyBook.Write.Character
   {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-      List<CharacterEpisodes> episodes = value as List<CharacterEpisodes>;
+      List<EpisodeDetail> episodes = value as List<EpisodeDetail>;
       if (episodes == null)
         return null;
       List<EExpander> xExpanders = new List<EExpander>();
