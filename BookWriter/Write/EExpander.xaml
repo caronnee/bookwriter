@@ -12,7 +12,7 @@
       </StackPanel>
     </Expander.Header>
     <DockPanel>
-      <RichTextBox DockPanel.Dock="Top" AcceptsReturn="True" TextChanged="RichTextBox_TextChanged" LostFocus="RichTextBox_LostFocus" x:Name="x_episode_textbox">
+      <RichTextBox DockPanel.Dock="Top" AcceptsReturn="True" TextChanged="RichTextBox_TextChanged" LostFocus="RichTextBox_LostFocus" x:Name="x_episode_textbox" Margin="0">
         <RichTextBox.ContextMenu>
           <ContextMenu>
             <MenuItem Command="ApplicationCommands.Cut"/>
@@ -21,12 +21,8 @@
             <MenuItem Header="MakeLink" Click="x_make_link"/>
           </ContextMenu>
         </RichTextBox.ContextMenu>
-        <FlowDocument x:Name="x_episode_content">
-          <Paragraph>kjkp
-            <Bold>hhh</Bold> lkj
-            <Hyperlink>jjj</Hyperlink>
-            end ladiddadida
-          </Paragraph>
+        <FlowDocument x:Name="x_episode_content" LineHeight="1">
+          
         </FlowDocument>
       </RichTextBox>
     </DockPanel>
