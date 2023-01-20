@@ -89,6 +89,11 @@
     <Compile Include="Write\Character\CharacterHolder.xaml.cs">
       <DependentUpon>CharacterHolder.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Write\Converter\CharacterConverter.cs" />
+    <Compile Include="Write\Converter\DocumentConverter.cs" />
+    <Compile Include="Write\Converter\ModelConverter.cs" />
+    <Compile Include="Write\Converter\SceneConverter.cs" />
+    <Compile Include="Write\Converter\WorldConverter.cs" />
     <Compile Include="Write\Documents\DocumentHandler.xaml.cs">
       <DependentUpon>DocumentHandler.xaml</DependentUpon>
     </Compile>
@@ -122,7 +127,7 @@
     <Compile Include="AboutBox.xaml.cs">
       <DependentUpon>AboutBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Write\TextConvert.cs" />
+    <Compile Include="Write\Converter\TextConvert.cs" />
     <Compile Include="Write\World\WorldHandler.xaml.cs">
       <DependentUpon>WorldHandler.xaml</DependentUpon>
     </Compile>
@@ -293,6 +298,7 @@
   <ItemGroup>
     <Resource Include="Resources\bookopen.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -18,7 +18,11 @@
             <MenuItem Command="ApplicationCommands.Cut"/>
             <MenuItem Command="ApplicationCommands.Copy"/>
             <MenuItem Command="ApplicationCommands.Paste"/>
-            <MenuItem Header="MakeLink" Click="x_make_link"/>
+            <MenuItem Header="MakeLink" Click="x_make_link"  DisplayMemberPath="Name" >
+              <MenuItem Header="First"></MenuItem>
+              <MenuItem Header="Second"></MenuItem>
+              <MenuItem Header="Third"></MenuItem>
+            </MenuItem>
           </ContextMenu>
         </RichTextBox.ContextMenu>
         <FlowDocument x:Name="x_episode_content" LineHeight="1">

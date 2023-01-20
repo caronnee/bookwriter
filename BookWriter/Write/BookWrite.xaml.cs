@@ -192,79 +192,8 @@ namespace MyBook
       Done();
     }
 
-    class ModelConverter : IValueConverter
-    {
-      public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-      {
-        if (value == null)
-          return null;
-        List<PreviewFolder> fldr = new List<PreviewFolder>();
-        List<ModelDescription> sc = value as List<ModelDescription>;
-        if (sc == null)
-          return null;
-        for (int i = 0; i < sc.Count; i++)
-        {
-          PreviewFolder f = new PreviewFolder();
-          f.DataContext = sc[i];
-          fldr.Add(f);
-        }
-        return fldr;
-      }
-
-      public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-      {
-        throw new NotImplementedException();
-      }
-    }
-
-    class DocumentConverter : IValueConverter
-    {
-      public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-      {
-        if (value == null)
-          return null;
-        List<PreviewFolder> fldr = new List<PreviewFolder>();
-        List<DocumentDescription> sc = value as List<DocumentDescription>;
-        if (sc == null)
-          return null;
-        for (int i = 0; i < sc.Count; i++)
-        {
-          PreviewFolder f = new PreviewFolder();
-          f.DataContext = sc[i];
-          fldr.Add(f);
-        }
-        return fldr;
-      }
-
-      public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-      {
-        throw new NotImplementedException();
-      }
-    }
-    class CharacterConverter : IValueConverter
-    {
-      public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-      {
-        if (value == null)
-          return null;
-        List<PreviewFolder> fldr = new List<PreviewFolder>();
-        List<CharacterDescription> sc = value as List<CharacterDescription>;
-        if (sc == null)
-          return null;
-        for (int i = 0; i < sc.Count; i++)
-        {
-          PreviewFolder f = new PreviewFolder();
-          f.DataContext = sc[i];
-          fldr.Add(f);
-        }
-        return fldr;
-      }
-
-      public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-      {
-        throw new NotImplementedException();
-      }
-    }
+    
+  
     private void PreviewCharacterClick(object sender, RoutedEventArgs args)
     {
       CharacterDescription f = (sender as Button).DataContext as CharacterDescription;
@@ -296,7 +225,7 @@ namespace MyBook
       Binding b = new Binding(".");
       // source data context
       //b.Source
-      b.Converter = new ModelConverter();
+      b.Converter = new Write.Converter.ModelConverter();
       FolderHandler = new GroupHandlerItem();
       FolderHandler.DataContext = Cache.Models;
       x_working_page.Content = FolderHandler;
@@ -311,7 +240,7 @@ namespace MyBook
       Binding b = new Binding(".");
       // source data context
       //b.Source
-      b.Converter = new CharacterConverter();
+      b.Converter = new Write.Converter.CharacterConverter();
       FolderHandler = new GroupHandlerItem();
       FolderHandler.DataContext = Cache.Characters;
       x_working_page.Content = FolderHandler;
@@ -322,55 +251,10 @@ namespace MyBook
       }
     }
 
-    class SceneConverter : IValueConverter
-    {
-      public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-      {
-        if (value == null)
-          return null;
-        List<PreviewFolder> fldr = new List<PreviewFolder>();
-        List<SceneDescription> sc = value as List<SceneDescription>;
-        for (int i = 0; i < sc.Count; i++)
-        {
-          PreviewFolder f = new PreviewFolder();
-          f.DataContext = sc[i];
-          fldr.Add(f);
-        }
-        return fldr;
-      }
-
-      public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-      {
-        throw new NotImplementedException();
-      }
-    }
-
-    class WorldConverter : IValueConverter
-    {
-      public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-      {
-        if (value == null)
-          return null;
-        List<PreviewFolder> fldr = new List<PreviewFolder>();
-        List<WorldDescription> sc = value as List<WorldDescription>;
-        for (int i = 0; i < sc.Count; i++)
-        {
-          PreviewFolder f = new PreviewFolder();
-          f.DataContext = sc[i];
-          fldr.Add(f);
-        }
-        return fldr;
-      }
-
-      public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-      {
-        throw new NotImplementedException();
-      }
-    }
     private void PreviewDocuments()
     {
       Binding b = new Binding(".");
-      b.Converter = new DocumentConverter();
+      b.Converter = new Write.Converter.DocumentConverter();
       FolderHandler = new GroupHandlerItem();
       FolderHandler.DataContext = Cache.Documents;
       x_working_page.Content = FolderHandler;
@@ -383,7 +267,7 @@ namespace MyBook
     private void PreviewWorld()
     {
       Binding b = new Binding(".");
-      b.Converter = new WorldConverter();
+      b.Converter = new Write.Converter.WorldConverter();
       FolderHandler = new GroupHandlerItem();
       FolderHandler.DataContext = Cache.World;
       x_working_page.Content = FolderHandler;
@@ -398,7 +282,7 @@ namespace MyBook
       Binding b = new Binding(".");
       // source data context
       //b.Source
-      b.Converter = new SceneConverter();
+      b.Converter = new Write.Converter.SceneConverter();
       FolderHandler = new GroupHandlerItem();
       FolderHandler.DataContext = Cache.Scenes;
       x_working_page.Content = FolderHandler;
